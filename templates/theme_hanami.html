@@ -1,0 +1,79 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=Shippori+Mincho:wght@500;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/hanami/style.css') }}">
+{% endblock %}
+{% block favicon %}🏮{% endblock %}
+{% block body_class %}theme-hanami{% endblock %}
+{% block letter_eyebrow %}Omikuji · 御神籤{% endblock %}
+
+{% block bg %}<div class="moon-glow" aria-hidden="true"></div><canvas id="petals" aria-hidden="true"></canvas>{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate" data-manual-gate="1600">
+    <p class="gate-eyebrow">Hanami night</p>
+    <h1 class="gate-title">ถึง {{ partner_name }}</h1>
+    <button type="button" class="moon-btn" id="moonBtn" aria-label="เป่าลมให้กลีบซากุระปลิว"><span class="moon-face">🌕</span><span class="wind-lines"><i></i><i></i><i></i></span></button>
+    <div class="wind-meter"><span id="windFill"></span></div>
+    <p class="gate-hint" id="gateHint">ลากนิ้วผ่านหน้าจอ (หรือแตะดวงจันทร์) ให้ลมพัดกลีบซากุระ 🌸</p>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <svg class="branch" id="branch" viewBox="0 0 320 200" aria-label="กิ่งซากุระ (แตะเพื่อเขย่า)" role="button" tabindex="0">
+    <path d="M330 30 C250 40 200 70 150 120 S60 170 -10 190" fill="none" stroke="#3a1f2b" stroke-width="9" stroke-linecap="round"/>
+    <path d="M230 52 C215 80 200 100 170 112 M120 140 C110 120 90 108 70 104 M200 70 C185 60 170 52 150 50" fill="none" stroke="#3a1f2b" stroke-width="4" stroke-linecap="round"/>
+    <g fill="#ffb7cf">
+      {% for cx, cy, r in [(250,50,16),(228,86,14),(205,60,15),(175,112,17),(150,52,13),(122,138,15),(92,150,14),(68,104,13),(190,92,12),(262,22,12),(42,176,12),(140,100,12)] %}
+      <circle cx="{{ cx }}" cy="{{ cy }}" r="{{ r }}"/><circle cx="{{ cx + 7 }}" cy="{{ cy - 6 }}" r="{{ r * 0.7 }}" fill="#ff9ec0"/><circle cx="{{ cx - 6 }}" cy="{{ cy + 5 }}" r="{{ r * 0.6 }}" fill="#ffd3e1"/>
+      {% endfor %}
+    </g>
+  </svg>
+
+  <header class="hero">
+    <p class="eyebrow">{{ occ.en }}</p>
+    <h1 class="hero-name">{{ partner_name }}</h1>
+    <div class="moon" data-photo><img src="{{ center_photo }}" alt="รูปของเรา"></div>
+    <p class="hero-sub">{{ occ.wish }}</p>
+    <div class="steps" data-steps data-labels="ลมพัด|จุดโคมไฟ|เลือกป้าย"
+         data-hints="กลีบซากุระปลิวแล้ว! (แตะกิ่งซากุระมุมบนเพื่อเขย่าได้)|แตะโคมไฟให้ติดครบ 5 ดวงเพื่อปลดล็อกป้ายความทรงจำ|แตะป้ายความทรงจำสักป้ายเพื่อปลดล็อกโอมิคุจิ|ปลดล็อกครบแล้ว เปิดโอมิคุจิคำอวยพรได้เลย"></div>
+  </header>
+
+  <section class="lantern-sec">
+    <h2 class="sec-title">จุดโคมไฟทีละดวง <span id="lanCount">0</span>/5</h2>
+    <div class="lanterns" id="lanterns">
+      {% for w in ['รักเธอ', 'ยิ้มนะ', 'คิดถึง', 'ตลอดไป', 'ขอบคุณ'] %}
+      <button type="button" class="lantern" data-i="{{ loop.index0 }}" data-wish="{{ w }}" aria-label="โคมไฟดวงที่ {{ loop.index }}"><span class="cord"></span><span class="lbody"><b>{{ ['福', '愛', '夢', '桜', '幸'][loop.index0] }}</b></span><span class="tassel"></span></button>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="tags lockable">
+    <div class="lock-note"><b>🔒</b><span>จุดโคมไฟให้ครบ 5 ดวงเพื่อปลดล็อกป้ายความทรงจำ</span></div>
+    <h2 class="sec-title">ป้ายความทรงจำใต้ต้นซากุระ</h2>
+    <div class="ema-grid">
+      {% for slot, src in side_photos %}
+      <figure class="ema reveal" data-photo style="--i: {{ loop.index0 }}">
+        <span class="hang"></span>
+        <img src="{{ src }}" alt="ความทรงจำที่ {{ loop.index }}" loading="lazy">
+        <figcaption>{{ ['桜','月','夢','愛','幸','花','星','春'][loop.index0 % 8] }}</figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="omikuji">
+    <div class="slip" aria-hidden="true">大吉</div>
+    <button class="cta" type="button" data-letter>🎋 เปิดโอมิคุจิ (จดหมาย)</button>
+    <p class="sec-note">ต้องปลดล็อกให้ครบทั้ง 3 ขั้นก่อนนะ</p>
+  </section>
+  <footer class="foot"><p>ขอให้ทุกฤดูใบไม้ผลิ มีเธออยู่ข้างๆ</p></footer>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='themes/shared/premium.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/hanami/hanami.js') }}"></script>
+{% endblock %}

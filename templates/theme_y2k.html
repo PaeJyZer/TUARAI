@@ -1,0 +1,62 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/y2k/style.css') }}">{% endblock %}
+{% block favicon %}💿{% endblock %}
+{% block body_class %}theme-y2k{% endblock %}
+{% block body_attrs %}data-game="scratch" data-game-title="ขูดสติกเกอร์โฮโลแกรม" data-game-hint="ขูดแผ่นโฮโลแกรมออก เพื่อดูรูปลับที่ซ่อนอยู่" data-cover-a="#ffc4ec" data-cover-b="#b9e7ff" data-cover-ink="#7a2a8a" data-cover-text="ขูดสติกเกอร์!" data-cover-icon="💿" data-game-win="ปลดล็อกสติกเกอร์แล้ว! 💖" data-game-eyebrow="bonus level"{% endblock %}
+{% block letter_eyebrow %}New message (1){% endblock %}
+
+{% block bg %}
+  <div class="sparkles" aria-hidden="true"><i>✦</i><i>✧</i><i>★</i><i>✦</i><i>✧</i><i>♡</i><i>✦</i><i>★</i></div>
+{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate">
+    <div class="win gate-win">
+      <div class="titlebar"><span>♡ love.exe</span><b><i>_</i><i>□</i><i>×</i></b></div>
+      <div class="win-body">
+        <p class="gate-eyebrow">for {{ partner_name }} only</p>
+        <h1 class="gate-title">LOADING LOVE...</h1>
+        <div class="progress"><span></span></div>
+        <p class="gate-hint">99% complete ✦ ต้องกดปุ่ม START ถึงจะเปิดได้</p>
+        <button class="start-btn" type="button" data-gate data-delay="1300">▶ START</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <div class="desk">
+    <header class="hero">
+      <div class="win hero-win">
+        <div class="titlebar"><span>{{ partner_name }}.jpg</span><b><i>_</i><i>□</i><i>×</i></b></div>
+        <div class="win-body photo" data-photo><img src="{{ center_photo }}" alt="รูปคู่ของเรา"></div>
+      </div>
+      <p class="eyebrow">{{ occ.en }} ♡</p>
+      <h1 class="hero-name">{{ partner_name }}</h1>
+      <p class="hero-sub">✦ you are my favorite notification ✦</p>
+      <button class="cta" type="button" data-letter>💌 open message</button>
+    </header>
+
+    {% if side_photos %}
+    <section class="album">
+      <h2 class="sec-title">★ my pictures ★</h2>
+      <div class="win-grid">
+        {% for slot, src in side_photos %}
+        <div class="win mini reveal" style="--i: {{ loop.index0 }}; --tilt: {{ ['-2deg','1.5deg','-1deg','2deg','-1.6deg','1deg'][loop.index0 % 6] }}">
+          <div class="titlebar t{{ loop.index0 % 3 }}"><span>photo_{{ '%02d' % loop.index }}.jpg</span><b><i>×</i></b></div>
+          <div class="win-body photo" data-photo><img src="{{ src }}" alt="ความทรงจำที่ {{ loop.index }}" loading="lazy"></div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <footer class="foot">
+      <p>♡ thank you for being you ♡</p>
+      <button class="cta ghost" type="button" data-letter>read again</button>
+    </footer>
+  </div>
+{% endblock %}

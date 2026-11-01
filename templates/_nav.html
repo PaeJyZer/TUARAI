@@ -1,0 +1,13 @@
+<header class="navbar">
+  <a href="/" class="logo" style="text-decoration: none;">TUARAI</a>
+  <nav class="nav-links">
+    <a href="/" class="nav-item {{ 'active' if active == 'home' }}">หน้าแรก</a>
+    <a href="/how-to-buy" class="nav-item {{ 'active' if active == 'how' }}">วิธีสั่งซื้อ</a>
+    {% if active in ('home', 'how') %}
+    <a href="#" class="btn-login" id="navAuthBtn">เข้าสู่ระบบ / สมัครสมาชิก</a>
+    {% else %}
+    <a href="/dashboard" class="nav-item {{ 'active' if active == 'dashboard' }}">แดชบอร์ดผู้ใช้</a>
+    <button id="dashboardLogoutBtn" class="btn-login" style="background: var(--accent-red); cursor: pointer;">ออกจากระบบ</button>
+    {% endif %}
+  </nav>
+</header>

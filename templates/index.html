@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUARAI - เว็บเซอร์ไพรส์วันครบรอบ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  {% with active='home' %}{% include '_nav.html' %}{% endwith %}
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1 class="hero-title">เว็บเซอร์ไพรส์วันครบรอบ ที่แฟนเปิดแล้วต้องร้องไห้</h1>
+    <p class="hero-subtitle">เลือกเว็บที่ใช่ ใส่รูปกับจดหมายของคุณ ดูตัวอย่างก่อนจ่าย แล้วรับเป็น QR Code ไปมอบให้แฟนได้เลย</p>
+  </section>
+
+  {% if premium %}
+  <!-- PREMIUM COLLECTION: แบนเนอร์เด่นบนสุด -->
+  <section class="premium-banner" id="premium">
+    <div class="pb-glow" aria-hidden="true"></div>
+    <div class="pb-head">
+      <span class="pb-tag">✨ PREMIUM COLLECTION · NEW</span>
+      <h2 class="pb-title">5 เว็บพรีเมียม <span>มีเสียง มีเกม ปลดล็อกทีละขั้น</span></h2>
+      <p class="pb-sub">ไม่ใช่แค่เว็บดูรูป แต่เป็นประสบการณ์ที่แฟนต้องลงมือเล่นเอง จุดเทียน หยอดเหรียญ จุดเครื่องยนต์ ไขลานกล่องดนตรี จุดโคมไฟ พร้อมเสียงเอฟเฟกต์ทุกการแตะ</p>
+      <ul class="pb-chips">
+        <li>🔊 เสียงเอฟเฟกต์</li><li>🎮 มินิเกมในเว็บ</li><li>🔓 ปลดล็อกทีละขั้น</li><li>🎆 เอฟเฟกต์เต็มจอ</li><li>📱 ใช้ได้ทั้งมือถือ/คอม</li>
+      </ul>
+    </div>
+    <div class="pb-grid">
+      {% for t in premium %}
+      <article class="pb-card" data-theme-id="{{ t.id }}">
+        <span class="pb-ribbon">PREMIUM</span>
+        <div class="pb-img">
+          {% if t.preview_img %}<img src="{{ url_for('static', filename=t.preview_img) }}" alt="{{ t.name }}" loading="lazy" onerror="this.style.display='none'">{% endif %}
+        </div>
+        <div class="pb-body">
+          <h3>{{ t.name }}</h3>
+          <p class="pb-tagline">{{ t.tagline }}</p>
+          <p class="pb-desc">{{ t.description or '' }}</p>
+          <p class="pb-price">{{ '{:,.0f}'.format(t.prices.basic) }} ฿ <small>· Pro {{ '{:,.0f}'.format(t.prices.pro) }} ฿</small></p>
+          <div class="card-actions">
+            <a class="btn-outline pb-demo" href="{{ url_for('demo_page', theme_code=t.theme_code) }}" target="_blank" rel="noopener">▶ ลองเล่นตัวอย่าง</a>
+            <button class="btn-buy btn-choose" type="button" data-theme-id="{{ t.id }}">เลือกซื้อ</button>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="pb-foot">💡 เปิดเสียงมือถือไว้ด้วยนะ เว็บพรีเมียมสนุกกว่าเยอะ (มีปุ่มปิดเสียงในเว็บ)</p>
+  </section>
+  {% endif %}
+
+  <h2 class="std-title">เว็บเซอร์ไพรส์ทั้งหมด</h2>
+  <!-- รายการเว็บ: ทุกเว็บซื้อแยกกัน ซื้อ 1 ครั้ง = ได้ 1 เว็บ -->
+  <main class="product-grid" id="themeGrid">
+    {% for t in standard %}
+    <div class="product-card" data-theme-id="{{ t.id }}">
+      <div class="product-img-wrapper">
+        <span class="product-img-placeholder">PREVIEW</span>
+        {% if t.preview_img %}
+        <img class="product-img" src="{{ url_for('static', filename=t.preview_img) }}" alt="{{ t.name }}" loading="lazy" onerror="this.style.display='none'">
+        {% endif %}
+      </div>
+      <div class="product-info">
+        <h3 class="product-title">{{ t.name }}</h3>
+        <p class="product-desc">{{ t.description or '' }}</p>
+        <p class="product-price">เริ่มต้น {{ '{:,.0f}'.format(t.prices.basic) }} ฿ <span class="price-sub">· Pro {{ '{:,.0f}'.format(t.prices.pro) }} ฿</span></p>
+        <div class="card-actions">
+          <a class="btn-outline" href="{{ url_for('demo_page', theme_code=t.theme_code) }}" target="_blank" rel="noopener">ดูตัวอย่างเว็บ</a>
+          <button class="btn-buy btn-choose" type="button" data-theme-id="{{ t.id }}">เลือกซื้อเว็บนี้</button>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <p class="photo-hint" style="grid-column: 1 / -1; text-align: center;">ยังไม่มีเว็บให้เลือกในตอนนี้</p>
+    {% endfor %}
+  </main>
+
+  <!-- เปรียบเทียบแพ็กเกจ -->
+  <section class="compare-section">
+    <h2 class="section-title" style="text-align: center; border: none;">เลือกแพ็กเกจให้เว็บแต่ละเว็บ</h2>
+    <p class="photo-hint" style="text-align: center; margin-bottom: 24px;">ราคาต่อ 1 เว็บ (เว็บพรีเมียมราคาตามที่แสดงบนการ์ด) ถ้าอยากได้เว็บอื่นเพิ่ม ก็ซื้อและเลือกแพ็กเกจใหม่ได้เลย</p>
+    <div class="package-grid">
+      {% for key in ['basic', 'pro'] %}
+      <div class="package-card {{ 'recommended' if key == 'pro' }}">
+        {% if key == 'pro' %}<span class="pkg-badge">คุ้มที่สุด</span>{% endif %}
+        <h3>{{ packages[key].label }}</h3>
+        <p class="pkg-price">{{ '{:,.0f}'.format(standard[0].prices[key]) if standard else '-' }} <small>฿ / เว็บ</small></p>
+        <ul class="pkg-features">
+          {% for f in features[key] %}<li>{{ f }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Notice Box -->
+  <aside class="notice-box">
+    ⚠️ <strong>ข้อตกลงการใช้งาน:</strong> สินค้าทุกชิ้นเป็นบริการดิจิทัล ชำระเงินแล้วไม่รับคืนเงินทุกกรณี กรุณาตรวจสอบตัวอย่างเว็บก่อนชำระเงินทุกครั้ง
+  </aside>
+
+  <script>
+    window.TUARAI_DATA = {
+      themes: {{ themes|tojson }},
+      packages: {{ packages|tojson }},
+      features: {{ features|tojson }},
+      minPhotos: {{ min_photos }}
+    };
+  </script>
+  <script src="{{ url_for('static', filename='common.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

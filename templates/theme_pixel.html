@@ -1,0 +1,56 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/pixel/style.css') }}">{% endblock %}
+{% block favicon %}🎮{% endblock %}
+{% block body_class %}theme-pixel{% endblock %}
+{% block body_attrs %}data-game="hearts" data-game-count="3" data-game-item="❤️" data-game-title="STAGE 0: เก็บหัวใจ" data-game-hint="แตะหัวใจ 3 ดวงที่ซ่อนอยู่ในฉากให้ครบ (ไม่มีเวลา ไม่มีแพ้)" data-game-win="STAGE CLEAR! ⭐" data-game-eyebrow="BONUS STAGE"{% endblock %}
+{% block letter_eyebrow %}FINAL STAGE{% endblock %}
+
+{% block bg %}<div class="stars" aria-hidden="true"></div><div class="scan" aria-hidden="true"></div>{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate">
+    <p class="gate-eyebrow">PLAYER 1 : {{ partner_name }}</p>
+    <h1 class="gate-title">LOVE<br>QUEST</h1>
+    <p class="gate-sub">♥ {{ occ.en|upper }} EDITION ♥</p>
+    <button class="start" type="button" data-gate data-delay="1200">PRESS START</button>
+    <p class="gate-hint">แตะปุ่มเพื่อเริ่มเกม</p>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <div class="desk">
+    <div class="hud"><span>PLAYER 1</span><span>♥ ♥ ♥</span><span>1UP</span></div>
+    <header class="hero">
+      <p class="eyebrow">{{ occ.en }}</p>
+      <div class="pix-frame" data-photo>
+        <img src="{{ center_photo }}" alt="รูปคู่ของเรา">
+        <span class="badge">WORLD 1-1</span>
+      </div>
+      <h1 class="hero-name">{{ partner_name }}</h1>
+      <p class="hero-sub">เธอคือเลเวลที่ดีที่สุดในเกมชีวิตของฉัน</p>
+      <button class="cta" type="button" data-letter>▶ FINAL STAGE: เปิดจดหมาย</button>
+    </header>
+
+    {% if side_photos %}
+    <section class="levels">
+      <h2 class="sec-title">SELECT STAGE</h2>
+      <div class="level-grid">
+        {% for slot, src in side_photos %}
+        <figure class="level reveal" data-photo style="--i: {{ loop.index0 }}">
+          <img src="{{ src }}" alt="ด่านที่ {{ loop.index }}" loading="lazy">
+          <figcaption>STAGE {{ ((loop.index0 // 4) + 1) }}-{{ (loop.index0 % 4) + 1 }}</figcaption>
+        </figure>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <footer class="foot">
+      <p>THANK YOU FOR PLAYING</p>
+      <button class="cta ghost" type="button" data-letter>▶ PLAY AGAIN</button>
+    </footer>
+  </div>
+{% endblock %}

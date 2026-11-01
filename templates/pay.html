@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUARAI - ชำระเงิน</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  {% with active='pay' %}{% include '_nav.html' %}{% endwith %}
+
+  <div class="pay-container" id="payRoot" data-order="{{ order_id }}">
+    <h3 class="section-title">💳 ชำระเงิน</h3>
+    <div class="edit-card" id="paySummary">กำลังโหลด...</div>
+
+    <div class="edit-card" id="ppBox" style="display: none; text-align: center;">
+      <h4>1) สแกนจ่ายผ่านพร้อมเพย์</h4>
+      <img id="ppImg" alt="QR พร้อมเพย์" class="pp-img">
+      <p class="photo-hint">เปิดแอปธนาคาร สแกน QR นี้ ยอดเงินถูกใส่ให้อัตโนมัติ</p>
+    </div>
+    <div class="edit-card" id="ppMissing" style="display: none;">
+      <p class="photo-hint">ร้านค้ายังไม่ได้ตั้งค่าเลขพร้อมเพย์ (PROMPTPAY_ID) จึงยังไม่แสดง QR สำหรับโอนเงิน</p>
+    </div>
+
+    <div class="edit-card" id="slipBox" style="display: none;">
+      <h4>2) แนบสลิปโอนเงิน</h4>
+      <input type="file" id="slipInput" accept="image/*">
+      <button type="button" class="btn-submit" id="slipSend" style="margin-top: 12px;">ส่งสลิปให้ตรวจสอบ</button>
+      <p class="photo-hint" id="slipNote"></p>
+    </div>
+
+    <div class="edit-card demo-box" id="demoBox" style="display: none;">
+      <h4>🧪 โหมดทดสอบ</h4>
+      <p class="photo-hint">ตอนนี้ระบบอยู่ในโหมดทดสอบ กดปุ่มด้านล่างเพื่อจำลองว่าจ่ายเงินแล้ว (ปิดโหมดนี้ก่อนขายจริงด้วย PAYMENT_MODE=manual)</p>
+      <button type="button" class="btn-submit" id="demoPay">จำลองการชำระเงินสำเร็จ</button>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='common.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="{{ url_for('static', filename='pay.js') }}"></script>
+</body>
+</html>

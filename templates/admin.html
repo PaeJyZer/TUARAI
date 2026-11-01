@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUARAI - แอดมิน</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="navbar">
+    <a href="/" class="logo" style="text-decoration: none;">TUARAI <small style="font-size: .9rem;">admin</small></a>
+    <nav class="nav-links"><button id="adminLogout" class="btn-login" style="display: none; cursor: pointer;">ออกจากระบบแอดมิน</button></nav>
+  </header>
+
+  <div class="dashboard-container" id="adminRoot" data-enabled="{{ '1' if enabled else '0' }}">
+    <div id="adminDisabled" class="notice-box" style="display: none; margin: 0 0 20px;">
+      หน้านี้ปิดอยู่ ตั้งค่า <code>ADMIN_PASSWORD</code> ในไฟล์ <code>.env</code> แล้วเปิดโปรแกรมใหม่เพื่อใช้งาน
+    </div>
+
+    <div id="adminLogin" class="edit-card" style="display: none; max-width: 420px; margin: 0 auto;">
+      <h4>เข้าสู่ระบบแอดมิน</h4>
+      <form id="adminLoginForm" class="auth-form">
+        <input type="password" id="adminPw" placeholder="รหัสผ่านแอดมิน" required>
+        <button type="submit" class="btn-submit">เข้าสู่ระบบ</button>
+      </form>
+    </div>
+
+    <section id="adminMain" style="display: none;">
+      <h3 class="section-title">🧾 ออเดอร์ (รอตรวจสอบสลิปขึ้นก่อน)</h3>
+      <div class="table-wrapper">
+        <table class="dash-table">
+          <thead><tr><th>#</th><th>ผู้ใช้</th><th>รายการ</th><th>เว็บ</th><th>ยอด</th><th>สถานะ</th><th>สลิป</th><th>จัดการ</th></tr></thead>
+          <tbody id="adminOrders"><tr><td colspan="8" style="text-align: center;">กำลังโหลด...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script src="{{ url_for('static', filename='common.js') }}"></script>
+  <script src="{{ url_for('static', filename='admin.js') }}"></script>
+</body>
+</html>
