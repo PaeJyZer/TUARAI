@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUARAI - แก้ไขเว็บเซอร์ไพรส์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  {% with active='edit' %}{% include '_nav.html' %}{% endwith %}
+
+  <div class="dashboard-container" id="editRoot" data-slug="{{ slug }}">
+    <h3 class="section-title" id="editTitle">✏️ แก้ไขเว็บเซอร์ไพรส์</h3>
+    <div id="editNotice"></div>
+
+    <div class="edit-grid">
+      <section class="edit-card">
+        <h4>ข้อมูลบนเว็บ</h4>
+        <form id="editForm" class="auth-form">
+          <label class="field-label">โอกาสที่จะมอบให้</label>
+          <select id="edOccasion">
+            <option value="anniversary">💞 วันครบรอบ</option>
+            <option value="birthday">🎂 วันเกิด</option>
+          </select>
+          <label class="field-label">ชื่อแฟน / คนพิเศษ</label>
+          <input type="text" id="edName" maxlength="60" required>
+          <label class="field-label" id="edDateLabel">วันที่เริ่มคบกัน (หรือวันพิเศษ)</label>
+          <input type="date" id="edDate" required>
+          <label class="field-label">ข้อความจดหมายบอกรัก</label>
+          <textarea id="edLetter" rows="7" maxlength="3000" required></textarea>
+          <label class="field-label">ลงชื่อผู้ส่ง</label>
+          <input type="text" id="edSign" maxlength="60" required>
+          <button type="submit" class="btn-submit" id="edSave">บันทึกการแก้ไข</button>
+        </form>
+      </section>
+
+      <section class="edit-card">
+        <h4>รูปภาพ <span class="photo-hint" id="edPhotoCount"></span></h4>
+        <input type="file" id="edPhotoInput" accept="image/*" multiple hidden>
+        <button type="button" class="btn-small" id="edPhotoAdd">+ เพิ่มรูป</button>
+        <div id="edPhotoGrid" class="photo-grid"></div>
+        <p class="photo-hint">รูปแรกคือรูปหน้าปกและรูปใหญ่ตรงกลาง กด ★ เพื่อตั้งรูปนั้นเป็นรูปปก</p>
+        <div class="edit-links">
+          <a class="btn-outline" id="edPreview" href="#" target="_blank" rel="noopener">ดูตัวอย่างเว็บ</a>
+          <a class="btn-outline" href="/dashboard">กลับ Dashboard</a>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='common.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="{{ url_for('static', filename='editor.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>{{ occ.en }} - {{ partner_name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/lady_gaga/style.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💖</text></svg>">
+  {% if banner or toolbar %}
+  <style>
+    .owner-banner { position: fixed; left: 50%; top: 10px; transform: translateX(-50%); z-index: 99998;
+      background: rgba(20, 6, 12, .88); color: #f6e9e0; font: 400 13px/1.4 "IBM Plex Sans Thai", system-ui, sans-serif;
+      padding: 7px 16px; border-radius: 999px; border: 1px solid rgba(240, 138, 160, .5); pointer-events: none; text-align: center;
+      max-width: 90vw; }
+    .owner-bar { position: fixed; left: 0; right: 0; top: 0; z-index: 99999; display: flex; gap: 8px; justify-content: center;
+      align-items: center; flex-wrap: wrap; padding: 6px 10px; background: rgba(20, 6, 12, .9);
+      border-bottom: 1px solid rgba(240, 138, 160, .35); font: 500 14px/1.2 "IBM Plex Sans Thai", system-ui, sans-serif; color: #f6e9e0; }
+    .owner-bar .ob-note { opacity: .85; margin-right: 6px; }
+    .owner-bar a, .owner-bar button { appearance: none; border: 1px solid #f08aa0; background: transparent; color: #f6e9e0;
+      padding: 7px 14px; border-radius: 6px; font: inherit; cursor: pointer; text-decoration: none; }
+    .owner-bar button.pay { background: #e0405a; border-color: #e0405a; color: #fff; font-weight: 600; }
+    .owner-bar button:disabled { opacity: .6; cursor: wait; }
+  </style>
+  {% endif %}
+</head>
+<body>
+
+  <!-- พื้นหลัง: แดงไวน์ + ลายจุด + เกรน + หัวใจลอย (หัวใจสร้างด้วย script.js) -->
+  <div class="cyber-bg" id="cyberBg"></div>
+
+  <!-- เวทีขนาดคงที่ 1600x900 ย่อขยายให้พอดีจอ (iPad = คอม) -->
+  <div class="stage" id="stage">
+
+    <!-- หน้าเปิดตรงกลาง -->
+    <div class="main-photo-container" id="mainPhotoBtn">
+      <div class="popup-card-custom">
+        <p class="eyebrow">{{ "Birthday" if occasion == "birthday" else "Anniversary" }}</p>
+        <h2 class="popup-title">{{ occ.en }}</h2>
+        <p class="popup-subtitle">{{ occ.wish }} {{ partner_name }}</p>
+
+        <div class="image-wrapper">
+          <img src="{{ center_photo }}" alt="รูปคู่ของเรา" class="interactive-photo">
+        </div>
+
+        <div class="click-hint">กดเพื่อเปิด &rarr;</div>
+      </div>
+    </div>
+
+    <!-- แกลเลอรีรูปกระจาย: รูปรอบนอกเลือกตำแหน่งตามจำนวนรูปที่ลูกค้าใส่ (ไม่วนรูปซ้ำ) -->
+    <div class="scatter-gallery" id="scatterGallery">
+      {% for slot, src in side_photos %}
+      <div class="scatter-item pic-{{ slot }}"><img src="{{ src }}" alt="{{ loop.index }}"></div>
+      {% endfor %}
+
+      <!-- รูปหลักใหญ่สุดตรงกลาง (รูปแรกที่ลูกค้าเลือก) -->
+      <div class="scatter-item pic-center">
+        <img src="{{ center_photo }}" alt="รูปใหญ่ตรงกลาง">
+        <div class="center-tag">Our Best Memory</div>
+      </div>
+
+      <!-- ช่องข้อความ -->
+      <div class="scatter-item caption-cell">
+        <span class="caption-num">01</span>
+        <span class="caption-title">Together</span>
+        <span class="caption-sub">วันพิเศษของเรา</span>
+      </div>
+    </div>
+
+    <!-- ปุ่มจดหมาย (โผล่หลังรูปกระจายครบ) -->
+    <button class="letter-btn" id="letterBtn" type="button">
+      <span class="lb-en">Read my letter</span>
+      <span class="lb-th">จดหมายถึงเธอ</span>
+    </button>
+  </div>
+
+  <!-- ชั้นหัวใจที่พุ่งออกมาตอนแตะ -->
+  <div class="burst-layer" id="burstLayer"></div>
+
+  <!-- จดหมาย -->
+  <div class="overlay" id="letterOverlay">
+    <div class="letter-card">
+      <button class="close-btn" type="button" data-close aria-label="ปิด">&times;</button>
+      <p class="eyebrow">To my love</p>
+      <h2 class="popup-title">ถึง {{ partner_name }}</h2>
+      <p class="counter-title">{{ occ.counter_title }}</p>
+      <div class="day-counter" id="dayCounter"></div>
+      <div class="letter-body"><span id="letterTyped"></span><span id="letterRest"></span></div>
+      <p class="letter-sign" id="letterSign"></p>
+    </div>
+  </div>
+
+  <!-- ดูรูปขนาดใหญ่ -->
+  <div class="overlay" id="lightbox">
+    <button class="close-btn lb-close" type="button" data-close aria-label="ปิด">&times;</button>
+    <button class="lb-nav" id="lbPrev" type="button" aria-label="รูปก่อนหน้า">&lsaquo;</button>
+    <figure class="lb-frame">
+      <img id="lbImg" src="" alt="">
+      <figcaption>
+        <span class="lb-cap" id="lbCap"></span>
+        <span class="lb-count" id="lbCount"></span>
+      </figcaption>
+    </figure>
+    <button class="lb-nav" id="lbNext" type="button" aria-label="รูปถัดไป">&rsaquo;</button>
+  </div>
+
+  <div class="rotate-hint">
+    <p>หมุนหน้าจอเป็นแนวนอน</p>
+    <span></span>
+  </div>
+
+  {% if banner and not toolbar %}<div class="owner-banner">{{ banner }}</div>{% endif %}
+
+  {% if toolbar %}
+  <!-- แถบเครื่องมือเฉพาะเจ้าของ ตอนดูตัวอย่างก่อนชำระเงิน (ไม่แสดงบนเว็บที่ส่งให้แฟน) -->
+  <div class="owner-bar">
+    <span class="ob-note">{{ banner }}</span>
+    <a href="{{ url_for('edit_page', slug=toolbar.slug) }}">✏️ แก้ไขข้อมูล/รูป</a>
+    <a href="{{ url_for('serve_dashboard') }}">กลับ Dashboard</a>
+    <button type="button" class="pay" id="payBtn">ชำระเงิน ฿{{ toolbar.price }} ({{ toolbar.package }})</button>
+  </div>
+  <script>
+    document.getElementById('payBtn').addEventListener('click', async function () {
+      var btn = this; btn.disabled = true;
+      try {
+        var res = await fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug: {{ toolbar.slug|tojson }}, kind: 'new' }) });
+        var data = await res.json();
+        if (res.ok) { window.location.href = data.pay_url; }
+        else { alert(data.message || 'เกิดข้อผิดพลาด'); btn.disabled = false; }
+      } catch (e) { alert('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้'); btn.disabled = false; }
+    });
+  </script>
+  {% endif %}
+
+  <!-- ข้อมูลที่ผู้ซื้อกรอก (tojson ปลอดภัยต่อ XSS) ต้องมาก่อน script.js -->
+  <script>
+    window.SITE_CONFIG = {
+      partnerName:   {{ partner_name|tojson }},
+      startDate:     {{ start_date|tojson }},
+      letterText:    {{ letter_text|tojson }},
+      letterSign:    {{ letter_sign|tojson }},
+      mode:          {{ occ.mode|tojson }},
+      flowerMessage: {{ flower_message|tojson }}
+    };
+  </script>
+  <script src="{{ url_for('static', filename='themes/lady_gaga/script.js') }}"></script>
+</body>
+</html>

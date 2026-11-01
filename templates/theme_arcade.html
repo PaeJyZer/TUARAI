@@ -1,0 +1,85 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/arcade/style.css') }}">
+{% endblock %}
+{% block favicon %}🕹️{% endblock %}
+{% block body_class %}theme-arcade{% endblock %}
+{% block letter_eyebrow %}Final stage{% endblock %}
+
+{% block bg %}<div class="grid-floor" aria-hidden="true"></div><div class="scan" aria-hidden="true"></div>{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate" data-manual-gate="1500">
+    <div class="cab">
+      <div class="marquee">LOVE ARCADE</div>
+      <div class="screen">
+        <p class="scr-small">PLAYER 1</p>
+        <p class="scr-name">{{ partner_name }}</p>
+        <p class="scr-blink" id="scrMsg">INSERT COIN</p>
+        <p class="scr-small" id="credit">CREDIT 00</p>
+      </div>
+      <div class="panel">
+        <button type="button" class="coin-slot" id="coinBtn" aria-label="หยอดเหรียญ"><span class="coin" id="coin">🪙</span><span class="slot"></span></button>
+        <button type="button" class="start-btn" id="startBtn" disabled>START</button>
+      </div>
+    </div>
+    <p class="gate-hint" id="gateHint">แตะช่องหยอดเหรียญ 🪙</p>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <div class="hud"><span>1UP <b id="score">000000</b></span><span class="hud-mid">{{ occ.en }}</span><span>HI <b id="hiscore">999999</b></span></div>
+  <header class="hero">
+    <p class="eyebrow">PLAYER 1</p>
+    <h1 class="hero-name">{{ partner_name }}</h1>
+    <div class="crt" data-photo><img src="{{ center_photo }}" alt="รูปของเรา"><span class="crt-tag">★ {{ occ.en }} ★</span></div>
+    <p class="hero-sub">{{ occ.wish }}</p>
+    <div class="steps" data-steps data-labels="หยอดเหรียญ|รับหัวใจ|เปิดดูฉาก"
+         data-hints="เริ่มเกมแล้ว!|ลากนิ้วรับหัวใจให้ครบ 10 ดวงเพื่อปลดล็อกฉากรูป (ไม่มีแพ้นะ)|แตะดูฉากรูปสักฉากเพื่อปลดล็อกบอสสุดท้าย|ปลดล็อกครบแล้ว! ไปสู้บอสสุดท้ายได้เลย"></div>
+  </header>
+
+  <section class="game-sec">
+    <h2 class="sec-title">STAGE 1 · CATCH THE HEARTS <span id="heartCount">0</span>/10</h2>
+    <div class="game-wrap" id="gameWrap">
+      <canvas id="game" aria-label="เกมรับหัวใจ"></canvas>
+      <div class="game-over" id="gameOver">
+        <p id="gameMsg">ลากซ้าย-ขวา เพื่อรับหัวใจ</p>
+        <button type="button" class="arc-btn" id="gameStart">▶ START GAME</button>
+      </div>
+    </div>
+    <div class="hiscore" id="hiTable" hidden>
+      <h3>HIGH SCORES</h3>
+      <ol><li><span>{{ partner_name }}</span><b>999999</b></li><li><span>ME</span><b>888888</b></li><li><span>CUPID</span><b>777777</b></li></ol>
+    </div>
+  </section>
+
+  <section class="stages lockable">
+    <div class="lock-note"><b>🔒</b><span>รับหัวใจให้ครบ 10 ดวงเพื่อปลดล็อกฉากรูป</span></div>
+    <h2 class="sec-title">STAGE 2 · MEMORIES</h2>
+    <div class="stage-grid">
+      {% for slot, src in side_photos %}
+      <figure class="cart reveal" data-photo>
+        <img src="{{ src }}" alt="ฉากที่ {{ loop.index }}" loading="lazy">
+        <figcaption>STAGE {{ '%02d'|format(loop.index) }}</figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="boss">
+    <h2 class="sec-title">FINAL BOSS</h2>
+    <div class="hpbar"><span id="hp"></span></div>
+    <button class="cta" type="button" data-letter>⚔ อ่านจดหมายสู้บอส</button>
+    <p class="sec-note">ปลดล็อกให้ครบ 3 ขั้นก่อนนะ</p>
+  </section>
+  <footer class="foot"><p>THANK YOU PLAYER 1 · GAME OVER? NEVER.</p></footer>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='themes/shared/premium.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/arcade/arcade.js') }}"></script>
+{% endblock %}

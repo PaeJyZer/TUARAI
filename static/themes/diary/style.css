@@ -1,0 +1,83 @@
+/* ธีมสมุดไดอารี่ / ฟิล์มเก่า */
+:root {
+  --bg: #3a2a20;
+  --ink: #3b2a1e;
+  --muted: #7a6350;
+  --accent: #a4472f;
+  --card: #fbf3e2;
+  --card-ink: #3b2a1e;
+  --font-display: "Special Elite", "Courier New", monospace;
+  --font-hand: "Mali", "Bradley Hand", "Comic Sans MS", cursive;
+}
+body.theme-diary {
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(255, 220, 170, .18), transparent 60%),
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, .05) 0 2px, transparent 2px 6px),
+    linear-gradient(#4a3426, #2f2118);
+  color: #f5e9d4; font-family: var(--font-hand);
+}
+.gate-hint { margin-top: 18px; font-size: 14px; color: rgba(245, 233, 212, .7); }
+
+/* ---------- สมุดปิด ---------- */
+.book { position: relative; width: min(260px, 66vw); aspect-ratio: 3 / 4; perspective: 1400px; margin-bottom: 30px; filter: drop-shadow(0 24px 30px rgba(0, 0, 0, .55)); }
+.book-inner { position: absolute; inset: 0; background: #fbf3e2 repeating-linear-gradient(transparent 0 25px, rgba(60, 100, 150, .22) 25px 26px); border-radius: 4px 10px 10px 4px; }
+.book-cover {
+  position: absolute; inset: 0; transform-origin: left center; transition: transform 1.4s cubic-bezier(.6, 0, .2, 1);
+  border-radius: 4px 12px 12px 4px; padding: 30px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  background: linear-gradient(100deg, #5c2f1d 0 7%, #7b3d27 7% 100%); color: #f2d9a8;
+  box-shadow: inset 0 0 0 7px rgba(242, 217, 168, .12), inset 3px 0 6px rgba(0, 0, 0, .35); backface-visibility: hidden;
+}
+.book-cover::before { content: ""; position: absolute; inset: 14px 14px 14px 22px; border: 1.5px solid rgba(242, 217, 168, .55); border-radius: 4px; pointer-events: none; }
+.cover-small { font-family: var(--font-display); letter-spacing: .3em; text-transform: uppercase; font-size: 12px; }
+.cover-name { font-family: var(--font-hand); font-weight: 600; font-size: clamp(24px, 6vw, 32px); line-height: 1.25; word-break: break-word; }
+.cover-sub { font-family: var(--font-display); font-size: 14px; opacity: .85; }
+.cover-line { width: 54px; height: 2px; background: rgba(242, 217, 168, .6); }
+.stamp { margin-top: 10px; padding: 3px 10px; border: 2px solid rgba(255, 168, 140, .8); color: rgba(255, 168, 140, .95); border-radius: 4px; transform: rotate(-6deg); font-family: var(--font-display); font-size: 12px; letter-spacing: .12em; }
+body.opening .book-cover { transform: rotateY(-165deg); }
+.open-btn, .stamp-btn { appearance: none; border: 2px solid #f2d9a8; background: rgba(242, 217, 168, .12); color: #f6e3b8; padding: 12px 28px; border-radius: 6px; font-family: var(--font-hand); font-weight: 600; font-size: 17px; letter-spacing: .03em; transition: background .25s, transform .25s; -webkit-tap-highlight-color: transparent; }
+.open-btn { animation: nudge 2.2s ease-in-out infinite; }
+.open-btn:hover, .stamp-btn:hover { background: rgba(242, 217, 168, .28); transform: translateY(-2px); }
+@keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+/* ---------- ภายในสมุด ---------- */
+.desk { max-width: 1040px; margin: 0 auto; padding: 56px 14px 80px; }
+.title-page { text-align: center; padding: 26px 16px 44px; }
+.polaroid-cover { position: relative; width: clamp(220px, 60vw, 330px); margin: 0 auto 28px; padding: 12px 12px 8px; background: #fffdf6; border-radius: 3px;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, .5); transform: rotate(-2.5deg); cursor: zoom-in; transition: transform .4s; }
+.polaroid-cover:hover { transform: rotate(0) scale(1.02); }
+.polaroid-cover img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; filter: sepia(.18) contrast(1.03); }
+.pol-cap { font-family: var(--font-hand); font-style: italic; color: #5c4634; padding: 10px 0 4px; font-size: 17px; }
+.tape { position: absolute; top: -14px; width: 86px; height: 26px; background: rgba(238, 214, 150, .85); box-shadow: 0 1px 4px rgba(0, 0, 0, .25); }
+.tape.t1 { left: -22px; transform: rotate(-38deg); }
+.tape.t2 { right: -22px; transform: rotate(36deg); }
+.eyebrow { font-family: var(--font-display); font-size: 12px; letter-spacing: .35em; text-transform: uppercase; color: #f0b995; }
+.page-title { font-family: var(--font-hand); font-weight: 600; font-size: clamp(32px, 8vw, 54px); line-height: 1.25; margin: 6px 0 4px; color: #fbeccd; text-shadow: 0 2px 0 rgba(0, 0, 0, .35); }
+.page-sub { font-size: 16px; color: rgba(245, 233, 212, .78); margin-bottom: 24px; }
+
+.sec-title { font-family: var(--font-display); font-weight: 400; text-align: center; font-size: clamp(20px, 4.4vw, 26px); letter-spacing: .08em; color: #f6e3b8; margin-bottom: 26px; }
+.film { background: #15110e; padding: 34px 14px; border-radius: 6px; position: relative;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 22px 18px; box-shadow: 0 18px 50px rgba(0, 0, 0, .55); }
+.film::before, .film::after { content: ""; position: absolute; left: 10px; right: 10px; height: 12px;
+  background: repeating-linear-gradient(90deg, #efe3c6 0 14px, transparent 14px 28px); border-radius: 2px; opacity: .85; }
+.film::before { top: 10px; } .film::after { bottom: 10px; }
+.frame { width: clamp(135px, 28vw, 215px); background: #231c17; padding: 7px 7px 4px; border-radius: 3px; transform: rotate(var(--tilt)); cursor: zoom-in; transition: transform .35s, opacity .8s; }
+.frame.reveal { transform: translateY(26px) rotate(var(--tilt)); }
+.frame.reveal.in { transform: rotate(var(--tilt)); }
+.frame:hover { transform: rotate(0) scale(1.04) !important; z-index: 2; }
+.frame-img img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; filter: sepia(.22) saturate(.95) contrast(1.04); }
+.frame figcaption { font-family: var(--font-display); font-size: 11px; letter-spacing: .15em; color: #d9b977; text-align: right; padding-top: 4px; }
+
+.foot { text-align: center; padding: 56px 16px 0; }
+.foot p { font-size: 19px; margin-bottom: 18px; color: #fbeccd; }
+
+/* จดหมาย = กระดาษมีเส้น */
+.letter-card { background: #fbf3e2 repeating-linear-gradient(transparent 0 33px, rgba(70, 110, 160, .22) 33px 34px); background-position: 0 14px; color: #3b2a1e; border-radius: 4px; border-left: 6px double rgba(190, 80, 70, .55); text-align: left; }
+.letter-title { font-family: var(--font-hand); font-weight: 600; color: #7a3320; }
+.letter-card .eyebrow { color: #a4472f; }
+.counter-title { color: #6b5744; }
+.day-counter { justify-content: flex-start; }
+.day-counter .cell { background: rgba(255, 255, 255, .6); border-color: rgba(164, 71, 47, .45); }
+.day-counter .num { color: #a4472f; font-family: var(--font-display); }
+.letter-body { font-family: var(--font-hand); line-height: 34px; font-size: 16px; }
+.letter-sign { font-family: var(--font-hand); color: #7a3320; }
+.close-btn { color: #3b2a1e; }

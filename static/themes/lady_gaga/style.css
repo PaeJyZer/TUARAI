@@ -1,0 +1,886 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --paper: #f3efe8;
+  --ink: #1b1b1b;
+  --muted: #6f6a62;
+  --line: #d6d0c4;
+  --accent: #a3202c;
+  --cream: #f6e9e0;
+  --rose: #f08aa0;
+  --wine-dark: #240910;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--wine-dark);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  position: fixed;
+  inset: 0;
+  color: var(--ink);
+  font-family: "IBM Plex Sans Thai", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================
+   พื้นหลัง: แดงไวน์ + ลายจุด + เกรน + กรอบบาง
+   ========================================= */
+
+.cyber-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: var(--wine-dark);
+  background-image:
+    /* ลายจุดเล็กๆ */
+    radial-gradient(rgba(246, 233, 224, 0.08) 1px, transparent 1.3px),
+    /* เกรนฟิล์ม */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.09'/%3E%3C/svg%3E"),
+    /* ไล่เฉดแดงไวน์ ตรงกลางสว่างกว่านิดเดียว */
+    radial-gradient(ellipse at 50% 45%, #6a1a2e 0%, #3d0f1d 55%, #240910 100%);
+  background-size: 28px 28px, 200px 200px, 100% 100%;
+}
+
+/* เส้นกรอบบางๆ ล้อมขอบจอ */
+.cyber-bg::after {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(246, 233, 224, 0.18);
+  pointer-events: none;
+}
+
+/* =========================================
+   หัวใจลอย (วงนอก = ลอยขึ้น, svg ข้างใน = ส่าย)
+   ========================================= */
+
+.float-heart {
+  position: absolute;
+  bottom: -90px;
+  opacity: 0;
+  animation: heartRise linear infinite;
+  will-change: transform, opacity;
+}
+
+.float-heart svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: heartSway ease-in-out infinite alternate;
+}
+
+@keyframes heartRise {
+  0%   { transform: translateY(0); opacity: 0; }
+  10%  { opacity: var(--o, 0.5); }
+  88%  { opacity: var(--o, 0.5); }
+  100% { transform: translateY(calc(-100vh - 180px)); opacity: 0; }
+}
+
+@keyframes heartSway {
+  from { transform: translateX(-16px) rotate(-12deg); }
+  to   { transform: translateX(16px) rotate(12deg); }
+}
+
+/* หัวใจที่พุ่งออกมาตอนแตะ */
+.burst-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 300; /* ลอยเหนือหน้าต่างจดหมาย/รูปใหญ่ด้วย */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.burst-heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+}
+
+.burst-heart svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* =========================================
+   เวทีขนาดคงที่ 1600x900 (สเกลด้วย JS)
+   ========================================= */
+
+.stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 1600px;
+  height: 900px;
+  transform-origin: center center;
+  transform: translate(-50%, -50%) scale(var(--s, 1));
+}
+
+/* =========================================
+   หน้าเปิด
+   ========================================= */
+
+.main-photo-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.popup-card-custom {
+  width: 380px;
+  background: #fff;
+  border: 1px solid var(--ink);
+  padding: 32px 32px 26px;
+  text-align: left;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.popup-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 500;
+  font-size: 2rem;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.popup-subtitle {
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--muted);
+  margin-bottom: 22px;
+}
+
+.image-wrapper {
+  border: 1px solid var(--line);
+  padding: 6px;
+  background: #fff;
+}
+
+.interactive-photo {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.click-hint {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+}
+
+.main-photo-container:hover .click-hint {
+  color: var(--accent);
+}
+
+.main-photo-container.hide-out {
+  opacity: 0;
+  transform: translate(-50%, -48%);
+  pointer-events: none;
+}
+
+/* =========================================
+   แกลเลอรีรูปกระจาย 20 รูป
+   ========================================= */
+
+.scatter-gallery {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.scatter-gallery.active {
+  pointer-events: auto;
+}
+
+.scatter-item {
+  --r: 0deg;
+  position: absolute;
+  background: #fff;
+  border: 1px solid #fff;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: rotate(var(--r)) scale(0.6) translateY(16px);
+  transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+
+.scatter-gallery.active .scatter-item {
+  opacity: 1;
+  transform: rotate(var(--r));
+}
+
+.scatter-item img {
+  position: absolute;
+  inset: 6px;
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+  object-fit: contain; /* สำรอง: ถ้า JS ยังไม่ทำงาน รูปจะไม่ถูกตัด */
+  object-position: center;
+  display: block;
+  background: #fff;
+}
+
+@media (hover: hover) {
+  .scatter-gallery.active .scatter-item:hover {
+    transform: rotate(var(--r)) scale(1.07);
+    z-index: 100 !important;
+    box-shadow: 0 22px 44px rgba(0, 0, 0, 0.65);
+  }
+}
+
+/* --- ตำแหน่ง ขนาด และองศาของรูปที่ 1 ถึง 19 (ขนาดไม่เท่ากัน ทับบ้างไม่ทับบ้าง) --- */
+
+/* ฝั่งซ้าย */
+.pic-1  { left: 30px;   top: 24px;  width: 190px; height: 250px; --r: -8deg; }
+.pic-2  { left: 190px;  top: 150px; width: 170px; height: 140px; --r: 6deg; }
+.pic-3  { left: 40px;   top: 330px; width: 170px; height: 215px; --r: -4deg; }
+.pic-4  { left: 240px;  top: 360px; width: 190px; height: 150px; --r: 9deg; }
+.pic-5  { left: 60px;   top: 600px; width: 210px; height: 260px; --r: -6deg; }
+
+/* กลางบน-กลางล่าง */
+.pic-6  { left: 400px;  top: 30px;  width: 200px; height: 160px; --r: 5deg; }
+.pic-7  { left: 660px;  top: 25px;  width: 170px; height: 170px; --r: -4deg; }
+.pic-8  { left: 860px;  top: 40px;  width: 210px; height: 150px; --r: 7deg; }
+.pic-9  { left: 520px;  top: 730px; width: 210px; height: 150px; --r: -6deg; }
+.pic-10 { left: 800px;  top: 720px; width: 200px; height: 160px; --r: 5deg; }
+
+/* รอบรูปกลาง */
+.pic-11 { left: 430px;  top: 240px; width: 160px; height: 210px; --r: -7deg; }
+.pic-12 { left: 470px;  top: 500px; width: 170px; height: 200px; --r: 6deg; }
+.pic-13 { left: 1010px; top: 245px; width: 160px; height: 200px; --r: 7deg; }
+.pic-14 { left: 965px;  top: 500px; width: 170px; height: 200px; --r: -6deg; }
+
+/* ฝั่งขวา */
+.pic-15 { left: 1230px; top: 30px;  width: 190px; height: 250px; --r: 8deg; }
+.pic-16 { left: 1400px; top: 140px; width: 170px; height: 145px; --r: -6deg; }
+.pic-17 { left: 1250px; top: 340px; width: 200px; height: 200px; --r: -4deg; }
+.pic-18 { left: 1440px; top: 370px; width: 140px; height: 180px; --r: 10deg; }
+.pic-19 { left: 1220px; top: 600px; width: 210px; height: 260px; --r: 5deg; }
+
+/* รูปที่ 20: รูปหลักใหญ่สุด ตรงกลาง */
+.pic-center {
+  --r: -2deg;
+  left: 620px;
+  top: 215px;
+  width: 360px;
+  height: 470px;
+  border: 1px solid var(--accent);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+  z-index: 60;
+}
+
+.pic-center img {
+  inset: 8px 8px 40px 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 48px);
+  object-fit: contain;
+}
+
+.center-tag {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+/* ช่องข้อความ */
+.caption-cell {
+  left: 300px;
+  top: 780px;
+  width: 200px;
+  height: 100px;
+  background: transparent;
+  border: none;
+  border-top: 2px solid var(--rose);
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 4px;
+  --r: 0deg;
+}
+
+.caption-num {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2.8rem;
+  line-height: 1;
+  color: var(--cream);
+}
+
+.caption-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-top: 6px;
+}
+
+.caption-sub {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: rgba(246, 233, 224, 0.75);
+  margin-top: 4px;
+}
+
+/* =========================================
+   แนวตั้ง: ให้หมุนจอ
+   ========================================= */
+
+.rotate-hint {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: var(--wine-dark);
+  color: var(--cream);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.rotate-hint p {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.rotate-hint span {
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(246, 233, 224, 0.65);
+}
+
+@media (orientation: portrait) {
+  .rotate-hint {
+    display: flex;
+  }
+}
+
+/* =========================================
+   ปุ่มจดหมาย (อยู่ในเวที)
+   ========================================= */
+
+.letter-btn {
+  position: absolute;
+  left: 1035px;
+  top: 788px;
+  width: 175px;
+  height: 64px;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: rgba(36, 9, 16, 0.55);
+  border: 1px solid rgba(246, 233, 224, 0.6);
+  color: var(--cream);
+  font-family: inherit;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease, color 0.3s ease;
+}
+
+.letter-btn.show {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  animation: letterPulse 2.6s ease-in-out infinite;
+}
+
+.letter-btn .lb-en {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+.letter-btn .lb-th {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--rose);
+}
+
+.letter-btn:hover {
+  background: var(--cream);
+  color: var(--accent);
+}
+
+.letter-btn:hover .lb-th {
+  color: var(--accent);
+}
+
+@keyframes letterPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(240, 138, 160, 0); }
+  50%      { box-shadow: 0 0 22px 2px rgba(240, 138, 160, 0.35); }
+}
+
+/* =========================================
+   ปุ่มเพลง
+   ========================================= */
+
+.music-btn {
+  position: fixed;
+  top: 34px;
+  right: 38px;
+  z-index: 150;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(246, 233, 224, 0.5);
+  background: rgba(36, 9, 16, 0.5);
+  color: var(--cream);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.music-btn[hidden] {
+  display: none;
+}
+
+.music-btn:hover {
+  background: var(--cream);
+  color: var(--accent);
+}
+
+.music-btn.playing {
+  color: var(--rose);
+  animation: letterPulse 2.2s ease-in-out infinite;
+}
+
+.music-btn.off {
+  opacity: 0.6;
+}
+
+.music-btn.off::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  top: 50%;
+  border-top: 1px solid var(--cream);
+  transform: rotate(-45deg);
+}
+
+/* =========================================
+   หน้าต่างซ้อน (ใช้ร่วมกัน)
+   ========================================= */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 16px;
+  background: rgba(36, 9, 16, 0.84);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.9rem;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 6px 8px;
+}
+
+.close-btn:hover {
+  color: var(--accent);
+}
+
+/* ---------- การ์ดจดหมาย ---------- */
+.letter-card {
+  position: relative;
+  width: min(560px, 92vw);
+  max-height: 92vh;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid var(--ink);
+  padding: 34px 38px 30px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  transform: translateY(24px) rotate(-1.2deg);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.overlay.open .letter-card {
+  transform: rotate(-0.4deg);
+}
+
+.counter-title {
+  margin: 16px 0 8px;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.day-counter {
+  display: flex;
+  margin-bottom: 22px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.day-counter .cell {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0 10px;
+}
+
+.day-counter .num {
+  display: block;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.9rem;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.day-counter .lab {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.letter-body {
+  white-space: pre-wrap;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.95;
+  color: var(--ink);
+}
+
+#letterRest {
+  visibility: hidden; /* กันการ์ดขยายตอนพิมพ์ */
+}
+
+.letter-sign {
+  margin-top: 18px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+.letter-sign.show {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- ดูรูปขนาดใหญ่ ---------- */
+.lb-close {
+  position: fixed;
+  top: 18px;
+  right: 24px;
+  color: var(--cream);
+  z-index: 2;
+}
+
+.lb-close:hover {
+  color: var(--rose);
+}
+
+.lb-frame {
+  background: #fff;
+  padding: 10px 10px 0;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7);
+  transform: scale(0.94) rotate(-1.4deg);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.overlay.open .lb-frame {
+  transform: rotate(-0.6deg);
+}
+
+.lb-frame img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(76vw, 900px);
+  max-height: calc(100vh - 170px);
+  margin: 0 auto;
+}
+
+.lb-frame figcaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 6px 16px;
+}
+
+.lb-cap {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--accent);
+}
+
+.lb-count {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+
+.lb-nav {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(246, 233, 224, 0.6);
+  background: rgba(36, 9, 16, 0.5);
+  color: var(--cream);
+  font-size: 1.8rem;
+  line-height: 1;
+  padding-bottom: 4px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.lb-nav:hover {
+  background: var(--cream);
+  color: var(--accent);
+}
+
+@media (max-width: 700px) {
+  .letter-card {
+    padding: 28px 22px 24px;
+  }
+  .lb-nav {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* =========================================
+   ดอกไม้หลังปิดจดหมาย + ดอกไม้ใบไม้กระจายเต็มเว็บ
+   ========================================= */
+
+/* ชั้นดอกไม้ใบไม้ที่กระจาย (ค้างอยู่ถาวร กดทะลุได้) */
+.bloom-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bloom-item {
+  position: absolute;
+}
+
+.bloom-item svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.bloom-item.is-flower svg {
+  animation: bloomSway 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes bloomSway {
+  from { transform: rotate(-7deg); }
+  to   { transform: rotate(7deg); }
+}
+
+/* หน้าจอดอกไม้ + ข้อความซึ้งๆ */
+.flower-pop {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 16px;
+  background: rgba(36, 9, 16, 0.78);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.flower-pop.show {
+  opacity: 1;
+}
+
+.flower-pop.go {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease 0.15s;
+}
+
+.fp-flower {
+  width: min(160px, 24vh);
+  height: min(160px, 24vh);
+  cursor: pointer;
+  transform: scale(0) rotate(-40deg);
+  filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.55));
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fp-flower svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.flower-pop.show .fp-flower {
+  animation:
+    flowerPop 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards,
+    flowerBeat 2.2s ease-in-out 1.3s infinite;
+}
+
+.flower-pop.go .fp-flower {
+  animation: flowerOut 0.6s ease forwards;
+}
+
+@keyframes flowerPop {
+  from { transform: scale(0) rotate(-40deg); }
+  to   { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes flowerBeat {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+
+@keyframes flowerOut {
+  from { transform: scale(1); opacity: 1; }
+  to   { transform: scale(1.8) rotate(25deg); opacity: 0; }
+}
+
+.fp-card {
+  width: min(440px, 88vw);
+  background: #fff;
+  border: 1px solid var(--ink);
+  padding: 22px 28px 18px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.9s ease 0.9s, transform 0.9s ease 0.9s;
+}
+
+.flower-pop.show .fp-card {
+  opacity: 1;
+  transform: rotate(-0.5deg);
+}
+
+.fp-msg {
+  white-space: pre-line;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--ink);
+}
+
+.fp-hint {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+}
+
+/* =========================================
+   ลดภาระเครื่อง (หน้าตาเหมือนเดิม)
+   ========================================= */
+
+/* ตอนมีหน้าต่างเบลอเปิดอยู่ หยุดอนิเมชันข้างหลังชั่วคราว */
+body:has(.overlay.open) .float-heart,
+body:has(.overlay.open) .float-heart svg,
+body:has(.overlay.open) .bloom-item svg,
+body:has(.flower-pop) .float-heart,
+body:has(.flower-pop) .float-heart svg {
+  animation-play-state: paused;
+}
+
+/* เครื่องอ่อน: ปิดเบลอหัวใจกับการแกว่งของดอกไม้ */
+.low-power .float-heart {
+  filter: none !important;
+}
+
+.low-power .bloom-item.is-flower svg {
+  animation: none;
+}

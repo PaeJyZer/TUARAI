@@ -1,0 +1,59 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/starry/style.css') }}">{% endblock %}
+{% block favicon %}✨{% endblock %}
+{% block body_class %}theme-starry{% endblock %}
+{% block letter_eyebrow %}A letter under the stars{% endblock %}
+
+{% block bg %}
+  <canvas id="skyCanvas" aria-hidden="true"></canvas>
+{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate">
+    <p class="gate-eyebrow">A little universe for you</p>
+    <h1 class="gate-title">ถึง {{ partner_name }}</h1>
+    <button class="star-btn" type="button" data-gate data-delay="1500" aria-label="แตะดาวเพื่อเปิด">
+      <span class="star-glow"></span><span class="star-core"></span>
+    </button>
+    <p class="gate-hint">แตะดาวดวงนี้เพื่อเปิดจักรวาลของเรา</p>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <header class="hero">
+    <div class="orbit">
+      <span class="ring r1"></span><span class="ring r2"></span>
+      <div class="cover" data-photo><img src="{{ center_photo }}" alt="รูปคู่ของเรา"></div>
+    </div>
+    <p class="eyebrow">{{ occ.en }}</p>
+    <h1 class="hero-name">{{ partner_name }}</h1>
+    <p class="hero-sub">ท่ามกลางดวงดาวนับล้าน ฉันเลือกเธอ</p>
+    <button class="cta" type="button" data-letter>✦ จดหมายถึงเธอ</button>
+    <span class="scroll-hint">เลื่อนลงดูดวงดาวของเรา</span>
+  </header>
+
+  {% if side_photos %}
+  <section class="galaxy">
+    <h2 class="sec-title">ดวงดาวของเรา</h2>
+    <div class="constellation">
+      {% for slot, src in side_photos %}
+      <figure class="star-photo reveal" data-photo style="--i: {{ loop.index0 }}">
+        <img src="{{ src }}" alt="ความทรงจำที่ {{ loop.index }}" loading="lazy">
+      </figure>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <footer class="foot">
+    <p>ขอบคุณที่เป็นดาวดวงที่สว่างที่สุดของฉัน</p>
+    <button class="cta ghost" type="button" data-letter>อ่านจดหมายอีกครั้ง</button>
+  </footer>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='themes/starry/sky.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500&family=Playfair+Display:ital,wght@0,500;1,500&family=Mali:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/garden/style.css') }}">{% endblock %}
+{% block favicon %}🌸{% endblock %}
+{% block body_class %}theme-garden{% endblock %}
+{% block letter_eyebrow %}With all my love{% endblock %}
+
+{% block bg %}
+  <div class="petal-field" id="petalField" aria-hidden="true"></div>
+{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate">
+    <p class="gate-eyebrow">A garden for you</p>
+    <h1 class="gate-title">ถึง {{ partner_name }}</h1>
+    <button class="bud-btn" type="button" data-gate data-delay="1700" aria-label="แตะเพื่อให้ดอกไม้บาน">
+      <span class="flower">
+        {% for i in range(8) %}<span class="pt" style="--r: {{ i * 45 }}deg"></span>{% endfor %}
+        <span class="pt inner" style="--r: 22deg"></span><span class="pt inner" style="--r: 112deg"></span>
+        <span class="pt inner" style="--r: 202deg"></span><span class="pt inner" style="--r: 292deg"></span>
+        <span class="heart-core"></span>
+      </span>
+    </button>
+    <p class="gate-hint">แตะดอกไม้เพื่อให้มันบานสำหรับเธอ</p>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <header class="hero">
+    <div class="arch" data-photo>
+      <img src="{{ center_photo }}" alt="รูปคู่ของเรา">
+      <span class="sprig s1"></span><span class="sprig s2"></span>
+    </div>
+    <p class="eyebrow">{{ occ.en }}</p>
+    <h1 class="hero-name">{{ partner_name }}</h1>
+    <p class="hero-sub">ดอกไม้ทุกดอกในสวนนี้ บานเพื่อเธอ</p>
+    <button class="cta" type="button" data-letter>🌷 อ่านจดหมาย</button>
+  </header>
+
+  {% if side_photos %}
+  <section class="bouquet">
+    <h2 class="sec-title">สวนแห่งความทรงจำ</h2>
+    <div class="blooms">
+      {% for slot, src in side_photos %}
+      <figure class="bloom reveal" data-photo style="--i: {{ loop.index0 }}; --shape: {{ loop.index0 % 3 }}">
+        <img src="{{ src }}" alt="ความทรงจำที่ {{ loop.index }}" loading="lazy">
+      </figure>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <footer class="foot">
+    <p>ขอบคุณที่ทำให้ทุกวันของฉันเป็นฤดูใบไม้ผลิ</p>
+    <button class="cta ghost" type="button" data-letter>อ่านจดหมายอีกครั้ง</button>
+  </footer>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='themes/garden/petals.js') }}"></script>
+{% endblock %}

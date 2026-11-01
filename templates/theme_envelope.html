@@ -1,0 +1,62 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500&family=Special+Elite&family=Mali:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/envelope/style.css') }}">{% endblock %}
+{% block favicon %}💌{% endblock %}
+{% block body_class %}theme-envelope{% endblock %}
+{% block body_attrs %}data-game="hearts" data-game-count="3" data-game-item="💗" data-game-title="หาตราไปรษณียากรหัวใจ" data-game-hint="มีตราหัวใจ 3 ดวงซ่อนอยู่บนโปสการ์ด แตะให้เจอครบ" data-game-win="ครบแล้ว! ประทับตราส่งถึงแล้ว 📮" data-game-eyebrow="Special delivery"{% endblock %}
+{% block letter_eyebrow %}Air mail{% endblock %}
+
+{% block bg %}<div class="airmail-frame" aria-hidden="true"></div>{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate">
+    <p class="gate-eyebrow">You've got mail</p>
+    <h1 class="gate-title">ถึง {{ partner_name }}</h1>
+    <div class="envelope">
+      <span class="letter-inside"></span>
+      <span class="env-back"></span>
+      <span class="env-front"></span>
+      <span class="flap"></span>
+      <button class="seal" type="button" data-gate data-delay="1700" aria-label="แตะตราประทับเพื่อเปิดซอง">♥</button>
+    </div>
+    <p class="gate-hint">แตะตราประทับสีแดงเพื่อเปิดซองจดหมาย</p>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <div class="desk">
+    <header class="hero">
+      <p class="eyebrow">{{ occ.en }}</p>
+      <h1 class="hero-name">Dear {{ partner_name }}</h1>
+      <div class="postcard big" data-photo>
+        <img src="{{ center_photo }}" alt="รูปคู่ของเรา">
+        <span class="stamp"><i>♥</i></span>
+        <span class="postmark">AIR<br>MAIL</span>
+      </div>
+      <p class="hero-sub">จดหมายฉบับนี้เดินทางมาหาเธอโดยเฉพาะ</p>
+      <button class="cta" type="button" data-letter>✉ เปิดอ่านจดหมาย</button>
+    </header>
+
+    {% if side_photos %}
+    <section class="cards">
+      <h2 class="sec-title">โปสการ์ดจากความทรงจำ</h2>
+      <div class="card-grid">
+        {% for slot, src in side_photos %}
+        <figure class="postcard reveal" data-photo style="--i: {{ loop.index0 }}; --tilt: {{ ['-2deg','1.5deg','-1deg','2.2deg','-1.8deg','.8deg'][loop.index0 % 6] }}">
+          <img src="{{ src }}" alt="ความทรงจำที่ {{ loop.index }}" loading="lazy">
+          <span class="stamp s{{ loop.index0 % 3 }}"><i>♥</i></span>
+          <figcaption>No. {{ '%02d' % loop.index }}</figcaption>
+        </figure>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <footer class="foot">
+      <p>ส่งถึงเธอ ด้วยความรักทั้งหมดที่มี</p>
+      <button class="cta ghost" type="button" data-letter>อ่านจดหมายอีกครั้ง</button>
+    </footer>
+  </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+.env
+*.db
+*.db-journal
+private/
+static/uploads/
+downloads/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.vscode/
+.DS_Store
+Thumbs.db
+*.zip
+*.rar

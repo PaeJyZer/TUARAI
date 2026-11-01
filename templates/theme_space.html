@@ -1,0 +1,67 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/space/style.css') }}">
+{% endblock %}
+{% block favicon %}🚀{% endblock %}
+{% block body_class %}theme-space{% endblock %}
+{% block letter_eyebrow %}Incoming transmission{% endblock %}
+
+{% block bg %}<canvas id="stars" aria-hidden="true"></canvas>{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate" data-manual-gate="1600">
+    <p class="gate-eyebrow">Mission control</p>
+    <h1 class="gate-title">ภารกิจถึง {{ partner_name }}</h1>
+    <button type="button" class="launch" id="launch" aria-label="กดค้างเพื่อจุดเครื่องยนต์">
+      <svg viewBox="0 0 120 120" class="ring"><circle cx="60" cy="60" r="54" class="ring-bg"/><circle cx="60" cy="60" r="54" class="ring-fg" id="ringFg"/></svg>
+      <span class="rocket">🚀</span>
+    </button>
+    <p class="gate-hint" id="gateHint">กดค้างที่ปุ่มเพื่อจุดเครื่องยนต์</p>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <div class="hud"><span>● SYSTEM ONLINE</span><span id="clock">T+00:00</span></div>
+  <header class="hero">
+    <p class="eyebrow">{{ occ.en }}</p>
+    <h1 class="hero-name">{{ partner_name }}</h1>
+    <div class="porthole" data-photo><img src="{{ center_photo }}" alt="รูปของเรา"></div>
+    <p class="hero-sub">{{ occ.wish }}</p>
+    <div class="steps" data-steps data-labels="จุดเครื่อง|สแกนดาว|จอโฮโลแกรม"
+         data-hints="ยานออกเดินทางแล้ว!|แตะสแกนดาวเคราะห์ให้ครบ 5 ดวงเพื่อปลดล็อกจอโฮโลแกรมรูป|แตะดูจอโฮโลแกรมสักจอเพื่อปลดล็อกข้อความลับ|ปลดล็อกครบ! เปิดข้อความที่ส่งมาถึงเธอได้เลย"></div>
+  </header>
+
+  <section class="radar-sec">
+    <h2 class="sec-title">📡 สแกนหาสัญญาณรัก <span id="sigCount">0</span>/5</h2>
+    <div class="radar" id="radar"></div>
+  </section>
+
+  <section class="holo lockable">
+    <div class="lock-note"><b>🔒</b><span>สแกนดาวเคราะห์ให้ครบ 5 ดวงเพื่อปลดล็อกรูป</span></div>
+    <h2 class="sec-title">ภาพจากหอดูดาวความทรงจำ</h2>
+    <div class="holo-grid">
+      {% for slot, src in side_photos %}
+      <figure class="screen reveal" data-photo style="--i: {{ loop.index0 }}">
+        <img src="{{ src }}" alt="ความทรงจำที่ {{ loop.index }}" loading="lazy">
+        <figcaption>LOG {{ '%03d'|format(loop.index) }}</figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="comm">
+    <div class="beacon" aria-hidden="true"></div>
+    <button class="cta" type="button" data-letter>📨 เปิดข้อความจากดวงดาว</button>
+    <p class="sec-note">ต้องปลดล็อกให้ครบทั้ง 3 ขั้นก่อนนะ</p>
+  </section>
+  <footer class="foot"><p>ต่อให้ไกลกี่ปีแสง ฉันก็จะเดินทางไปหาเธอ</p></footer>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='themes/shared/premium.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/space/space.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,128 @@
+/* =========================================
+   TUARAI - สไตล์กลางของธีมใหม่ (แต่ละธีมกำหนดสีผ่านตัวแปร :root)
+   ========================================= */
+:root {
+  --bg: #0b0b12;
+  --ink: #f4eefc;
+  --muted: rgba(244, 238, 252, .7);
+  --accent: #ffd479;
+  --card: #15152a;
+  --card-ink: #f4eefc;
+  --font-body: "IBM Plex Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  min-height: 100vh; min-height: 100dvh;
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); line-height: 1.6;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; cursor: pointer; }
+body:not(.opened) { overflow: hidden; }
+body.no-scroll { overflow: hidden; }
+
+/* หน้าปิดต้องกดก่อนเปิด */
+.gate {
+  position: fixed; inset: 0; z-index: 50;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 24px; transition: opacity .5s ease .95s, visibility .5s .95s;
+}
+body.opening .gate { opacity: 0; pointer-events: none; }
+.gate.gone { display: none; }
+.main { display: none; position: relative; z-index: 2; }
+body.opened .main { display: block; animation: mainIn 1s ease both; }
+@keyframes mainIn { from { opacity: 0; } to { opacity: 1; } }
+
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+/* overlay: จดหมาย + ดูรูปใหญ่ */
+.overlay {
+  position: fixed; inset: 0; z-index: 9000; display: flex; align-items: center; justify-content: center;
+  padding: 16px; background: rgba(0, 0, 0, .78);
+  opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility .35s;
+}
+.overlay.open { opacity: 1; visibility: visible; }
+.close-btn {
+  position: absolute; top: 10px; right: 12px; width: 40px; height: 40px; border: 0; background: transparent;
+  font-size: 30px; line-height: 1; opacity: .8; z-index: 2;
+}
+.close-btn:hover { opacity: 1; }
+
+.letter-card {
+  position: relative; width: min(560px, 100%); max-height: 88vh; max-height: 88dvh; overflow-y: auto;
+  background: var(--card); color: var(--card-ink); border-radius: 16px; padding: 34px 28px 30px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .55); transform: translateY(16px) scale(.97); transition: transform .4s ease;
+  text-align: center;
+}
+.overlay.open .letter-card { transform: none; }
+.letter-card .eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); }
+.letter-title { font-family: var(--font-display); font-weight: 500; font-size: 28px; margin: 6px 0 14px; }
+.counter-title { font-size: 13px; opacity: .75; margin-bottom: 8px; }
+.day-counter { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+.day-counter .cell {
+  min-width: 62px; padding: 8px 6px; border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 10px; display: flex; flex-direction: column; align-items: center;
+}
+.day-counter .num { font-family: var(--font-display); font-size: 24px; line-height: 1.1; color: var(--accent); }
+.day-counter .lab { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; opacity: .7; }
+.letter-body { text-align: left; white-space: pre-wrap; word-break: break-word; font-size: 16px; line-height: 1.95; }
+#letterRest { color: transparent; }
+.letter-sign { margin-top: 18px; text-align: right; font-family: var(--font-display); font-style: italic; font-size: 18px; opacity: 0; transition: opacity 1s; }
+.letter-sign.show { opacity: 1; }
+
+/* ดูรูปใหญ่ */
+#lightbox { background: rgba(0, 0, 0, .92); gap: 6px; }
+.lb-frame { max-width: min(92vw, 900px); text-align: center; }
+.lb-frame img { max-height: 80vh; max-height: 80dvh; width: auto; margin: 0 auto; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+.lb-frame figcaption { margin-top: 10px; font-size: 13px; opacity: .7; letter-spacing: .1em; }
+.lb-nav { width: 44px; height: 64px; flex: none; border: 0; background: transparent; color: #fff; font-size: 44px; opacity: .8; }
+.lb-nav:hover { opacity: 1; }
+
+/* แถบเจ้าของเว็บ ตอนดูตัวอย่าง */
+.owner-banner { position: fixed; left: 50%; top: 10px; transform: translateX(-50%); z-index: 99998;
+  background: rgba(10, 10, 16, .88); color: #fff; font: 400 13px/1.4 "IBM Plex Sans Thai", system-ui, sans-serif;
+  padding: 7px 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .35); pointer-events: none; text-align: center; max-width: 90vw; }
+.owner-bar { position: fixed; left: 0; right: 0; top: 0; z-index: 99999; display: flex; gap: 8px; justify-content: center;
+  align-items: center; flex-wrap: wrap; padding: 6px 10px; background: rgba(10, 10, 16, .92);
+  border-bottom: 1px solid rgba(255, 255, 255, .25); font: 500 14px/1.2 "IBM Plex Sans Thai", system-ui, sans-serif; color: #fff; }
+.owner-bar .ob-note { opacity: .85; margin-right: 6px; }
+.owner-bar a, .owner-bar button { appearance: none; border: 1px solid #ff8fa8; background: transparent; color: #fff;
+  padding: 7px 14px; border-radius: 6px; font: inherit; cursor: pointer; text-decoration: none; }
+.owner-bar button.pay { background: #e0405a; border-color: #e0405a; font-weight: 600; }
+.owner-bar button:disabled { opacity: .6; cursor: wait; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+@media (max-width: 520px) {
+  .letter-card { padding: 30px 18px 24px; }
+  .day-counter .cell { min-width: 54px; }
+  .lb-nav { width: 34px; font-size: 36px; }
+}
+
+/* ---------- เกมเล็กๆ ก่อนเปิดจดหมาย ---------- */
+.game-card { position: relative; width: min(470px, 100%); max-height: 94vh; max-height: 94dvh; overflow-y: auto; text-align: center;
+  background: var(--card); color: var(--card-ink); border-radius: 16px; padding: 28px 20px 22px; box-shadow: 0 24px 80px rgba(0, 0, 0, .55); }
+.game-card .eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); }
+.game-title { font-family: var(--font-display); font-weight: 500; font-size: 24px; margin: 4px 0 4px; }
+.game-hint { font-size: 14px; opacity: .8; margin-bottom: 12px; }
+.game-stage { position: relative; width: min(86vw, 340px, calc((100vh - 290px) * .8)); width: min(86vw, 340px, calc((100dvh - 290px) * .8)); min-width: 200px; aspect-ratio: 4 / 5; margin: 0 auto; border-radius: 12px; overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .35); background: #222; user-select: none; -webkit-user-select: none; touch-action: none; }
+.game-stage > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.game-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; transition: opacity .9s; }
+.game-stage canvas.gone { opacity: 0; pointer-events: none; }
+.game-stage .dim { position: absolute; inset: 0; background: rgba(0, 0, 0, .25); }
+.hid { position: absolute; width: 38px; height: 38px; margin: -19px 0 0 -19px; border: 0; background: transparent; font-size: 26px; line-height: 38px; padding: 0;
+  opacity: .22; transition: transform .35s, opacity .35s; -webkit-tap-highlight-color: transparent; filter: drop-shadow(0 0 3px rgba(255,255,255,.5)); }
+.hid.hint { animation: hidPulse 1.2s ease-in-out infinite; }
+.hid.found { opacity: 1; transform: scale(1.5); pointer-events: none; animation: none; filter: drop-shadow(0 0 10px var(--accent)); }
+@keyframes hidPulse { 0%, 100% { opacity: .25; transform: scale(1); } 50% { opacity: .9; transform: scale(1.25); } }
+.game-bar { width: min(86vw, 340px, calc((100dvh - 290px) * .8)); min-width: 200px; height: 6px; margin: 12px auto 0; border-radius: 99px; background: rgba(128, 128, 128, .3); overflow: hidden; }
+.game-bar span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .25s; }
+.game-status { margin-top: 8px; min-height: 22px; font-size: 14px; }
+.game-skip { margin-top: 8px; appearance: none; border: 0; background: transparent; color: inherit; opacity: .65; font-size: 13px; text-decoration: underline; padding: 6px 10px; }
+.game-skip:hover { opacity: 1; }

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUARAI - แผงควบคุมผู้ใช้งาน (Dashboard)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  {% with active='dashboard' %}{% include '_nav.html' %}{% endwith %}
+
+  <div class="dashboard-container">
+
+    <!-- User Profile Header -->
+    <div class="profile-card">
+      <div class="profile-info">
+        <div class="avatar-placeholder">⚡</div>
+        <div>
+          <h2 class="user-name" id="dashUsername">กำลังโหลด...</h2>
+          <p class="user-email" id="dashEmail">กำลังโหลด...</p>
+          <span class="badge-status" id="dashStatus">สถานะ: Active</span>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <a href="/" class="btn-submit" id="btnCreateNewSite" style="display: inline-block; width: auto; padding: 10px 20px; text-align: center; text-decoration: none;">+ สั่งซื้อเว็บเซอร์ไพรส์ใหม่</a>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid" style="grid-template-columns: 1fr;">
+      <div class="stat-card" style="text-align: center; padding: 25px;">
+        <h4 style="font-size: 1.1rem;">🌐 เว็บเซอร์ไพรส์ทั้งหมดของคุณ</h4>
+        <p class="stat-value" id="statSitesCount" style="font-size: 2.5rem; margin-top: 10px;">0 หน้า</p>
+      </div>
+    </div>
+
+    <!-- My Surprise Sites Section -->
+    <section class="dash-section">
+      <h3 class="section-title">🔥 เว็บเซอร์ไพรส์ของฉัน (My Sites)</h3>
+      <div class="table-wrapper">
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>เว็บ</th>
+              <th>แพ็กเกจ</th>
+              <th>สถานะ</th>
+              <th>จัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="sitesTableBody">
+            <tr>
+              <td colspan="4" style="text-align: center; color: var(--text-muted);">กำลังดึงข้อมูลเว็บของคุณ...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Order History Section -->
+    <section class="dash-section">
+      <h3 class="section-title">📜 ประวัติสั่งซื้อและชำระเงิน</h3>
+      <div class="table-wrapper">
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>รายการ</th>
+              <th>แพ็กเกจ</th>
+              <th>ยอดชำระ</th>
+              <th>สถานะ</th>
+              <th>วันที่สั่งซื้อ</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody">
+            <tr>
+              <td colspan="6" style="text-align: center; color: var(--text-muted);">กำลังดึงประวัติสั่งซื้อ...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='common.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

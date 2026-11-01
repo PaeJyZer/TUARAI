@@ -1,0 +1,73 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/musicbox/style.css') }}">
+{% endblock %}
+{% block favicon %}🎵{% endblock %}
+{% block body_class %}theme-musicbox{% endblock %}
+{% block letter_eyebrow %}Our song{% endblock %}
+
+{% block bg %}<div class="notes-bg" id="notesBg" aria-hidden="true"></div>{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate" data-manual-gate="2200">
+    <p class="gate-eyebrow">A music box for you</p>
+    <h1 class="gate-title">ถึง {{ partner_name }}</h1>
+    <div class="mbox" id="mbox">
+      <div class="lid"><span class="lid-gem">♥</span></div>
+      <div class="inside"><span class="dancer">💃</span><span class="mirror"></span></div>
+      <div class="wood"><span class="plate">♪ ♫ ♪</span></div>
+      <button type="button" class="wind-key" id="windKey" aria-label="ไขลาน"><span class="key-head">✦</span><span class="key-stem"></span></button>
+    </div>
+    <div class="wind-bar"><span id="windFill"></span></div>
+    <p class="gate-hint" id="gateHint">แตะกุญแจเพื่อไขลาน <b id="windN">0</b>/4</p>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <header class="hero">
+    <p class="eyebrow">{{ occ.en }}</p>
+    <h1 class="hero-name">{{ partner_name }}</h1>
+    <div class="turntable">
+      <div class="record" data-photo><img src="{{ center_photo }}" alt="รูปของเรา"><span class="spindle"></span></div>
+      <div class="tonearm" id="tonearm"><span></span></div>
+    </div>
+    <p class="hero-sub">{{ occ.wish }}</p>
+    <div class="steps" data-steps data-labels="ไขลาน|เล่นโน้ต|เลือกแผ่น"
+         data-hints="กล่องดนตรีเริ่มบรรเลงแล้ว!|แตะคีย์ที่กะพริบให้ครบ 8 โน้ตเพื่อเล่นทำนองให้เธอและปลดล็อกแผ่นเสียง|แตะเลือกแผ่นเสียงสักแผ่นเพื่อปลดล็อกเพลงสุดท้าย (จดหมาย)|ปลดล็อกครบแล้ว กดฟังเพลงสุดท้ายได้เลย"></div>
+  </header>
+
+  <section class="piano-sec">
+    <h2 class="sec-title">เล่นทำนองให้เธอ <span id="noteCount">0</span>/8</h2>
+    <p class="sec-note">แตะคีย์ที่เรืองแสง ✨ ตามลำดับ (กดผิดก็ไม่เป็นไร ลองใหม่ได้)</p>
+    <div class="keys" id="keys"></div>
+  </section>
+
+  <section class="crate lockable">
+    <div class="lock-note"><b>🔒</b><span>เล่นทำนองให้ครบ 8 โน้ตเพื่อปลดล็อกแผ่นเสียง</span></div>
+    <h2 class="sec-title">แผ่นเสียงแห่งความทรงจำ</h2>
+    <div class="sleeve-grid">
+      {% for slot, src in side_photos %}
+      <figure class="sleeve reveal" data-photo>
+        <span class="disc"></span>
+        <img src="{{ src }}" alt="ความทรงจำที่ {{ loop.index }}" loading="lazy">
+        <figcaption>{{ 'SIDE A' if loop.index0 % 2 == 0 else 'SIDE B' }} · TRACK {{ '%02d'|format(loop.index) }}</figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="final">
+    <button class="cta" type="button" data-letter>🎵 ฟังเพลงสุดท้าย (จดหมาย)</button>
+    <p class="sec-note">ต้องปลดล็อกให้ครบทั้ง 3 ขั้นก่อนนะ</p>
+  </section>
+  <footer class="foot"><p>ทุกเพลงรักในโลก ก็ไม่เพราะเท่าเสียงของเธอ</p></footer>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='themes/shared/premium.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/musicbox/musicbox.js') }}"></script>
+{% endblock %}

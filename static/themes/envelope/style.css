@@ -1,0 +1,69 @@
+/* ธีมซองจดหมาย / ไปรษณีย์ */
+:root {
+  --bg: #e4d3b4; --ink: #4a3426; --muted: #7a6350; --accent: #c0392b;
+  --card: #fffaf0; --card-ink: #4a3426;
+  --font-display: "Special Elite", "Courier New", monospace; --font-hand: "Mali", "IBM Plex Sans Thai", sans-serif;
+}
+body.theme-envelope { background: radial-gradient(ellipse at 50% 20%, #f3e6c8, #dcc8a0 70%) fixed; color: var(--ink); font-family: var(--font-hand); }
+.airmail-frame { position: fixed; inset: 0; z-index: 3; pointer-events: none;
+  border: 14px solid transparent; border-image: repeating-linear-gradient(135deg, #c0392b 0 18px, #fffaf0 18px 30px, #2b5aa0 30px 48px, #fffaf0 48px 60px) 14; }
+.gate-eyebrow, .eyebrow { font-family: var(--font-display); font-size: 13px; letter-spacing: .3em; text-transform: uppercase; color: #a8321f; }
+.gate-title { font-family: var(--font-hand); font-weight: 600; font-size: clamp(30px, 7vw, 46px); margin: 6px 0 36px; color: #3b2a1e; }
+.gate-hint { margin-top: 26px; font-size: 14px; color: var(--muted); }
+
+/* ซองจดหมาย */
+.envelope { position: relative; width: min(300px, 76vw); aspect-ratio: 3 / 2; perspective: 900px; filter: drop-shadow(0 16px 20px rgba(60, 40, 20, .35)); }
+.env-back, .env-front, .flap, .letter-inside { position: absolute; display: block; }
+.env-back { inset: 0; background: #e9d2a6; border-radius: 4px; }
+.letter-inside { left: 8%; right: 8%; top: 6%; bottom: 8%; background: #fffdf6; border-radius: 3px; transition: transform 1.2s ease .5s; z-index: 1;
+  background-image: repeating-linear-gradient(transparent 0 15px, rgba(60, 100, 150, .22) 15px 16px); }
+.env-front { inset: 0; z-index: 2; border-radius: 4px; background:
+  linear-gradient(to top right, transparent 49.5%, rgba(120, 80, 40, .22) 50%, transparent 50.6%) 0 0 / 50% 100% no-repeat,
+  linear-gradient(to top left, transparent 49.5%, rgba(120, 80, 40, .22) 50%, transparent 50.6%) 100% 0 / 50% 100% no-repeat,
+  linear-gradient(#f2dfb6, #ead2a2); clip-path: polygon(0 0, 50% 62%, 100% 0, 100% 100%, 0 100%); }
+.flap { left: 0; right: 0; top: 0; height: 62%; z-index: 3; background: linear-gradient(#f6e6c0, #e6cc98); clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: 50% 0; transition: transform 1s ease, z-index 0s .5s; }
+.seal { position: absolute; left: 50%; top: 62%; z-index: 5; width: 62px; height: 62px; margin: -31px 0 0 -31px; border-radius: 50%; border: 0; color: #ffd9d4; font-size: 28px;
+  background: radial-gradient(circle at 35% 30%, #e0584a, #a8261a 70%); box-shadow: 0 4px 10px rgba(80, 10, 10, .5), inset 0 -3px 6px rgba(0,0,0,.25); animation: sealPulse 2s ease-in-out infinite; transition: transform .6s, opacity .5s; -webkit-tap-highlight-color: transparent; }
+@keyframes sealPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+body.opening .seal { opacity: 0; transform: scale(.4); animation: none; }
+body.opening .flap { transform: rotateX(180deg); z-index: 0; }
+body.opening .letter-inside { transform: translateY(-62%); }
+
+/* หน้าหลัก */
+.desk { max-width: 1040px; margin: 0 auto; padding: 56px 20px 60px; position: relative; z-index: 2; }
+.hero { text-align: center; padding: 26px 0 40px; }
+.hero-name { font-family: var(--font-hand); font-weight: 600; font-size: clamp(32px, 8vw, 54px); margin: 4px 0 26px; color: #3b2a1e; }
+.hero-sub { margin: 24px 0 20px; color: var(--muted); }
+.postcard { position: relative; background: #fffdf6; padding: 10px 10px 6px; border-radius: 3px; box-shadow: 0 12px 26px rgba(60, 40, 20, .35); cursor: zoom-in; transform: rotate(var(--tilt, -2deg)); transition: transform .35s, opacity .8s; }
+.postcard.big { width: max(210px, min(400px, 70vw, calc((100vh - 300px) * .8))); margin: 0 auto; --tilt: -2.5deg; padding: 12px 12px 12px; }
+.postcard img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; filter: sepia(.12) saturate(1.05); }
+.postcard.big img { aspect-ratio: 4 / 5; }
+.postcard.reveal { transform: translateY(24px) rotate(var(--tilt)); }
+.postcard.reveal.in { transform: rotate(var(--tilt)); }
+.postcard:hover { transform: rotate(0) scale(1.04) !important; z-index: 3; }
+.postcard figcaption { font-family: var(--font-display); font-size: 11px; letter-spacing: .15em; color: #8a7058; text-align: right; padding-top: 4px; }
+.stamp { position: absolute; top: -8px; right: -8px; width: 46px; height: 56px; background: #f3b6a8; display: flex; align-items: center; justify-content: center; color: #a8321f; font-size: 22px;
+  -webkit-mask: radial-gradient(circle 4px at 4px 4px, transparent 98%, #000) -4px -4px; box-shadow: 0 2px 6px rgba(0,0,0,.3); border: 3px solid #fffdf6; outline: 1px dashed rgba(0,0,0,.2); }
+.stamp.s1 { background: #b7d3ef; color: #2b5aa0; } .stamp.s2 { background: #d8e8b6; color: #4f7a2a; }
+.stamp i { font-style: normal; }
+.postmark { position: absolute; top: 4px; right: 40px; width: 64px; height: 64px; border: 2px solid rgba(43, 90, 160, .55); border-radius: 50%; color: rgba(43, 90, 160, .65); display: flex; align-items: center; justify-content: center; text-align: center;
+  font: 11px/1.15 var(--font-display); transform: rotate(-14deg); background: rgba(255, 255, 255, .3); }
+.sec-title { font-family: var(--font-display); font-weight: 400; text-align: center; font-size: clamp(20px, 4.6vw, 28px); letter-spacing: .06em; margin-bottom: 30px; color: #3b2a1e; }
+.card-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px 24px; }
+.card-grid .postcard { width: clamp(180px, 40vw, 280px); transition-delay: calc(var(--i) % 4 * 80ms); }
+.cta { appearance: none; border: 2px solid #3b2a1e; background: #c0392b; color: #fff6ee; padding: 12px 28px; border-radius: 4px; font-family: var(--font-hand); font-weight: 600; font-size: 16px; box-shadow: 4px 4px 0 #3b2a1e; transition: transform .2s, box-shadow .2s; -webkit-tap-highlight-color: transparent; }
+.cta:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #3b2a1e; }
+.cta.ghost { background: transparent; color: #3b2a1e; }
+.foot { text-align: center; padding: 50px 0 30px; }
+.foot p { font-size: 19px; margin-bottom: 18px; }
+
+.letter-card { background: #fffdf6 repeating-linear-gradient(transparent 0 33px, rgba(60, 100, 150, .2) 33px 34px); border: 12px solid transparent; border-image: repeating-linear-gradient(135deg, #c0392b 0 12px, #fffaf0 12px 20px, #2b5aa0 20px 32px, #fffaf0 32px 40px) 12; border-radius: 0; text-align: left; }
+.letter-title { font-family: var(--font-hand); font-weight: 600; }
+.letter-card .eyebrow { color: #a8321f; font-family: var(--font-display); }
+.day-counter { justify-content: flex-start; }
+.day-counter .cell { background: #fff; border-color: rgba(192, 57, 43, .45); }
+.day-counter .num { color: #c0392b; font-family: var(--font-display); }
+.letter-body { font-family: var(--font-hand); line-height: 34px; }
+.letter-sign { font-family: var(--font-hand); color: #a8321f; }
+.close-btn { color: #3b2a1e; z-index: 4; }
+.game-card { border-radius: 4px; }

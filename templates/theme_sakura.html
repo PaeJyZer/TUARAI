@@ -1,0 +1,62 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Mali:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/sakura/style.css') }}">{% endblock %}
+{% block favicon %}🌸{% endblock %}
+{% block body_class %}theme-sakura{% endblock %}
+{% block body_attrs %}data-game="hearts" data-game-count="3" data-game-item="💗" data-game-title="หาหัวใจที่ซ่อนในกิ่งซากุระ" data-game-hint="มีหัวใจ 3 ดวงแอบอยู่ในภาพ แตะให้เจอครบนะ" data-game-win="เจอครบแล้ว! ซากุระบานเต็มที่ 🌸" data-game-eyebrow="Hanami game"{% endblock %}
+{% block letter_eyebrow %}Spring letter{% endblock %}
+
+{% block bg %}
+  <div class="bokeh" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="petal-field" id="petalField" aria-hidden="true"></div>
+  <div class="flash" id="flash" aria-hidden="true"></div>
+{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate">
+    <p class="gate-eyebrow">Our spring photobooth</p>
+    <h1 class="gate-title">{{ partner_name }} <span>♡</span> me</h1>
+    <button class="shutter" type="button" data-gate data-delay="1300" aria-label="กดชัตเตอร์เพื่อเปิด">
+      <span class="ring"></span><span class="core">📸</span>
+    </button>
+    <p class="gate-hint">กดปุ่มชัตเตอร์เพื่อถ่ายภาพแรกของเรา</p>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <header class="hero">
+    <div class="frame" data-photo>
+      <img src="{{ center_photo }}" alt="รูปคู่ของเรา">
+      <span class="ribbon">♡ {{ partner_name }}</span>
+    </div>
+    <p class="eyebrow">{{ occ.en }}</p>
+    <h1 class="hero-name">{{ partner_name }}</h1>
+    <p class="hero-sub">ซากุระบานทุกปี แต่เธอคือฤดูใบไม้ผลิของฉันทุกวัน</p>
+    <button class="cta" type="button" data-letter>🌸 อ่านจดหมาย</button>
+  </header>
+
+  {% if side_photos %}
+  <section class="booth">
+    <h2 class="sec-title">photo booth</h2>
+    <div class="strips">
+      {% for group in side_photos|batch(3) %}
+      <div class="strip reveal" style="--i: {{ loop.index0 }}; --tilt: {{ ['-2deg','1.6deg','-1deg','2deg'][loop.index0 % 4] }}">
+        {% for slot, src in group %}
+        <figure class="cut" data-photo><img src="{{ src }}" alt="ความทรงจำ" loading="lazy"></figure>
+        {% endfor %}
+        <p class="strip-cap">♡ {{ partner_name }} · {{ '%02d' % loop.index }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <footer class="foot">
+    <p>ขอบคุณที่ทำให้ทุกฤดูกาลสวยเหมือนฤดูซากุระ</p>
+    <button class="cta ghost" type="button" data-letter>อ่านจดหมายอีกครั้ง</button>
+  </footer>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='themes/sakura/petals.js') }}"></script>{% endblock %}

@@ -1,0 +1,64 @@
+/* ธีมเกมพิกเซล 8-bit */
+:root {
+  --bg: #0d0b24; --ink: #f1f0ff; --muted: #a9a4e0; --accent: #ffd23f;
+  --card: #15123a; --card-ink: #f1f0ff;
+  --font-px: "Press Start 2P", "Courier New", monospace;
+  --font-display: "Press Start 2P", "Courier New", monospace;
+}
+body.theme-pixel { background: #0d0b24; color: var(--ink); font-family: "IBM Plex Sans Thai", system-ui, sans-serif; }
+.stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image:
+  radial-gradient(2px 2px at 12% 18%, #fff, transparent), radial-gradient(2px 2px at 78% 12%, #ffd23f, transparent), radial-gradient(2px 2px at 45% 40%, #fff, transparent),
+  radial-gradient(2px 2px at 90% 55%, #9bf, transparent), radial-gradient(2px 2px at 25% 72%, #fff, transparent), radial-gradient(2px 2px at 62% 85%, #f9c, transparent), radial-gradient(2px 2px at 8% 92%, #fff, transparent);
+  background-size: 300px 300px; animation: twinkle 3s steps(2) infinite; }
+@keyframes twinkle { 50% { opacity: .55; } }
+.scan { position: fixed; inset: 0; z-index: 60; pointer-events: none; background: repeating-linear-gradient(transparent 0 2px, rgba(0, 0, 0, .18) 2px 3px); mix-blend-mode: multiply; }
+.gate-eyebrow, .eyebrow { font-family: var(--font-px); font-size: 11px; letter-spacing: .08em; color: #7fe3ff; line-height: 1.8; }
+.gate-title { font-family: var(--font-px); font-weight: 400; font-size: clamp(36px, 11vw, 66px); line-height: 1.2; margin: 22px 0 14px; color: #ff6ba8; text-shadow: 4px 4px 0 #6a1b9a, 8px 8px 0 #1a1050; }
+.gate-sub { font-family: var(--font-px); font-size: 11px; color: var(--accent); margin-bottom: 40px; }
+.start { appearance: none; font-family: var(--font-px); font-size: 14px; color: #1a1050; background: var(--accent); padding: 16px 22px; border: 0; box-shadow: 0 -4px 0 0 #fff2a8 inset, 0 4px 0 0 #b8860b inset, 4px 0 0 0 #1a1050, -4px 0 0 0 #1a1050, 0 4px 0 0 #1a1050, 0 -4px 0 0 #1a1050, 6px 8px 0 4px #6a1b9a; animation: blink 1s steps(2) infinite; -webkit-tap-highlight-color: transparent; }
+@keyframes blink { 50% { opacity: .55; } }
+.start:active { transform: translate(3px, 3px); }
+.gate-hint { margin-top: 36px; font-size: 13px; color: var(--muted); }
+body.opening .gate { animation: tvOff .9s steps(8) forwards; }
+@keyframes tvOff { 0% { filter: none; } 50% { filter: brightness(2.2) contrast(2); transform: scaleY(1); } 100% { transform: scaleY(.02); filter: brightness(3); } }
+
+.desk { max-width: 1040px; margin: 0 auto; padding: 0 16px 70px; position: relative; z-index: 2; }
+.hud { position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; padding: 12px 6px; margin: 0 -6px; background: #0d0b24; border-bottom: 4px solid #6a1b9a; font-family: var(--font-px); font-size: 10px; color: var(--accent); }
+.hero { text-align: center; padding: 40px 0 36px; }
+.pix-frame { position: relative; width: clamp(220px, 62vw, 320px); margin: 20px auto 28px; padding: 10px; background: #1a1050; cursor: zoom-in;
+  box-shadow: 0 0 0 4px #ff6ba8, 0 0 0 8px #1a1050, 0 0 0 12px #ffd23f, 10px 14px 0 12px rgba(0, 0, 0, .5); }
+.pix-frame img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; image-rendering: auto; }
+.badge { position: absolute; left: -6px; top: -24px; background: #ffd23f; color: #1a1050; font-family: var(--font-px); font-size: 9px; padding: 6px 8px; box-shadow: 3px 3px 0 #1a1050; }
+.hero-name { font-family: var(--font-px); font-weight: 400; font-size: clamp(22px, 6vw, 38px); line-height: 1.4; margin: 12px 0 10px; color: #fff; text-shadow: 3px 3px 0 #6a1b9a; word-break: break-word; }
+.hero-sub { color: var(--muted); margin-bottom: 26px; }
+.cta { appearance: none; font-family: var(--font-px); font-size: 11px; line-height: 1.6; color: #1a1050; background: #7fe3ff; padding: 14px 18px; border: 0; box-shadow: 0 0 0 4px #1a1050, 6px 6px 0 4px #6a1b9a; -webkit-tap-highlight-color: transparent; }
+.cta:hover { background: #b6f0ff; } .cta:active { transform: translate(3px, 3px); }
+.cta.ghost { background: #ff6ba8; }
+
+.sec-title { font-family: var(--font-px); font-weight: 400; text-align: center; font-size: clamp(14px, 4vw, 20px); color: var(--accent); margin: 10px 0 28px; }
+.level-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px 22px; }
+.level { width: clamp(138px, 29vw, 210px); background: #1a1050; padding: 8px; cursor: zoom-in; box-shadow: 0 0 0 4px #7fe3ff, 6px 8px 0 4px rgba(0, 0, 0, .5); transition: transform .15s steps(2), opacity .6s; transition-delay: calc(var(--i) % 4 * 70ms); }
+.level.reveal { transform: translateY(20px); } .level.reveal.in { transform: none; }
+.level:hover { transform: translateY(-6px) !important; box-shadow: 0 0 0 4px #ffd23f, 6px 12px 0 4px rgba(0, 0, 0, .5); }
+.level img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.level figcaption { font-family: var(--font-px); font-size: 9px; color: var(--accent); text-align: center; padding: 8px 0 2px; }
+.foot { text-align: center; padding: 56px 0 10px; }
+.foot p { font-family: var(--font-px); font-size: 12px; line-height: 1.8; margin-bottom: 20px; color: #ff6ba8; }
+
+/* จดหมาย = กล่องข้อความ RPG */
+.letter-card { background: #15123a; border-radius: 0; text-align: left; box-shadow: 0 0 0 4px #fff, 0 0 0 8px #1a1050, 0 0 0 12px #ff6ba8; width: min(540px, calc(100% - 28px)); }
+.letter-card .eyebrow { color: #7fe3ff; }
+.letter-title { font-family: var(--font-px); font-weight: 400; font-size: 17px; line-height: 1.6; color: #fff; text-shadow: 2px 2px 0 #6a1b9a; }
+.counter-title { font-family: var(--font-px); font-size: 10px; color: var(--accent); opacity: 1; line-height: 1.8; }
+.day-counter { justify-content: flex-start; flex-wrap: wrap; }
+.day-counter .cell { border-radius: 0; background: #1a1050; border: 3px solid #7fe3ff; }
+.day-counter .num { font-family: var(--font-px); font-size: 17px; color: var(--accent); }
+.day-counter .lab { font-family: var(--font-px); font-size: 7px; letter-spacing: 0; }
+.letter-body { font-size: 16px; line-height: 1.9; }
+.letter-sign { font-family: var(--font-px); font-style: normal; font-size: 11px; color: #ff6ba8; line-height: 1.8; }
+.close-btn { color: #fff; font-family: var(--font-px); font-size: 24px; }
+.game-card { border-radius: 0; box-shadow: 0 0 0 4px #fff, 0 0 0 8px #1a1050, 0 0 0 12px #7fe3ff; width: min(440px, calc(100% - 28px)); }
+.game-title { font-family: var(--font-px); font-size: 14px; line-height: 1.6; }
+.game-hint, .game-status { font-size: 13px; }
+.game-bar { border-radius: 0; height: 10px; } .game-bar span { background: repeating-linear-gradient(90deg, var(--accent) 0 8px, #ff6ba8 8px 10px); }
+.game-stage { border-radius: 0; box-shadow: 0 0 0 4px #7fe3ff; }

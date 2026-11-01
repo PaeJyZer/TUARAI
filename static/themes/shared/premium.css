@@ -1,0 +1,43 @@
+/* TUARAI Premium - ส่วนกลาง: ปุ่มเสียง, ขั้นตอนปลดล็อก, toast, คอนเฟตติ */
+.sfx-btn { position: fixed; right: 14px; bottom: 14px; z-index: 9100; width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent); background: color-mix(in srgb, var(--bg) 82%, #000);
+  color: var(--ink); font-size: 20px; line-height: 1; display: grid; place-items: center; box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+.sfx-btn:active { transform: scale(.92); }
+.fx-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9200; }
+.fx-float { position: fixed; z-index: 9200; font-size: 28px; pointer-events: none; transform: translate(-50%, -50%); animation: fxFloat 1.4s ease-out forwards; }
+@keyframes fxFloat { from { opacity: 1; transform: translate(-50%, -50%) scale(.6); } to { opacity: 0; transform: translate(-50%, -190px) scale(1.5); } }
+.tu-toast { position: fixed; left: 50%; top: 56px; transform: translate(-50%, -20px); z-index: 9300; padding: 9px 18px; border-radius: 999px;
+  background: color-mix(in srgb, var(--bg) 85%, #000); color: var(--ink); border: 1px solid var(--accent); font-size: 14px; opacity: 0;
+  pointer-events: none; transition: opacity .3s, transform .3s; max-width: 90vw; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,.45); }
+.tu-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ขั้นตอนปลดล็อก */
+.steps { width: min(520px, 92vw); margin: 18px auto 6px; text-align: center; }
+.steps-list { list-style: none; display: flex; justify-content: center; gap: 6px; align-items: flex-start; }
+.steps-list li { flex: 1; max-width: 150px; display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; font-size: 12px; opacity: .55; transition: opacity .4s; }
+.steps-list li + li::before { content: ""; position: absolute; left: -50%; top: 14px; width: 100%; height: 2px; background: color-mix(in srgb, var(--ink) 25%, transparent); z-index: 0; }
+.steps-list li.done + li::before, .steps-list li.now::before { background: var(--accent); }
+.steps-list .dot { z-index: 1; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; font-size: 14px;
+  background: color-mix(in srgb, var(--bg) 80%, #000); border: 2px solid color-mix(in srgb, var(--ink) 35%, transparent); }
+.steps-list li.now { opacity: 1; }
+.steps-list li.now .dot { border-color: var(--accent); color: var(--accent); animation: stepPulse 1.6s ease-in-out infinite; }
+.steps-list li.done { opacity: 1; }
+.steps-list li.done .dot { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+@keyframes stepPulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); } 50% { box-shadow: 0 0 0 9px transparent; } }
+.steps-hint { margin-top: 10px; font-size: 14px; color: var(--muted); min-height: 22px; }
+.steps-skip { margin-top: 4px; appearance: none; border: 0; background: transparent; color: inherit; opacity: .55; font-size: 12px; text-decoration: underline; padding: 6px 10px; }
+.steps-skip:hover { opacity: 1; }
+
+/* แกลเลอรีที่ยังล็อกอยู่ */
+.lockable { position: relative; }
+body:not(.s2) .lockable > :not(.lock-note) { filter: blur(14px) saturate(.6) brightness(.7); pointer-events: none; user-select: none; }
+.lock-note { display: none; }
+body:not(.s2) .lock-note { display: flex; position: absolute; left: 50%; top: 90px; transform: translateX(-50%); z-index: 5; flex-direction: column; align-items: center; gap: 6px;
+  padding: 14px 22px; border-radius: 16px; background: color-mix(in srgb, var(--bg) 82%, #000); border: 1px solid var(--accent); color: var(--ink); text-align: center; font-size: 14px; width: max-content; max-width: 88vw; }
+.lock-note b { font-size: 26px; }
+
+button[data-letter].is-locked { opacity: .45; filter: grayscale(.6); cursor: not-allowed; }
+button[data-letter].is-ready { animation: readyPulse 1.8s ease-in-out infinite; }
+@keyframes readyPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+.sec-note { text-align: center; color: var(--muted); font-size: 14px; margin-top: -4px; }
+@media (max-width: 520px) { .sfx-btn { width: 42px; height: 42px; right: 10px; bottom: 10px; } .steps-list li { font-size: 11px; } }
