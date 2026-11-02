@@ -21,3 +21,14 @@
 
 ## อีเมลเตือนต่ออายุ
 `python send_expiry_reminders.py --dry-run` ดูรายชื่อ, ไม่ใส่ `--dry-run` เพื่อส่งจริง ตั้งให้รันวันละครั้ง
+
+## ขึ้น Render ให้ข้อมูลไม่หาย (สำคัญ)
+Render แบบฟรีไม่มีดิสก์ถาวร ทุกครั้งที่รีสตาร์ท/หลับ/deploy ใหม่ ไฟล์ `tuarai.db` และรูป/สลิปจะถูกล้าง
+ทำให้บัญชีผู้ใช้และเว็บที่ลูกค้าซื้อหายหมด วิธีแก้:
+1. เปลี่ยน Web Service เป็นแผนเสียเงิน (Starter ขึ้นไป) แล้วไปที่ **Disks → Add Disk**
+   ตั้ง Mount Path = `/var/data` ขนาด 1 GB ก็พอเริ่มต้น
+2. ที่ **Environment** เพิ่มตัวแปร `DATA_DIR=/var/data`
+   (และ `SECRET_KEY`, `ADMIN_PASSWORD`, `PAYMENT_MODE=manual`, `PROMPTPAY_ID`, `PUBLIC_BASE_URL=https://ชื่อเว็บ.onrender.com`, `DISCORD_WEBHOOK_URL`)
+3. Start Command: `waitress-serve --port=$PORT app:app`
+4. Deploy ใหม่ ฐานข้อมูล รูป และสลิปจะอยู่ใน `/var/data` และไม่หายเมื่อรีสตาร์ท
+หมายเหตุ: ดิสก์ผูกกับเซิร์ฟเวอร์ตัวเดียว (ห้ามเพิ่มเป็นหลาย instance) และควรดาวน์โหลดสำรอง `tuarai.db` เป็นระยะ

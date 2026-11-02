@@ -1,5 +1,5 @@
 from flask import (Flask, request, jsonify, session, render_template, redirect,
-                   url_for, send_file, abort, g)
+                   url_for, send_file, send_from_directory, abort, g)
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -43,9 +43,19 @@ def _load_env_file():
 
 _load_env_file()
 
-DATABASE = os.path.join(BASE_DIR, 'tuarai.db')
-UPLOAD_ROOT = os.path.join(BASE_DIR, 'static', 'uploads')
-PRIVATE_ROOT = os.path.join(BASE_DIR, 'private')          # ไฟล์ที่ห้ามเปิดสาธารณะ (สลิปโอนเงิน)
+# DATA_DIR = โฟลเดอร์เก็บข้อมูลถาวร (ฐานข้อมูล รูปลูกค้า สลิป) ตั้งค่านี้เมื่อรันบนโฮสต์ที่มีดิสก์ถาวร
+# เช่น Render Disk ที่ mount ไว้ที่ /var/data  ถ้าไม่ตั้ง จะเก็บในโฟลเดอร์โปรเจกต์เหมือนเดิม
+DATA_DIR = os.environ.get('DATA_DIR', '').strip()
+if DATA_DIR:
+    os.makedirs(DATA_DIR, exist_ok=True)
+    DATABASE = os.path.join(DATA_DIR, 'tuarai.db')
+    UPLOAD_ROOT = os.path.join(DATA_DIR, 'uploads')
+    PRIVATE_ROOT = os.path.join(DATA_DIR, 'private')
+else:
+    DATABASE = os.path.join(BASE_DIR, 'tuarai.db')
+    UPLOAD_ROOT = os.path.join(BASE_DIR, 'static', 'uploads')
+    PRIVATE_ROOT = os.path.join(BASE_DIR, 'private')      # ไฟล์ที่ห้ามเปิดสาธารณะ (สลิปโอนเงิน)
+os.makedirs(UPLOAD_ROOT, exist_ok=True)
 
 DEFAULT_SECRET = 'tuarai_cyberpunk_secret_key_change_me'
 SECRET_KEY = os.environ.get('SECRET_KEY', DEFAULT_SECRET)
@@ -652,6 +662,16 @@ def render_site(site, banner=None, toolbar=None):
 # =====================================================================
 #  6. หน้าเว็บ (Pages)
 # =====================================================================
+@app.route('/static/uploads/<slug>/<path:name>')
+def serve_upload(slug, name):
+    """เสิร์ฟรูปลูกค้าจากโฟลเดอร์เก็บถาวร (UPLOAD_ROOT) ลิงก์เดิม /static/uploads/... ใช้ได้เหมือนเดิม"""
+    if not SLUG_RE.match(slug):
+        abort(404)
+    resp = send_from_directory(os.path.join(UPLOAD_ROOT, slug), os.path.basename(name))
+    resp.headers['Cache-Control'] = 'public, max-age=86400'
+    return resp
+
+
 @app.route('/')
 def serve_index():
     themes = [theme_dict(t) for t in active_themes()]
