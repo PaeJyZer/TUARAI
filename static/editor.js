@@ -51,8 +51,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    const caps = {};   // url -> คำใต้รูป (เฉพาะธีมจับคู่)
     function renderPhotos() {
         grid.innerHTML = '';
+        grid.classList.toggle('with-cap', !!site.has_captions);
         site.images.forEach((url, i) => {
             const box = document.createElement('div');
             box.className = 'photo-thumb';
@@ -61,6 +63,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             img.alt = `รูปที่ ${i + 1}`;
             img.loading = 'lazy';
             box.appendChild(img);
+            if (site.has_captions) {
+                if (!(url in caps)) caps[url] = (site.captions || {})[url] || '';
+                box.classList.add('has-cap');
+                const ci = document.createElement('input');
+                ci.type = 'text'; ci.className = 'cap-in'; ci.maxLength = 40; ci.value = caps[url];
+                ci.placeholder = i < 8 ? 'คำใต้รูป เช่น วันเกิด' : '(ไม่ต้องใส่)';
+                ci.disabled = !site.can_edit;
+                ci.addEventListener('input', () => { caps[url] = ci.value; });
+                box.appendChild(ci);
+            }
 
             if (site.can_edit) {
                 const del = document.createElement('button');
@@ -129,6 +141,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        let capOut;
+        if (site.has_captions) {
+            capOut = {};
+            site.images.forEach((u) => { capOut[u] = (caps[u] || '').trim(); });
+            const first = site.images.slice(0, 8).map((u) => capOut[u]);
+            if (first.some((x) => !x)) { TU.showAlert('กรุณาพิมพ์คำใต้รูปให้ครบ (8 รูปแรกเป็นโจทย์เกม)'); return; }
+            if (new Set(first.map((x) => x.toLowerCase())).size !== first.length) { TU.showAlert('มีคำใต้รูปซ้ำกัน กรุณาใช้คำที่ไม่ซ้ำกัน'); return; }
+        }
         const btn = document.getElementById('edSave');
         btn.disabled = true;
         const r = await TU.api(`/api/sites/${slug}`, {
@@ -140,7 +160,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 occasion: document.getElementById('edOccasion').value,
                 letter_text: document.getElementById('edLetter').value,
                 letter_sign: document.getElementById('edSign').value,
-                dialog: dlgEd ? dlgEd.get() : []
+                dialog: dlgEd ? dlgEd.get() : [],
+                captions: capOut
             })
         });
         btn.disabled = false;

@@ -810,3 +810,9 @@ a.btn-small {
   .pb-card.is-special .pb-body { display: flex; flex-direction: column; justify-content: center; padding: 26px; }
   .pb-card.is-special .card-actions { flex-direction: row; }
 }
+
+/* ช่องคำใต้รูป (ธีมจับคู่) */
+.photo-grid.with-cap { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); }
+.photo-thumb.has-cap { aspect-ratio: auto; display: flex; flex-direction: column; }
+.photo-thumb.has-cap img { aspect-ratio: 1 / 1; height: auto; }
+.cap-in { width: 100%; border: 0; border-top: 1px solid var(--border-color); background: #181818; color: #fff; padding: 7px 6px; font-size: .8rem; font-family: inherit; }

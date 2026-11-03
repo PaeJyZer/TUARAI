@@ -251,8 +251,14 @@ PREMIUM_THEMES = [
     ('palace_sakura_v1', 'Sakura Palace Story',
      'วิชวลโนเวลในวังซากุระ คุยกับแฟนผ่านบทสนทนาที่คุณเขียนเอง ให้เขา/เธอเลือกคำตอบ มีสรุปคำตอบท้ายเรื่อง เสียงนุ่มสบายหู',
      'theme_previews/palace_sakura.jpg', 'theme_palace.html', 179, 349, 'วิชวลโนเวล · เลือกคำตอบ · ซากุระล้อมวัง'),
+    ('matchcat_v1', 'Lucky Cat Matsuri',
+     'งานเทศกาลเกียวโตยามค่ำคืน แมวกวักนำโชคท้าให้จับคู่ความทรงจำกับรูป ลากเส้นโยง ถูกมีพลุ ผิดแมวเศร้า โยงใหม่ได้ไม่จำกัด',
+     'theme_previews/matchcat.jpg', 'theme_matchcat.html', 179, 349, 'จับคู่รูป · ลากเส้นโยง · พลุเทศกาล'),
 ]
 DIALOG_THEMES = {'palace_sakura_v1'}
+CAPTION_THEMES = {'matchcat_v1'}      # ธีมที่ลูกค้าเขียนคำใต้รูปแต่ละรูป (ใช้เป็นโจทย์จับคู่)
+MAX_PAIRS = 8
+DEMO_CAPTIONS = ['สีชมพูบานเย็น', 'สีส้มพีช', 'สีม่วงลาเวนเดอร์', 'สีเขียวมิ้นต์', 'สีเหลืองทอง', 'สีฟ้าอ่อน', 'สีกุหลาบ', 'สีเบจ']
 DEFAULT_DIALOG = [
     {'q': '{name} รู้ไหมว่าวันนี้เราอยากเจอเธอที่สุดเลย เธออยากให้เราเริ่มเล่าเรื่องไหนก่อนดี',
      'options': ['วันแรกที่เราเจอกัน', 'ช่วงเวลาที่มีความสุขที่สุด'],
@@ -338,6 +344,7 @@ def migrate_db():
         'reminder_sent_at': 'TEXT',
         'occasion': "TEXT DEFAULT 'anniversary'",
         'dialog': 'TEXT',
+        'captions': 'TEXT',
     })
 
     # เว็บเดิมที่สร้างไว้ก่อนมีแพ็กเกจ -> ให้เป็น Pro ที่ใช้งานอยู่ (ไม่ล็อกของเดิม)
@@ -512,7 +519,36 @@ def theme_dict(theme):
     d['is_premium'] = bool(d.get('is_premium'))
     d['tagline'] = PREMIUM_TAGS.get(d.get('theme_code'), '')
     d['has_dialog'] = d.get('theme_code') in DIALOG_THEMES
+    d['has_captions'] = d.get('theme_code') in CAPTION_THEMES
     return d
+
+
+def clean_captions(raw, valid_urls=None):
+    """คำใต้รูป: dict {url: ข้อความ ไม่เกิน 40 ตัวอักษร}"""
+    if isinstance(raw, str):
+        try:
+            raw = json.loads(raw) if raw.strip() else {}
+        except ValueError:
+            return {}
+    if not isinstance(raw, dict):
+        return {}
+    out = {}
+    for k, v in raw.items():
+        if not isinstance(k, str) or not isinstance(v, str):
+            continue
+        if valid_urls is not None and k not in valid_urls:
+            continue
+        v = ' '.join(v.split())[:40]
+        if v:
+            out[k] = v
+    return out
+
+
+def captions_of(site):
+    try:
+        return clean_captions(site['captions']) if 'captions' in site.keys() else {}
+    except Exception:
+        return {}
 
 
 def clean_dialog(raw):
@@ -588,6 +624,8 @@ def site_state(site):
         'occasion': (site['occasion'] if 'occasion' in site.keys() and site['occasion'] in OCCASIONS else 'anniversary'),
         'letter_text': site['letter_text'] or '',
         'letter_sign': site['letter_sign'] or '',
+        'has_captions': bool(theme and theme['theme_code'] in CAPTION_THEMES),
+        'captions': captions_of(site),
         'has_dialog': bool(theme and theme['theme_code'] in DIALOG_THEMES),
         'dialog': dialog_of(site),
         'theme_id': site['theme_id'],
@@ -695,7 +733,7 @@ def demo_photos():
 #  5. แสดงเว็บเซอร์ไพรส์ (ใช้ธีมตามที่ลูกค้าเลือก)
 # =====================================================================
 def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls,
-                 banner=None, toolbar=None, occasion='anniversary', dialog=None):
+                 banner=None, toolbar=None, occasion='anniversary', dialog=None, captions=None):
     """urls: ลิสต์รูป (รูปแรก = รูปหน้าปก/รูปกลาง) ไม่วนซ้ำ ถ้าไม่มีรูปเลยใช้รูปตัวอย่าง"""
     urls = (urls or demo_photos())[:20]
     center, others = urls[0], urls[1:]
@@ -718,6 +756,8 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
         banner=banner,
         toolbar=toolbar,
         dialog=dialog or DEFAULT_DIALOG,
+        pairs=[(u, (captions or {}).get(u) or f'ความทรงจำที่ {i + 1}') for i, u in enumerate(urls[:MAX_PAIRS])],
+        extra_photos=urls[MAX_PAIRS:],
     )
 
 
@@ -726,7 +766,7 @@ def render_site(site, banner=None, toolbar=None):
     return render_theme(theme, site['partner_name'], site['start_date'], site['letter_text'],
                         site['letter_sign'], site_images(site), banner=banner, toolbar=toolbar,
                         occasion=site['occasion'] if 'occasion' in site.keys() else 'anniversary',
-                        dialog=dialog_of(site))
+                        dialog=dialog_of(site), captions=captions_of(site))
 
 
 # =====================================================================
@@ -783,7 +823,8 @@ def demo_page(theme_code):
               'ต่อจากนี้อีกกี่วัน อีกกี่เดือน อีกกี่ปี ขอให้ได้อยู่ด้วยกันแบบนี้ตลอดไปนะ')
     return render_theme(theme, 'ที่รัก', sample_date, letter, 'จากคนที่รักเธอ', demo_photos()[:n],
                         banner='ตัวอย่างเว็บ — ข้อมูลและรูปทั้งหมดเป็นของสมมติ',
-                        occasion=request.args.get('occasion', 'anniversary'))
+                        occasion=request.args.get('occasion', 'anniversary'),
+                        captions={u: DEMO_CAPTIONS[i] for i, u in enumerate(demo_photos()[:n][:MAX_PAIRS])})
 
 
 @app.route('/preview/<slug>')
@@ -1005,12 +1046,21 @@ def create_draft():
 
     slug = secrets.token_hex(8)
     images = write_photos(slug, blobs)
+    cap_map = {}
+    if theme['theme_code'] in CAPTION_THEMES:
+        try:
+            lst = json.loads(form.get('captions') or '[]')
+        except ValueError:
+            lst = []
+        if isinstance(lst, list):
+            cap_map = clean_captions({u: str(lst[i]) for i, u in enumerate(images) if i < len(lst)})
     db.execute('''INSERT INTO user_sites
         (slug, user_id, order_id, theme_id, partner_name, start_date, letter_text, letter_sign,
-         music_url, images_json, package, status, qr_style, occasion, dialog)
-        VALUES (?, ?, 0, ?, ?, ?, ?, ?, '', ?, ?, 'draft', 'plain', ?, ?)''',
+         music_url, images_json, package, status, qr_style, occasion, dialog, captions)
+        VALUES (?, ?, 0, ?, ?, ?, ?, ?, '', ?, ?, 'draft', 'plain', ?, ?, ?)''',
                (slug, user_id, theme['id'], fields['partner_name'], fields['start_date'],
-                fields['letter_text'], fields['letter_sign'], json.dumps(images, ensure_ascii=False), pkg_key, fields['occasion'], fields['dialog']))
+                fields['letter_text'], fields['letter_sign'], json.dumps(images, ensure_ascii=False), pkg_key, fields['occasion'], fields['dialog'],
+                json.dumps(cap_map, ensure_ascii=False)))
     db.commit()
     return jsonify({'status': 'success', 'slug': slug, 'preview_url': url_for('preview_page', slug=slug)})
 
@@ -1067,9 +1117,11 @@ def update_site(slug):
 
     db = get_db()
     db.execute('''UPDATE user_sites SET partner_name = ?, start_date = ?, letter_text = ?, letter_sign = ?,
-                  occasion = ?, dialog = ?, theme_id = ?, updated_at = CURRENT_TIMESTAMP WHERE slug = ?''',
+                  occasion = ?, dialog = ?, captions = ?, theme_id = ?, updated_at = CURRENT_TIMESTAMP WHERE slug = ?''',
                (fields['partner_name'], fields['start_date'], fields['letter_text'], fields['letter_sign'],
-                fields['occasion'], fields['dialog'], theme_id, slug))
+                fields['occasion'], fields['dialog'],
+                json.dumps(clean_captions(data.get('captions') if 'captions' in data else captions_of(site), set(site_images(site))), ensure_ascii=False),
+                theme_id, slug))
     db.commit()
     return jsonify({'status': 'success', 'message': 'บันทึกเรียบร้อยแล้ว'})
 

@@ -99,6 +99,15 @@
     pick: function () { tone({ f: 523, d: .25, v: .1, a: .004 }); tone({ f: 784, t: .08, d: .5, v: .1, a: .004 }); },
     drop: function () { tone({ f: 900, to: 420, d: .22, v: .1, a: .004 }); tone({ f: 1350, to: 630, t: .06, d: .2, v: .04, a: .004 }); },
     soft: function () { tone({ f: 660, to: 520, d: .14, v: .07, a: .004 }); },
+    /* เสียงงานเทศกาล / แมวกวัก (นุ่มๆ) */
+    meow: function () { tone({ f: 520, to: 880, d: .17, v: .08, a: .02 }); tone({ f: 880, to: 430, t: .16, d: .3, v: .08, a: .01 }); tone({ f: 1040, to: 860, t: .05, d: .25, v: .02 }); },
+    sad: function () { tone({ f: 392, to: 330, d: .4, type: 'triangle', v: .09, a: .02 }); tone({ f: 330, to: 247, t: .32, d: .6, type: 'triangle', v: .09, a: .02 }); },
+    taiko: function () { tone({ f: 150, to: 52, d: .4, v: .26, a: .003 }); noise({ f: 300, d: .12, v: .08, ft: 'lowpass', q: .5 }); },
+    hanabiUp: function () { tone({ f: 480, to: 1500, d: .55, v: .035, a: .05 }); },
+    hanabi: function () {
+      noise({ f: 900, to: 120, d: .55, v: .2, ft: 'lowpass', q: .6, a: .005 }); tone({ f: 120, to: 50, d: .35, v: .12 });
+      for (var i = 0; i < 7; i++) tone({ f: 2200 + Math.random() * 2600, t: .08 + i * .06, d: .08, v: .03, a: .002 });
+    },
     page: function () { noise({ f: 1400, to: 500, d: .35, v: .05, ft: 'lowpass', q: .3, a: .08 }); }
   };
   var pad = null;

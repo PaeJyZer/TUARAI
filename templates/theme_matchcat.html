@@ -1,0 +1,140 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Prompt:wght@300;400;500;600&family=Yusei+Magic&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/matchcat/style.css') }}">
+{% endblock %}
+{% block favicon %}🐱{% endblock %}
+{% block body_class %}theme-matchcat{% endblock %}
+{% block letter_eyebrow %}Maneki Matsuri · 招き猫祭{% endblock %}
+
+{# ถนนเกียวโต: ผนังเอียงตามมุมมอง #}
+{% macro win(side, x1, x2, u1, u2) -%}
+{%- set a = (x1 if side == 'l' else 800 - x1) -%}
+{%- set b = (x2 if side == 'l' else 800 - x2) -%}
+{%- set ya1 = 40 + 0.4286 * x1 -%}{%- set ha1 = 380 - 0.857 * x1 -%}
+{%- set ya2 = 40 + 0.4286 * x2 -%}{%- set ha2 = 380 - 0.857 * x2 -%}
+<polygon points="{{ a }},{{ ya1 + u1 * ha1 }} {{ b }},{{ ya2 + u1 * ha2 }} {{ b }},{{ ya2 + u2 * ha2 }} {{ a }},{{ ya1 + u2 * ha1 }}"/>
+{%- endmacro %}
+{% macro cat(cid) -%}
+<svg class="cat" id="{{ cid }}" viewBox="0 0 200 220" role="img" aria-label="แมวกวักนำโชค">
+  <defs><clipPath id="hc-{{ cid }}"><ellipse cx="100" cy="90" rx="62" ry="52"/></clipPath></defs>
+  <ellipse cx="100" cy="212" rx="62" ry="7" fill="rgba(0,0,0,.28)"/>
+  <g class="tail"><path d="M158 176 C190 170 196 140 178 128" fill="none" stroke="#2b1a2e" stroke-width="14" stroke-linecap="round"/><path d="M158 176 C190 170 196 140 178 128" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/></g>
+  <g class="body"><ellipse cx="100" cy="158" rx="58" ry="54" fill="#fff" stroke="#2b1a2e" stroke-width="4"/>
+    <path d="M52 150 C48 176 62 196 84 202 L84 150 Z" fill="#f6a04d" opacity=".95"/>
+    <rect x="66" y="128" width="68" height="16" rx="8" fill="#d7263d" stroke="#2b1a2e" stroke-width="3"/><circle cx="100" cy="150" r="9" fill="#ffd166" stroke="#2b1a2e" stroke-width="3"/><path d="M96 150 h8" stroke="#2b1a2e" stroke-width="2"/>
+    <g class="coin"><ellipse cx="140" cy="176" rx="19" ry="25" fill="#ffd166" stroke="#2b1a2e" stroke-width="3.5"/><ellipse cx="140" cy="176" rx="12" ry="17" fill="none" stroke="#c98d1a" stroke-width="2"/><text x="140" y="184" font-size="22" text-anchor="middle" fill="#a8641a" font-family="'Yusei Magic', serif">福</text></g>
+    <ellipse cx="136" cy="196" rx="15" ry="11" fill="#fff" stroke="#2b1a2e" stroke-width="3.5"/>
+  </g>
+  <g class="head">
+    <g class="ear ear-l"><polygon points="50,60 40,10 90,40" fill="#fff" stroke="#2b1a2e" stroke-width="4" stroke-linejoin="round"/><polygon points="55,50 50,24 76,42" fill="#ffb3c4"/></g>
+    <g class="ear ear-r"><polygon points="150,60 160,10 110,40" fill="#fff" stroke="#2b1a2e" stroke-width="4" stroke-linejoin="round"/><polygon points="145,50 150,24 124,42" fill="#ffb3c4"/></g>
+    <ellipse cx="100" cy="90" rx="62" ry="52" fill="#fff" stroke="#2b1a2e" stroke-width="4"/>
+    <g clip-path="url(#hc-{{ cid }})"><circle cx="58" cy="60" r="28" fill="#f6a04d"/><circle cx="150" cy="52" r="16" fill="#3a2a3e"/></g>
+    <ellipse cx="68" cy="106" rx="11" ry="7" fill="#ff8fab" opacity=".55"/><ellipse cx="132" cy="106" rx="11" ry="7" fill="#ff8fab" opacity=".55"/>
+    <g class="eyes e-open"><ellipse cx="78" cy="88" rx="7.5" ry="10" fill="#2b1a2e"/><ellipse cx="122" cy="88" rx="7.5" ry="10" fill="#2b1a2e"/><circle cx="80" cy="84" r="3" fill="#fff"/><circle cx="124" cy="84" r="3" fill="#fff"/></g>
+    <g class="eyes e-happy"><path d="M68 92 Q78 78 88 92" fill="none" stroke="#2b1a2e" stroke-width="5" stroke-linecap="round"/><path d="M112 92 Q122 78 132 92" fill="none" stroke="#2b1a2e" stroke-width="5" stroke-linecap="round"/></g>
+    <g class="eyes e-sad"><ellipse cx="78" cy="92" rx="8" ry="10" fill="#2b1a2e"/><ellipse cx="122" cy="92" rx="8" ry="10" fill="#2b1a2e"/><circle cx="80" cy="88" r="4" fill="#fff"/><circle cx="124" cy="88" r="4" fill="#fff"/><circle cx="76" cy="96" r="2" fill="#fff"/><circle cx="120" cy="96" r="2" fill="#fff"/></g>
+    <g class="brow brow-angry"><path d="M62 70 L90 80" stroke="#2b1a2e" stroke-width="6" stroke-linecap="round"/><path d="M138 70 L110 80" stroke="#2b1a2e" stroke-width="6" stroke-linecap="round"/></g>
+    <g class="brow brow-sad"><path d="M64 80 L90 70" stroke="#2b1a2e" stroke-width="5" stroke-linecap="round"/><path d="M136 80 L110 70" stroke="#2b1a2e" stroke-width="5" stroke-linecap="round"/></g>
+    <path class="nose" d="M95 102 L105 102 L100 108 Z" fill="#ff7a93" stroke="#2b1a2e" stroke-width="2" stroke-linejoin="round"/>
+    <path class="mouth m-smile" d="M100 108 Q93 118 85 111 M100 108 Q107 118 115 111" fill="none" stroke="#2b1a2e" stroke-width="3.5" stroke-linecap="round"/>
+    <g class="mouth m-open"><path d="M86 110 Q100 134 114 110 Z" fill="#c9374d" stroke="#2b1a2e" stroke-width="3.5" stroke-linejoin="round"/><path d="M93 122 Q100 128 107 122 Q100 118 93 122Z" fill="#ff8fab"/></g>
+    <path class="mouth m-frown" d="M88 120 Q100 108 112 120" fill="none" stroke="#2b1a2e" stroke-width="3.5" stroke-linecap="round"/>
+    <g class="mouth m-fang"><path d="M86 112 Q100 104 114 112" fill="none" stroke="#2b1a2e" stroke-width="3.5" stroke-linecap="round"/><polygon points="91,111 96,120 99,108" fill="#fff" stroke="#2b1a2e" stroke-width="2"/><polygon points="109,111 104,120 101,108" fill="#fff" stroke="#2b1a2e" stroke-width="2"/></g>
+    <g stroke="#2b1a2e" stroke-width="2.5" stroke-linecap="round" opacity=".7"><path d="M44 98 L22 92 M44 106 L22 108 M156 98 L178 92 M156 106 L178 108"/></g>
+    <path class="tear" d="M70 102 Q64 114 70 120 Q76 114 70 102Z" fill="#7cc6ff" stroke="#2b1a2e" stroke-width="1.5"/>
+  </g>
+  <g class="paw"><rect x="30" y="92" width="26" height="62" rx="13" fill="#fff" stroke="#2b1a2e" stroke-width="4" transform="rotate(-18 43 150)"/><g transform="rotate(-18 43 150)"><circle cx="43" cy="104" r="5" fill="#ffb3c4"/><circle cx="36" cy="97" r="2.6" fill="#ffb3c4"/><circle cx="43" cy="94" r="2.6" fill="#ffb3c4"/><circle cx="50" cy="97" r="2.6" fill="#ffb3c4"/></g></g>
+</svg>
+{%- endmacro %}
+
+{% block bg %}
+  <div class="night" aria-hidden="true"><i class="moon"></i></div>
+  <svg class="street" viewBox="0 0 800 450" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs><linearGradient id="road" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2438"/><stop offset="1" stop-color="#150d1e"/></linearGradient></defs>
+    <polygon points="210,130 590,130 800,450 0,450" fill="url(#road)"/>
+    <g fill="#241526"><polygon points="0,40 210,130 210,330 0,420"/><polygon points="800,40 590,130 590,330 800,420"/></g>
+    <g fill="#5b2a2f"><polygon points="0,0 210,118 210,134 0,40"/><polygon points="800,0 590,118 590,134 800,40"/></g>
+    <g class="glow">{% for x1, x2 in [(14,50),(66,100),(116,148),(164,190)] %}
+      {{ win('l', x1, x2, 0.28, 0.52) }}{{ win('r', x1, x2, 0.28, 0.52) }}{% endfor %}</g>
+    <g stroke="#241526" stroke-width="1.5" opacity=".8">{% for x in [32, 83, 132, 177] %}{% set top = 40 + 0.4286 * x %}{% set h = 380 - 0.857 * x %}
+      <line x1="{{ x }}" y1="{{ top + h * 0.28 }}" x2="{{ x }}" y2="{{ top + h * 0.52 }}"/><line x1="{{ 800 - x }}" y1="{{ top + h * 0.28 }}" x2="{{ 800 - x }}" y2="{{ top + h * 0.52 }}"/>{% endfor %}</g>
+    <g class="far"><rect x="388" y="150" width="4" height="40" fill="#d7263d"/><rect x="408" y="150" width="4" height="40" fill="#d7263d"/><rect x="380" y="146" width="40" height="5" rx="2" fill="#d7263d"/><rect x="384" y="156" width="32" height="3" fill="#d7263d"/>
+      <circle cx="400" cy="196" r="14" fill="rgba(255,190,90,.35)"/></g>
+  </svg>
+  <svg class="garland" viewBox="0 0 800 300" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+    {% for base, ph in [(10, 0), (110, 1)] %}
+    <path d="M0 {{ base }} Q400 {{ base + 120 }} 800 {{ base }}" fill="none" stroke="#c9a14a" stroke-width="1.6"/>
+    {% for k in range(9) %}{% set t = (k + 0.5) / 9 %}
+    <g class="chochin" style="--d: {{ (k * 0.37 + ph * 0.5) }}s" transform="translate({{ t * 800 }} {{ base + 120 * 2 * t * (1 - t) }})">
+      <rect x="-3" y="-4" width="6" height="7" fill="#2b1a2e"/><ellipse cx="0" cy="14" rx="11" ry="14" fill="#e5383b"/><ellipse cx="0" cy="14" rx="11" ry="14" fill="url(#lanGlow)" opacity=".6"/>
+      <path d="M-9 8 Q0 11 9 8 M-11 14 Q0 17 11 14 M-9 20 Q0 23 9 20" stroke="#8e1b22" stroke-width="1.2" fill="none"/><rect x="-4" y="27" width="8" height="3" fill="#2b1a2e"/></g>
+    {% endfor %}{% endfor %}
+    <defs><radialGradient id="lanGlow"><stop offset="0" stop-color="#ffe9a8"/><stop offset="1" stop-color="#e5383b" stop-opacity="0"/></radialGradient></defs>
+  </svg>
+  <canvas id="hanabi" aria-hidden="true"></canvas>
+{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate" data-manual-gate="1500">
+    <div class="noren noren-l"><span>福</span></div><div class="noren noren-r"><span>祭</span></div>
+    <div class="gate-box">
+      <p class="gate-eyebrow">Maneki Matsuri</p>
+      <h1 class="gate-title">งานเทศกาลของ {{ partner_name }}</h1>
+      <button type="button" class="gate-cat" id="gateCat" aria-label="แตะแมวกวักให้กวักมือ">{{ cat('catGate') }}</button>
+      <div class="gate-dots" id="gateDots"><i></i><i></i><i></i></div>
+      <p class="gate-hint" id="gateHint">แตะแมวกวักนำโชค 3 ครั้ง เพื่อเปิดม่านเข้างาน 🏮</p>
+    </div>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <header class="top">
+    <p class="eyebrow">{{ occ.en }}</p>
+    <h1 class="title">เกมจับคู่ความทรงจำ</h1>
+    <p class="sub">ของ <b>{{ partner_name }}</b> · {{ occ.wish }}</p>
+    <div class="steps" data-steps data-labels="เข้างาน|จับคู่|ชมภาพ"
+         data-hints="เข้างานเทศกาลแล้ว!|ลากเส้นโยงโคมไฟข้อความไปหารูปที่ตรงกัน (หรือแตะโคมไฟแล้วแตะรูป) จับคู่ให้ครบทุกคู่|แตะรูปบนผนังความทรงจำสักรูปเพื่อปลดล็อกจดหมาย|ปลดล็อกครบแล้ว เปิดจดหมายจากแมวนำโชคได้เลย"></div>
+  </header>
+
+  <section class="stall" id="stall">
+    <div class="stall-bar"><span class="pill" id="roundLbl">รอบ 1/1</span><span class="pill gold">🪙 <b id="coinLbl">0</b>/{{ pairs|length }}</span></div>
+    <div class="board" id="board">
+      <ul class="col col-l" id="colL" aria-label="ข้อความ"></ul>
+      <svg class="wires" id="wires" aria-hidden="true"></svg>
+      <ul class="col col-r" id="colR" aria-label="รูปภาพ"></ul>
+    </div>
+    <p class="board-hint">ลากเส้นจากโคมไฟไปหารูปที่ตรงกัน หรือแตะโคมไฟแล้วแตะรูป · ผิดก็โยงใหม่ได้ไม่จำกัด 😼</p>
+  </section>
+  <script type="application/json" id="pairData">{{ pairs|tojson }}</script>
+
+  <section class="wall lockable" id="wall">
+    <div class="lock-note"><b>🔒</b><span>จับคู่ให้ครบก่อน แล้วผนังความทรงจำจะเปิด</span></div>
+    <h2 class="sec-title">ผนังความทรงจำ</h2>
+    <div class="wall-grid">
+      {% for u, c in pairs %}
+      <figure class="pol reveal" data-photo style="--i: {{ loop.index0 }}"><img src="{{ u }}" alt="{{ c }}" loading="lazy"><figcaption>{{ c }}</figcaption></figure>
+      {% endfor %}
+      {% for u in extra_photos %}
+      <figure class="pol reveal" data-photo style="--i: {{ pairs|length + loop.index0 }}"><img src="{{ u }}" alt="ความทรงจำ" loading="lazy"></figure>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="finale">
+    <button class="cta" type="button" data-letter>💌 รับจดหมายจากแมวนำโชค</button>
+    <p class="sec-note">ต้องปลดล็อกให้ครบทั้ง 3 ขั้นก่อนนะ</p>
+  </section>
+  <footer class="foot"><p>ขอให้โชคดีและมีความสุขกับเธอไปทุกเทศกาล 🏮</p></footer>
+
+  <div class="mascot" id="mascot" aria-live="polite"><div class="say" id="catSay" hidden></div>{{ cat('catMain') }}</div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='themes/shared/premium.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/matchcat/matchcat.js') }}"></script>
+{% endblock %}

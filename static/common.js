@@ -197,6 +197,14 @@ window.TU = (function () {
                 });
                 box.appendChild(img);
                 box.appendChild(del);
+                if (opts.captions) {
+                    box.classList.add('has-cap');
+                    var ci = document.createElement('input');
+                    ci.type = 'text'; ci.className = 'cap-in'; ci.maxLength = 40; ci.value = p.cap || '';
+                    ci.placeholder = i < 8 ? 'คำใต้รูป เช่น วันเกิด' : '(ไม่ต้องใส่)';
+                    ci.addEventListener('input', function () { p.cap = ci.value; });
+                    box.appendChild(ci);
+                }
                 if (i === 0) {
                     var tag = document.createElement('span');
                     tag.className = 'cover-tag';
@@ -239,6 +247,7 @@ window.TU = (function () {
         render();
         return {
             blobs: function () { return items.map(function (p) { return p.blob; }); },
+            captions: function () { return items.map(function (p) { return (p.cap || '').trim(); }); },
             count: function () { return items.length; },
             trim: function () {           // ตัดรูปส่วนเกินเมื่อเปลี่ยนแพ็กเกจเป็นแบบที่รูปน้อยกว่า
                 var max = opts.getMax();
