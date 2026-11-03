@@ -104,6 +104,5 @@ body.theme-palace { background: #2a1936; overflow-x: hidden; }
 .steps-list li { text-shadow: 0 1px 6px rgba(30,10,40,.9); }
 .palace { height: 38vh; opacity: .9; }
 @media (max-width: 600px) { .palace { height: 30vh; } }
-
-/* ฟอนต์ไทย */
-:root, body { --font-display: "Shippori Mincho","Noto Serif Thai",serif; --font-body: "Kodchasan",system-ui,sans-serif; }
+/* ฟอนต์ไทย (ชุดเดียวกันทุกเว็บ: หัวข้อ Noto Serif Thai / เนื้อหา Kodchasan) */
+:root, body { --font-display: "Shippori Mincho","Noto Serif Thai",serif; --font-body: "Kodchasan",system-ui,sans-serif; --font-hand: "Kodchasan",system-ui,sans-serif; }

@@ -67,6 +67,5 @@ body.theme-musicbox { background: radial-gradient(100% 70% at 50% 0%, #4a2a16 0%
 .cta { padding: 14px 30px; border-radius: 999px; border: 1px solid var(--accent); background: linear-gradient(135deg, #e8c27a, #b98a3e); color: #3a1d0b; font-size: 17px; font-weight: 600; box-shadow: 0 8px 26px rgba(232,194,122,.35); }
 .foot { text-align: center; padding: 40px 16px 90px; color: var(--muted); font-family: var(--font-display); font-style: italic; font-size: 20px; }
 @media (max-width: 520px) { .sleeve-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 10px; } .pkey { height: 130px; } .wind-key { right: -28px; } }
-
-/* ฟอนต์ไทย */
-:root, body { --font-display: "Cormorant Garamond","Noto Serif Thai",Georgia,serif; --font-body: "Sarabun",system-ui,sans-serif; }
+/* ฟอนต์ไทย (ชุดเดียวกันทุกเว็บ: หัวข้อ Noto Serif Thai / เนื้อหา Kodchasan) */
+:root, body { --font-display: "Cormorant Garamond","Noto Serif Thai",serif; --font-body: "Kodchasan",system-ui,sans-serif; --font-hand: "Kodchasan",system-ui,sans-serif; }

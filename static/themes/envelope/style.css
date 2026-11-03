@@ -67,6 +67,5 @@ body.opening .letter-inside { transform: translateY(-62%); }
 .letter-sign { font-family: var(--font-hand); color: #a8321f; }
 .close-btn { color: #3b2a1e; z-index: 4; }
 .game-card { border-radius: 4px; }
-
-/* ฟอนต์ไทย */
-:root, body { --font-display: "Special Elite","Mali","Courier New",monospace; --font-body: "Mali",system-ui,sans-serif; --font-hand: "Mali",sans-serif; }
+/* ฟอนต์ไทย (ชุดเดียวกันทุกเว็บ: หัวข้อ Noto Serif Thai / เนื้อหา Kodchasan) */
+:root, body { --font-display: "Special Elite","Noto Serif Thai",serif; --font-body: "Kodchasan",system-ui,sans-serif; --font-hand: "Kodchasan",system-ui,sans-serif; }

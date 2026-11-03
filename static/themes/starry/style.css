@@ -78,6 +78,5 @@ body.opening .star-glow { transform: scale(18); opacity: 0; }
 /* จดหมายในธีมนี้ */
 .letter-card { border: 1px solid rgba(255, 217, 138, .35); background: linear-gradient(160deg, #141846, #090c26); box-shadow: 0 0 80px rgba(120, 130, 255, .25); }
 .letter-body { font-size: 16px; }
-
-/* ฟอนต์ไทย */
-:root, body { --font-display: "Cormorant Garamond","Noto Serif Thai",Georgia,serif; --font-body: "Sarabun",system-ui,sans-serif; }
+/* ฟอนต์ไทย (ชุดเดียวกันทุกเว็บ: หัวข้อ Noto Serif Thai / เนื้อหา Kodchasan) */
+:root, body { --font-display: "Cormorant Garamond","Noto Serif Thai",serif; --font-body: "Kodchasan",system-ui,sans-serif; --font-hand: "Kodchasan",system-ui,sans-serif; }

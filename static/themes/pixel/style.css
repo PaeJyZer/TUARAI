@@ -2,7 +2,7 @@
 :root {
   --bg: #0d0b24; --ink: #f1f0ff; --muted: #a9a4e0; --accent: #ffd23f;
   --card: #15123a; --card-ink: #f1f0ff;
-  --font-px: "Press Start 2P", "Chakra Petch", "Courier New", monospace;
+  --font-px: "Press Start 2P", "Noto Serif Thai", "Courier New", monospace;
   --font-display: "Press Start 2P", "Courier New", monospace;
 }
 body.theme-pixel { background: #0d0b24; color: var(--ink); font-family: var(--font-body); }
@@ -62,6 +62,5 @@ body.opening .gate { animation: tvOff .9s steps(8) forwards; }
 .game-hint, .game-status { font-size: 13px; }
 .game-bar { border-radius: 0; height: 10px; } .game-bar span { background: repeating-linear-gradient(90deg, var(--accent) 0 8px, #ff6ba8 8px 10px); }
 .game-stage { border-radius: 0; box-shadow: 0 0 0 4px #7fe3ff; }
-
-/* ฟอนต์ไทย */
-:root, body { --font-display: "Press Start 2P","Chakra Petch","Courier New",monospace; --font-body: "Prompt",system-ui,sans-serif; }
+/* ฟอนต์ไทย (ชุดเดียวกันทุกเว็บ: หัวข้อ Noto Serif Thai / เนื้อหา Kodchasan) */
+:root, body { --font-display: "Press Start 2P","Noto Serif Thai",serif; --font-body: "Kodchasan",system-ui,sans-serif; --font-hand: "Kodchasan",system-ui,sans-serif; }

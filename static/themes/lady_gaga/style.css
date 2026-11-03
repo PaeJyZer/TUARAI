@@ -884,5 +884,5 @@ body:has(.flower-pop) .float-heart svg {
 .low-power .bloom-item.is-flower svg {
   animation: none;
 }
-/* ฟอนต์ไทย */
-:root, body { --font-display: "Playfair Display","Noto Serif Thai",Georgia,serif; --font-body: "Sarabun",system-ui,sans-serif; }
+/* ฟอนต์ไทย (ชุดเดียวกันทุกเว็บ: หัวข้อ Noto Serif Thai / เนื้อหา Kodchasan) */
+:root, body { --font-display: "Playfair Display","Noto Serif Thai",serif; --font-body: "Kodchasan",system-ui,sans-serif; --font-hand: "Kodchasan",system-ui,sans-serif; }

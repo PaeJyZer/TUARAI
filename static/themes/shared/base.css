@@ -8,7 +8,7 @@
   --accent: #ffd479;
   --card: #15152a;
   --card-ink: #f4eefc;
-  --font-body: "Sarabun", "IBM Plex Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Kodchasan", "IBM Plex Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Playfair Display", "Noto Serif Thai", Georgia, serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }

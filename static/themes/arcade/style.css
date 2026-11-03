@@ -68,6 +68,5 @@ body.theme-arcade { background: #07040f; }
 .foot { text-align: center; padding: 30px 16px 90px; font-family: var(--font-display); font-size: 9px; color: var(--muted); line-height: 2; }
 .letter-title, .day-counter .num { font-family: var(--font-display) !important; }
 .letter-title { font-size: 18px !important; line-height: 1.5; }
-
-/* ฟอนต์ไทย */
-:root, body { --font-display: "Press Start 2P","Chakra Petch",monospace; --font-body: "Prompt",system-ui,sans-serif; }
+/* ฟอนต์ไทย (ชุดเดียวกันทุกเว็บ: หัวข้อ Noto Serif Thai / เนื้อหา Kodchasan) */
+:root, body { --font-display: "Press Start 2P","Noto Serif Thai",serif; --font-body: "Kodchasan",system-ui,sans-serif; --font-hand: "Kodchasan",system-ui,sans-serif; }

@@ -71,6 +71,5 @@ body.opening .ripple { display: none; }
 .letter-sign { color: #8a4326; font-family: var(--font-hand); }
 .close-btn { color: #5a3a22; }
 .game-card { background: linear-gradient(#fbeed1, #f3dbab); }
-
-/* ฟอนต์ไทย */
-:root, body { --font-display: "Playfair Display","Noto Serif Thai",Georgia,serif; --font-body: "Sarabun",system-ui,sans-serif; --font-hand: "Mali",sans-serif; }
+/* ฟอนต์ไทย (ชุดเดียวกันทุกเว็บ: หัวข้อ Noto Serif Thai / เนื้อหา Kodchasan) */
+:root, body { --font-display: "Playfair Display","Noto Serif Thai",serif; --font-body: "Kodchasan",system-ui,sans-serif; --font-hand: "Kodchasan",system-ui,sans-serif; }

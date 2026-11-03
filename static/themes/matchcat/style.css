@@ -107,3 +107,5 @@ body.opened .mascot { opacity: 1; transform: none; }
 body:not(.opened) .mascot { pointer-events: none; }
 @media (max-width: 520px) { .top { padding-top: 96px; } .col { width: 44%; } .board { gap: 12px; padding: 12px 8px; } .mascot { width: 84px; height: 92px; } .say { left: 58px; bottom: 82px; } .moon { width: 44px; height: 44px; } }
 @media (prefers-reduced-motion: reduce) { .chochin, .cat .paw, .cat .tail, .cat .head, .street .glow polygon { animation: none; } }
+/* ฟอนต์ไทย (ชุดเดียวกันทุกเว็บ: หัวข้อ Noto Serif Thai / เนื้อหา Kodchasan) */
+:root, body { --font-display: "Noto Serif Thai",serif; --font-body: "Kodchasan",system-ui,sans-serif; --font-hand: "Kodchasan",system-ui,sans-serif; }
