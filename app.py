@@ -82,8 +82,8 @@ PACKAGES = {
         'can_switch_theme': False,
     },
 }
-DEFAULT_PRICES = {'basic': 199.0, 'pro': 349.0}   # ใช้ถ้าธีมไม่ได้ตั้งราคาเฉพาะไว้ในตาราง themes
-RENEW_PRICE = 99.0                                # ราคาต่ออายุ Basic ต่อ 1 ปี
+DEFAULT_PRICES = {'basic': 129.0, 'pro': 229.0}   # ใช้ถ้าธีมไม่ได้ตั้งราคาเฉพาะไว้ในตาราง themes
+RENEW_PRICE = 59.0                                # ราคาต่ออายุ Basic ต่อ 1 ปี
 RENEW_DAYS = 365
 MIN_PHOTOS = 4                                    # ขั้นต่ำรูปต่อเว็บ
 MAX_SIDE = 1600                                   # ย่อรูปให้ด้านยาวสุดไม่เกินกี่พิกเซล
@@ -235,22 +235,22 @@ EXTRA_THEMES = [
 PREMIUM_THEMES = [
     ('birthday_cake_v1', 'Birthday Cake Party',
      'จุดเทียนบนเค้ก เป่าแล้วคอนเฟตติระเบิด ป๊อปบอลลูนปลดล็อกรูป พร้อมเสียงเอฟเฟกต์ทุกการแตะ',
-     'theme_previews/birthday_cake.jpg', 'theme_cake.html', 229, 499, 'จุดเทียน · เป่า · ป๊อปบอลลูน'),
+     'theme_previews/birthday_cake.jpg', 'theme_cake.html', 149, 299, 'จุดเทียน · เป่า · ป๊อปบอลลูน'),
     ('arcade_love_v1', 'Neon Arcade Cabinet',
      'ตู้เกมอาร์เคดนีออน หยอดเหรียญ เล่นเกมรับหัวใจ ตารางคะแนนสูงสุด ด่านรูปและบอสจดหมาย',
-     'theme_previews/arcade_love.jpg', 'theme_arcade.html', 229, 499, 'หยอดเหรียญ · เกมรับหัวใจ · บอสจดหมาย'),
+     'theme_previews/arcade_love.jpg', 'theme_arcade.html', 149, 299, 'หยอดเหรียญ · เกมรับหัวใจ · บอสจดหมาย'),
     ('space_cruise_v1', 'Galaxy Cruise',
      'ยานอวกาศพุ่งทะลุกาแล็กซี กดค้างเพื่อจุดเครื่องยนต์ วาร์ปข้ามดวงดาว สแกนดาวเคราะห์ จอโฮโลแกรมรูป',
-     'theme_previews/space_cruise.jpg', 'theme_space.html', 229, 499, 'กดค้างจุดเครื่อง · วาร์ป · สแกนดาว'),
+     'theme_previews/space_cruise.jpg', 'theme_space.html', 149, 299, 'กดค้างจุดเครื่อง · วาร์ป · สแกนดาว'),
     ('music_box_v1', 'Music Box & Vinyl',
      'ไขลานกล่องดนตรี นางรำหมุน เล่นโน้ตเปียโนเป็นทำนองเฉพาะ แผ่นเสียงหมุน รูปเป็นปกแผ่นเสียง',
-     'theme_previews/music_box.jpg', 'theme_musicbox.html', 229, 499, 'ไขลาน · เล่นโน้ต · แผ่นเสียง'),
+     'theme_previews/music_box.jpg', 'theme_musicbox.html', 149, 299, 'ไขลาน · เล่นโน้ต · แผ่นเสียง'),
     ('hanami_night_v1', 'Hanami Night Lanterns',
      'ค่ำคืนใต้ต้นซากุระ จุดโคมไฟกระดาษทีละดวง กลีบซากุระพัดตามนิ้ว เขย่าต้นไม้ โอมิคุจิคำอวยพร',
-     'theme_previews/hanami_night.jpg', 'theme_hanami.html', 229, 499, 'จุดโคมไฟ · เขย่าซากุระ · โอมิคุจิ'),
+     'theme_previews/hanami_night.jpg', 'theme_hanami.html', 149, 299, 'จุดโคมไฟ · เขย่าซากุระ · โอมิคุจิ'),
     ('palace_sakura_v1', 'Sakura Palace Story',
      'วิชวลโนเวลในวังซากุระ คุยกับแฟนผ่านบทสนทนาที่คุณเขียนเอง ให้เขา/เธอเลือกคำตอบ มีสรุปคำตอบท้ายเรื่อง เสียงนุ่มสบายหู',
-     'theme_previews/palace_sakura.jpg', 'theme_palace.html', 249, 549, 'วิชวลโนเวล · เลือกคำตอบ · ซากุระล้อมวัง'),
+     'theme_previews/palace_sakura.jpg', 'theme_palace.html', 179, 349, 'วิชวลโนเวล · เลือกคำตอบ · ซากุระล้อมวัง'),
 ]
 DIALOG_THEMES = {'palace_sakura_v1'}
 DEFAULT_DIALOG = [
@@ -362,12 +362,17 @@ def migrate_db():
         if not conn.execute('SELECT 1 FROM themes WHERE theme_code = ?', (code,)).fetchone():
             conn.execute('''INSERT INTO themes (name, description, preview_img, theme_code, template_file, sort_order)
                             VALUES (?, ?, ?, ?, ?, ?)''', (name, desc, preview, code, tpl, order))
-    # ธีมพรีเมียม: ตั้งราคาเฉพาะธีมตอนเพิ่มครั้งแรก (แก้ราคาทีหลังในตาราง themes ได้ จะไม่ถูกทับ)
+    # ธีมพรีเมียม: เพิ่มธีมถ้ายังไม่มี และซิงก์ราคาจากโค้ดทุกครั้งที่เริ่มระบบ
     for order, (code, name, desc, preview, tpl, pb, pp, _tag) in enumerate(PREMIUM_THEMES, start=101):
         if not conn.execute('SELECT 1 FROM themes WHERE theme_code = ?', (code,)).fetchone():
             conn.execute('''INSERT INTO themes (name, description, preview_img, theme_code, template_file, sort_order, price_basic, price_pro)
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', (name, desc, preview, code, tpl, order, pb, pp))
         conn.execute('UPDATE themes SET is_premium = 1 WHERE theme_code = ?', (code,))
+        # ราคาในโค้ดเป็นตัวหลัก: ปรับตัวเลขในโค้ดแล้ว push ราคาจะอัปเดตเอง (ออเดอร์เก่าไม่เปลี่ยน)
+        conn.execute('UPDATE themes SET price_basic = ?, price_pro = ? WHERE theme_code = ?', (pb, pp, code))
+    prem_codes = [t[0] for t in PREMIUM_THEMES]
+    conn.execute('UPDATE themes SET price_basic = ?, price_pro = ? WHERE theme_code NOT IN (%s)' % ','.join('?' * len(prem_codes)),
+                 (DEFAULT_PRICES['basic'], DEFAULT_PRICES['pro'], *prem_codes))
     conn.execute("UPDATE themes SET template_file = 'theme_100.html' WHERE template_file IS NULL")
     conn.execute('UPDATE themes SET is_active = 1 WHERE is_active IS NULL')
     conn.execute('UPDATE themes SET price_basic = ? WHERE price_basic IS NULL', (DEFAULT_PRICES['basic'],))
