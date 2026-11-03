@@ -61,7 +61,11 @@
     },
     reset: function () { ov.classList.remove('lx-intro'); card.classList.remove('lx-in'); cb = null; busy = false; }
   };
-  shell.addEventListener('click', function () {
+  stage.addEventListener('click', function (e) {
+    if (e.target.closest('.lx-x')) return;
+    openIt();
+  });
+  function openIt() {
     if (busy || !cb) return; busy = true;
     var f = cb; cb = null;
     stage.querySelector('.lx-shell > *').classList.add('open'); stage.classList.add('go');
@@ -70,5 +74,5 @@
       ov.classList.remove('lx-intro'); void card.offsetWidth; card.classList.add('lx-in');
       f();
     }, cfg.shell === 'env' ? 900 : 850);
-  });
+  }
 })();

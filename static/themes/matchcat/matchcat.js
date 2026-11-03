@@ -122,7 +122,16 @@
 
   function pt(e) { var b = board.getBoundingClientRect(); return { x: e.clientX - b.left, y: e.clientY - b.top }; }
   board.addEventListener('pointerdown', function (e) {
-    var it = e.target.closest('.it'); if (!it || it.classList.contains('done') || locked || finished) return;
+    var it = e.target.closest('.it');
+    if (!it) { /* แตะพลาดใกล้ๆ โคม/รูป ให้ถือว่าเลือกอันที่ใกล้ที่สุด (รัศมี 26px) */
+      var bd = 26, bx = null;
+      [].forEach.call(board.querySelectorAll('.it:not(.done)'), function (x) {
+        var r = x.getBoundingClientRect(), dd = Math.hypot(Math.max(r.left - e.clientX, 0, e.clientX - r.right), Math.max(r.top - e.clientY, 0, e.clientY - r.bottom));
+        if (dd < bd) { bd = dd; bx = x; }
+      });
+      it = bx;
+    }
+    if (!it || it.classList.contains('done') || locked || finished) return;
     e.preventDefault(); lastAct = Date.now();
     drag = { it: it, sx: e.clientX, sy: e.clientY, moved: false, p: null };
     it.classList.add('hold'); TUSfx.play('soft');

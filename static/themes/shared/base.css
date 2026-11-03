@@ -126,3 +126,8 @@ body.opened .main { display: block; animation: mainIn 1s ease both; }
 .game-status { margin-top: 8px; min-height: 22px; font-size: 14px; }
 .game-skip { margin-top: 8px; appearance: none; border: 0; background: transparent; color: inherit; opacity: .65; font-size: 13px; text-decoration: underline; padding: 6px 10px; }
 .game-skip:hover { opacity: 1; }
+
+/* ปุ่มกดง่ายขึ้น */
+.cta, .stamp-btn, .letter-btn { min-height: 52px; min-width: 52px; touch-action: manipulation; }
+button, [data-photo] { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.close-btn { width: 48px; height: 48px; }
