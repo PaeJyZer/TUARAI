@@ -128,6 +128,47 @@ window.TU = (function () {
         return h > 0 ? h + ' ชม. ' + m + ' นาที' : m + ' นาที';
     }
 
+
+    // ตัวแก้ไขบทสนทนา (ธีมวิชวลโนเวล): คำถาม + ตัวเลือก 2-4 ข้อ + คำตอบของเรา
+    function dialogEditor(root, items) {
+        var MAXQ = 6, locked = false;
+        var data = (items && items.length ? items : []).map(function (x) {
+            return { q: x.q || '', options: (x.options || []).slice(), reply: x.reply || '' };
+        });
+        function collect() {
+            var out = [];
+            root.querySelectorAll('.dlg-item').forEach(function (el) {
+                var opts = [].map.call(el.querySelectorAll('.dlg-opt'), function (i) { return i.value.trim(); }).filter(Boolean);
+                out.push({ q: el.querySelector('.dlg-q').value.trim(), options: opts, reply: el.querySelector('.dlg-reply').value.trim() });
+            });
+            return out;
+        }
+        function render() {
+            var h = '<p class="photo-hint">ใส่ {name} ตรงไหนก็ได้ ระบบจะเปลี่ยนเป็นชื่อแฟนให้ (ตอบได้ 2-4 ตัวเลือกต่อคำถาม สูงสุด ' + MAXQ + ' คำถาม)</p>';
+            data.forEach(function (d, i) {
+                h += '<div class="dlg-item"><div class="dlg-head"><b>คำถามที่ ' + (i + 1) + '</b>' +
+                    '<button type="button" class="btn-small dlg-del" data-i="' + i + '">ลบ</button></div>' +
+                    '<textarea class="dlg-q" rows="2" maxlength="160" placeholder="เช่น ถ้าไปเที่ยวด้วยกัน อยากไปไหน">' + escapeHtml(d.q) + '</textarea>';
+                for (var k = 0; k < 4; k++) {
+                    h += '<input type="text" class="dlg-opt" maxlength="60" placeholder="ตัวเลือกที่ ' + (k + 1) + (k < 2 ? ' (จำเป็น)' : ' (ไม่ใส่ก็ได้)') + '" value="' + escapeHtml(d.options[k] || '') + '">';
+                }
+                h += '<input type="text" class="dlg-reply" maxlength="160" placeholder="คำที่เราตอบหลังเขาเลือก (ไม่ใส่ก็ได้)" value="' + escapeHtml(d.reply) + '"></div>';
+            });
+            h += '<button type="button" class="btn-small dlg-add"' + (data.length >= MAXQ ? ' disabled' : '') + '>+ เพิ่มคำถาม</button>';
+            root.innerHTML = h;
+            root.querySelectorAll('input,textarea,button').forEach(function (el) { el.disabled = locked || (el.classList.contains('dlg-add') && data.length >= MAXQ); });
+        }
+        root.addEventListener('click', function (e) {
+            if (locked) return;
+            var del = e.target.closest('.dlg-del');
+            if (del) { data = collect(); data.splice(+del.dataset.i, 1); render(); }
+            if (e.target.closest('.dlg-add')) { data = collect(); if (data.length < MAXQ) data.push({ q: '', options: ['', ''], reply: '' }); render(); }
+        });
+        render();
+        return { get: function () { return collect().filter(function (d) { return d.q && d.options.length >= 2; }); },
+                 lock: function (v) { locked = !!v; data = collect(); render(); } };
+    }
+
     function money(n) {
         return Number(n).toLocaleString('th-TH', { maximumFractionDigits: 0 });
     }
@@ -211,6 +252,6 @@ window.TU = (function () {
     return {
         escapeHtml: escapeHtml, showAlert: showAlert, api: api, postJson: postJson,
         shrinkMany: shrinkMany, copyText: copyText, fmtDate: fmtDate, fmtRemain: fmtRemain,
-        money: money, photoPicker: photoPicker
+        money: money, photoPicker: photoPicker, dialogEditor: dialogEditor
     };
 })();

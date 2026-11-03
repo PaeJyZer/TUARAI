@@ -171,6 +171,16 @@ def get_db():
     return g.db
 
 
+@app.before_request
+def drop_stale_login():
+    """ถ้าคุกกี้ล็อกอินเก่าอ้างถึงผู้ใช้ที่ไม่มีในฐานข้อมูลแล้ว (เช่นฐานข้อมูลถูกรีเซ็ต) ให้ล้างออก
+    กันหน้าเว็บเด้งวนไปมาระหว่างหน้าแรกกับแดชบอร์ด"""
+    uid = session.get('user_id')
+    if uid and not request.path.startswith('/static/'):
+        if not get_db().execute('SELECT 1 FROM users WHERE id = ?', (uid,)).fetchone():
+            session.pop('user_id', None)
+
+
 @app.teardown_appcontext
 def close_db(exc=None):
     db = g.pop('db', None)
@@ -238,7 +248,26 @@ PREMIUM_THEMES = [
     ('hanami_night_v1', 'Hanami Night Lanterns',
      'ค่ำคืนใต้ต้นซากุระ จุดโคมไฟกระดาษทีละดวง กลีบซากุระพัดตามนิ้ว เขย่าต้นไม้ โอมิคุจิคำอวยพร',
      'theme_previews/hanami_night.jpg', 'theme_hanami.html', 229, 499, 'จุดโคมไฟ · เขย่าซากุระ · โอมิคุจิ'),
+    ('palace_sakura_v1', 'Sakura Palace Story',
+     'วิชวลโนเวลในวังซากุระ คุยกับแฟนผ่านบทสนทนาที่คุณเขียนเอง ให้เขา/เธอเลือกคำตอบ มีสรุปคำตอบท้ายเรื่อง เสียงนุ่มสบายหู',
+     'theme_previews/palace_sakura.jpg', 'theme_palace.html', 249, 549, 'วิชวลโนเวล · เลือกคำตอบ · ซากุระล้อมวัง'),
 ]
+DIALOG_THEMES = {'palace_sakura_v1'}
+DEFAULT_DIALOG = [
+    {'q': '{name} รู้ไหมว่าวันนี้เราอยากเจอเธอที่สุดเลย เธออยากให้เราเริ่มเล่าเรื่องไหนก่อนดี',
+     'options': ['วันแรกที่เราเจอกัน', 'ช่วงเวลาที่มีความสุขที่สุด'],
+     'reply': 'เรื่องนั้นเราก็จำได้ไม่เคยลืมเลย'},
+    {'q': 'ถ้าได้ไปเที่ยวด้วยกันตอนนี้ เธออยากไปที่ไหนมากที่สุด',
+     'options': ['ทะเลเงียบๆ', 'ภูเขาอากาศเย็น', 'เมืองใหญ่ไฟสวยๆ'],
+     'reply': 'โอเค จดไว้แล้ว เดี๋ยวพาไปแน่นอน'},
+    {'q': 'สิ่งที่เธออยากให้เราทำให้บ่อยขึ้นคืออะไรเอ่ย',
+     'options': ['โทรหากันบ่อยๆ', 'ไปกินข้าวด้วยกัน', 'กอดแน่นๆ'],
+     'reply': 'รับทราบ เราจะพยายามให้ดีที่สุดเลยนะ'},
+    {'q': 'สุดท้ายนี้ เธออยากให้เรากับเธอเป็นแบบนี้ไปอีกนานแค่ไหน',
+     'options': ['ไปตลอดเลย', 'ไปทุกๆ ปีเลย'],
+     'reply': 'ขอบคุณที่ตอบนะ ตามเรามาอ่านจดหมายกันเลย'},
+]
+
 
 
 def migrate_db():
@@ -308,6 +337,7 @@ def migrate_db():
         'qr_style': "TEXT DEFAULT 'plain'",
         'reminder_sent_at': 'TEXT',
         'occasion': "TEXT DEFAULT 'anniversary'",
+        'dialog': 'TEXT',
     })
 
     # เว็บเดิมที่สร้างไว้ก่อนมีแพ็กเกจ -> ให้เป็น Pro ที่ใช้งานอยู่ (ไม่ล็อกของเดิม)
@@ -476,7 +506,38 @@ def theme_dict(theme):
     d['prices'] = theme_prices(theme)
     d['is_premium'] = bool(d.get('is_premium'))
     d['tagline'] = PREMIUM_TAGS.get(d.get('theme_code'), '')
+    d['has_dialog'] = d.get('theme_code') in DIALOG_THEMES
     return d
+
+
+def clean_dialog(raw):
+    """ตรวจบทสนทนาจากลูกค้า: ไม่เกิน 6 คำถาม ตัวเลือก 2-4 ข้อ คืนค่า list (ว่าง = ไม่ได้ใส่)"""
+    if isinstance(raw, str):
+        try:
+            raw = json.loads(raw) if raw.strip() else []
+        except ValueError:
+            return []
+    if not isinstance(raw, list):
+        return []
+    out = []
+    for item in raw[:6]:
+        if not isinstance(item, dict):
+            continue
+        q = str(item.get('q') or '').strip()[:160]
+        opts = [str(o or '').strip()[:60] for o in (item.get('options') or [])[:4] if isinstance(o, str) or o]
+        opts = [o for o in opts if o]
+        reply = str(item.get('reply') or '').strip()[:160]
+        if q and len(opts) >= 2:
+            out.append({'q': q, 'options': opts, 'reply': reply})
+    return out
+
+
+def dialog_of(site):
+    try:
+        d = clean_dialog(site['dialog']) if 'dialog' in site.keys() else []
+    except Exception:
+        d = []
+    return d or DEFAULT_DIALOG
 
 
 def site_images(site):
@@ -522,6 +583,8 @@ def site_state(site):
         'occasion': (site['occasion'] if 'occasion' in site.keys() and site['occasion'] in OCCASIONS else 'anniversary'),
         'letter_text': site['letter_text'] or '',
         'letter_sign': site['letter_sign'] or '',
+        'has_dialog': bool(theme and theme['theme_code'] in DIALOG_THEMES),
+        'dialog': dialog_of(site),
         'theme_id': site['theme_id'],
         'theme_name': theme['name'] if theme else '-',
         'package': pkg_key,
@@ -627,7 +690,7 @@ def demo_photos():
 #  5. แสดงเว็บเซอร์ไพรส์ (ใช้ธีมตามที่ลูกค้าเลือก)
 # =====================================================================
 def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls,
-                 banner=None, toolbar=None, occasion='anniversary'):
+                 banner=None, toolbar=None, occasion='anniversary', dialog=None):
     """urls: ลิสต์รูป (รูปแรก = รูปหน้าปก/รูปกลาง) ไม่วนซ้ำ ถ้าไม่มีรูปเลยใช้รูปตัวอย่าง"""
     urls = (urls or demo_photos())[:20]
     center, others = urls[0], urls[1:]
@@ -649,6 +712,7 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
         side_photos=list(zip(slots, others)),
         banner=banner,
         toolbar=toolbar,
+        dialog=dialog or DEFAULT_DIALOG,
     )
 
 
@@ -656,7 +720,8 @@ def render_site(site, banner=None, toolbar=None):
     theme = get_theme(site['theme_id'])
     return render_theme(theme, site['partner_name'], site['start_date'], site['letter_text'],
                         site['letter_sign'], site_images(site), banner=banner, toolbar=toolbar,
-                        occasion=site['occasion'] if 'occasion' in site.keys() else 'anniversary')
+                        occasion=site['occasion'] if 'occasion' in site.keys() else 'anniversary',
+                        dialog=dialog_of(site))
 
 
 # =====================================================================
@@ -678,7 +743,7 @@ def serve_index():
     premium = [t for t in themes if t['is_premium']]
     standard = [t for t in themes if not t['is_premium']]
     return render_template('index.html', themes=themes, premium=premium, standard=standard, packages=PACKAGES, min_photos=MIN_PHOTOS,
-                           renew_price=RENEW_PRICE, features=package_features())
+                           renew_price=RENEW_PRICE, features=package_features(), default_dialog=DEFAULT_DIALOG)
 
 
 @app.route('/dashboard')
@@ -884,6 +949,7 @@ def _read_fields(data):
         'letter_text': clean_text(data.get('letter_text'), 'letter_text'),
         'letter_sign': clean_text(data.get('letter_sign'), 'letter_sign'),
         'occasion': data.get('occasion') if data.get('occasion') in OCCASIONS else 'anniversary',
+        'dialog': json.dumps(clean_dialog(data.get('dialog')), ensure_ascii=False),
     }
     if not fields['partner_name'] or not fields['letter_text'] or not fields['letter_sign']:
         return None, 'กรอกข้อมูลให้ครบทุกช่อง'
@@ -936,10 +1002,10 @@ def create_draft():
     images = write_photos(slug, blobs)
     db.execute('''INSERT INTO user_sites
         (slug, user_id, order_id, theme_id, partner_name, start_date, letter_text, letter_sign,
-         music_url, images_json, package, status, qr_style, occasion)
-        VALUES (?, ?, 0, ?, ?, ?, ?, ?, '', ?, ?, 'draft', 'plain', ?)''',
+         music_url, images_json, package, status, qr_style, occasion, dialog)
+        VALUES (?, ?, 0, ?, ?, ?, ?, ?, '', ?, ?, 'draft', 'plain', ?, ?)''',
                (slug, user_id, theme['id'], fields['partner_name'], fields['start_date'],
-                fields['letter_text'], fields['letter_sign'], json.dumps(images, ensure_ascii=False), pkg_key, fields['occasion']))
+                fields['letter_text'], fields['letter_sign'], json.dumps(images, ensure_ascii=False), pkg_key, fields['occasion'], fields['dialog']))
     db.commit()
     return jsonify({'status': 'success', 'slug': slug, 'preview_url': url_for('preview_page', slug=slug)})
 
@@ -996,9 +1062,9 @@ def update_site(slug):
 
     db = get_db()
     db.execute('''UPDATE user_sites SET partner_name = ?, start_date = ?, letter_text = ?, letter_sign = ?,
-                  occasion = ?, theme_id = ?, updated_at = CURRENT_TIMESTAMP WHERE slug = ?''',
+                  occasion = ?, dialog = ?, theme_id = ?, updated_at = CURRENT_TIMESTAMP WHERE slug = ?''',
                (fields['partner_name'], fields['start_date'], fields['letter_text'], fields['letter_sign'],
-                fields['occasion'], theme_id, slug))
+                fields['occasion'], fields['dialog'], theme_id, slug))
     db.commit()
     return jsonify({'status': 'success', 'message': 'บันทึกเรียบร้อยแล้ว'})
 

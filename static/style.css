@@ -794,3 +794,19 @@ a.btn-small {
 @media (max-width: 600px) { .premium-banner { width: calc(100% - 20px); padding: 26px 12px 16px; } }
 @media (min-width: 1180px) { .pb-grid { grid-template-columns: repeat(5, 1fr); } }
 .pb-card .card-actions { grid-template-columns: 1fr; }
+
+/* ตัวแก้ไขบทสนทนา (ธีมวิชวลโนเวล) */
+.dlg-box { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.dlg-item { border: 1px solid rgba(255,255,255,.14); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 6px; background: rgba(255,255,255,.03); }
+.dlg-head { display: flex; justify-content: space-between; align-items: center; }
+.dlg-add { align-self: flex-start; }
+
+/* การ์ดพิเศษ (ธีมวิชวลโนเวล) */
+.pb-ribbon.special { background: linear-gradient(135deg, #ff7aa8, #c8414c); color: #fff; letter-spacing: .14em; box-shadow: 0 0 14px rgba(255,122,168,.6); }
+.pb-card.is-special { border-color: #ff9ec0; box-shadow: 0 0 0 1px rgba(255,158,192,.5), 0 12px 40px rgba(255,100,150,.25); }
+@media (min-width: 900px) {
+  .pb-card.is-special { grid-column: 1 / -1; display: grid; grid-template-columns: 1.1fr 1fr; align-items: stretch; }
+  .pb-card.is-special .pb-img { height: 100%; min-height: 260px; aspect-ratio: auto; }
+  .pb-card.is-special .pb-body { display: flex; flex-direction: column; justify-content: center; padding: 26px; }
+  .pb-card.is-special .card-actions { flex-direction: row; }
+}

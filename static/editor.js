@@ -16,7 +16,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const photoInput = document.getElementById('edPhotoInput');
     let site = null;
 
+    let dlgEd = null;
     function setEditable(on) {
+        if (dlgEd) dlgEd.lock(!on);
         form.querySelectorAll('input, textarea, select, button').forEach((el) => { el.disabled = !on; });
         addBtn.disabled = !on;
     }
@@ -104,6 +106,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('edLetter').value = site.letter_text;
         document.getElementById('edSign').value = site.letter_sign;
         document.getElementById('edPreview').href = site.preview_url;
+        document.getElementById('edDialogWrap').style.display = site.has_dialog ? '' : 'none';
+        if (site.has_dialog && !dlgEd) dlgEd = TU.dialogEditor(document.getElementById('edDialog'), site.dialog);
 
         renderNotice();
         renderPhotos();
@@ -135,7 +139,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 start_date: document.getElementById('edDate').value,
                 occasion: document.getElementById('edOccasion').value,
                 letter_text: document.getElementById('edLetter').value,
-                letter_sign: document.getElementById('edSign').value
+                letter_sign: document.getElementById('edSign').value,
+                dialog: dlgEd ? dlgEd.get() : []
             })
         });
         btn.disabled = false;

@@ -177,6 +177,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <label class="field-label">ลงชื่อผู้ส่ง (ของคุณ)</label>
                         <input type="text" id="buySign" maxlength="60" placeholder="เช่น จากพี่เอง" required>
 
+                        ${theme.has_dialog ? `<label class="field-label">💬 บทสนทนาวิชวลโนเวล (ให้แฟนเลือกตอบ)</label><div id="buyDialog" class="dlg-box"></div>` : ''}
+
                         <label class="field-label">รูปภาพความทรงจำ</label>
                         <input type="file" id="buyPhotos" accept="image/*" multiple hidden>
                         <div class="photo-pick-row">
@@ -229,6 +231,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         refreshRule();
 
+        const dlgEd = theme.has_dialog ? TU.dialogEditor(document.getElementById('buyDialog'), DATA.defaultDialog) : null;
         const occSel = document.getElementById('buyOccasion');
         const occLabels = { anniversary: 'วันที่เริ่มคบกัน (หรือวันพิเศษ)', birthday: 'วันเกิดของเขา/เธอ' };
         occSel.addEventListener('change', () => {
@@ -261,6 +264,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             fd.append('start_date', document.getElementById('buyDate').value);
             fd.append('letter_text', document.getElementById('buyLetter').value);
             fd.append('letter_sign', document.getElementById('buySign').value);
+            if (dlgEd) fd.append('dialog', JSON.stringify(dlgEd.get()));
             picker.blobs().forEach((b, i) => fd.append('images', b, `photo${i + 1}.jpg`));
 
             const r = await TU.api('/api/drafts', { method: 'POST', body: fd });

@@ -1,0 +1,130 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/palace/style.css') }}">
+{% endblock %}
+{% block favicon %}🏯{% endblock %}
+{% block body_class %}theme-palace{% endblock %}
+{% block letter_eyebrow %}Sakura Palace · 桜の宮{% endblock %}
+
+{% macro roof(cx, y, w, h) -%}
+{%- set hw = w / 2 -%}
+<path d="M{{ cx - hw - 18 }} {{ y - 8 }} Q{{ cx - hw + 8 }} {{ y + 10 }} {{ cx - hw * 0.45 }} {{ y - h * 0.35 }} Q{{ cx - hw * 0.15 }} {{ y - h * 0.85 }} {{ cx }} {{ y - h }} Q{{ cx + hw * 0.15 }} {{ y - h * 0.85 }} {{ cx + hw * 0.45 }} {{ y - h * 0.35 }} Q{{ cx + hw - 8 }} {{ y + 10 }} {{ cx + hw + 18 }} {{ y - 8 }} L{{ cx + hw }} {{ y + 12 }} L{{ cx - hw }} {{ y + 12 }} Z"/>
+{%- endmacro %}
+{% macro tree(cls, blooms) -%}
+<svg class="tree {{ cls }}" viewBox="0 0 300 560" aria-hidden="true" data-tree>
+  <path d="M150 560 C146 470 160 400 140 330 C128 290 100 250 70 214 M140 330 C160 290 200 250 238 214 M142 420 C120 392 98 380 66 372 M150 450 C180 418 214 404 252 398" fill="none" stroke="#2a1830" stroke-width="22" stroke-linecap="round"/>
+  <path d="M150 560 C146 470 160 400 140 330" fill="none" stroke="#3b2340" stroke-width="10" stroke-linecap="round" opacity=".6"/>
+  <g>
+  {% for cx, cy, r in blooms %}
+    <circle cx="{{ cx }}" cy="{{ cy }}" r="{{ r }}" fill="#f6a5c0" opacity=".92"/>
+    <circle cx="{{ cx + r * 0.3 }}" cy="{{ cy - r * 0.25 }}" r="{{ r * 0.62 }}" fill="#ffc9da"/>
+    <circle cx="{{ cx - r * 0.3 }}" cy="{{ cy + r * 0.3 }}" r="{{ r * 0.45 }}" fill="#ffe3ec" opacity=".9"/>
+  {% endfor %}
+  </g>
+</svg>
+{%- endmacro %}
+
+{% block bg %}
+  <div class="sky" aria-hidden="true"></div>
+  <button type="button" class="moon-orb" id="moonOrb" aria-label="แตะดวงจันทร์"></button>
+  <svg class="palace" id="palace" viewBox="0 0 800 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <g fill="#3a2142">
+      {{ roof(400, 96, 200, 62) }}{{ roof(400, 150, 280, 52) }}{{ roof(400, 208, 360, 46) }}
+      <rect x="250" y="208" width="300" height="92"/>
+      {{ roof(160, 208, 170, 42) }}<rect x="86" y="208" width="148" height="92"/>
+      {{ roof(640, 208, 170, 42) }}<rect x="566" y="208" width="148" height="92"/>
+      <rect x="0" y="262" width="800" height="38"/>
+      <rect x="388" y="26" width="24" height="42" rx="3"/><path d="M400 4 L408 28 L392 28 Z"/>
+    </g>
+    <g fill="#ffd27a" class="win">
+      {% for x in [280, 322, 364, 436, 478, 520] %}<rect x="{{ x }}" y="226" width="14" height="22" rx="2"/>{% endfor %}
+      {% for x in [112, 150, 190] %}<rect x="{{ x }}" y="226" width="12" height="20" rx="2"/>{% endfor %}
+      {% for x in [600, 640, 680] %}<rect x="{{ x }}" y="226" width="12" height="20" rx="2"/>{% endfor %}
+      <rect x="378" y="168" width="12" height="16" rx="2"/><rect x="410" y="168" width="12" height="16" rx="2"/>
+    </g>
+  </svg>
+  <div class="mist" aria-hidden="true"></div>
+  {{ tree('tree-l', [(120,200,34),(70,214,30),(170,170,32),(40,250,26),(100,140,28),(210,230,30),(60,320,26),(150,110,22),(20,190,24),(190,280,26),(110,290,30),(240,210,22)]) }}
+  {{ tree('tree-r', [(180,200,34),(230,214,30),(130,170,32),(262,250,26),(200,140,28),(90,230,30),(240,320,26),(150,110,22),(280,190,24),(110,280,26),(190,290,30),(60,210,22)]) }}
+  <canvas id="petals" aria-hidden="true"></canvas>
+  <div class="lantern-row" aria-hidden="false">
+    {% for i in range(5) %}<button type="button" class="hang-lantern" data-n="{{ i }}" aria-label="โคมไฟ {{ i + 1 }}" style="--d: {{ i * 0.4 }}s"></button>{% endfor %}
+  </div>
+{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate" data-manual-gate="1300">
+    <div class="door door-l"><i></i></div><div class="door door-r"><i></i></div>
+    <div class="gate-center">
+      <p class="gate-eyebrow">Sakura Palace</p>
+      <h1 class="gate-title">ถึง {{ partner_name }}</h1>
+      <button type="button" class="gate-btn" id="gateBtn">⛩ แตะเพื่อเปิดประตูวังซากุระ</button>
+      <p class="gate-hint">มีคนรอคุยกับเธออยู่ในวังนะ 🌸</p>
+    </div>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <header class="hero">
+    <p class="eyebrow">{{ occ.en }}</p>
+    <h1 class="hero-name">{{ partner_name }}</h1>
+    <div class="frame" data-photo><img src="{{ center_photo }}" alt="รูปของเรา"></div>
+    <p class="hero-sub">{{ occ.wish }}</p>
+    <div class="steps" data-steps data-labels="เข้าวัง|พูดคุย|ชมความทรงจำ"
+         data-hints="เข้ามาในวังซากุระแล้ว! (แตะต้นซากุระ ดวงจันทร์ หรือโคมไฟเล่นได้)|คุยกับคนในวังด้านล่างนี้ แล้วเลือกคำตอบของเธอ|แตะรูปความทรงจำสักรูปเพื่อปลดล็อกจดหมาย|ปลดล็อกครบแล้ว เปิดจดหมายได้เลย"></div>
+  </header>
+
+  <section class="vn" id="vn">
+    <h2 class="sec-title">บทสนทนาในวัง</h2>
+    <div class="vn-stage">
+      <button type="button" class="spirit" id="spirit" aria-label="แตะทักทาย">
+        <span class="aura"></span><span class="body"><i class="eye"></i><i class="eye"></i><b class="cheek"></b><b class="cheek r"></b></span><span class="petal-crown">🌸</span>
+      </button>
+      <div class="vn-box" id="vnBox">
+        <div class="nameplate" id="vnName">{{ (letter_sign|replace('จาก', '', 1)|trim) or 'ผู้ส่งสาร' }}</div>
+        <p class="vn-text" id="vnText" aria-live="polite"></p>
+        <span class="vn-next" id="vnNext" hidden>▼</span>
+        <div class="vn-choices" id="vnChoices"></div>
+        <div class="vn-dots" id="vnDots"></div>
+      </div>
+    </div>
+    <script type="application/json" id="vnData">{{ dialog|tojson }}</script>
+    <section class="summary" id="vnSummary" hidden>
+      <h3>📜 บันทึกคำตอบของ {{ partner_name }}</h3>
+      <ol id="vnList"></ol>
+      <p class="summary-end">ขอบคุณที่คุยกับเรานะ 🌸</p>
+    </section>
+  </section>
+
+  <section class="gallery lockable">
+    <div class="lock-note"><b>🔒</b><span>คุยกับคนในวังให้จบก่อน แล้วจะปลดล็อกรูปความทรงจำ</span></div>
+    <h2 class="sec-title">ม้วนภาพความทรงจำ</h2>
+    <div class="scroll-grid">
+      {% for slot, src in side_photos %}
+      <figure class="scr reveal" data-photo style="--i: {{ loop.index0 }}">
+        <img src="{{ src }}" alt="ความทรงจำที่ {{ loop.index }}" loading="lazy">
+        <figcaption>{{ ['桜','月','夢','愛','幸','花','星','春'][loop.index0 % 8] }}</figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="finale">
+    <button class="cta" type="button" data-letter>💌 เปิดจดหมายจากวัง</button>
+    <p class="sec-note">ต้องปลดล็อกให้ครบทั้ง 3 ขั้นก่อนนะ</p>
+  </section>
+
+  <section class="pond" id="pond" aria-label="บ่อน้ำ แตะเพื่อให้เกิดระลอก">
+    <p>แตะที่บ่อน้ำดูสิ 💧</p>
+  </section>
+  <footer class="foot"><p>ขอให้ทุกฤดูใบไม้ผลิ มีเธออยู่ข้างๆ</p></footer>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='themes/shared/premium.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/palace/palace.js') }}"></script>
+{% endblock %}

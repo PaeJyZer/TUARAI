@@ -25,7 +25,7 @@
     <div class="pb-glow" aria-hidden="true"></div>
     <div class="pb-head">
       <span class="pb-tag">✨ PREMIUM COLLECTION · NEW</span>
-      <h2 class="pb-title">5 เว็บพรีเมียม <span>มีเสียง มีเกม ปลดล็อกทีละขั้น</span></h2>
+      <h2 class="pb-title">{{ premium|length }} เว็บพรีเมียม <span>มีเสียง มีเกม ปลดล็อกทีละขั้น</span></h2>
       <p class="pb-sub">ไม่ใช่แค่เว็บดูรูป แต่เป็นประสบการณ์ที่แฟนต้องลงมือเล่นเอง จุดเทียน หยอดเหรียญ จุดเครื่องยนต์ ไขลานกล่องดนตรี จุดโคมไฟ พร้อมเสียงเอฟเฟกต์ทุกการแตะ</p>
       <ul class="pb-chips">
         <li>🔊 เสียงเอฟเฟกต์</li><li>🎮 มินิเกมในเว็บ</li><li>🔓 ปลดล็อกทีละขั้น</li><li>🎆 เอฟเฟกต์เต็มจอ</li><li>📱 ใช้ได้ทั้งมือถือ/คอม</li>
@@ -33,8 +33,8 @@
     </div>
     <div class="pb-grid">
       {% for t in premium %}
-      <article class="pb-card" data-theme-id="{{ t.id }}">
-        <span class="pb-ribbon">PREMIUM</span>
+      <article class="pb-card{% if t.has_dialog %} is-special{% endif %}" data-theme-id="{{ t.id }}">
+        <span class="pb-ribbon{% if t.has_dialog %} special{% endif %}">{% if t.has_dialog %}★ SPECIAL{% else %}PREMIUM{% endif %}</span>
         <div class="pb-img">
           {% if t.preview_img %}<img src="{{ url_for('static', filename=t.preview_img) }}" alt="{{ t.name }}" loading="lazy" onerror="this.style.display='none'">{% endif %}
         </div>
@@ -109,7 +109,8 @@
       themes: {{ themes|tojson }},
       packages: {{ packages|tojson }},
       features: {{ features|tojson }},
-      minPhotos: {{ min_photos }}
+      minPhotos: {{ min_photos }},
+      defaultDialog: {{ default_dialog|tojson }}
     };
   </script>
   <script src="{{ url_for('static', filename='common.js') }}"></script>

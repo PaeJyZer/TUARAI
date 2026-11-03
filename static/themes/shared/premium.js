@@ -92,7 +92,28 @@
       tone({ f: 1047, t: 1.2, d: 1.1, type: 'square', v: .06 });
     },
     letter: function () { S.chime(2); setTimeout(function () { S.chime(5); }, 140); },
-    vinyl: function () { noise({ f: 5000, d: .5, v: .06, q: .4, ft: 'highpass' }); }
+    vinyl: function () { noise({ f: 5000, d: .5, v: .06, q: .4, ft: 'highpass' }); },
+    /* เสียงนุ่มๆ สำหรับธีมวัง/วิชวลโนเวล */
+    koto: function (i) { var f = SCALE[((i || 0) % 8 + 8) % 8] / 2; tone({ f: f, d: 1.3, v: .13, a: .003 }); tone({ f: f * 2.003, d: .5, v: .035, a: .003 }); },
+    vn: function () { tone({ f: 880, d: .03, v: .018, a: .003 }); },
+    pick: function () { tone({ f: 523, d: .25, v: .1, a: .004 }); tone({ f: 784, t: .08, d: .5, v: .1, a: .004 }); },
+    drop: function () { tone({ f: 900, to: 420, d: .22, v: .1, a: .004 }); tone({ f: 1350, to: 630, t: .06, d: .2, v: .04, a: .004 }); },
+    soft: function () { tone({ f: 660, to: 520, d: .14, v: .07, a: .004 }); },
+    page: function () { noise({ f: 1400, to: 500, d: .35, v: .05, ft: 'lowpass', q: .3, a: .08 }); }
+  };
+  var pad = null;
+  S.padStart = function () {
+    var c = ensure(); if (!c || pad) return;
+    var g = c.createGain(); g.gain.value = 0.0001; g.gain.setTargetAtTime(.035, c.currentTime, 2.5); g.connect(master);
+    var oscs = [130.8, 196, 261.6, 329.6].map(function (f, i) {
+      var o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f; o.detune.value = (i - 1.5) * 4; o.connect(g); o.start(); return o;
+    });
+    pad = { g: g, o: oscs };
+  };
+  S.padStop = function () {
+    if (!pad || !ctx) { pad = null; return; }
+    var p = pad; pad = null; p.g.gain.setTargetAtTime(.0001, ctx.currentTime, .4);
+    setTimeout(function () { p.o.forEach(function (o) { try { o.stop(); } catch (e) {} }); }, 2000);
   };
 
   /* เสียงเครื่องยนต์ (ยานอวกาศ) */
@@ -142,7 +163,7 @@
       muted = !!m;
       try { localStorage.setItem('tu_mute', muted ? '1' : '0'); } catch (e) {}
       if (master) master.gain.value = muted ? 0 : .85;
-      if (muted) { S.melodyStop(); S.engineStop(); }
+      if (muted) { S.melodyStop(); S.engineStop(); S.padStop(); }
       var b = document.querySelector('.sfx-btn'); if (b) { b.textContent = muted ? '🔇' : '🔊'; b.setAttribute('aria-pressed', muted); }
     }
   };
