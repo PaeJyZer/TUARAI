@@ -67,7 +67,7 @@
   function closeOverlay(ov) {
     ov.classList.remove('open');
     if (!document.querySelector('.overlay.open')) body.classList.remove('no-scroll');
-    if (ov === letterOv) stopLetter();
+    if (ov === letterOv) { stopLetter(); if (window.TULetterFX) TULetterFX.reset(); }
   }
   document.querySelectorAll('.overlay').forEach(function (ov) {
     ov.addEventListener('click', function (e) {
@@ -133,7 +133,15 @@
     typed.textContent = TEXT; rest.textContent = '';
     signEl.classList.add('show');
   });
-  function showLetter() { openOverlay(letterOv); startLetter(); document.dispatchEvent(new CustomEvent('tu:letter')); }
+  function showLetter() {
+    openOverlay(letterOv);
+    // ธีมที่มีฉากแตะก่อน (ซอง/กล่องของขวัญ ฯลฯ): ค่อยเริ่มจดหมายหลังผู้ใช้แตะ
+    if (window.TULetterFX) {
+      TULetterFX.intro(function () { startLetter(); document.dispatchEvent(new CustomEvent('tu:letter')); });
+      return;
+    }
+    startLetter(); document.dispatchEvent(new CustomEvent('tu:letter'));
+  }
   window.TUOverlay = { open: openOverlay, close: closeOverlay };
   document.querySelectorAll('[data-letter]').forEach(function (b) {
     b.addEventListener('click', function () {
