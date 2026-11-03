@@ -78,3 +78,6 @@ body.opening .flower { animation: none; transform: scale(1.5) rotate(25deg); }
 .letter-body { font-family: var(--font-hand); }
 .letter-sign { color: #b83f66; }
 .close-btn { color: #7a4a5a; }
+
+/* ฟอนต์ไทย */
+:root, body { --font-display: "Playfair Display","Noto Serif Thai",Georgia,serif; --font-body: "Sarabun",system-ui,sans-serif; --font-hand: "Mali",sans-serif; }

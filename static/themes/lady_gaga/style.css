@@ -29,7 +29,7 @@ body {
   position: fixed;
   inset: 0;
   color: var(--ink);
-  font-family: "IBM Plex Sans Thai", system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -164,7 +164,7 @@ body {
 }
 
 .popup-title {
-  font-family: "Playfair Display", Georgia, serif;
+  font-family: var(--font-display);
   font-weight: 500;
   font-size: 2rem;
   line-height: 1.1;
@@ -322,7 +322,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Playfair Display", Georgia, serif;
+  font-family: var(--font-display);
   font-style: italic;
   font-size: 1rem;
   letter-spacing: 0.04em;
@@ -347,7 +347,7 @@ body {
 }
 
 .caption-num {
-  font-family: "Playfair Display", Georgia, serif;
+  font-family: var(--font-display);
   font-size: 2.8rem;
   line-height: 1;
   color: var(--cream);
@@ -441,7 +441,7 @@ body {
 }
 
 .letter-btn .lb-en {
-  font-family: "Playfair Display", Georgia, serif;
+  font-family: var(--font-display);
   font-style: italic;
   font-size: 1.05rem;
 }
@@ -600,7 +600,7 @@ body {
 
 .day-counter .num {
   display: block;
-  font-family: "Playfair Display", Georgia, serif;
+  font-family: var(--font-display);
   font-size: 1.9rem;
   line-height: 1;
   color: var(--accent);
@@ -629,7 +629,7 @@ body {
 
 .letter-sign {
   margin-top: 18px;
-  font-family: "Playfair Display", Georgia, serif;
+  font-family: var(--font-display);
   font-style: italic;
   font-size: 1.05rem;
   color: var(--accent);
@@ -686,7 +686,7 @@ body {
 }
 
 .lb-cap {
-  font-family: "Playfair Display", Georgia, serif;
+  font-family: var(--font-display);
   font-style: italic;
   font-size: 1rem;
   color: var(--accent);
@@ -884,3 +884,5 @@ body:has(.flower-pop) .float-heart svg {
 .low-power .bloom-item.is-flower svg {
   animation: none;
 }
+/* ฟอนต์ไทย */
+:root, body { --font-display: "Playfair Display","Noto Serif Thai",Georgia,serif; --font-body: "Sarabun",system-ui,sans-serif; }

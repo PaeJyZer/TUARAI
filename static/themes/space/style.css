@@ -61,3 +61,6 @@ body.theme-space { background: radial-gradient(120% 90% at 50% 100%, #1a1050 0%,
 .cta { padding: 14px 28px; border-radius: 999px; border: 1px solid var(--accent); background: rgba(94,231,255,.12); color: #fff; font-size: 17px; font-weight: 500; box-shadow: 0 0 26px rgba(94,231,255,.4); }
 .foot { text-align: center; padding: 40px 16px 90px; color: var(--muted); }
 @media (max-width: 520px) { .holo-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; } }
+
+/* ฟอนต์ไทย */
+:root, body { --font-display: "Orbitron","Chakra Petch",sans-serif; --font-body: "Prompt",system-ui,sans-serif; }

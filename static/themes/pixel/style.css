@@ -2,10 +2,10 @@
 :root {
   --bg: #0d0b24; --ink: #f1f0ff; --muted: #a9a4e0; --accent: #ffd23f;
   --card: #15123a; --card-ink: #f1f0ff;
-  --font-px: "Press Start 2P", "Courier New", monospace;
+  --font-px: "Press Start 2P", "Chakra Petch", "Courier New", monospace;
   --font-display: "Press Start 2P", "Courier New", monospace;
 }
-body.theme-pixel { background: #0d0b24; color: var(--ink); font-family: "IBM Plex Sans Thai", system-ui, sans-serif; }
+body.theme-pixel { background: #0d0b24; color: var(--ink); font-family: var(--font-body); }
 .stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image:
   radial-gradient(2px 2px at 12% 18%, #fff, transparent), radial-gradient(2px 2px at 78% 12%, #ffd23f, transparent), radial-gradient(2px 2px at 45% 40%, #fff, transparent),
   radial-gradient(2px 2px at 90% 55%, #9bf, transparent), radial-gradient(2px 2px at 25% 72%, #fff, transparent), radial-gradient(2px 2px at 62% 85%, #f9c, transparent), radial-gradient(2px 2px at 8% 92%, #fff, transparent);
@@ -62,3 +62,6 @@ body.opening .gate { animation: tvOff .9s steps(8) forwards; }
 .game-hint, .game-status { font-size: 13px; }
 .game-bar { border-radius: 0; height: 10px; } .game-bar span { background: repeating-linear-gradient(90deg, var(--accent) 0 8px, #ff6ba8 8px 10px); }
 .game-stage { border-radius: 0; box-shadow: 0 0 0 4px #7fe3ff; }
+
+/* ฟอนต์ไทย */
+:root, body { --font-display: "Press Start 2P","Chakra Petch","Courier New",monospace; --font-body: "Prompt",system-ui,sans-serif; }

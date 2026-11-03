@@ -63,3 +63,6 @@ body.opening .curtain.l { transform: translateX(-102%); } body.opening .curtain.
 .game-card { border: 1px solid rgba(232, 196, 90, .5); border-radius: 4px; }
 .game-title { font-family: var(--font-display); font-weight: 400; letter-spacing: .12em; font-size: 28px; }
 .gate { transition: opacity .5s ease 1.8s, visibility .5s 1.8s; }
+
+/* ฟอนต์ไทย */
+:root, body { --font-display: "Bebas Neue","Kanit",Impact,sans-serif; --font-body: "Prompt",system-ui,sans-serif; }

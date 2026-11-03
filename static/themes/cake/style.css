@@ -72,3 +72,6 @@ body.theme-cake { background: radial-gradient(120% 80% at 50% 0%, #4b1f63 0%, #2
 .cta { margin-top: 8px; padding: 14px 32px; border-radius: 999px; border: 0; font-size: 17px; font-weight: 600; color: #3a1a00; background: linear-gradient(135deg, #ffd166, #ff9f43); box-shadow: 0 8px 26px rgba(255,159,67,.4); }
 .foot { text-align: center; padding: 40px 20px 90px; color: var(--muted); }
 @media (max-width: 520px) { .string-wall { grid-template-columns: repeat(2, 1fr); gap: 26px 12px; } .arena { height: 280px; } }
+
+/* ฟอนต์ไทย */
+:root, body { --font-display: "Pacifico","Mitr",cursive; --font-body: "Mali",system-ui,sans-serif; }

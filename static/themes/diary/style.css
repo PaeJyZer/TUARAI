@@ -81,3 +81,6 @@ body.opening .book-cover { transform: rotateY(-165deg); }
 .letter-body { font-family: var(--font-hand); line-height: 34px; font-size: 16px; }
 .letter-sign { font-family: var(--font-hand); color: #7a3320; }
 .close-btn { color: #3b2a1e; }
+
+/* ฟอนต์ไทย */
+:root, body { --font-display: "Special Elite","Mali","Courier New",monospace; --font-body: "Mali",system-ui,sans-serif; --font-hand: "Mali","Bradley Hand",cursive; }

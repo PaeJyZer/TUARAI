@@ -55,3 +55,6 @@ body.theme-hanami { background: linear-gradient(180deg, #0b0f2e 0%, #1b1647 55%,
 .cta { padding: 14px 30px; border-radius: 999px; border: 0; background: linear-gradient(135deg, #ff9ec0, #ff6f9c); color: #3a0a1f; font-size: 17px; font-weight: 600; box-shadow: 0 8px 26px rgba(255,111,156,.4); }
 .foot { text-align: center; padding: 40px 16px 90px; color: var(--muted); }
 @media (max-width: 520px) { .hero { padding-top: 120px; } .ema-grid { grid-template-columns: repeat(2, 1fr); gap: 36px 12px; } .lantern .lbody { font-size: 20px; } }
+
+/* ฟอนต์ไทย */
+:root, body { --font-display: "Shippori Mincho","Noto Serif Thai",serif; --font-body: "Kodchasan",system-ui,sans-serif; }

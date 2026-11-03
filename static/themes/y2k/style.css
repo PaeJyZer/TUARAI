@@ -68,3 +68,6 @@ body.opening .gate-win { animation: zoomOut 1.2s ease-in forwards; }
 .letter-body { text-align: left; background: #fff; border: 2px inset #cbb9ee; padding: 12px; font-size: 15px; line-height: 1.8; }
 .letter-sign { color: #7a5fff; font-family: var(--font-display); font-style: normal; font-weight: 600; }
 .game-card { background: #f4eaff; border: 3px solid #fff; border-right-color: #9a86bd; border-bottom-color: #9a86bd; box-shadow: 0 0 0 2px #6a4a9a; border-radius: 6px; }
+
+/* ฟอนต์ไทย */
+:root, body { --font-display: "Chakra Petch",sans-serif; --font-body: "Chakra Petch","Prompt",sans-serif; }
