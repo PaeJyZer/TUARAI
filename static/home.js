@@ -21,3 +21,47 @@
     window.addEventListener('pointerup', function () { if (!down) return; down = false; rail.style.scrollSnapType = ''; });
   });
 })();
+
+/* กองไพ่: แตะ/ปัดไพ่ใบหน้า = ไปท้ายกอง, ปุ่มลูกศรสลับไปมา */
+(function () {
+  document.querySelectorAll('[data-deck]').forEach(function (deck) {
+    var col = deck.closest('.deck-col'), items = [].slice.call(deck.querySelectorAll('.hc')), n = items.length;
+    var cnt = col.querySelector('.deck-count b'), orig = items.slice(), busy = false;
+    function render() {
+      items.forEach(function (el, i) { el.style.setProperty('--pos', i); el.setAttribute('data-pos', i); });
+      if (cnt) cnt.textContent = orig.indexOf(items[0]) + 1;
+    }
+    function next() {
+      if (busy || n < 2) return; busy = true;
+      var f = items[0]; f.classList.add('fly');
+      setTimeout(function () { items.push(items.shift()); render(); f.classList.remove('fly'); setTimeout(function () { busy = false; }, 380); }, 300);
+    }
+    function prev() {
+      if (busy || n < 2) return; busy = true;
+      var l = items.pop(); l.classList.add('jump'); items.unshift(l);
+      void l.offsetWidth; l.classList.remove('jump');
+      render(); setTimeout(function () { busy = false; }, 420);
+    }
+    function bring(el) { // เอาไพ่ใบที่แตะขึ้นมาหน้าสุด
+      var k = items.indexOf(el); if (k < 1) return;
+      var go = function () { if (items.indexOf(el) > 0) { next(); setTimeout(go, 330); } }; go();
+    }
+    render();
+    col.querySelector('.dnext').addEventListener('click', next);
+    col.querySelector('.dprev').addEventListener('click', prev);
+    items.forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        if (e.target.closest('a, button')) return;
+        if (el.__drag) { el.__drag = false; return; }
+        if (items[0] === el) next(); else bring(el);
+      });
+    });
+    // ปัดซ้าย/ขวาบนไพ่
+    var sx = null;
+    deck.addEventListener('pointerdown', function (e) { sx = e.clientX; });
+    deck.addEventListener('pointerup', function (e) {
+      if (sx === null) return; var d = e.clientX - sx; sx = null;
+      if (Math.abs(d) > 50) { items[0].__drag = true; d < 0 ? next() : prev(); }
+    });
+  });
+})();

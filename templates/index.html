@@ -39,75 +39,57 @@
   </section>
 
   <div id="collection"></div>
-  {% if premium %}
-  <!-- PREMIUM: สไลด์ -->
-  <section class="rail-sec" id="premium">
-    <div class="rail-head">
-      <div>
-        <p class="rail-eyebrow gold">✦ PREMIUM COLLECTION</p>
-        <h2 class="rail-title">{{ premium|length }} เว็บพรีเมียม <span>มีเสียง มีเกม ปลดล็อกทีละขั้น</span></h2>
-        <p class="rail-sub">แฟนต้องลงมือเล่นเอง จุดเทียน หยอดเหรียญ ไขลานกล่องดนตรี พร้อมเสียงเอฟเฟกต์ทุกการแตะ</p>
-      </div>
-      <div class="rail-ctl"><button type="button" class="rc prev" aria-label="ก่อนหน้า">&lsaquo;</button><button type="button" class="rc next" aria-label="ถัดไป">&rsaquo;</button></div>
+  <!-- กองไพ่: แยกตามราคา -->
+  {% set allthemes = (standard + premium) if premium else standard %}
+  {% set groups = allthemes|groupby('prices.basic') %}
+  <section class="decks-sec" id="decks">
+    <div class="decks-head">
+      <p class="rail-eyebrow">PICK YOUR DECK</p>
+      <h2 class="rail-title">เลือกกองไพ่ที่ใช่ <span>แตะไพ่ใบหน้าเพื่อสลับดูเว็บถัดไป</span></h2>
+      <p class="rail-sub">แต่ละกองคือกลุ่มราคา ซื้อ 1 ครั้งได้ 1 เว็บ เลือกแพ็กเกจแยกกันได้ทุกเว็บ</p>
     </div>
-    <div class="rail" data-rail>
-      {% for t in premium %}
-      <article class="hc premium{% if t.has_dialog %} special{% endif %}" data-theme-id="{{ t.id }}">
-        <div class="hc-img">
-          <span class="hc-tag">{% if t.has_dialog %}★ SPECIAL{% else %}PREMIUM{% endif %}</span>
-          {% if t.preview_img %}<img src="{{ url_for('static', filename=t.preview_img) }}" alt="{{ t.name }}" loading="lazy" onerror="this.style.display='none'">{% endif %}
+    <div class="decks">
+      {% for g in groups %}
+      {% set tier = [loop.index0 + 3 - groups|length, 0]|max %}
+      <div class="deck-col t{{ [tier, 2]|min }}">
+        <div class="deck-top">
+          <p class="deck-price">฿{{ '{:,.0f}'.format(g.grouper) }}</p>
+          <p class="deck-name">{{ ['Classic', 'Premium', 'Legendary'][[tier, 2]|min] }} Deck <i>· {{ g.list|length }} เว็บ</i></p>
         </div>
-        <div class="hc-body">
-          <h3>{{ t.name }}</h3>
-          <p class="hc-line">{{ t.tagline or t.description or '' }}</p>
-          <div class="hc-foot">
-            <p class="hc-price">฿{{ '{:,.0f}'.format(t.prices.basic) }} <small>Pro ฿{{ '{:,.0f}'.format(t.prices.pro) }}</small></p>
-            <div class="hc-act">
-              <a class="hc-demo" href="{{ url_for('demo_page', theme_code=t.theme_code) }}" target="_blank" rel="noopener">ลองเล่น</a>
-              <button class="hc-buy btn-choose" type="button" data-theme-id="{{ t.id }}">เลือกซื้อ</button>
-            </div>
+        <div class="deck" data-deck>
+          <div class="deck-aura" aria-hidden="true"></div>
+          <div class="deck-stack">
+            {% for t in g.list %}
+            <article class="hc{% if t.is_premium %} premium{% endif %}{% if t.has_dialog %} special{% endif %}" data-theme-id="{{ t.id }}">
+              <div class="hc-img">
+                {% if t.is_premium %}<span class="hc-tag">{% if t.has_dialog %}★ SPECIAL{% else %}PREMIUM{% endif %}</span>{% endif %}
+                {% if t.preview_img %}<img src="{{ url_for('static', filename=t.preview_img) }}" alt="{{ t.name }}" loading="lazy" draggable="false" onerror="this.style.display='none'">{% endif %}
+              </div>
+              <div class="hc-body">
+                <h3>{{ t.name }}</h3>
+                <p class="hc-line">{{ t.tagline or t.description or '' }}</p>
+                <div class="hc-foot">
+                  <p class="hc-price">฿{{ '{:,.0f}'.format(t.prices.basic) }} <small>Pro ฿{{ '{:,.0f}'.format(t.prices.pro) }}</small></p>
+                  <div class="hc-act">
+                    <a class="hc-demo" href="{{ url_for('demo_page', theme_code=t.theme_code) }}" target="_blank" rel="noopener">ลองเล่น</a>
+                    <button class="hc-buy btn-choose" type="button" data-theme-id="{{ t.id }}">เลือกซื้อ</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+            {% endfor %}
           </div>
         </div>
-      </article>
-      {% endfor %}
-    </div>
-    <div class="rail-bar"><span></span></div>
-  </section>
-  {% endif %}
-
-  <!-- คลาสสิก: สไลด์ -->
-  <section class="rail-sec" id="themes">
-    <div class="rail-head">
-      <div>
-        <p class="rail-eyebrow">COLLECTION</p>
-        <h2 class="rail-title">เว็บเซอร์ไพรส์ทั้งหมด</h2>
-        <p class="rail-sub">ซื้อ 1 ครั้ง ได้ 1 เว็บ เลือกแพ็กเกจแยกกันได้ทุกเว็บ</p>
+        <div class="deck-ctl">
+          <button type="button" class="rc dprev" aria-label="ไพ่ใบก่อนหน้า">&lsaquo;</button>
+          <span class="deck-count"><b>1</b> / {{ g.list|length }}</span>
+          <button type="button" class="rc dnext" aria-label="ไพ่ใบถัดไป">&rsaquo;</button>
+        </div>
       </div>
-      <div class="rail-ctl"><button type="button" class="rc prev" aria-label="ก่อนหน้า">&lsaquo;</button><button type="button" class="rc next" aria-label="ถัดไป">&rsaquo;</button></div>
-    </div>
-    <div class="rail" data-rail id="themeGrid">
-      {% for t in standard %}
-      <article class="hc" data-theme-id="{{ t.id }}">
-        <div class="hc-img">
-          {% if t.preview_img %}<img src="{{ url_for('static', filename=t.preview_img) }}" alt="{{ t.name }}" loading="lazy" onerror="this.style.display='none'">{% endif %}
-        </div>
-        <div class="hc-body">
-          <h3>{{ t.name }}</h3>
-          <p class="hc-line">{{ t.description or '' }}</p>
-          <div class="hc-foot">
-            <p class="hc-price">฿{{ '{:,.0f}'.format(t.prices.basic) }} <small>Pro ฿{{ '{:,.0f}'.format(t.prices.pro) }}</small></p>
-            <div class="hc-act">
-              <a class="hc-demo" href="{{ url_for('demo_page', theme_code=t.theme_code) }}" target="_blank" rel="noopener">ดูตัวอย่าง</a>
-              <button class="hc-buy btn-choose" type="button" data-theme-id="{{ t.id }}">เลือกซื้อ</button>
-            </div>
-          </div>
-        </div>
-      </article>
       {% else %}
       <p class="photo-hint">ยังไม่มีเว็บให้เลือกในตอนนี้</p>
       {% endfor %}
     </div>
-    <div class="rail-bar"><span></span></div>
   </section>
 
   <!-- ขั้นตอน -->
