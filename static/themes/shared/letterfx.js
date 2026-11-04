@@ -30,15 +30,15 @@
   function shellHtml() {
     var c = cfg.c || [];
     switch (cfg.shell) {
-      case 'env': return '<div class="env ' + (cfg.v || '') + '"><i class="back"></i><i class="paper"></i><i class="front"></i><i class="flap"></i><i class="ring"></i>' +
+      case 'env': return '<div class="lx-env ' + (cfg.v || '') + '"><i class="back"></i><i class="paper"></i><i class="front"></i><i class="flap"></i><i class="ring"></i>' +
         (cfg.v === 'twine' ? '<i class="tw tw-h"></i><i class="tw tw-v"></i>' : '') + (cfg.v === 'air' ? '<i class="stamp">★</i>' : '') +
         '<i class="seal">' + c[5] + '</i></div>';
-      case 'gift': return '<div class="gift"><i class="box"></i><i class="lid"></i><i class="bow b1"></i><i class="bow b2"></i></div>';
-      case 'bottle': return '<div class="bottle"><i class="roll"></i><i class="belly"></i><i class="neck"></i><i class="cork"></i></div>';
-      case 'scroll': return '<div class="scroll ' + cfg.v + '"><i class="roll"></i><i class="band"></i><i class="knot"></i></div>';
-      case 'ticket': return '<div class="ticket"><i class="perf"></i><b>★</b></div>';
-      case 'popup': return '<div class="popup"><div class="tb"><i></i><i></i><i></i></div><div class="pb"><span>✉</span><u></u></div></div>';
-      case 'sleeve': return '<div class="sleeve"><i class="vinyl"><em></em></i><i class="cover"><b>♪</b></i></div>';
+      case 'gift': return '<div class="lx-gift"><i class="box"></i><i class="lid"></i><i class="bow b1"></i><i class="bow b2"></i></div>';
+      case 'bottle': return '<div class="lx-bottle"><i class="roll"></i><i class="belly"></i><i class="neck"></i><i class="cork"></i></div>';
+      case 'scroll': return '<div class="lx-scroll ' + cfg.v + '"><i class="roll"></i><i class="band"></i><i class="knot"></i></div>';
+      case 'ticket': return '<div class="lx-ticket"><i class="perf"></i><b>★</b></div>';
+      case 'popup': return '<div class="lx-popup"><div class="tb"><i></i><i></i><i></i></div><div class="pb"><span>✉</span><u></u></div></div>';
+      case 'sleeve': return '<div class="lx-sleeve"><i class="vinyl"><em></em></i><i class="cover"><b>♪</b></i></div>';
     }
     return '';
   }
