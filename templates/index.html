@@ -8,78 +8,118 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&family=Mitr:wght@400;500&family=Permanent+Marker&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
 </head>
 <body>
 
   {% with active='home' %}{% include '_nav.html' %}{% endwith %}
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1 class="hero-title">เว็บเซอร์ไพรส์วันครบรอบ ที่แฟนเปิดแล้วต้องร้องไห้</h1>
-    <p class="hero-subtitle">เลือกเว็บที่ใช่ ใส่รูปกับจดหมายของคุณ ดูตัวอย่างก่อนจ่าย แล้วรับเป็น QR Code ไปมอบให้แฟนได้เลย</p>
+  <!-- HERO -->
+  <section class="hx">
+    <div class="hx-copy">
+      <p class="hx-eyebrow"><i></i> SURPRISE WEBSITE STUDIO</p>
+      <h1 class="hx-title">เว็บเซอร์ไพรส์วันครบรอบ<br><em>ที่แฟนเปิดแล้วต้องร้องไห้</em></h1>
+      <p class="hx-sub">เลือกเว็บที่ใช่ ใส่รูปกับจดหมายของคุณ ดูตัวอย่างก่อนจ่าย แล้วรับเป็น QR Code ไปมอบให้แฟนได้เลย</p>
+      <div class="hx-cta">
+        <a class="hx-btn primary" href="#collection">ดูเว็บทั้งหมด</a>
+        <a class="hx-btn ghost" href="/how-to-buy">วิธีสั่งซื้อ</a>
+      </div>
+      <dl class="hx-stats">
+        <div><dt>{{ (premium|length) + (standard|length) }}</dt><dd>ธีมให้เลือก</dd></div>
+        <div><dt>฿{{ '{:,.0f}'.format(standard[0].prices.basic if standard else 129) }}</dt><dd>เริ่มต้น</dd></div>
+        <div><dt>ฟรี</dt><dd>ดูตัวอย่างก่อนจ่าย</dd></div>
+      </dl>
+    </div>
+    <div class="hx-visual" aria-hidden="true">
+      {% set showcase = (premium[:3] if premium else standard[:3]) %}
+      {% for t in showcase %}{% if t.preview_img %}
+      <figure class="hx-shot s{{ loop.index }}"><img src="{{ url_for('static', filename=t.preview_img) }}" alt="" loading="eager"></figure>
+      {% endif %}{% endfor %}
+    </div>
   </section>
 
+  <div id="collection"></div>
   {% if premium %}
-  <!-- PREMIUM COLLECTION: แบนเนอร์เด่นบนสุด -->
-  <section class="premium-banner" id="premium">
-    <div class="pb-glow" aria-hidden="true"></div>
-    <div class="pb-head">
-      <span class="pb-tag">✨ PREMIUM COLLECTION · NEW</span>
-      <h2 class="pb-title">{{ premium|length }} เว็บพรีเมียม <span>มีเสียง มีเกม ปลดล็อกทีละขั้น</span></h2>
-      <p class="pb-sub">ไม่ใช่แค่เว็บดูรูป แต่เป็นประสบการณ์ที่แฟนต้องลงมือเล่นเอง จุดเทียน หยอดเหรียญ จุดเครื่องยนต์ ไขลานกล่องดนตรี จุดโคมไฟ พร้อมเสียงเอฟเฟกต์ทุกการแตะ</p>
-      <ul class="pb-chips">
-        <li>🔊 เสียงเอฟเฟกต์</li><li>🎮 มินิเกมในเว็บ</li><li>🔓 ปลดล็อกทีละขั้น</li><li>🎆 เอฟเฟกต์เต็มจอ</li><li>📱 ใช้ได้ทั้งมือถือ/คอม</li>
-      </ul>
+  <!-- PREMIUM: สไลด์ -->
+  <section class="rail-sec" id="premium">
+    <div class="rail-head">
+      <div>
+        <p class="rail-eyebrow gold">✦ PREMIUM COLLECTION</p>
+        <h2 class="rail-title">{{ premium|length }} เว็บพรีเมียม <span>มีเสียง มีเกม ปลดล็อกทีละขั้น</span></h2>
+        <p class="rail-sub">แฟนต้องลงมือเล่นเอง จุดเทียน หยอดเหรียญ ไขลานกล่องดนตรี พร้อมเสียงเอฟเฟกต์ทุกการแตะ</p>
+      </div>
+      <div class="rail-ctl"><button type="button" class="rc prev" aria-label="ก่อนหน้า">&lsaquo;</button><button type="button" class="rc next" aria-label="ถัดไป">&rsaquo;</button></div>
     </div>
-    <div class="pb-grid">
+    <div class="rail" data-rail>
       {% for t in premium %}
-      <article class="pb-card{% if t.has_dialog %} is-special{% endif %}" data-theme-id="{{ t.id }}">
-        <span class="pb-ribbon{% if t.has_dialog %} special{% endif %}">{% if t.has_dialog %}★ SPECIAL{% else %}PREMIUM{% endif %}</span>
-        <div class="pb-img">
+      <article class="hc premium{% if t.has_dialog %} special{% endif %}" data-theme-id="{{ t.id }}">
+        <div class="hc-img">
+          <span class="hc-tag">{% if t.has_dialog %}★ SPECIAL{% else %}PREMIUM{% endif %}</span>
           {% if t.preview_img %}<img src="{{ url_for('static', filename=t.preview_img) }}" alt="{{ t.name }}" loading="lazy" onerror="this.style.display='none'">{% endif %}
         </div>
-        <div class="pb-body">
+        <div class="hc-body">
           <h3>{{ t.name }}</h3>
-          <p class="pb-tagline">{{ t.tagline }}</p>
-          <p class="pb-desc">{{ t.description or '' }}</p>
-          <p class="pb-price">{{ '{:,.0f}'.format(t.prices.basic) }} ฿ <small>· Pro {{ '{:,.0f}'.format(t.prices.pro) }} ฿</small></p>
-          <div class="card-actions">
-            <a class="btn-outline pb-demo" href="{{ url_for('demo_page', theme_code=t.theme_code) }}" target="_blank" rel="noopener">▶ ลองเล่นตัวอย่าง</a>
-            <button class="btn-buy btn-choose" type="button" data-theme-id="{{ t.id }}">เลือกซื้อ</button>
+          <p class="hc-line">{{ t.tagline or t.description or '' }}</p>
+          <div class="hc-foot">
+            <p class="hc-price">฿{{ '{:,.0f}'.format(t.prices.basic) }} <small>Pro ฿{{ '{:,.0f}'.format(t.prices.pro) }}</small></p>
+            <div class="hc-act">
+              <a class="hc-demo" href="{{ url_for('demo_page', theme_code=t.theme_code) }}" target="_blank" rel="noopener">ลองเล่น</a>
+              <button class="hc-buy btn-choose" type="button" data-theme-id="{{ t.id }}">เลือกซื้อ</button>
+            </div>
           </div>
         </div>
       </article>
       {% endfor %}
     </div>
-    <p class="pb-foot">💡 เปิดเสียงมือถือไว้ด้วยนะ เว็บพรีเมียมสนุกกว่าเยอะ (มีปุ่มปิดเสียงในเว็บ)</p>
+    <div class="rail-bar"><span></span></div>
   </section>
   {% endif %}
 
-  <h2 class="std-title">เว็บเซอร์ไพรส์ทั้งหมด</h2>
-  <!-- รายการเว็บ: ทุกเว็บซื้อแยกกัน ซื้อ 1 ครั้ง = ได้ 1 เว็บ -->
-  <main class="product-grid" id="themeGrid">
-    {% for t in standard %}
-    <div class="product-card" data-theme-id="{{ t.id }}">
-      <div class="product-img-wrapper">
-        <span class="product-img-placeholder">PREVIEW</span>
-        {% if t.preview_img %}
-        <img class="product-img" src="{{ url_for('static', filename=t.preview_img) }}" alt="{{ t.name }}" loading="lazy" onerror="this.style.display='none'">
-        {% endif %}
+  <!-- คลาสสิก: สไลด์ -->
+  <section class="rail-sec" id="themes">
+    <div class="rail-head">
+      <div>
+        <p class="rail-eyebrow">COLLECTION</p>
+        <h2 class="rail-title">เว็บเซอร์ไพรส์ทั้งหมด</h2>
+        <p class="rail-sub">ซื้อ 1 ครั้ง ได้ 1 เว็บ เลือกแพ็กเกจแยกกันได้ทุกเว็บ</p>
       </div>
-      <div class="product-info">
-        <h3 class="product-title">{{ t.name }}</h3>
-        <p class="product-desc">{{ t.description or '' }}</p>
-        <p class="product-price">เริ่มต้น {{ '{:,.0f}'.format(t.prices.basic) }} ฿ <span class="price-sub">· Pro {{ '{:,.0f}'.format(t.prices.pro) }} ฿</span></p>
-        <div class="card-actions">
-          <a class="btn-outline" href="{{ url_for('demo_page', theme_code=t.theme_code) }}" target="_blank" rel="noopener">ดูตัวอย่างเว็บ</a>
-          <button class="btn-buy btn-choose" type="button" data-theme-id="{{ t.id }}">เลือกซื้อเว็บนี้</button>
-        </div>
-      </div>
+      <div class="rail-ctl"><button type="button" class="rc prev" aria-label="ก่อนหน้า">&lsaquo;</button><button type="button" class="rc next" aria-label="ถัดไป">&rsaquo;</button></div>
     </div>
-    {% else %}
-    <p class="photo-hint" style="grid-column: 1 / -1; text-align: center;">ยังไม่มีเว็บให้เลือกในตอนนี้</p>
-    {% endfor %}
-  </main>
+    <div class="rail" data-rail id="themeGrid">
+      {% for t in standard %}
+      <article class="hc" data-theme-id="{{ t.id }}">
+        <div class="hc-img">
+          {% if t.preview_img %}<img src="{{ url_for('static', filename=t.preview_img) }}" alt="{{ t.name }}" loading="lazy" onerror="this.style.display='none'">{% endif %}
+        </div>
+        <div class="hc-body">
+          <h3>{{ t.name }}</h3>
+          <p class="hc-line">{{ t.description or '' }}</p>
+          <div class="hc-foot">
+            <p class="hc-price">฿{{ '{:,.0f}'.format(t.prices.basic) }} <small>Pro ฿{{ '{:,.0f}'.format(t.prices.pro) }}</small></p>
+            <div class="hc-act">
+              <a class="hc-demo" href="{{ url_for('demo_page', theme_code=t.theme_code) }}" target="_blank" rel="noopener">ดูตัวอย่าง</a>
+              <button class="hc-buy btn-choose" type="button" data-theme-id="{{ t.id }}">เลือกซื้อ</button>
+            </div>
+          </div>
+        </div>
+      </article>
+      {% else %}
+      <p class="photo-hint">ยังไม่มีเว็บให้เลือกในตอนนี้</p>
+      {% endfor %}
+    </div>
+    <div class="rail-bar"><span></span></div>
+  </section>
+
+  <!-- ขั้นตอน -->
+  <section class="steps3">
+    <p class="rail-eyebrow" style="text-align:center">HOW IT WORKS</p>
+    <h2 class="rail-title" style="text-align:center">ง่ายๆ แค่ 3 ขั้นตอน</h2>
+    <ol>
+      <li><b>01</b><h3>เลือกธีม</h3><p>ดูตัวอย่างจริงได้ฟรี ก่อนตัดสินใจ</p></li>
+      <li><b>02</b><h3>ใส่รูปและจดหมาย</h3><p>เขียนข้อความใต้รูปได้ทุกรูป ดูตัวอย่างก่อนจ่าย</p></li>
+      <li><b>03</b><h3>รับ QR Code</h3><p>ชำระเงินแล้วมอบให้แฟนสแกนได้เลย</p></li>
+    </ol>
+  </section>
 
   <!-- เปรียบเทียบแพ็กเกจ -->
   <section class="compare-section">
@@ -115,5 +155,6 @@
   </script>
   <script src="{{ url_for('static', filename='common.js') }}"></script>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="{{ url_for('static', filename='home.js') }}"></script>
 </body>
 </html>
