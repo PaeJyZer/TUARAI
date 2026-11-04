@@ -217,6 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---------- หน้าต่างซ้อน: ปิดด้วยปุ่ม X / กดพื้นหลัง / Esc ----------
   const letterOverlay = document.getElementById("letterOverlay");
+  const sfx = (n) => { if (window.TUSfx) window.TUSfx.play(n); };
   const lightbox = document.getElementById("lightbox");
 
   function openOverlay(ov) {
@@ -289,10 +290,12 @@ document.addEventListener("DOMContentLoaded", () => {
     typeTimer = setTimeout(function tick() {
       n += 1;
       letterTyped.textContent = LETTER_TEXT.slice(0, n);
+      if (n % 2 === 0) sfx('tick');
       letterRest.textContent = LETTER_TEXT.slice(n);
       if (n >= LETTER_TEXT.length) {
         typeTimer = null;
         letterSign.classList.add("show");
+        sfx('win');
         return;
       }
       typeTimer = setTimeout(tick, TYPE_SPEED);
@@ -318,12 +321,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   letterBtn.addEventListener("click", () => {
     openOverlay(letterOverlay);
+    sfx('letter');
     startLetter();
   });
 
   // ---------- ดูรูปขนาดใหญ่ ----------
   const photoItems = Array.from(items).filter((el) => el.querySelector("img"));
   const lbImg = document.getElementById("lbImg");
+  document.getElementById("lbPrev").addEventListener("click", () => sfx('page'));
+  document.getElementById("lbNext").addEventListener("click", () => sfx('page'));
   const lbCap = document.getElementById("lbCap");
   const lbCount = document.getElementById("lbCount");
   let lbIndex = 0;
@@ -334,7 +340,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const src = photoItems[lbIndex].querySelector("img");
     lbImg.src = src.currentSrc || src.src;
     lbImg.alt = src.alt;
-    lbCap.textContent = photoItems[lbIndex].classList.contains("pic-center") ? CENTER_CAPTION : "";
+    var _n = ((window.SITE_CONFIG || {}).captions || {})[src.getAttribute("src")] || "";
+    lbCap.textContent = _n || (photoItems[lbIndex].classList.contains("pic-center") ? CENTER_CAPTION : "");
     lbCount.textContent = pad2(lbIndex + 1) + " / " + pad2(n);
   }
 
@@ -343,6 +350,7 @@ document.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("click", () => {
       showPhoto(i);
       openOverlay(lightbox);
+      sfx('drop');
     });
   });
 

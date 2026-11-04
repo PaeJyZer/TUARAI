@@ -258,6 +258,7 @@ PREMIUM_THEMES = [
 DIALOG_THEMES = {'palace_sakura_v1'}
 CAPTION_THEMES = {'matchcat_v1'}      # ธีมที่ลูกค้าเขียนคำใต้รูปแต่ละรูป (ใช้เป็นโจทย์จับคู่)
 MAX_PAIRS = 8
+DEMO_NOTES = ['วันแรกที่เราไปเที่ยวด้วยกัน', 'รอยยิ้มที่ฉันชอบที่สุด', 'มื้อนี้อร่อยเพราะมีเธอ', 'วันที่ฝนตกแต่ใจอบอุ่น', 'ถ่ายรูปคู่กันครั้งแรก', 'เซอร์ไพรส์เล็กๆ ที่ไม่ลืม']
 DEMO_CAPTIONS = ['สีชมพูบานเย็น', 'สีส้มพีช', 'สีม่วงลาเวนเดอร์', 'สีเขียวมิ้นต์', 'สีเหลืองทอง', 'สีฟ้าอ่อน', 'สีกุหลาบ', 'สีเบจ']
 DEFAULT_DIALOG = [
     {'q': '{name} รู้ไหมว่าวันนี้เราอยากเจอเธอที่สุดเลย เธออยากให้เราเริ่มเล่าเรื่องไหนก่อนดี',
@@ -758,6 +759,7 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
         dialog=dialog or DEFAULT_DIALOG,
         pairs=[(u, (captions or {}).get(u) or f'ความทรงจำที่ {i + 1}') for i, u in enumerate(urls[:MAX_PAIRS])],
         extra_photos=urls[MAX_PAIRS:],
+        captions=captions or {},
     )
 
 
@@ -824,7 +826,7 @@ def demo_page(theme_code):
     return render_theme(theme, 'ที่รัก', sample_date, letter, 'จากคนที่รักเธอ', demo_photos()[:n],
                         banner='ตัวอย่างเว็บ — ข้อมูลและรูปทั้งหมดเป็นของสมมติ',
                         occasion=request.args.get('occasion', 'anniversary'),
-                        captions={u: DEMO_CAPTIONS[i] for i, u in enumerate(demo_photos()[:n][:MAX_PAIRS])})
+                        captions={u: DEMO_NOTES[i % len(DEMO_NOTES)] for i, u in enumerate(demo_photos()[:n])} if theme and theme['theme_code'] not in CAPTION_THEMES else {u: DEMO_CAPTIONS[i] for i, u in enumerate(demo_photos()[:n][:MAX_PAIRS])})
 
 
 @app.route('/preview/<slug>')
@@ -1047,13 +1049,12 @@ def create_draft():
     slug = secrets.token_hex(8)
     images = write_photos(slug, blobs)
     cap_map = {}
-    if theme['theme_code'] in CAPTION_THEMES:
-        try:
-            lst = json.loads(form.get('captions') or '[]')
-        except ValueError:
-            lst = []
-        if isinstance(lst, list):
-            cap_map = clean_captions({u: str(lst[i]) for i, u in enumerate(images) if i < len(lst)})
+    try:
+        lst = json.loads(form.get('captions') or '[]')
+    except ValueError:
+        lst = []
+    if isinstance(lst, list):
+        cap_map = clean_captions({u: str(lst[i]) for i, u in enumerate(images) if i < len(lst)})
     db.execute('''INSERT INTO user_sites
         (slug, user_id, order_id, theme_id, partner_name, start_date, letter_text, letter_sign,
          music_url, images_json, package, status, qr_style, occasion, dialog, captions)

@@ -208,12 +208,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             preview: document.getElementById('buyPhotoPreview'),
             counter: document.getElementById('buyPhotoCount'),
             getMax: () => pk[selectedPkg()].max_photos,
-            captions: !!theme.has_captions
+            captions: true,
+            required: !!theme.has_captions
         });
-        if (theme.has_captions) {
-            document.getElementById('buyPhotoPreview').classList.add('with-cap');
-            document.getElementById('buyPhotoHintCap').style.display = '';
-        }
+        document.getElementById('buyPhotoPreview').classList.add('with-cap');
+        if (theme.has_captions) document.getElementById('buyPhotoHintCap').style.display = '';
 
         function refreshRule() {
             const p = pk[selectedPkg()];
@@ -277,7 +276,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             fd.append('letter_text', document.getElementById('buyLetter').value);
             fd.append('letter_sign', document.getElementById('buySign').value);
             if (dlgEd) fd.append('dialog', JSON.stringify(dlgEd.get()));
-            if (theme.has_captions) fd.append('captions', JSON.stringify(picker.captions()));
+            fd.append('captions', JSON.stringify(picker.captions()));
             picker.blobs().forEach((b, i) => fd.append('images', b, `photo${i + 1}.jpg`));
 
             const r = await TU.api('/api/drafts', { method: 'POST', body: fd });

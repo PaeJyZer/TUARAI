@@ -4,6 +4,7 @@
    ========================================= */
 (function () {
   'use strict';
+  if (window.TUSfx) return;   // โหลดซ้ำ (ธีมพรีเมียมโหลดเองด้วย) ให้ข้าม
   var AC = window.AudioContext || window.webkitAudioContext;
   var ctx = null, master = null, muted = false, nbuf = null;
   try { muted = localStorage.getItem('tu_mute') === '1'; } catch (e) {}
@@ -60,7 +61,7 @@
 
   var S = {
     tap: function () { tone({ f: 720, to: 460, d: .08, type: 'triangle', v: .16 }); },
-    tick: function () { tone({ f: 1500, d: .015, type: 'square', v: .03 }); },
+    tick: function () { noise({ f: 3600 + Math.random() * 900, d: .02, v: .07, q: 2.5 }); tone({ f: 800 + Math.random() * 500, to: 450, d: .035, type: 'triangle', v: .05 }); },
     pop: function () { noise({ f: 2200, to: 500, d: .1, v: .4, q: .6 }); tone({ f: 320, to: 70, d: .11, v: .25 }); },
     coin: function () { tone({ f: 988, d: .07, type: 'square', v: .1 }); tone({ f: 1319, t: .07, d: .35, type: 'square', v: .1 }); },
     blip: function () { tone({ f: 880, to: 1320, d: .07, type: 'square', v: .09 }); },

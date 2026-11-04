@@ -201,7 +201,7 @@ window.TU = (function () {
                     box.classList.add('has-cap');
                     var ci = document.createElement('input');
                     ci.type = 'text'; ci.className = 'cap-in'; ci.maxLength = 40; ci.value = p.cap || '';
-                    ci.placeholder = i < 8 ? 'คำใต้รูป เช่น วันเกิด' : '(ไม่ต้องใส่)';
+                    ci.placeholder = opts.required ? (i < 8 ? 'คำใต้รูป เช่น วันเกิด' : '(ไม่ต้องใส่)') : 'ข้อความใต้รูป (ไม่ใส่ก็ได้)';
                     ci.addEventListener('input', function () { p.cap = ci.value; });
                     box.appendChild(ci);
                 }

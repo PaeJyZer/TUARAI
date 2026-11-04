@@ -14,6 +14,12 @@
   var overlay = $('gameOverlay');
   var stage = $('gameStage'), fill = $('gameBarFill'), statusEl = $('gameStatus');
   var onDone = null, cleanup = null, finished = false;
+  var sfx = function (n, a) { if (window.TUSfx) TUSfx.play(n, a); };
+  var lastScr = 0;
+  function scratchSound() {
+    var t = Date.now(); if (t - lastScr < 60 || !window.TUSfx) return; lastScr = t;
+    TUSfx.noise({ f: 2400 + Math.random() * 2200, d: .09, v: .1, q: 1.4, a: .006 });
+  }
 
   function pickPhoto() {
     var imgs = [].slice.call(document.querySelectorAll('[data-photo] img'));
@@ -33,6 +39,7 @@
     };
     if (skipped) go();
     else {
+      sfx('win');
       statusEl.textContent = attr('game-win', 'ปลดล็อกแล้ว! 💌');
       fill.style.width = '100%';
       setTimeout(go, 1000);
@@ -75,7 +82,7 @@
       ctx.beginPath();
       if (last) { ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke(); }
       else { ctx.arc(p.x, p.y, R, 0, 6.283); ctx.fill(); }
-      last = p;
+      last = p; scratchSound();
       if (!ticking) { ticking = true; setTimeout(measure, 120); }
     }
     function measure() {
@@ -114,7 +121,7 @@
       b.addEventListener('click', function (e) {
         e.stopPropagation();
         if (b.classList.contains('found')) return;
-        b.classList.add('found'); found++; update();
+        b.classList.add('found'); found++; update(); sfx('chime', found + 1);
         if (found >= n) finish(false);
       });
       stage.appendChild(b); items.push(b);

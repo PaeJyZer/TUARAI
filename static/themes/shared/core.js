@@ -155,11 +155,19 @@
   var photos = [].slice.call(document.querySelectorAll('[data-photo]'));
   var lbImg = $('lbImg'), lbCount = $('lbCount');
   var cur = 0;
+  var NOTES = CFG.captions || {};
+  function noteFor(src) {
+    if (NOTES[src]) return NOTES[src];
+    try { var p = new URL(src, location.href).pathname; if (NOTES[p]) return NOTES[p]; } catch (e) {}
+    return '';
+  }
   function showPhoto(i) {
     cur = (i + photos.length) % photos.length;
     var img = photos[cur].querySelector('img');
     lbImg.src = img.currentSrc || img.src;
     lbCount.textContent = (cur + 1) + ' / ' + photos.length;
+    var note = noteFor(img.getAttribute('src') || img.src), nEl = $('lbNote');
+    if (nEl) { nEl.textContent = note; nEl.classList.toggle('has', !!note); }
   }
   photos.forEach(function (p, i) {
     p.addEventListener('click', function () { showPhoto(i); openOverlay(lightbox); });

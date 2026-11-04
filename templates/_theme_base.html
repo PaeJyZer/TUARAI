@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/base.css') }}">
   {% block head %}{% endblock %}
   <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/letterfx.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/polish.css') }}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{% block favicon %}💖{% endblock %}</text></svg>">
 </head>
 <body class="{% block body_class %}{% endblock %}" {% block body_attrs %}{% endblock %}>
@@ -56,6 +58,7 @@
     <button class="lb-nav" id="lbPrev" type="button" aria-label="รูปก่อนหน้า">&lsaquo;</button>
     <figure class="lb-frame">
       <img id="lbImg" src="" alt="">
+      <p class="lb-note" id="lbNote"></p>
       <figcaption id="lbCount"></figcaption>
     </figure>
     <button class="lb-nav" id="lbNext" type="button" aria-label="รูปถัดไป">&rsaquo;</button>
@@ -92,13 +95,17 @@
       startDate:   {{ start_date|tojson }},
       letterText:  {{ letter_text|tojson }},
       letterSign:  {{ letter_sign|tojson }},
-      mode:        {{ occ.mode|tojson }}
+      mode:        {{ occ.mode|tojson }},
+      captions:    {{ (captions or {})|tojson }}
     };
   </script>
   <script src="{{ url_for('static', filename='themes/shared/game.js') }}"></script>
   <script src="{{ url_for('static', filename='themes/shared/core.js') }}"></script>
   <script src="{{ url_for('static', filename='themes/shared/letterfx.js') }}"></script>
   <script src="{{ url_for('static', filename='themes/shared/tapassist.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/shared/premium.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/shared/ambient.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/shared/polish.js') }}"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

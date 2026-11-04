@@ -135,3 +135,9 @@ button, [data-photo] { touch-action: manipulation; -webkit-tap-highlight-color: 
 /* ซ่อนแถบเลื่อนในจดหมาย/หน้าต่างซ้อน แต่ยังเลื่อนได้ปกติ */
 .overlay, .overlay * { scrollbar-width: none; -ms-overflow-style: none; }
 .overlay::-webkit-scrollbar, .overlay *::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* ข้อความใต้รูปตอนกดดู */
+.lb-note { display: none; margin: 14px auto 0; max-width: min(88vw, 560px); padding: 12px 20px; border-radius: 14px; font-size: clamp(15px, 4vw, 18px); line-height: 1.6; text-align: center;
+  background: rgba(10,10,14,.62); color: #fff; border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.lb-note.has { display: block; animation: lbNoteIn .45s ease both; }
+@keyframes lbNoteIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }

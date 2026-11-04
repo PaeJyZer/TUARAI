@@ -1,0 +1,69 @@
+/* =========================================
+   TUARAI - ชั้นปรับแต่งงานดีไซน์ (ใช้กับทุกธีม โหลดหลังสไตล์ของธีม)
+   ตัวอักษร จังหวะการโผล่ แสงเงา การ์ดจดหมาย ปุ่ม ไลท์บ็อกซ์ ฟิล์มเกรน
+   ใช้ translate/scale/rotate แบบ property แยก เพื่อไม่ทับ transform เดิมของแต่ละธีม
+   ========================================= */
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--accent) 55%, transparent) transparent; }
+body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+::selection { background: color-mix(in srgb, var(--accent) 60%, transparent); color: #fff; }
+:where(h1, h2, h3, .sec-title, .letter-title) { text-wrap: balance; }
+:where(p, .hero-sub, .letter-body) { text-wrap: pretty; }
+:where(button, a, [data-photo], [data-letter]):focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
+
+/* การโผล่ตอนเลื่อน: เบลอ→คม + ไล่ทีละชิ้น */
+.reveal { opacity: 0; transform: translateY(34px) scale(.985); filter: blur(7px);
+  transition: opacity .9s cubic-bezier(.22,.8,.26,1), transform .9s cubic-bezier(.22,.8,.26,1), filter .9s ease;
+  transition-delay: calc(min(var(--i, 0), 6) * 70ms); }
+.reveal.in { opacity: 1; transform: none; filter: none; }
+
+/* รูปทุกรูป: ยกขึ้นนุ่มๆ ตอนชี้/กด */
+[data-photo] { transition: translate .45s cubic-bezier(.22,.8,.26,1), scale .3s ease, filter .45s ease; will-change: translate; }
+@media (hover: hover) { [data-photo]:hover { translate: 0 -7px; filter: saturate(1.1) brightness(1.04) drop-shadow(0 18px 22px rgba(0,0,0,.28)); } }
+[data-photo]:active { scale: .975; }
+[data-photo] img { transition: filter .5s ease; }
+
+/* ปุ่มหลัก */
+.cta, [data-letter] { transition: translate .28s cubic-bezier(.22,.8,.26,1), scale .2s ease, filter .3s ease, box-shadow .3s ease; }
+@media (hover: hover) { .cta:hover, [data-letter]:hover { translate: 0 -3px; filter: brightness(1.08) saturate(1.08); } }
+.cta:active, [data-letter]:active { scale: .95; }
+
+/* ฟิล์มเกรน + แสงขอบจอ + แถบเลื่อน (สร้างด้วย polish.js) */
+.pl-grain { position: fixed; inset: -50%; z-index: 40; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: plGrain 1.2s steps(6) infinite; }
+@keyframes plGrain { 0% { transform: translate(0,0); } 20% { transform: translate(-3%,2%); } 40% { transform: translate(2%,-3%); } 60% { transform: translate(-2%,-1%); } 80% { transform: translate(3%,3%); } 100% { transform: translate(0,0); } }
+.pl-vig { position: fixed; inset: 0; z-index: 39; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, transparent 58%, rgba(0,0,0,.28) 100%); }
+.pl-prog { position: fixed; left: 0; top: 0; height: 3px; width: 100%; z-index: 99990; transform-origin: 0 50%; transform: scaleX(0); pointer-events: none;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 40%, transparent), var(--accent)); box-shadow: 0 0 12px var(--accent); }
+.pl-trail { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 9050; pointer-events: none; }
+
+/* การ์ดจดหมายแบบกระดาษเครื่องเขียน */
+.letter-card { border-radius: 20px; padding: 44px 34px 38px;
+  box-shadow: 0 30px 90px rgba(0,0,0,.55), 0 2px 0 rgba(255,255,255,.35) inset, 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent), 0 0 0 9px color-mix(in srgb, var(--card) 88%, transparent), 0 0 0 10px color-mix(in srgb, var(--accent) 22%, transparent); }
+.letter-card .eyebrow { letter-spacing: .38em; font-size: 11px; }
+.letter-title { font-size: clamp(26px, 6.5vw, 34px); letter-spacing: .01em; margin: 8px 0 18px; }
+.letter-title::after { content: ""; display: block; width: 54px; height: 2px; margin: 14px auto 0; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+.counter-title { font-size: 12px; letter-spacing: .12em; }
+.day-counter .cell { border-radius: 14px; background: color-mix(in srgb, var(--accent) 9%, transparent); border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+  box-shadow: 0 6px 16px rgba(0,0,0,.12), 0 1px 0 rgba(255,255,255,.25) inset; padding: 10px 8px; }
+.day-counter .num { font-variant-numeric: tabular-nums; font-size: 26px; }
+.letter-body { font-size: clamp(16px, 4.2vw, 18px); line-height: 2.05; }
+.letter-sign { font-size: 20px; margin-top: 22px; }
+.close-btn { border-radius: 50%; transition: background .25s, rotate .35s, opacity .25s; }
+.close-btn:hover { background: rgba(127,127,127,.18); rotate: 90deg; }
+
+/* ไลท์บ็อกซ์ */
+#lightbox { background: rgba(6,6,10,.86); backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2); }
+.lb-frame img { border-radius: 14px; box-shadow: 0 30px 80px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.14); }
+#lightbox.open .lb-frame img { animation: lbPop .5s cubic-bezier(.22,.8,.26,1) both; }
+@keyframes lbPop { from { opacity: 0; transform: scale(.94) translateY(12px); } to { opacity: 1; transform: none; } }
+.lb-nav { border-radius: 50%; width: 52px; height: 52px; font-size: 34px; display: grid; place-items: center; background: rgba(255,255,255,.08); transition: background .25s, scale .2s; }
+.lb-nav:hover { background: rgba(255,255,255,.2); }
+.lb-nav:active { scale: .9; }
+.lb-frame figcaption { letter-spacing: .22em; font-size: 12px; }
+
+/* ปุ่มเสียง */
+.sfx-btn { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: scale .2s, background .3s; }
+
+@media (max-width: 560px) { .letter-card { padding: 38px 22px 30px; } .pl-grain { opacity: .05; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .pl-grain { animation: none; } .reveal { filter: none; } }

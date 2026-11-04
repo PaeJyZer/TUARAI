@@ -25,6 +25,7 @@
     .owner-bar button:disabled { opacity: .6; cursor: wait; }
   </style>
   {% endif %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
 </head>
 <body>
 
@@ -143,10 +144,12 @@
       letterText:    {{ letter_text|tojson }},
       letterSign:    {{ letter_sign|tojson }},
       mode:          {{ occ.mode|tojson }},
-      flowerMessage: {{ flower_message|tojson }}
+      flowerMessage: {{ flower_message|tojson }},
+      captions:      {{ (captions or {})|tojson }}
     };
   </script>
   <script src="{{ url_for('static', filename='themes/shared/tapassist.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/shared/premium.js') }}"></script>
   <script src="{{ url_for('static', filename='themes/lady_gaga/script.js') }}"></script>
 </body>
 </html>
