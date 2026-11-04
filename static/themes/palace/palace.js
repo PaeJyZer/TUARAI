@@ -70,15 +70,6 @@
     var m = $('moonOrb'); m.classList.add('glow'); setTimeout(function () { m.classList.remove('glow'); }, 1200);
     TUSfx.play('chime', 5); burst(W * .8, 80, 14);
   });
-  $('pond').addEventListener('click', function (e) {
-    var r = this.getBoundingClientRect();
-    for (var k = 0; k < 2; k++) setTimeout(function () {
-      var d = document.createElement('i'); d.className = 'ripple';
-      d.style.left = (e.clientX - r.left) + 'px'; d.style.top = (e.clientY - r.top) + 'px';
-      $('pond').appendChild(d); setTimeout(function () { d.remove(); }, 1700);
-    }, k * 260);
-    TUSfx.play('drop');
-  });
   var sp = $('spirit');
   sp.addEventListener('click', function (e) {
     e.stopPropagation(); sp.classList.remove('happy'); void sp.offsetWidth; sp.classList.add('happy');
