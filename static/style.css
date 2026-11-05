@@ -854,3 +854,17 @@ a.btn-small {
 .ad-slip-btns .btn-small { padding: 12px; font-size: 1rem; }
 .ad-x { position: absolute; top: 8px; right: 12px; background: none; border: 0; color: #fff; font-size: 28px; cursor: pointer; }
 @media (max-width: 760px) { .ad-grid { grid-template-columns: 1fr; } .ad-modal-card { grid-template-columns: 1fr; overflow: auto; } .ad-slip-img { max-height: 46vh; } }
+.ad-card[data-d], .ad-bar[data-month], .ad-bar[data-theme], tr.clk { cursor: pointer; }
+.ad-card[data-d]:hover { border-color: var(--accent-red); transform: translateY(-2px); }
+.ad-card { transition: transform .2s, border-color .2s; }
+.ad-bar[data-month]:hover .n, .ad-bar[data-theme]:hover .n { color: var(--accent-red); }
+tr.clk:hover td { background: rgba(255,255,255,.04); }
+.ad-chart g[data-day]:hover rect { filter: brightness(1.4); }
+.ad-det-card { position: relative; width: min(980px, 100%); max-height: 90vh; overflow: auto; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 22px; }
+.ad-det-h { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; padding-right: 36px; }
+.ad-det-h h4 { font-size: 1.2rem; font-weight: 500; }
+.ad-kvs { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; margin-top: 14px; }
+.ad-kv { display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--border-color); font-size: .92rem; }
+.ad-kv span { color: var(--text-muted); } .ad-kv b { font-weight: 500; text-align: right; }
+.ad-det-act { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+@media (max-width: 700px) { .ad-kvs { grid-template-columns: 1fr; } }

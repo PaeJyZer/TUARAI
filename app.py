@@ -1512,12 +1512,14 @@ def admin_logout():
 @admin_required
 def admin_orders():
     rows = get_db().execute('''
-        SELECT o.id, o.kind, o.package_type, o.amount, o.status, o.created_at, o.paid_at, o.slip_path,
-               u.username, u.email, s.partner_name, s.slug
+        SELECT o.id, o.kind, o.package_type, o.amount, o.status, o.created_at, o.paid_at, o.slip_path, o.note, o.user_id,
+               u.username, u.email, s.partner_name, s.slug, s.status AS site_status, s.expires_at AS site_expires,
+               s.package AS site_package, t.name AS theme_name
         FROM orders o
         LEFT JOIN users u ON u.id = o.user_id
         LEFT JOIN user_sites s ON s.id = o.site_id
-        ORDER BY (o.status = 'review') DESC, o.id DESC LIMIT 200''').fetchall()
+        LEFT JOIN themes t ON t.id = s.theme_id
+        ORDER BY (o.status = 'review') DESC, o.id DESC LIMIT 1000''').fetchall()
     out = []
     for r in rows:
         d = dict(r)
@@ -1525,6 +1527,39 @@ def admin_orders():
         d['kind_label'] = KIND_LABEL.get(d['kind'], d['kind'])
         out.append(d)
     return jsonify({'status': 'success', 'orders': out})
+
+
+@app.route('/api/admin/sites')
+@admin_required
+def admin_sites():
+    rows = get_db().execute('''
+        SELECT s.id, s.slug, s.partner_name, s.status, s.package, s.expires_at, s.created_at, s.paid_at, s.images_json,
+               u.username, u.email, t.name AS theme_name
+        FROM user_sites s
+        LEFT JOIN users u ON u.id = s.user_id
+        LEFT JOIN themes t ON t.id = s.theme_id
+        ORDER BY s.id DESC LIMIT 1000''').fetchall()
+    out = []
+    for r in rows:
+        d = dict(r)
+        try:
+            d['photos'] = len(json.loads(d.pop('images_json') or '[]'))
+        except ValueError:
+            d['photos'] = 0
+        out.append(d)
+    return jsonify({'status': 'success', 'sites': out})
+
+
+@app.route('/api/admin/users')
+@admin_required
+def admin_users():
+    rows = get_db().execute('''
+        SELECT u.id, u.username, u.email, u.created_at,
+               (SELECT COUNT(*) FROM user_sites s WHERE s.user_id = u.id) AS sites,
+               (SELECT COUNT(*) FROM orders o WHERE o.user_id = u.id) AS orders,
+               (SELECT COALESCE(SUM(o.amount), 0) FROM orders o WHERE o.user_id = u.id AND o.status = 'completed') AS spent
+        FROM users u ORDER BY u.id DESC LIMIT 1000''').fetchall()
+    return jsonify({'status': 'success', 'users': [dict(r) for r in rows]})
 
 
 TZ_OFFSET = timedelta(hours=7)   # เวลาไทย
