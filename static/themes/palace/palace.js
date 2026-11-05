@@ -153,14 +153,12 @@
     setTimeout(function () { show(0); }, 900);
   }
   document.addEventListener('tu:opened', function () {
-    TUSfx.play('padStart'); startVN();
+    startVN();
   });
-  document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.sfx-btn') && !TUSfx.isMuted()) TUSfx.play('padStart'); });
   document.addEventListener('tu:skipped', function () {
     finished = true; clearInterval(typing); typing = null; waitTap = null; chs.innerHTML = '';
     txt.textContent = answers.filter(Boolean).length ? 'ไว้เจอกันอีกนะ 🌸' : '(ข้ามบทสนทนาแล้ว)'; nxt.hidden = true; setDots(data.length);
     renderSummary();
   });
   document.addEventListener('tu:letter', function () { burst(W / 2, 0, 30); });
-  window.addEventListener('pagehide', function () { TUSfx.play('padStop'); });
 })();
