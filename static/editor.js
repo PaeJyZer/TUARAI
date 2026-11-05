@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('edSign').value = site.letter_sign;
         document.getElementById('edPreview').href = site.preview_url;
         document.getElementById('edDialogWrap').style.display = site.has_dialog ? '' : 'none';
-        if (site.has_dialog && !dlgEd) dlgEd = TU.dialogEditor(document.getElementById('edDialog'), site.dialog);
+        if (site.has_dialog && !dlgEd) dlgEd = TU.dialogEditor(document.getElementById('edDialog'), site.dialog, { free: site.q_free, price: site.q_price, max: site.q_max, allowed: site.q_allowed, onBuy: site.q_allowed < site.q_max ? buyQuestions : null });
 
         renderNotice();
         renderPhotos();
@@ -139,33 +139,54 @@ document.addEventListener('DOMContentLoaded', async () => {
         fill();
     }
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    function payload() {
         const capOut = {};
         site.images.forEach((u) => { capOut[u] = (caps[u] || '').trim(); });
-        if (site.has_captions) {
-            const first = site.images.slice(0, 8).map((u) => capOut[u]);
-            if (first.some((x) => !x)) { TU.showAlert('กรุณาพิมพ์คำใต้รูปให้ครบ (8 รูปแรกเป็นโจทย์เกม)'); return; }
-            if (new Set(first.map((x) => x.toLowerCase())).size !== first.length) { TU.showAlert('มีคำใต้รูปซ้ำกัน กรุณาใช้คำที่ไม่ซ้ำกัน'); return; }
-        }
+        return {
+            partner_name: document.getElementById('edName').value,
+            start_date: document.getElementById('edDate').value,
+            occasion: document.getElementById('edOccasion').value,
+            letter_text: document.getElementById('edLetter').value,
+            letter_sign: document.getElementById('edSign').value,
+            dialog: dlgEd ? dlgEd.get() : [],
+            captions: capOut
+        };
+    }
+    function captionsOk() {
+        if (!site.has_captions) return true;
+        const first = site.images.slice(0, 8).map((u) => (caps[u] || '').trim());
+        if (first.some((x) => !x)) { TU.showAlert('กรุณาพิมพ์คำใต้รูปให้ครบ (8 รูปแรกเป็นโจทย์เกม)'); return false; }
+        if (new Set(first.map((x) => x.toLowerCase())).size !== first.length) { TU.showAlert('มีคำใต้รูปซ้ำกัน กรุณาใช้คำที่ไม่ซ้ำกัน'); return false; }
+        return true;
+    }
+    const putSite = () => TU.api(`/api/sites/${slug}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload()) });
+
+    // ซื้อคำถามเพิ่ม (เว็บที่ชำระเงินแล้ว) : บันทึกที่แก้ไว้ก่อน แล้วไปหน้าชำระเงิน
+    async function buyQuestions() {
+        const room = site.q_max - site.q_allowed;
+        const ans = window.prompt(`ซื้อคำถามเพิ่มกี่ข้อ? (ข้อละ ${site.q_price} บาท · ซื้อได้อีกสูงสุด ${room} ข้อ)`, '1');
+        if (ans === null) return;
+        const qty = parseInt(ans, 10);
+        if (!qty || qty < 1 || qty > room) { TU.showAlert(`กรอกจำนวน 1-${room} ข้อ`); return; }
+        if (!captionsOk()) return;
+        const saved = await putSite();
+        if (!saved.ok && saved.status !== 402) { TU.showAlert(esc(saved.data.message || 'บันทึกไม่สำเร็จ')); return; }
+        const r = await TU.postJson('/api/orders', { slug, kind: 'extra_q', qty });
+        if (r.ok) window.location.href = r.data.pay_url;
+        else TU.showAlert(esc(r.data.message || 'สร้างออเดอร์ไม่สำเร็จ'));
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!captionsOk()) return;
         const btn = document.getElementById('edSave');
         btn.disabled = true;
-        const r = await TU.api(`/api/sites/${slug}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                partner_name: document.getElementById('edName').value,
-                start_date: document.getElementById('edDate').value,
-                occasion: document.getElementById('edOccasion').value,
-                letter_text: document.getElementById('edLetter').value,
-                letter_sign: document.getElementById('edSign').value,
-                dialog: dlgEd ? dlgEd.get() : [],
-                captions: capOut
-            })
-        });
+        const r = await putSite();
         btn.disabled = false;
         if (r.ok) {
             TU.showAlert('บันทึกการแก้ไขเรียบร้อยแล้ว', load);
+        } else if (r.status === 402 && r.data.need_extra_q) {
+            TU.showAlert(esc(r.data.message || 'ต้องซื้อคำถามเพิ่ม'));
         } else {
             TU.showAlert(esc(r.data.message || 'บันทึกไม่สำเร็จ'), r.status === 403 ? load : null);
         }

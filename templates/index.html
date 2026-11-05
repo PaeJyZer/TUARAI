@@ -132,7 +132,8 @@
       packages: {{ packages|tojson }},
       features: {{ features|tojson }},
       minPhotos: {{ min_photos }},
-      defaultDialog: {{ default_dialog|tojson }}
+      defaultDialog: {{ default_dialog|tojson }},
+      qFree: {{ q_free }}, qPrice: {{ q_price|int }}, qMax: {{ q_max }}
     };
   </script>
   <script src="{{ url_for('static', filename='common.js') }}"></script>

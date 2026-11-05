@@ -873,3 +873,7 @@ tr.clk:hover td { background: rgba(255,255,255,.04); }
 
 .ad-card.hot.alert { border-color: #5ab0ff; box-shadow: 0 0 0 1px rgba(90,176,255,.4), 0 0 24px rgba(59,123,216,.35); animation: adPulse 2.2s ease-in-out infinite; }
 @keyframes adPulse { 50% { box-shadow: 0 0 0 1px rgba(90,176,255,.7), 0 0 34px rgba(59,123,216,.55); } }
+
+.dlg-price { font-size: .85rem; color: #ffd166; background: rgba(255,209,102,.08); border: 1px dashed rgba(255,209,102,.4); border-radius: 8px; padding: 8px 12px; margin-bottom: 6px; }
+.dlg-extra { font-size: .75rem; font-weight: 500; color: #ffd166; border: 1px solid rgba(255,209,102,.5); border-radius: 999px; padding: 1px 8px; margin-left: 6px; }
+.dlg-buy { background: linear-gradient(135deg, #ff5d8f, #8a5cff) !important; border-color: transparent !important; color: #fff !important; }

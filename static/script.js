@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         refreshRule();
 
-        const dlgEd = theme.has_dialog ? TU.dialogEditor(document.getElementById('buyDialog'), []) : null;
+        const dlgEd = theme.has_dialog ? TU.dialogEditor(document.getElementById('buyDialog'), [], { free: DATA.qFree, price: DATA.qPrice, max: DATA.qMax, allowed: DATA.qMax }) : null;
         const occSel = document.getElementById('buyOccasion');
         const occLabels = { anniversary: 'วันที่เริ่มคบกัน (หรือวันพิเศษ)', birthday: 'วันเกิดของเขา/เธอ' };
         occSel.addEventListener('change', () => {
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         rejected: ['สลิปไม่ผ่าน', '#ff5a5a'],
         cancelled: ['ยกเลิก', '#888888']
     };
-    const KIND_LABEL = { new: 'สร้างเว็บใหม่', upgrade: 'อัปเกรดเป็น Pro', renew: 'ต่ออายุ 1 ปี' };
+    const KIND_LABEL = { new: 'สร้างเว็บใหม่', upgrade: 'อัปเกรดเป็น Pro', renew: 'ต่ออายุ 1 ปี', extra_q: 'เพิ่มคำถามบทสนทนา' };
 
     async function loadDashboard() {
         const r = await TU.api('/api/user-profile');

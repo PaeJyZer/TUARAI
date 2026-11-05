@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // จ่ายสร้างเว็บ/อัปเกรดแล้ว ให้ไปเปิดหน้าส่งมอบ QR ต่อเลย
         const kind = d.order.kind;
         if (d.site && (kind === 'new' || kind === 'upgrade')) return `/dashboard?deliver=${encodeURIComponent(d.site.slug)}`;
+        if (d.site && kind === 'extra_q') return `/edit/${encodeURIComponent(d.site.slug)}`;
         return '/dashboard';
     }
 
@@ -42,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <table class="pay-table">
                 <tr><td>รายการ</td><td>${esc(o.kind_label)}</td></tr>
                 <tr><td>เว็บ</td><td>${siteName}</td></tr>
+                ${o.extra_q ? `<tr><td>คำถามเพิ่ม</td><td>${o.extra_q} ข้อ × ${TU.money(o.extra_price)} ฿ ${o.kind === 'new' ? '(รวมอยู่ในยอดแล้ว)' : ''}</td></tr>` : ''}
                 <tr><td>แพ็กเกจ</td><td>${esc(String(o.package).toUpperCase())}</td></tr>
                 <tr><td>ยอดที่ต้องชำระ</td><td class="pay-amount">${TU.money(o.amount)} ฿</td></tr>
                 <tr><td>สถานะ</td><td>${statusHtml}</td></tr>

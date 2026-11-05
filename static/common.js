@@ -130,8 +130,9 @@ window.TU = (function () {
 
 
     // ตัวแก้ไขบทสนทนา (ธีมวิชวลโนเวล): คำถาม + ตัวเลือก 2-4 ข้อ + คำตอบของเรา
-    function dialogEditor(root, items) {
-        var MAXQ = 6, locked = false;
+    function dialogEditor(root, items, opts) {
+        opts = opts || {};
+        var FREE = opts.free || 6, PRICE = opts.price || 29, ABS = opts.max || 6, MAXQ = opts.allowed || ABS, locked = false;
         var data = (items && items.length ? items : [{ q: '', options: ['', ''], replies: ['', ''], reply: '' }]).map(function (x) {
             return { q: x.q || '', options: (x.options || []).slice(), replies: (x.replies || []).slice(), reply: x.reply || '' };
         });
@@ -145,9 +146,10 @@ window.TU = (function () {
             return out;
         }
         function render() {
-            var h = '<p class="photo-hint">ใส่ {name} ตรงไหนก็ได้ ระบบจะเปลี่ยนเป็นชื่อแฟนให้ (ตอบได้ 2-4 ตัวเลือกต่อคำถาม สูงสุด ' + MAXQ + ' คำถาม) ถ้าไม่กรอกอะไรเลย ระบบจะใช้บทสนทนาตัวอย่างให้</p>';
+            var h = '<p class="photo-hint">ใส่ {name} ตรงไหนก็ได้ ระบบจะเปลี่ยนเป็นชื่อแฟนให้ (ตอบได้ 2-4 ตัวเลือกต่อคำถาม) ถ้าไม่กรอกอะไรเลย ระบบจะใช้บทสนทนาตัวอย่างให้</p>' +
+                '<p class="dlg-price" id="dlgPrice"></p>';
             data.forEach(function (d, i) {
-                h += '<div class="dlg-item"><div class="dlg-head"><b>คำถามที่ ' + (i + 1) + '</b>' +
+                h += '<div class="dlg-item"><div class="dlg-head"><b>คำถามที่ ' + (i + 1) + (i >= FREE ? ' <span class="dlg-extra">+' + PRICE + ' ฿</span>' : '') + '</b>' +
                     '<button type="button" class="btn-small dlg-del" data-i="' + i + '">ลบ</button></div>' +
                     '<textarea class="dlg-q" rows="2" maxlength="160" placeholder="เช่น ถ้าไปเที่ยวด้วยกัน อยากไปไหน">' + escapeHtml(d.q) + '</textarea>';
                 for (var k = 0; k < 4; k++) {
@@ -156,12 +158,24 @@ window.TU = (function () {
                 }
                 h += '<input type="text" class="dlg-reply" maxlength="160" placeholder="คำตอบรวม ใช้กับตัวเลือกที่ไม่ได้ใส่คำตอบเฉพาะ (ไม่ใส่ก็ได้)" value="' + escapeHtml(d.reply) + '"></div>';
             });
-            h += '<button type="button" class="btn-small dlg-add"' + (data.length >= MAXQ ? ' disabled' : '') + '>+ เพิ่มคำถาม</button>';
+            var atCap = data.length >= MAXQ, canBuy = atCap && MAXQ < ABS && opts.onBuy;
+            h += '<button type="button" class="btn-small dlg-add' + (canBuy ? ' dlg-buy' : '') + '"' + (atCap && !canBuy ? ' disabled' : '') + '>' +
+                (canBuy ? '🛒 ซื้อคำถามเพิ่ม ' + PRICE + ' ฿/ข้อ' : '+ เพิ่มคำถาม') + '</button>';
             root.innerHTML = h;
-            root.querySelectorAll('input,textarea,button').forEach(function (el) { el.disabled = locked || (el.classList.contains('dlg-add') && data.length >= MAXQ); });
+            root.querySelectorAll('input,textarea,button').forEach(function (el) { el.disabled = locked || (el.classList.contains('dlg-add') && atCap && !canBuy); });
+            note();
         }
+        function note() {
+            var el = root.querySelector('#dlgPrice'); if (!el) return;
+            var n = [].filter.call(root.querySelectorAll('.dlg-item'), function (it) { return it.querySelector('.dlg-q').value.trim(); }).length;
+            if (opts.onBuy) { el.innerHTML = 'ใช้ได้ <b>' + MAXQ + '</b> คำถาม (ฟรี ' + FREE + ' ข้อ) · ซื้อเพิ่มข้อละ ' + PRICE + ' ฿ สูงสุด ' + ABS + ' ข้อ'; return; }
+            el.innerHTML = 'ฟรี ' + FREE + ' คำถามแรก · ข้อที่ ' + (FREE + 1) + ' เป็นต้นไปข้อละ <b>' + PRICE + ' ฿</b> (สูงสุด ' + ABS + ' ข้อ)' +
+                (n > FREE ? ' · ตอนนี้ ' + n + ' ข้อ ค่าเพิ่ม <b>' + ((n - FREE) * PRICE) + ' ฿</b>' : '');
+        }
+        root.addEventListener('input', note);
         root.addEventListener('click', function (e) {
             if (locked) return;
+            if (e.target.closest('.dlg-buy')) { opts.onBuy(); return; }
             var del = e.target.closest('.dlg-del');
             if (del) { data = collect(); data.splice(+del.dataset.i, 1); render(); }
             if (e.target.closest('.dlg-add')) { data = collect(); if (data.length < MAXQ) data.push({ q: '', options: ['', ''], replies: ['', ''], reply: '' }); render(); }

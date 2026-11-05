@@ -260,6 +260,11 @@ CAPTION_THEMES = {'matchcat_v1'}      # ธีมที่ลูกค้าเ�
 MAX_PAIRS = 8
 DEMO_NOTES = ['วันแรกที่เราไปเที่ยวด้วยกัน', 'รอยยิ้มที่ฉันชอบที่สุด', 'มื้อนี้อร่อยเพราะมีเธอ', 'วันที่ฝนตกแต่ใจอบอุ่น', 'ถ่ายรูปคู่กันครั้งแรก', 'เซอร์ไพรส์เล็กๆ ที่ไม่ลืม']
 DEMO_CAPTIONS = ['สีชมพูบานเย็น', 'สีส้มพีช', 'สีม่วงลาเวนเดอร์', 'สีเขียวมิ้นต์', 'สีเหลืองทอง', 'สีฟ้าอ่อน', 'สีกุหลาบ', 'สีเบจ']
+FREE_QUESTIONS = 6        # คำถามบทสนทนาที่รวมในราคาเว็บ
+EXTRA_Q_PRICE = 29.0      # คำถามที่เกินจากนี้ ข้อละ (บาท)
+MAX_QUESTIONS = 20        # รวมสูงสุดต่อเว็บ
+
+
 DEFAULT_DIALOG = [
     {'q': '{name} รู้ไหมว่าวันนี้เราอยากเจอเธอที่สุดเลย เธออยากให้เราเริ่มเล่าเรื่องไหนก่อนดี',
      'options': ['วันแรกที่เราเจอกัน', 'ช่วงเวลาที่มีความสุขที่สุด'],
@@ -335,6 +340,7 @@ def migrate_db():
         'site_id': 'INTEGER',
         'provider': 'TEXT',
         'slip_path': 'TEXT',
+        'extra_q': 'INTEGER DEFAULT 0',   # จำนวนคำถามเพิ่มที่อยู่ในออเดอร์นี้
         'paid_at': 'TEXT',
         'note': 'TEXT',
     })
@@ -348,6 +354,7 @@ def migrate_db():
         'reminder_sent_at': 'TEXT',
         'occasion': "TEXT DEFAULT 'anniversary'",
         'dialog': 'TEXT',
+        'extra_q': 'INTEGER DEFAULT 0',   # ช่องคำถามเพิ่มที่ซื้อแล้ว
         'captions': 'TEXT',
     })
 
@@ -556,7 +563,7 @@ def captions_of(site):
 
 
 def clean_dialog(raw):
-    """ตรวจบทสนทนาจากลูกค้า: ไม่เกิน 6 คำถาม ตัวเลือก 2-4 ข้อ คืนค่า list (ว่าง = ไม่ได้ใส่)"""
+    """ตรวจบทสนทนาจากลูกค้า: ไม่เกิน MAX_QUESTIONS คำถาม ตัวเลือก 2-4 ข้อ คืนค่า list (ว่าง = ไม่ได้ใส่)"""
     if isinstance(raw, str):
         try:
             raw = json.loads(raw) if raw.strip() else []
@@ -565,7 +572,7 @@ def clean_dialog(raw):
     if not isinstance(raw, list):
         return []
     out = []
-    for item in raw[:6]:
+    for item in raw[:MAX_QUESTIONS]:
         if not isinstance(item, dict):
             continue
         q = str(item.get('q') or '').strip()[:160]
@@ -639,6 +646,8 @@ def site_state(site):
         'captions': captions_of(site),
         'has_dialog': bool(theme and theme['theme_code'] in DIALOG_THEMES),
         'dialog': (clean_dialog(site['dialog']) if 'dialog' in site.keys() else []),
+        'q_free': FREE_QUESTIONS, 'q_price': EXTRA_Q_PRICE, 'q_max': MAX_QUESTIONS,
+        'q_allowed': MAX_QUESTIONS if stored_status == 'draft' else site_q_allowed(site),
         'theme_id': site['theme_id'],
         'theme_name': theme['name'] if theme else '-',
         'package': pkg_key,
@@ -800,7 +809,8 @@ def serve_index():
     premium = [t for t in themes if t['is_premium']]
     standard = [t for t in themes if not t['is_premium']]
     return render_template('index.html', themes=themes, premium=premium, standard=standard, packages=PACKAGES, min_photos=MIN_PHOTOS,
-                           renew_price=RENEW_PRICE, features=package_features(), default_dialog=DEFAULT_DIALOG)
+                           renew_price=RENEW_PRICE, features=package_features(), default_dialog=DEFAULT_DIALOG,
+                           q_free=FREE_QUESTIONS, q_price=EXTRA_Q_PRICE, q_max=MAX_QUESTIONS)
 
 
 @app.route('/dashboard')
@@ -1127,6 +1137,23 @@ def update_site(slug):
         return err('เว็บ 1 เว็บใช้ได้ 1 ธีม ถ้าต้องการธีมอื่นให้ซื้อเว็บใหม่', 403)
 
     db = get_db()
+    n_q = len(json.loads(fields['dialog']))
+    if theme_has_dialog(get_theme(site['theme_id'])):
+        if (site['status'] or 'active') == 'active' and n_q > site_q_allowed(site):
+            need = n_q - site_q_allowed(site)
+            return jsonify({'status': 'error', 'need_extra_q': need,
+                            'message': f'บทสนทนาเกินจำนวนที่ใช้ได้ ({site_q_allowed(site)} ข้อ) ซื้อคำถามเพิ่มข้อละ {EXTRA_Q_PRICE:,.0f} บาทก่อน'}), 402
+        if (site['status'] or 'active') == 'draft':
+            order = db.execute("SELECT * FROM orders WHERE site_id = ? AND kind = 'new' AND status IN ('pending', 'review', 'rejected') "
+                               "ORDER BY id DESC LIMIT 1", (site['id'],)).fetchone()
+            extra = max(0, n_q - FREE_QUESTIONS)
+            if order and (order['extra_q'] or 0) != extra:
+                if order['status'] == 'review':
+                    return err('กำลังตรวจสลิปอยู่ เปลี่ยนจำนวนคำถามตอนนี้ไม่ได้ (ยอดเงินจะไม่ตรงกับสลิป) รอตรวจเสร็จก่อนนะ')
+                theme = get_theme(site['theme_id'])
+                base = theme_prices(theme)[site['package']] if site['package'] in PACKAGES else order['amount']
+                db.execute('UPDATE orders SET amount = ?, extra_q = ?, status = ? WHERE id = ?',
+                           (base + extra * EXTRA_Q_PRICE, extra, 'pending' if order['status'] == 'rejected' else order['status'], order['id']))
     db.execute('''UPDATE user_sites SET partner_name = ?, start_date = ?, letter_text = ?, letter_sign = ?,
                   occasion = ?, dialog = ?, captions = ?, theme_id = ?, updated_at = CURRENT_TIMESTAMP WHERE slug = ?''',
                (fields['partner_name'], fields['start_date'], fields['letter_text'], fields['letter_sign'],
@@ -1289,13 +1316,34 @@ def qr_sample():
 # =====================================================================
 #  12. ออเดอร์ & การชำระเงิน
 # =====================================================================
-def order_amount(kind, site, theme):
+def site_dialog_count(site):
+    try:
+        return len(clean_dialog(site['dialog'])) if 'dialog' in site.keys() else 0
+    except Exception:
+        return 0
+
+
+def theme_has_dialog(theme):
+    return bool(theme and theme['theme_code'] in DIALOG_THEMES)
+
+
+def site_q_allowed(site):
+    """จำนวนคำถามที่เว็บนี้ใช้ได้ (ฟรี + ที่ซื้อเพิ่มแล้ว)"""
+    extra = site['extra_q'] if 'extra_q' in site.keys() and site['extra_q'] else 0
+    return min(MAX_QUESTIONS, FREE_QUESTIONS + int(extra))
+
+
+def order_amount(kind, site, theme, qty=0):
+    """คืน (ยอด, แพ็กเกจ, จำนวนคำถามเพิ่มที่รวมในออเดอร์)"""
     prices = theme_prices(theme)
     if kind == 'new':
-        return prices[site['package']], site['package']
+        extra = max(0, site_dialog_count(site) - FREE_QUESTIONS) if theme_has_dialog(theme) else 0
+        return prices[site['package']] + extra * EXTRA_Q_PRICE, site['package'], extra
     if kind == 'upgrade':
-        return max(prices['pro'] - prices['basic'], 1.0), 'pro'
-    return RENEW_PRICE, 'basic'
+        return max(prices['pro'] - prices['basic'], 1.0), 'pro', 0
+    if kind == 'extra_q':
+        return qty * EXTRA_Q_PRICE, site['package'] or 'basic', qty
+    return RENEW_PRICE, 'basic', 0
 
 
 @app.route('/api/orders', methods=['POST'])
@@ -1304,8 +1352,21 @@ def create_order():
     data = request.get_json(silent=True) or {}
     kind = data.get('kind', 'new')
     site = owned_site(data.get('slug'))
-    if not site or kind not in ('new', 'upgrade', 'renew'):
+    if not site or kind not in ('new', 'upgrade', 'renew', 'extra_q'):
         return err('ไม่พบเว็บนี้', 404)
+    qty = 0
+    if kind == 'extra_q':
+        try:
+            qty = int(data.get('qty') or 0)
+        except (TypeError, ValueError):
+            qty = 0
+        if (site['status'] or 'active') != 'active':
+            return err('ซื้อคำถามเพิ่มได้เมื่อเว็บชำระเงินแล้ว (ตอนยังเป็นแบบร่างใส่ได้ถึง 20 ข้อ ระบบคิดเงินรวมให้ตอนชำระ)')
+        if not theme_has_dialog(get_theme(site['theme_id'])):
+            return err('ธีมนี้ไม่มีบทสนทนา')
+        room = MAX_QUESTIONS - site_q_allowed(site)
+        if qty < 1 or qty > room:
+            return err(f'ซื้อเพิ่มได้ 1-{room} ข้อ (เว็บหนึ่งมีคำถามได้สูงสุด {MAX_QUESTIONS} ข้อ)' if room > 0 else f'เว็บนี้มีคำถามครบ {MAX_QUESTIONS} ข้อแล้ว')
 
     stored_status = site['status'] or 'active'
     if kind == 'new' and stored_status != 'draft':
@@ -1317,22 +1378,24 @@ def create_order():
             return err('เว็บนี้เป็นแพ็กเกจ Pro อยู่แล้ว ไม่ต้องอัปเกรดหรือต่ออายุ')
 
     theme = get_theme(site['theme_id'])
-    amount, pkg = order_amount(kind, site, theme)
+    amount, pkg, extra = order_amount(kind, site, theme, qty)
     db = get_db()
 
     # มีออเดอร์ที่ค้างจ่ายของเว็บ+ประเภทนี้อยู่แล้ว ใช้อันเดิม ไม่สร้างซ้ำ
     existing = db.execute("SELECT * FROM orders WHERE site_id = ? AND kind = ? "
                           "AND status IN ('pending', 'review', 'rejected') ORDER BY id DESC LIMIT 1",
                           (site['id'], kind)).fetchone()
+    if existing and kind == 'extra_q' and existing['status'] != 'pending' and (existing['extra_q'] or 0) != qty:
+        return err('มีออเดอร์ซื้อคำถามเพิ่มที่รอตรวจสลิปอยู่ กรุณารอให้ตรวจเสร็จก่อน')
     if existing:
-        if existing['status'] == 'pending' and abs(existing['amount'] - amount) > 0.001:
-            db.execute('UPDATE orders SET amount = ? WHERE id = ?', (amount, existing['id']))
+        if existing['status'] == 'pending' and (abs(existing['amount'] - amount) > 0.001 or (existing['extra_q'] or 0) != extra):
+            db.execute('UPDATE orders SET amount = ?, extra_q = ? WHERE id = ?', (amount, extra, existing['id']))
             db.commit()
         order_id = existing['id']
     else:
-        cur = db.execute("INSERT INTO orders (user_id, package_type, amount, status, kind, site_id, provider) "
-                         "VALUES (?, ?, ?, 'pending', ?, ?, ?)",
-                         (session['user_id'], pkg, amount, kind, site['id'], PAYMENT_MODE))
+        cur = db.execute("INSERT INTO orders (user_id, package_type, amount, status, kind, site_id, provider, extra_q) "
+                         "VALUES (?, ?, ?, 'pending', ?, ?, ?, ?)",
+                         (session['user_id'], pkg, amount, kind, site['id'], PAYMENT_MODE, extra))
         order_id = cur.lastrowid
         if kind == 'new':
             db.execute('UPDATE user_sites SET order_id = ? WHERE id = ?', (order_id, site['id']))
@@ -1360,8 +1423,12 @@ def mark_order_paid(db, order_id):
             expires = now + timedelta(days=pkg['valid_days']) if pkg['valid_days'] else None
             edit_until = now + timedelta(hours=pkg['edit_hours']) if pkg['edit_hours'] else None
             db.execute('''UPDATE user_sites SET status = 'active', package = ?, expires_at = ?, edit_until = ?,
-                          paid_at = ?, order_id = ?, reminder_sent_at = NULL WHERE id = ?''',
-                       (order['package_type'], to_s(expires), to_s(edit_until), to_s(now), order_id, site['id']))
+                          paid_at = ?, order_id = ?, reminder_sent_at = NULL, extra_q = ? WHERE id = ?''',
+                       (order['package_type'], to_s(expires), to_s(edit_until), to_s(now), order_id,
+                        int(order['extra_q'] or 0), site['id']))
+        elif kind == 'extra_q':
+            db.execute('UPDATE user_sites SET extra_q = MIN(?, COALESCE(extra_q, 0) + ?) WHERE id = ?',
+                       (MAX_QUESTIONS - FREE_QUESTIONS, int(order['extra_q'] or 0), site['id']))
         elif kind == 'upgrade':
             db.execute("UPDATE user_sites SET package = 'pro', expires_at = NULL, edit_until = NULL, "
                        "reminder_sent_at = NULL WHERE id = ?", (site['id'],))
@@ -1399,7 +1466,7 @@ def _own_order(order_id):
     return get_db().execute('SELECT * FROM orders WHERE id = ? AND user_id = ?', (order_id, user_id)).fetchone()
 
 
-KIND_LABEL = {'new': 'สร้างเว็บใหม่', 'upgrade': 'อัปเกรดเป็น Pro', 'renew': 'ต่ออายุ 1 ปี'}
+KIND_LABEL = {'new': 'สร้างเว็บใหม่', 'upgrade': 'อัปเกรดเป็น Pro', 'renew': 'ต่ออายุ 1 ปี', 'extra_q': 'เพิ่มคำถามบทสนทนา'}
 
 
 @app.route('/api/orders/<int:order_id>', methods=['GET'])
@@ -1414,7 +1481,8 @@ def get_order(order_id):
         'order': {
             'id': order['id'], 'kind': order['kind'], 'kind_label': KIND_LABEL.get(order['kind'], order['kind']),
             'package': order['package_type'], 'amount': order['amount'], 'status': order['status'],
-            'has_slip': bool(order['slip_path']),
+            'has_slip': bool(order['slip_path']), 'extra_q': int(order['extra_q'] or 0),
+            'extra_price': EXTRA_Q_PRICE,
         },
         'site': {'slug': site['slug'], 'partner_name': site['partner_name']} if site else None,
         'payment_mode': PAYMENT_MODE,
