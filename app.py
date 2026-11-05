@@ -1527,6 +1527,95 @@ def admin_orders():
     return jsonify({'status': 'success', 'orders': out})
 
 
+TZ_OFFSET = timedelta(hours=7)   # เวลาไทย
+
+
+@app.route('/api/admin/stats')
+@admin_required
+def admin_stats():
+    """ตัวเลขสรุปธุรกิจ: รายได้วัน/เดือน กราฟ 30 วัน ยอดรอตรวจ แยกตามธีม/ประเภท และอัตราปิดการขาย"""
+    db = get_db()
+    now_th = now_utc() + TZ_OFFSET
+    today = now_th.date()
+    rows = db.execute('''
+        SELECT o.id, o.kind, o.package_type, o.amount, o.status, o.paid_at, o.created_at, t.name AS theme_name
+        FROM orders o
+        LEFT JOIN user_sites s ON s.id = o.site_id
+        LEFT JOIN themes t ON t.id = s.theme_id''').fetchall()
+
+    def local(s):
+        d = parse_dt(s)
+        return (d + TZ_OFFSET) if d else None
+
+    daily = {(today - timedelta(days=i)): [0.0, 0] for i in range(29, -1, -1)}
+    months = {}
+    by_theme, by_kind, by_pkg = {}, {}, {}
+    total = rev_today = rev_yday = rev_month = rev_lastm = 0.0
+    n_paid = n_today = n_month = 0
+    review_n = review_amt = pending_n = 0
+    lm_start = (today.replace(day=1) - timedelta(days=1)).replace(day=1)
+    for r in rows:
+        amt = float(r['amount'] or 0)
+        if r['status'] == 'review':
+            review_n += 1; review_amt += amt
+        elif r['status'] == 'pending':
+            pending_n += 1
+        if r['status'] != 'completed':
+            continue
+        d = local(r['paid_at']) or local(r['created_at'])
+        if not d:
+            continue
+        day = d.date()
+        total += amt; n_paid += 1
+        if day in daily:
+            daily[day][0] += amt; daily[day][1] += 1
+        mk = day.strftime('%Y-%m')
+        months[mk] = months.get(mk, 0.0) + amt
+        if day == today:
+            rev_today += amt; n_today += 1
+        if day == today - timedelta(days=1):
+            rev_yday += amt
+        if day.year == today.year and day.month == today.month:
+            rev_month += amt; n_month += 1
+        if lm_start <= day < today.replace(day=1):
+            rev_lastm += amt
+        for dct, key in ((by_theme, r['theme_name'] or 'ไม่ระบุ'), (by_kind, KIND_LABEL.get(r['kind'], r['kind'] or 'new')),
+                         (by_pkg, str(r['package_type'] or '-').upper())):
+            e = dct.setdefault(key, [0, 0.0]); e[0] += 1; e[1] += amt
+
+    def top(dct):
+        return sorted(({'name': k, 'orders': v[0], 'amount': v[1]} for k, v in dct.items()), key=lambda x: -x['amount'])
+
+    sites_total = db.execute('SELECT COUNT(*) FROM user_sites').fetchone()[0]
+    sites_active = db.execute("SELECT COUNT(*) FROM user_sites WHERE status = 'active'").fetchone()[0]
+    sites_draft = db.execute("SELECT COUNT(*) FROM user_sites WHERE status = 'draft'").fetchone()[0]
+    soon = to_s(now_utc() + timedelta(days=7))
+    expiring = db.execute("SELECT COUNT(*) FROM user_sites WHERE status = 'active' AND expires_at IS NOT NULL AND expires_at <= ? AND expires_at >= ?",
+                          (soon, to_s(now_utc()))).fetchone()[0]
+    users = db.execute('SELECT COUNT(*) FROM users').fetchone()[0]
+    new_paid_sites = sum(1 for r in rows if r['status'] == 'completed' and (r['kind'] or 'new') == 'new')
+    month_keys = []
+    y, m = today.year, today.month
+    for _ in range(6):
+        month_keys.append(f'{y:04d}-{m:02d}')
+        m -= 1
+        if m == 0:
+            y, m = y - 1, 12
+    return jsonify({'status': 'success', 'stats': {
+        'today': {'amount': rev_today, 'orders': n_today, 'vs_yesterday': rev_yday},
+        'month': {'amount': rev_month, 'orders': n_month, 'vs_last': rev_lastm},
+        'total': {'amount': total, 'orders': n_paid},
+        'review': {'orders': review_n, 'amount': review_amt}, 'pending': pending_n,
+        'daily': [{'date': d.isoformat(), 'amount': v[0], 'orders': v[1]} for d, v in daily.items()],
+        'months': [{'month': k, 'amount': months.get(k, 0.0)} for k in reversed(month_keys)],
+        'by_theme': top(by_theme), 'by_kind': top(by_kind), 'by_package': top(by_pkg),
+        'sites': {'total': sites_total, 'active': sites_active, 'draft': sites_draft, 'expiring7': expiring},
+        'users': users,
+        'conversion': {'created': sites_total, 'paid': new_paid_sites,
+                       'rate': (new_paid_sites / sites_total * 100) if sites_total else 0},
+    }})
+
+
 @app.route('/slips/<int:order_id>')
 @admin_required
 def admin_slip(order_id):

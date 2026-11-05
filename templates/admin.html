@@ -29,14 +29,70 @@
     </div>
 
     <section id="adminMain" style="display: none;">
-      <h3 class="section-title">🧾 ออเดอร์ (รอตรวจสอบสลิปขึ้นก่อน)</h3>
+      <div class="ad-top">
+        <h3 class="section-title" style="margin:0;border:none;">📊 ภาพรวมธุรกิจ</h3>
+        <button type="button" class="btn-small" id="adRefresh">รีเฟรช</button>
+      </div>
+      <div class="ad-cards" id="adCards"></div>
+
+      <div class="ad-grid">
+        <div class="ad-box ad-wide">
+          <div class="ad-box-h"><b>รายได้ 30 วันล่าสุด</b><span id="adChartTotal" class="muted"></span></div>
+          <div id="adChart" class="ad-chart"></div>
+        </div>
+        <div class="ad-box">
+          <div class="ad-box-h"><b>รายได้รายเดือน (6 เดือน)</b></div>
+          <div id="adMonths" class="ad-bars"></div>
+        </div>
+        <div class="ad-box">
+          <div class="ad-box-h"><b>ธีมขายดี</b></div>
+          <div id="adThemes" class="ad-bars"></div>
+        </div>
+        <div class="ad-box">
+          <div class="ad-box-h"><b>แยกตามประเภท / แพ็กเกจ</b></div>
+          <div id="adKinds" class="ad-bars"></div>
+        </div>
+        <div class="ad-box">
+          <div class="ad-box-h"><b>อัตราปิดการขาย</b></div>
+          <div id="adConv"></div>
+        </div>
+      </div>
+
+      <div class="ad-top" style="margin-top: 40px;">
+        <h3 class="section-title" style="margin:0;border:none;">🧾 ออเดอร์</h3>
+        <div class="ad-tabs" id="adTabs">
+          <button type="button" data-f="review" class="on">รอตรวจสลิป <i id="adCntReview">0</i></button>
+          <button type="button" data-f="pending">รอชำระ</button>
+          <button type="button" data-f="completed">ชำระแล้ว</button>
+          <button type="button" data-f="all">ทั้งหมด</button>
+        </div>
+      </div>
       <div class="table-wrapper">
         <table class="dash-table">
-          <thead><tr><th>#</th><th>ผู้ใช้</th><th>รายการ</th><th>เว็บ</th><th>ยอด</th><th>สถานะ</th><th>สลิป</th><th>จัดการ</th></tr></thead>
-          <tbody id="adminOrders"><tr><td colspan="8" style="text-align: center;">กำลังโหลด...</td></tr></tbody>
+          <thead><tr><th>#</th><th>ผู้ใช้</th><th>รายการ</th><th>เว็บ</th><th>ยอด</th><th>เวลา</th><th>สถานะ</th><th>สลิป</th><th>จัดการ</th></tr></thead>
+          <tbody id="adminOrders"><tr><td colspan="9" style="text-align: center;">กำลังโหลด...</td></tr></tbody>
         </table>
       </div>
     </section>
+
+    <!-- ดูสลิปใหญ่ + อนุมัติ/ปฏิเสธในหน้าเดียว -->
+    <div class="ad-modal" id="adSlip" hidden>
+      <div class="ad-modal-card">
+        <button type="button" class="ad-x" id="adSlipClose" aria-label="ปิด">&times;</button>
+        <div class="ad-slip-img"><img id="adSlipImg" alt="สลิป"></div>
+        <div class="ad-slip-side">
+          <p class="muted" id="adSlipNo"></p>
+          <p class="ad-slip-amt" id="adSlipAmt"></p>
+          <p id="adSlipInfo"></p>
+          <p class="muted" style="font-size:.85rem;margin-top:10px">ตรวจให้ตรงกับยอดด้านบนในแอปธนาคาร (ยอด ชื่อผู้รับ เวลาโอน) ก่อนอนุมัติ</p>
+          <input type="text" id="adSlipNote" placeholder="เหตุผลถ้าปฏิเสธ เช่น ยอดเงินไม่ตรง" maxlength="150">
+          <div class="ad-slip-btns">
+            <button type="button" class="btn-small primary" id="adSlipOk">✓ อนุมัติ</button>
+            <button type="button" class="btn-small danger" id="adSlipNo2">✗ ปฏิเสธ</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="{{ url_for('static', filename='common.js') }}"></script>

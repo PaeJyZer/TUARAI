@@ -816,3 +816,41 @@ a.btn-small {
 .photo-thumb.has-cap { aspect-ratio: auto; display: flex; flex-direction: column; }
 .photo-thumb.has-cap img { aspect-ratio: 1 / 1; height: auto; }
 .cap-in { width: 100%; border: 0; border-top: 1px solid var(--border-color); background: #181818; color: #fff; padding: 7px 6px; font-size: .8rem; font-family: inherit; }
+
+/* ---------- หลังบ้านแอดมิน: แดชบอร์ด ---------- */
+.ad-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+.ad-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.ad-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 4px; }
+.ad-card > span { color: var(--text-muted); font-size: .82rem; }
+.ad-card b { font-size: 1.6rem; font-weight: 600; line-height: 1.2; }
+.ad-card b em { font-size: .8rem; font-style: normal; color: var(--text-muted); font-weight: 400; }
+.ad-card small { color: var(--text-muted); font-size: .8rem; }
+.ad-card .up { color: #00ff88; } .ad-card .down { color: #ff7a7a; font-style: normal; }
+.ad-card.hot { border-color: #3b7bd8; background: linear-gradient(160deg, rgba(59,123,216,.18), var(--card-bg)); }
+.ad-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.ad-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; min-width: 0; }
+.ad-wide { grid-column: 1 / -1; }
+.ad-box-h { display: flex; justify-content: space-between; margin-bottom: 14px; font-size: .95rem; }
+.ad-chart svg { width: 100%; height: 190px; display: block; }
+.ad-bar { display: grid; grid-template-columns: minmax(80px, 34%) 1fr auto; gap: 10px; align-items: center; margin-bottom: 9px; font-size: .85rem; }
+.ad-bar .n { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ad-bar .b { height: 8px; background: #222; border-radius: 99px; overflow: hidden; }
+.ad-bar .b i { display: block; height: 100%; background: linear-gradient(90deg, #8b0000, #ff5d6c); border-radius: 99px; }
+.ad-bar .v { color: var(--text-muted); font-size: .8rem; white-space: nowrap; }
+.ad-big { font-size: 3rem; font-weight: 600; line-height: 1; margin-bottom: 8px; } .ad-big em { font-size: 1.2rem; font-style: normal; color: var(--text-muted); }
+.ad-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.ad-tabs button { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); border-radius: 999px; padding: 7px 16px; font-size: .88rem; cursor: pointer; }
+.ad-tabs button.on { background: var(--accent-wine); color: #fff; border-color: var(--accent-red); }
+.ad-tabs i { font-style: normal; background: #3b7bd8; color: #fff; border-radius: 99px; padding: 0 7px; margin-left: 4px; font-size: .75rem; }
+.ad-modal { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.8); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.ad-modal[hidden] { display: none; }
+.ad-modal-card { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 22px; width: min(900px, 100%); max-height: 92vh; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 22px; }
+.ad-slip-img { overflow: auto; max-height: 80vh; background: #000; border-radius: 10px; }
+.ad-slip-img img { width: 100%; display: block; }
+.ad-slip-side { display: flex; flex-direction: column; gap: 8px; padding-top: 22px; }
+.ad-slip-amt { font-size: 1.7rem; font-weight: 600; color: #ffd166; }
+.ad-slip-side input { background: #111; border: 1px solid var(--border-color); border-radius: 8px; color: #fff; padding: 10px; margin-top: 8px; }
+.ad-slip-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+.ad-slip-btns .btn-small { padding: 12px; font-size: 1rem; }
+.ad-x { position: absolute; top: 8px; right: 12px; background: none; border: 0; color: #fff; font-size: 28px; cursor: pointer; }
+@media (max-width: 760px) { .ad-grid { grid-template-columns: 1fr; } .ad-modal-card { grid-template-columns: 1fr; overflow: auto; } .ad-slip-img { max-height: 46vh; } }
