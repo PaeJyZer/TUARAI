@@ -60,17 +60,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             <text x="${P}" y="14" fill="#888" font-size="10">สูงสุด ${baht(max)}</text>
             <line x1="${P}" x2="${W - P}" y1="${H - 26}" y2="${H - 26}" stroke="#333"/>${bars}${lab}</svg>`;
     }
+    // การ์ด "รอตรวจสลิป" คำนวณจากรายการออเดอร์จริงที่โหลดมา (ตรงกับตารางเสมอ)
+    function updateReviewCard() {
+        const el = $('adReviewCard'); if (!el) return;
+        const list = orders.filter((o) => o.status === 'review');
+        el.innerHTML = `<span>รอตรวจสลิป</span><b>${list.length} <em>ออเดอร์</em></b><small>${list.length ? baht(list.reduce((a, o) => a + o.amount, 0)) + ' · กดเพื่อตรวจ' : 'ไม่มีสลิปค้างตรวจ'}</small>`;
+        el.classList.toggle('alert', list.length > 0);
+    }
     async function loadStats() {
         const r = await TU.api('/api/admin/stats');
         if (!r.ok) return;
         const s = r.data.stats;
         $('adCards').innerHTML = `
-            <div class="ad-card hot" data-d="review"><span>รอตรวจสลิป</span><b>${s.review.orders} <em>ออเดอร์</em></b><small>${baht(s.review.amount)}</small></div>
+            <div class="ad-card hot" data-d="review" id="adReviewCard"></div>
             <div class="ad-card" data-d="today"><span>รายได้วันนี้</span><b>${baht(s.today.amount)}</b>${delta(s.today.amount, s.today.vs_yesterday)} <small>${s.today.orders} ออเดอร์</small></div>
             <div class="ad-card" data-d="month"><span>รายได้เดือนนี้</span><b>${baht(s.month.amount)}</b>${delta(s.month.amount, s.month.vs_last)} <small>${s.month.orders} ออเดอร์</small></div>
             <div class="ad-card" data-d="total"><span>รายได้ทั้งหมด (อนุมัติแล้ว)</span><b>${baht(s.total.amount)}</b><small>${s.total.orders} ออเดอร์</small></div>
             <div class="ad-card" data-d="sites"><span>เว็บที่ใช้งานอยู่</span><b>${s.sites.active}</b><small>${s.sites.expiring7 ? `<i class="down">ใกล้หมดอายุ 7 วัน: ${s.sites.expiring7}</i>` : 'ไม่มีเว็บใกล้หมดอายุ'}</small></div>
             <div class="ad-card" data-d="users"><span>สมาชิก</span><b>${s.users}</b><small>รอชำระ ${s.pending} ออเดอร์</small></div>`;
+        updateReviewCard();
         chart(s.daily);
         $('adChartTotal').textContent = 'รวม ' + baht(s.daily.reduce((a, d) => a + d.amount, 0));
         bars($('adMonths'), s.months.map((m) => ({ label: m.month, value: m.amount, key: ['month', m.month] })), (i) => baht(i.value));
@@ -119,6 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (lastReview !== null && n > lastReview) beep();
         lastReview = n;
         renderOrders();
+        updateReviewCard();
         return true;
     }
     function beep() {   // เสียงเตือนเบาๆ เมื่อมีสลิปใหม่เข้ามา

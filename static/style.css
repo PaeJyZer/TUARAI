@@ -870,3 +870,6 @@ tr.clk:hover td { background: rgba(255,255,255,.04); }
 @media (max-width: 700px) { .ad-kvs { grid-template-columns: 1fr; } }
 .dlg-pair { display: flex; flex-direction: column; gap: 4px; padding-bottom: 6px; border-bottom: 1px dashed rgba(255,255,255,.1); }
 .dlg-orep { font-size: .85rem; padding-left: 22px !important; border-style: dashed !important; opacity: .95; }
+
+.ad-card.hot.alert { border-color: #5ab0ff; box-shadow: 0 0 0 1px rgba(90,176,255,.4), 0 0 24px rgba(59,123,216,.35); animation: adPulse 2.2s ease-in-out infinite; }
+@keyframes adPulse { 50% { box-shadow: 0 0 0 1px rgba(90,176,255,.7), 0 0 34px rgba(59,123,216,.55); } }
