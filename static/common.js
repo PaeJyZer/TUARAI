@@ -132,7 +132,7 @@ window.TU = (function () {
     // ตัวแก้ไขบทสนทนา (ธีมวิชวลโนเวล): คำถาม + ตัวเลือก 2-4 ข้อ + คำตอบของเรา
     function dialogEditor(root, items) {
         var MAXQ = 6, locked = false;
-        var data = (items && items.length ? items : []).map(function (x) {
+        var data = (items && items.length ? items : [{ q: '', options: ['', ''], replies: ['', ''], reply: '' }]).map(function (x) {
             return { q: x.q || '', options: (x.options || []).slice(), replies: (x.replies || []).slice(), reply: x.reply || '' };
         });
         function collect() {
@@ -145,7 +145,7 @@ window.TU = (function () {
             return out;
         }
         function render() {
-            var h = '<p class="photo-hint">ใส่ {name} ตรงไหนก็ได้ ระบบจะเปลี่ยนเป็นชื่อแฟนให้ (ตอบได้ 2-4 ตัวเลือกต่อคำถาม สูงสุด ' + MAXQ + ' คำถาม)</p>';
+            var h = '<p class="photo-hint">ใส่ {name} ตรงไหนก็ได้ ระบบจะเปลี่ยนเป็นชื่อแฟนให้ (ตอบได้ 2-4 ตัวเลือกต่อคำถาม สูงสุด ' + MAXQ + ' คำถาม) ถ้าไม่กรอกอะไรเลย ระบบจะใช้บทสนทนาตัวอย่างให้</p>';
             data.forEach(function (d, i) {
                 h += '<div class="dlg-item"><div class="dlg-head"><b>คำถามที่ ' + (i + 1) + '</b>' +
                     '<button type="button" class="btn-small dlg-del" data-i="' + i + '">ลบ</button></div>' +

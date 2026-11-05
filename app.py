@@ -638,7 +638,7 @@ def site_state(site):
         'has_captions': bool(theme and theme['theme_code'] in CAPTION_THEMES),
         'captions': captions_of(site),
         'has_dialog': bool(theme and theme['theme_code'] in DIALOG_THEMES),
-        'dialog': dialog_of(site),
+        'dialog': (clean_dialog(site['dialog']) if 'dialog' in site.keys() else []),
         'theme_id': site['theme_id'],
         'theme_name': theme['name'] if theme else '-',
         'package': pkg_key,

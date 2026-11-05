@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         refreshRule();
 
-        const dlgEd = theme.has_dialog ? TU.dialogEditor(document.getElementById('buyDialog'), DATA.defaultDialog) : null;
+        const dlgEd = theme.has_dialog ? TU.dialogEditor(document.getElementById('buyDialog'), []) : null;
         const occSel = document.getElementById('buyOccasion');
         const occLabels = { anniversary: 'วันที่เริ่มคบกัน (หรือวันพิเศษ)', birthday: 'วันเกิดของเขา/เธอ' };
         occSel.addEventListener('change', () => {
