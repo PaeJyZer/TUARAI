@@ -263,12 +263,15 @@ DEMO_CAPTIONS = ['สีชมพูบานเย็น', 'สีส้มพ�
 DEFAULT_DIALOG = [
     {'q': '{name} รู้ไหมว่าวันนี้เราอยากเจอเธอที่สุดเลย เธออยากให้เราเริ่มเล่าเรื่องไหนก่อนดี',
      'options': ['วันแรกที่เราเจอกัน', 'ช่วงเวลาที่มีความสุขที่สุด'],
+     'replies': ['วันนั้นเราประหม่ามากเลยนะ แต่จำได้ทุกอย่างเลย', 'ช่วงนั้นมีเธออยู่ข้างๆ เราก็มีความสุขที่สุดเหมือนกัน'],
      'reply': 'เรื่องนั้นเราก็จำได้ไม่เคยลืมเลย'},
     {'q': 'ถ้าได้ไปเที่ยวด้วยกันตอนนี้ เธออยากไปที่ไหนมากที่สุด',
      'options': ['ทะเลเงียบๆ', 'ภูเขาอากาศเย็น', 'เมืองใหญ่ไฟสวยๆ'],
+     'replies': ['ไปนั่งฟังเสียงคลื่นด้วยกันนะ เราจะพาไปแน่นอน', 'งั้นเตรียมเสื้อกันหนาวไว้เลย เราจะกอดให้อุ่นเอง', 'เดินเที่ยวดูไฟด้วยกันตอนกลางคืนนะ น่าจะโรแมนติกมาก'],
      'reply': 'โอเค จดไว้แล้ว เดี๋ยวพาไปแน่นอน'},
     {'q': 'สิ่งที่เธออยากให้เราทำให้บ่อยขึ้นคืออะไรเอ่ย',
      'options': ['โทรหากันบ่อยๆ', 'ไปกินข้าวด้วยกัน', 'กอดแน่นๆ'],
+     'replies': ['ได้เลย เราจะโทรหาทุกคืนเลยนะ', 'ไปเลย เธออยากกินอะไรบอกได้เลยนะ', 'กอดแน่นๆ เลยนะ จะไม่ปล่อยเลย'],
      'reply': 'รับทราบ เราจะพยายามให้ดีที่สุดเลยนะ'},
     {'q': 'สุดท้ายนี้ เธออยากให้เรากับเธอเป็นแบบนี้ไปอีกนานแค่ไหน',
      'options': ['ไปตลอดเลย', 'ไปทุกๆ ปีเลย'],
@@ -566,11 +569,18 @@ def clean_dialog(raw):
         if not isinstance(item, dict):
             continue
         q = str(item.get('q') or '').strip()[:160]
-        opts = [str(o or '').strip()[:60] for o in (item.get('options') or [])[:4] if isinstance(o, str) or o]
-        opts = [o for o in opts if o]
+        raw_opts = (item.get('options') or [])[:4]
+        raw_reps = item.get('replies') if isinstance(item.get('replies'), list) else []
+        opts, reps = [], []
+        for k, o in enumerate(raw_opts):
+            o = str(o or '').strip()[:60]
+            if not o:
+                continue
+            opts.append(o)
+            reps.append(str(raw_reps[k] if k < len(raw_reps) and raw_reps[k] else '').strip()[:160])
         reply = str(item.get('reply') or '').strip()[:160]
         if q and len(opts) >= 2:
-            out.append({'q': q, 'options': opts, 'reply': reply})
+            out.append({'q': q, 'options': opts, 'replies': reps, 'reply': reply})
     return out
 
 

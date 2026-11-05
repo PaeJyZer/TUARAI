@@ -868,3 +868,5 @@ tr.clk:hover td { background: rgba(255,255,255,.04); }
 .ad-kv span { color: var(--text-muted); } .ad-kv b { font-weight: 500; text-align: right; }
 .ad-det-act { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
 @media (max-width: 700px) { .ad-kvs { grid-template-columns: 1fr; } }
+.dlg-pair { display: flex; flex-direction: column; gap: 4px; padding-bottom: 6px; border-bottom: 1px dashed rgba(255,255,255,.1); }
+.dlg-orep { font-size: .85rem; padding-left: 22px !important; border-style: dashed !important; opacity: .95; }

@@ -83,7 +83,7 @@
   var PAIRS = ['อื่ม เข้าใจแล้ว', 'ได้เลย จดไว้แล้วนะ', 'ขอบคุณที่ตอบนะ', 'ดีใจจังที่ได้ฟัง'];
   var script = [{ t: 'say', text: 'ยินดีต้อนรับสู่วังซากุระนะ ' + NAME + ' 🌸\nมีเรื่องอยากคุยด้วยนิดหน่อย ขอเวลาสักครู่นะ' }];
   data.forEach(function (d, i) {
-    script.push({ t: 'ask', q: fmt(d.q), options: d.options.map(fmt), reply: fmt(d.reply), i: i });
+    script.push({ t: 'ask', q: fmt(d.q), options: d.options.map(fmt), replies: (d.replies || []).map(fmt), reply: fmt(d.reply), i: i });
   });
   script.push({ t: 'end', text: 'ขอบคุณที่ตอบทุกข้อเลยนะ ' + NAME + '\nเดี๋ยวสรุปที่เธอตอบให้ดูนะ 📜' });
 
@@ -123,7 +123,7 @@
             var r = b.getBoundingClientRect(); TUFx.float(r.left + 40, r.top, '🌸'); burst(r.left + 40, r.top, 8);
             setTimeout(function () {
               chs.innerHTML = ''; chs.classList.remove('done'); sp.classList.add('happy'); setTimeout(function () { sp.classList.remove('happy'); }, 700);
-              type(s.reply || PAIRS[s.i % PAIRS.length], function () { waitNext(function () { show(i + 1); }); });
+              type(s.replies[k] || s.reply || PAIRS[s.i % PAIRS.length], function () { waitNext(function () { show(i + 1); }); });
             }, 450);
           });
           chs.appendChild(b);
