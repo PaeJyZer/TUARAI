@@ -1,4 +1,4 @@
-<!-- ป้ายประกาศเด้งตอนเปิดเว็บ: ข้อตกลงสำคัญ + นโยบายความเป็นส่วนตัว กดกากบาทเมื่อเข้าใจแล้ว จำไว้ในเบราว์เซอร์ (เด้งอีกเมื่อมีการอัปเดตข้อตกลง) -->
+<!-- ป้ายประกาศเด้งตอนเปิดเว็บ: ข้อตกลงสำคัญ + นโยบายความเป็นส่วนตัว กดกากบาทเมื่อเข้าใจแล้ว จำไว้เฉพาะแท็บนั้น ปิดแท็บแล้วเปิดใหม่จะเด้งอีกทุกครั้ง -->
 <div class="lg-pop" id="lgPop" role="dialog" aria-modal="true" aria-labelledby="lgTitle" hidden>
   <div class="lg-card">
     <button type="button" class="lg-x" id="lgClose" aria-label="ปิดประกาศ (เข้าใจแล้ว)">&times;</button>
@@ -45,12 +45,12 @@
   var KEY = 'tuarai_legal_v{{ legal_version }}', pop = document.getElementById('lgPop');
   if (!pop) return;
   var seen = false;
-  try { seen = localStorage.getItem(KEY) === '1'; } catch (e) { /* เบราว์เซอร์ไม่ให้เก็บค่า ก็เด้งทุกครั้ง */ }
+  try { seen = sessionStorage.getItem(KEY) === '1'; } catch (e) { /* เบราว์เซอร์ไม่ให้เก็บค่า ก็เด้งทุกครั้ง */ }
   if (seen) return;
   pop.hidden = false; document.documentElement.style.overflow = 'hidden';
   function close() {
     pop.hidden = true; document.documentElement.style.overflow = '';
-    try { localStorage.setItem(KEY, '1'); } catch (e) { /* ไม่เป็นไร */ }
+    try { sessionStorage.setItem(KEY, '1'); } catch (e) { /* ไม่เป็นไร */ }
   }
   document.getElementById('lgClose').addEventListener('click', close);
   document.getElementById('lgOk').addEventListener('click', close);
