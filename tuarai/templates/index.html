@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUARAI - เว็บเซอร์ไพรส์วันครบรอบ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&family=Mitr:wght@400;500&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+
+  {% with active='home' %}{% include '_nav.html' %}{% endwith %}
+
+  <!-- HERO -->
+  <section class="hx">
+    <div class="hx-copy">
+      <p class="hx-eyebrow"><i></i> SURPRISE WEBSITE STUDIO</p>
+      <h1 class="hx-title">เว็บเซอร์ไพรส์วันครบรอบ<br><em>ที่แฟนเปิดแล้วต้องร้องไห้</em></h1>
+      <p class="hx-sub">เลือกเว็บที่ใช่ ใส่รูปกับจดหมายของคุณ ดูตัวอย่างก่อนจ่าย แล้วรับเป็น QR Code ไปมอบให้แฟนได้เลย</p>
+      <div class="hx-cta">
+        <a class="hx-btn primary" href="#collection">ดูเว็บทั้งหมด</a>
+        <a class="hx-btn ghost" href="/how-to-buy">วิธีสั่งซื้อ</a>
+      </div>
+      <dl class="hx-stats">
+        <div><dt>{{ (premium|length) + (standard|length) }}</dt><dd>ธีมให้เลือก</dd></div>
+        <div><dt>฿{{ '{:,.0f}'.format(standard[0].prices.basic if standard else 129) }}</dt><dd>เริ่มต้น</dd></div>
+        <div><dt>ฟรี</dt><dd>ดูตัวอย่างก่อนจ่าย</dd></div>
+      </dl>
+    </div>
+    <div class="hx-visual" aria-hidden="true">
+      {% set showcase = (premium[:3] if premium else standard[:3]) %}
+      {% for t in showcase %}{% if t.preview_img %}
+      <figure class="hx-shot s{{ loop.index }}"><img src="{{ url_for('static', filename=t.preview_img) }}" alt="" loading="eager"></figure>
+      {% endif %}{% endfor %}
+    </div>
+  </section>
+
+  <div id="collection"></div>
+  <!-- กองไพ่: แยกตามราคา -->
+  {% set allthemes = (standard + premium) if premium else standard %}
+  {% set groups = allthemes|groupby('prices.basic') %}
+  <section class="decks-sec" id="decks">
+    <div class="decks-head">
+      <p class="rail-eyebrow">PICK YOUR DECK</p>
+      <h2 class="rail-title">เลือกกองไพ่ที่ใช่ <span>แตะไพ่ใบหน้าเพื่อสลับดูเว็บถัดไป</span></h2>
+      <p class="rail-sub">แต่ละกองคือกลุ่มราคา ซื้อ 1 ครั้งได้ 1 เว็บ เลือกแพ็กเกจแยกกันได้ทุกเว็บ</p>
+    </div>
+    <div class="decks">
+      {% for g in groups %}
+      {% set tier = [loop.index0 + 3 - groups|length, 0]|max %}
+      <div class="deck-col t{{ [tier, 2]|min }}">
+        <div class="deck-top">
+          <p class="deck-price">฿{{ '{:,.0f}'.format(g.grouper) }}</p>
+          <p class="deck-name">{{ ['Classic', 'Premium', 'Legendary'][[tier, 2]|min] }} Deck <i>· {{ g.list|length }} เว็บ</i></p>
+        </div>
+        <div class="deck" data-deck>
+          <div class="deck-aura" aria-hidden="true"></div>
+          <div class="deck-stack">
+            {% for t in g.list %}
+            <article class="hc{% if t.is_premium %} premium{% endif %}{% if t.has_dialog %} special{% endif %}" data-theme-id="{{ t.id }}">
+              <div class="hc-img">
+                {% if t.is_premium %}<span class="hc-tag">{% if t.has_dialog %}★ SPECIAL{% else %}PREMIUM{% endif %}</span>{% endif %}
+                {% if t.preview_img %}<img src="{{ url_for('static', filename=t.preview_img) }}" alt="{{ t.name }}" loading="lazy" draggable="false" onerror="this.style.display='none'">{% endif %}
+              </div>
+              <div class="hc-body">
+                <h3>{{ t.name }}</h3>
+                <p class="hc-line">{{ t.tagline or t.description or '' }}</p>
+                <div class="hc-foot">
+                  <p class="hc-price">฿{{ '{:,.0f}'.format(t.prices.basic) }} <small>Pro ฿{{ '{:,.0f}'.format(t.prices.pro) }}</small></p>
+                  <div class="hc-act">
+                    <a class="hc-demo" href="{{ url_for('demo_page', theme_code=t.theme_code) }}" target="_blank" rel="noopener">ลองเล่น</a>
+                    <button class="hc-buy btn-choose" type="button" data-theme-id="{{ t.id }}">เลือกซื้อ</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="deck-ctl">
+          <button type="button" class="rc dprev" aria-label="ไพ่ใบก่อนหน้า">&lsaquo;</button>
+          <span class="deck-count"><b>1</b> / {{ g.list|length }}</span>
+          <button type="button" class="rc dnext" aria-label="ไพ่ใบถัดไป">&rsaquo;</button>
+        </div>
+      </div>
+      {% else %}
+      <p class="photo-hint">ยังไม่มีเว็บให้เลือกในตอนนี้</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ขั้นตอน -->
+  <section class="steps3">
+    <p class="rail-eyebrow" style="text-align:center">HOW IT WORKS</p>
+    <h2 class="rail-title" style="text-align:center">ง่ายๆ แค่ 3 ขั้นตอน</h2>
+    <ol>
+      <li><b>01</b><h3>เลือกธีม</h3><p>ดูตัวอย่างจริงได้ฟรี ก่อนตัดสินใจ</p></li>
+      <li><b>02</b><h3>ใส่รูปและจดหมาย</h3><p>เขียนข้อความใต้รูปได้ทุกรูป ดูตัวอย่างก่อนจ่าย</p></li>
+      <li><b>03</b><h3>รับ QR Code</h3><p>ชำระเงินแล้วมอบให้แฟนสแกนได้เลย</p></li>
+    </ol>
+  </section>
+
+  <!-- เปรียบเทียบแพ็กเกจ -->
+  <section class="compare-section">
+    <h2 class="section-title" style="text-align: center; border: none;">เลือกแพ็กเกจให้เว็บแต่ละเว็บ</h2>
+    <p class="photo-hint" style="text-align: center; margin-bottom: 24px;">ราคาต่อ 1 เว็บ (เว็บพรีเมียมราคาตามที่แสดงบนการ์ด) ถ้าอยากได้เว็บอื่นเพิ่ม ก็ซื้อและเลือกแพ็กเกจใหม่ได้เลย</p>
+    <div class="package-grid">
+      {% for key in ['basic', 'pro'] %}
+      <div class="package-card {{ 'recommended' if key == 'pro' }}">
+        {% if key == 'pro' %}<span class="pkg-badge">คุ้มที่สุด</span>{% endif %}
+        <h3>{{ packages[key].label }}</h3>
+        <p class="pkg-price">{{ '{:,.0f}'.format(standard[0].prices[key]) if standard else '-' }} <small>฿ / เว็บ</small></p>
+        <ul class="pkg-features">
+          {% for f in features[key] %}<li>{{ f }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Notice Box -->
+  <aside class="notice-box">
+    ⚠️ <strong>ข้อตกลงการใช้งาน:</strong> สินค้าทุกชิ้นเป็นบริการดิจิทัล ชำระเงินแล้วไม่รับคืนเงินทุกกรณี กรุณาตรวจสอบตัวอย่างเว็บก่อนชำระเงินทุกครั้ง
+  </aside>
+
+  <script>
+    window.TUARAI_DATA = {
+      themes: {{ themes|tojson }},
+      packages: {{ packages|tojson }},
+      features: {{ features|tojson }},
+      minPhotos: {{ min_photos }},
+      defaultDialog: {{ default_dialog|tojson }},
+      qFree: {{ q_free }}, qPrice: {{ q_price|int }}, qMax: {{ q_max }}
+    };
+  </script>
+  <script src="{{ url_for('static', filename='common.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="{{ url_for('static', filename='home.js') }}"></script>
+  {% include '_footer.html' %}
+  {% include '_legal_notice.html' %}
+</body>
+</html>

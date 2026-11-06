@@ -1,0 +1,61 @@
+<!-- ป้ายประกาศเด้งตอนเปิดเว็บ: ข้อตกลงสำคัญ + นโยบายความเป็นส่วนตัว กดกากบาทเมื่อเข้าใจแล้ว จำไว้ในเบราว์เซอร์ (เด้งอีกเมื่อมีการอัปเดตข้อตกลง) -->
+<div class="lg-pop" id="lgPop" role="dialog" aria-modal="true" aria-labelledby="lgTitle" hidden>
+  <div class="lg-card">
+    <button type="button" class="lg-x" id="lgClose" aria-label="ปิดประกาศ (เข้าใจแล้ว)">&times;</button>
+    <p class="lg-eyebrow">ประกาศสำคัญก่อนใช้งาน</p>
+    <h2 id="lgTitle">อ่านสั้นๆ ก่อนสั่งซื้อนะ</h2>
+    <ul class="lg-list">
+      <li><i>🧾</i><div><b>สินค้าดิจิทัล ชำระแล้วไม่รับคืนเงิน</b><span>ลองเล่นตัวอย่างและดูเว็บจริงก่อนจ่ายได้ฟรี กรุณาตรวจให้เรียบร้อยก่อนชำระเงิน</span></div></li>
+      <li><i>🖼️</i><div><b>รูปและข้อความของคุณ ใช้เพื่อสร้างเว็บให้คุณเท่านั้น</b><span>เราไม่ขายหรือนำไปโฆษณา ใครมีลิงก์/QR ของเว็บ จะเปิดดูเว็บนั้นได้ จึงควรส่งให้เฉพาะคนที่ตั้งใจจะมอบให้</span></div></li>
+      <li><i>🚫</i><div><b>ห้ามอัปโหลดเนื้อหาผิดกฎหมายหรือละเมิดผู้อื่น</b><span>ต้องเป็นรูปและข้อความที่คุณมีสิทธิ์ใช้ และได้รับความยินยอมจากบุคคลในรูป เราขอลบเว็บที่ละเมิดได้</span></div></li>
+      <li><i>🗑️</i><div><b>ขอลบข้อมูลได้ทุกเมื่อ</b><span>ตัวอย่างที่ไม่ชำระเงินจะถูกลบอัตโนมัติใน 7 วัน และคุณขอลบเว็บหรือบัญชีได้ตามสิทธิ PDPA</span></div></li>
+    </ul>
+    <div class="lg-foot">
+      <a href="/terms" target="_blank" rel="noopener">ข้อตกลงการใช้งาน</a><span>·</span><a href="/privacy" target="_blank" rel="noopener">นโยบายความเป็นส่วนตัว</a>
+      <button type="button" class="lg-ok" id="lgOk">เข้าใจแล้ว</button>
+    </div>
+  </div>
+</div>
+<style>
+.lg-pop { position: fixed; inset: 0; z-index: 100000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(4,2,8,.72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); animation: lgFade .4s ease both; }
+.lg-pop[hidden] { display: none; }
+.lg-card { position: relative; width: min(560px, 100%); max-height: 92vh; overflow: auto; padding: 34px 30px 26px; border-radius: 24px; color: #f3eef8; font-family: 'Prompt', sans-serif;
+  background: radial-gradient(520px 260px at 90% -10%, rgba(255,42,77,.22), transparent 70%), linear-gradient(180deg, #1a1622, #120f19);
+  border: 1px solid rgba(255,255,255,.14); box-shadow: 0 40px 100px rgba(0,0,0,.65), 0 0 0 1px rgba(255,42,77,.18); animation: lgPop .55s cubic-bezier(.22,.9,.28,1.05) both; scrollbar-width: none; }
+.lg-card::-webkit-scrollbar { display: none; }
+.lg-x { position: absolute; top: 14px; right: 16px; width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.06); color: #fff; font-size: 26px; line-height: 1; cursor: pointer; transition: background .25s, transform .3s; }
+.lg-x:hover { background: rgba(255,42,77,.35); transform: rotate(90deg); }
+.lg-eyebrow { font-size: .72rem; letter-spacing: .22em; color: #ff7a90; margin-bottom: 10px; padding-right: 46px; }
+.lg-card h2 { font-family: 'Mitr', 'Prompt', sans-serif; font-weight: 500; font-size: clamp(1.35rem, 4.6vw, 1.7rem); margin-bottom: 20px; }
+.lg-list { list-style: none; display: grid; gap: 14px; margin: 0; padding: 0; }
+.lg-list li { display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); }
+.lg-list i { font-style: normal; font-size: 1.4rem; line-height: 1.2; }
+.lg-list b { display: block; font-weight: 500; font-size: .98rem; margin-bottom: 3px; }
+.lg-list span { display: block; color: #a9a3b8; font-size: .86rem; line-height: 1.65; font-weight: 300; }
+.lg-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 22px; font-size: .86rem; color: #8f89a0; }
+.lg-foot a { color: #ff7a90; text-decoration: underline; text-underline-offset: 3px; }
+.lg-ok { margin-left: auto; height: 44px; padding: 0 26px; border-radius: 999px; border: 0; cursor: pointer; color: #fff; font: 500 .95rem 'Prompt', sans-serif; background: linear-gradient(135deg, #ff2a4d, #b3122f); box-shadow: 0 8px 24px rgba(255,42,77,.35); transition: transform .2s, filter .2s; }
+.lg-ok:hover { transform: translateY(-2px); filter: brightness(1.1); }
+@keyframes lgFade { from { opacity: 0; } }
+@keyframes lgPop { from { opacity: 0; transform: translateY(26px) scale(.94); } }
+@media (max-width: 480px) { .lg-card { padding: 24px 14px 16px; } .lg-list { gap: 8px; } .lg-list li { padding: 10px 12px; gap: 10px; } .lg-list span { font-size: .8rem; line-height: 1.5; } .lg-ok { width: 100%; margin: 6px 0 0; } }
+</style>
+<script>
+(function () {
+  var KEY = 'tuarai_legal_v{{ legal_version }}', pop = document.getElementById('lgPop');
+  if (!pop) return;
+  var seen = false;
+  try { seen = localStorage.getItem(KEY) === '1'; } catch (e) { /* เบราว์เซอร์ไม่ให้เก็บค่า ก็เด้งทุกครั้ง */ }
+  if (seen) return;
+  pop.hidden = false; document.documentElement.style.overflow = 'hidden';
+  function close() {
+    pop.hidden = true; document.documentElement.style.overflow = '';
+    try { localStorage.setItem(KEY, '1'); } catch (e) { /* ไม่เป็นไร */ }
+  }
+  document.getElementById('lgClose').addEventListener('click', close);
+  document.getElementById('lgOk').addEventListener('click', close);
+  pop.addEventListener('click', function (e) { if (e.target === pop) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) close(); });
+  document.getElementById('lgClose').focus();
+})();
+</script>

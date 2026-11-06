@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUARAI - วิธีสั่งซื้อเว็บเซอร์ไพรส์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&family=Mitr:wght@400;500&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  {% with active='how' %}{% include '_nav.html' %}{% endwith %}
+
+  <section class="hero">
+    <h1 class="hero-title">⚡ ขั้นตอนการสั่งซื้อและสร้างเว็บเซอร์ไพรส์</h1>
+    <p class="hero-subtitle">เลือกเว็บ ใส่รูป ดูตัวอย่างก่อนจ่าย แล้วรับ QR Code ไปมอบให้แฟน ทำตามขั้นตอนด้านล่างนี้ได้เลย</p>
+  </section>
+
+  <main class="how-to-container">
+    <div class="step-card">
+      <div class="step-number">01</div>
+      <div class="step-details">
+        <h3>สมัครสมาชิก / เข้าสู่ระบบ</h3>
+        <p>กดปุ่ม "เข้าสู่ระบบ / สมัครสมาชิก" มุมขวาบน เพื่อสร้างบัญชีสำหรับจัดการเว็บเซอร์ไพรส์ของคุณ</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">02</div>
+      <div class="step-details">
+        <h3>เลือกเว็บที่ถูกใจ</h3>
+        <p>กด "ดูตัวอย่างเว็บ" เพื่อลองเล่นของจริงก่อน แล้วกด "เลือกซื้อเว็บนี้" ซื้อ 1 ครั้งได้ 1 เว็บ ถ้าอยากได้เว็บอื่นเพิ่มก็ชำระเงินใหม่ได้เลย</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">03</div>
+      <div class="step-details">
+        <h3>เลือกแพ็กเกจ Basic หรือ Pro</h3>
+        <p>
+          <strong>Basic {{ '{:,.0f}'.format(themes[0].prices.basic) if themes else '' }} ฿</strong> — {{ features.basic|join(' · ') }}<br>
+          <strong>Pro {{ '{:,.0f}'.format(themes[0].prices.pro) if themes else '' }} ฿</strong> — {{ features.pro|join(' · ') }}
+        </p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">04</div>
+      <div class="step-details">
+        <h3>กรอกข้อมูลและอัปโหลดรูป</h3>
+        <p>ใส่ชื่อแฟน วันที่เริ่มคบกัน จดหมาย และรูปความทรงจำ (อย่างน้อย {{ min_photos }} รูป) รูปแรกจะเป็นรูปหน้าปกและรูปใหญ่ตรงกลาง</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">05</div>
+      <div class="step-details">
+        <h3>ดูตัวอย่างเว็บจริงก่อนชำระเงิน</h3>
+        <p>ระบบสร้างเว็บให้ดูก่อนโดยยังไม่เสียเงิน ถ้ามีตรงไหนไม่ถูกใจกดแก้ไขได้เลย พอใจแล้วค่อยกดชำระเงิน</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">06</div>
+      <div class="step-details">
+        <h3>ชำระเงินผ่านพร้อมเพย์ (PromptPay)</h3>
+        <p>สแกน QR พร้อมเพย์ตามยอดที่ระบุ แล้วแนบสลิป ระบบจะตรวจสอบและเปิดใช้งานเว็บให้</p>
+      </div>
+    </div>
+
+    <div class="step-card highlight-step">
+      <div class="step-number">07</div>
+      <div class="step-details">
+        <h3>รับ QR Code ไปมอบให้แฟน!</h3>
+        <p>ดาวน์โหลด QR Code ไปพิมพ์ใส่การ์ดหรือกล่องของขวัญ แฟนสแกนแล้วเปิดเว็บได้ทันที แพ็กเกจ Pro เลือกสไตล์ QR ตกแต่งได้ และมีปุ่มคัดลอกลิงก์สำรองไว้ส่งทางแชท</p>
+      </div>
+    </div>
+  </main>
+
+  <aside class="notice-box" style="margin: 40px auto; max-width: 900px;">
+    ⚠️ <strong>ข้อตกลงการใช้งาน:</strong> สินค้าเป็นบริการดิจิทัล ชำระเงินแล้วไม่รับคืนเงินทุกกรณี
+    แพ็กเกจ Basic แก้ไขข้อมูลได้ภายใน {{ packages.basic.edit_hours }} ชั่วโมงแรกหลังชำระเงิน และใช้งานได้ {{ (packages.basic.valid_days // 365) }} ปี
+    (ต่ออายุได้ {{ '{:,.0f}'.format(renew_price) }} ฿ / ปี) ส่วนแพ็กเกจ Pro แก้ไขได้ไม่จำกัดตลอดอายุการให้บริการ
+  </aside>
+
+  <script src="{{ url_for('static', filename='common.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  {% include '_footer.html' %}
+  {% include '_legal_notice.html' %}
+</body>
+</html>
