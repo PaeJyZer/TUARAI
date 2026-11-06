@@ -85,6 +85,9 @@ PACKAGES = {
 DEFAULT_PRICES = {'basic': 129.0, 'pro': 229.0}   # ใช้ถ้าธีมไม่ได้ตั้งราคาเฉพาะไว้ในตาราง themes
 RENEW_PRICE = 59.0                                # ราคาต่ออายุ Basic ต่อ 1 ปี
 RENEW_DAYS = 365
+LEGAL_VERSION = '1'                 # เปลี่ยนเลขนี้เมื่อแก้ข้อตกลง → ป้ายประกาศจะเด้งให้ทุกคนเห็นอีกครั้ง
+LEGAL_UPDATED = '28 ตุลาคม 2569'
+CONTACT_INFO = os.environ.get('CONTACT_INFO', 'ติดต่อผ่านช่องทางที่ระบุไว้ในหน้าเว็บ TUARAI หรืออีเมลเจ้าของร้าน').strip()
 MIN_PHOTOS = 4                                    # ขั้นต่ำรูปต่อเว็บ
 MAX_SIDE = 1600                                   # ย่อรูปให้ด้านยาวสุดไม่เกินกี่พิกเซล
 MAX_DRAFTS_PER_USER = 10                          # ตัวอย่างที่ยังไม่จ่ายเงินต่อผู้ใช้
@@ -818,6 +821,23 @@ def serve_dashboard():
     if 'user_id' not in session:
         return redirect(url_for('serve_index'))
     return render_template('dashboard.html')
+
+
+@app.context_processor
+def inject_legal():
+    return {'legal_version': LEGAL_VERSION}
+
+
+@app.route('/terms')
+def serve_terms():
+    return render_template('legal.html', doc='terms', updated=LEGAL_UPDATED, contact=CONTACT_INFO,
+                           renew_price=RENEW_PRICE, extra_q_price=EXTRA_Q_PRICE)
+
+
+@app.route('/privacy')
+def serve_privacy():
+    return render_template('legal.html', doc='privacy', updated=LEGAL_UPDATED, contact=CONTACT_INFO,
+                           renew_price=RENEW_PRICE, extra_q_price=EXTRA_Q_PRICE)
 
 
 @app.route('/how-to-buy')

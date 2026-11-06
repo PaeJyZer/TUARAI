@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <input type="text" id="regUsername" placeholder="ชื่อผู้ใช้ (Username)" required>
                         <input type="email" id="regEmail" placeholder="อีเมล" required>
                         <input type="password" id="regPassword" placeholder="รหัสผ่าน" required>
+                        <p class="photo-hint">การสมัครสมาชิกถือว่าคุณได้อ่านและยอมรับ <a href="/terms" target="_blank" rel="noopener" style="color:var(--accent-red)">ข้อตกลงการใช้งาน</a> และ <a href="/privacy" target="_blank" rel="noopener" style="color:var(--accent-red)">นโยบายความเป็นส่วนตัว</a></p>
                         <button type="submit" class="btn-submit">สมัครสมาชิก</button>
                     </form>
                 </div>
