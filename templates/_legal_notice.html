@@ -1,5 +1,5 @@
 <!-- ป้ายประกาศแบบจดหมายผนึกขี้ผึ้ง เด้งทุกครั้งที่เปิดเว็บใหม่ (จำไว้เฉพาะแท็บนั้น) -->
-<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&family=Trirong:wght@300;400;600&display=swap" rel="stylesheet">
 <div class="lg-pop" id="lgPop" role="dialog" aria-modal="true" aria-labelledby="lgTitle" hidden>
   <div class="lg-sheet">
     <button type="button" class="lg-seal" id="lgClose" aria-label="ปิดประกาศ (รับทราบแล้ว)"><span>&times;</span></button>
@@ -21,7 +21,7 @@
 <style>
 .lg-pop { position: fixed; inset: 0; z-index: 100000; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(8,4,6,.78); animation: lgFade .35s ease both; overflow: auto; }
 .lg-pop[hidden] { display: none; }
-.lg-sheet { position: relative; width: min(540px, 100%); margin: auto; padding: 44px 40px 30px; color: #3b2a22; font-family: 'Prompt', sans-serif;
+.lg-sheet { position: relative; width: min(540px, 100%); margin: auto; padding: 44px 40px 30px; color: #3b2a22; font-family: 'Trirong', 'Prompt', serif;
   background:
     radial-gradient(120% 80% at 0% 0%, rgba(150,110,60,.14), transparent 55%),
     radial-gradient(90% 70% at 100% 100%, rgba(120,80,40,.16), transparent 60%),
@@ -35,20 +35,20 @@
   box-shadow: inset 0 -3px 5px rgba(0,0,0,.35), inset 0 2px 3px rgba(255,170,170,.35), 0 6px 14px rgba(0,0,0,.45);
   transition: transform .25s; }
 .lg-seal::before { content: ''; position: absolute; inset: 8px; border-radius: 50%; border: 1.5px solid rgba(255,200,200,.35); }
-.lg-seal span { position: relative; font: 400 28px/1 'Mali', 'Prompt', sans-serif; text-shadow: 0 -1px 0 rgba(0,0,0,.4); }
+.lg-seal span { position: relative; font: 400 28px/1 'Trirong', serif; text-shadow: 0 -1px 0 rgba(0,0,0,.4); }
 .lg-seal:hover { transform: rotate(-8deg) scale(1.06); }
-.lg-to { font: 400 1rem 'Mali', 'Prompt', sans-serif; color: #8a5a3c; margin-bottom: 6px; }
-.lg-sheet h2 { font: 500 clamp(1.45rem, 5vw, 1.85rem)/1.35 'Mitr', 'Prompt', sans-serif; color: #2b1a14; margin: 0 0 22px; padding-right: 40px; }
+.lg-to { font: 400 1.35rem 'Charmonman', 'Trirong', serif; color: #8a5a3c; margin-bottom: 6px; }
+.lg-sheet h2 { font: 700 clamp(1.9rem, 6.5vw, 2.5rem)/1.25 'Charmonman', 'Trirong', serif; letter-spacing: .01em; color: #2b1a14; margin: 0 0 22px; padding-right: 40px; }
 .lg-notes { list-style: none; margin: 0; padding: 0; counter-reset: n; }
-.lg-notes li { position: relative; padding: 14px 0 14px 46px; font-size: .9rem; line-height: 1.75; font-weight: 300; color: #5a4538; border-top: 1px dashed rgba(110,70,40,.4); counter-increment: n; }
-.lg-notes li::before { content: counter(n, thai); position: absolute; left: 4px; top: 11px; font: 600 1.45rem/1 'Mali', 'Prompt', sans-serif; color: #a3162a; }
-.lg-notes b { display: block; font-weight: 500; font-size: 1rem; color: #2b1a14; margin-bottom: 2px; }
+.lg-notes li { position: relative; padding: 14px 0 14px 46px; font-size: .92rem; line-height: 1.8; font-weight: 400; color: #5a4538; border-top: 1px dashed rgba(110,70,40,.4); counter-increment: n; }
+.lg-notes li::before { content: counter(n, thai); position: absolute; left: 4px; top: 11px; font: 700 1.9rem/1 'Charmonman', 'Trirong', serif; color: #a3162a; }
+.lg-notes b { display: block; font-weight: 600; font-size: 1.02rem; color: #2b1a14; margin-bottom: 2px; }
 .lg-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 18px; margin-top: 8px; padding-top: 18px; border-top: 1px dashed rgba(110,70,40,.4); }
 .lg-links { font-size: .8rem; color: #7a6454; line-height: 1.8; flex: 1 1 200px; }
 .lg-links a { color: #a3162a; text-decoration: underline; text-underline-offset: 3px; }
-.lg-ok { cursor: pointer; padding: 10px 26px; background: transparent; color: #a3162a; font: 600 1.05rem 'Mali', 'Prompt', sans-serif; border: 2px solid #a3162a; border-radius: 6px; outline: 1px solid #a3162a; outline-offset: 3px; transform: rotate(-2.5deg); transition: background .2s, color .2s, transform .2s; }
+.lg-ok { cursor: pointer; padding: 10px 26px; background: transparent; color: #a3162a; font: 700 1.25rem 'Charmonman', 'Trirong', serif; border: 2px solid #a3162a; border-radius: 6px; outline: 1px solid #a3162a; outline-offset: 3px; transform: rotate(-2.5deg); transition: background .2s, color .2s, transform .2s; }
 .lg-ok:hover { background: #a3162a; color: #f6e8d8; transform: rotate(0) scale(1.04); }
-.lg-sign { margin-top: 16px; text-align: right; font: 400 1.05rem 'Mali', 'Prompt', sans-serif; color: #8a5a3c; }
+.lg-sign { margin-top: 16px; text-align: right; font: 700 1.3rem 'Charmonman', 'Trirong', serif; color: #8a5a3c; }
 @keyframes lgFade { from { opacity: 0; } }
 @keyframes lgRise { from { opacity: 0; transform: translateY(70px) rotate(-3deg) scale(.96); } }
 @media (max-width: 480px) { .lg-sheet { padding: 38px 22px 22px; } .lg-seal { right: 16px; } .lg-ok { width: 100%; } .lg-notes li { padding-left: 38px; font-size: .86rem; } }
