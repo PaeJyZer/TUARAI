@@ -257,6 +257,9 @@ PREMIUM_THEMES = [
     ('matchcat_v1', 'Lucky Cat Matsuri',
      'งานเทศกาลเกียวโตยามค่ำคืน แมวกวักนำโชคท้าให้จับคู่ความทรงจำกับรูป ลากเส้นโยง ถูกมีพลุ ผิดแมวเศร้า โยงใหม่ได้ไม่จำกัด',
      'theme_previews/matchcat.jpg', 'theme_matchcat.html', 179, 349, 'จับคู่รูป · ลากเส้นโยง · พลุเทศกาล'),
+    ('constellation_v1', 'Constellation of Us',
+     'ท้องฟ้ายามค่ำคืนที่ดวงดาวเรียงเป็นหัวใจ แตะดาวแต่ละดวงให้ความทรงจำระเบิดแสงออกมา ดาวตกพาดผ่านตอนเลื่อนจอ และเขียนคำอธิษฐานส่งขึ้นไปลอยบนฟ้า',
+     'theme_previews/constellation.jpg', 'theme_constellation.html', 179, 349, 'กลุ่มดาวหัวใจ · ดาวตก · คำอธิษฐาน'),
 ]
 DIALOG_THEMES = {'palace_sakura_v1'}
 CAPTION_THEMES = {'matchcat_v1'}      # ธีมที่ลูกค้าเขียนคำใต้รูปแต่ละรูป (ใช้เป็นโจทย์จับคู่)

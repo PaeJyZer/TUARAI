@@ -1,0 +1,106 @@
+/* Constellation of Us: ท้องฟ้ายามค่ำคืน กลุ่มดาวหัวใจ ดาวตก คำอธิษฐาน */
+:root { --bg: #05060f; --ink: #f4f1ff; --muted: rgba(226,222,248,.72); --accent: #ffd98a; --rose: #ff9ec7; --ice: #9fbcff; --card: #11102a; --card-ink: #f4f1ff;
+  --font-display: "Charmonman", "Noto Serif Thai", serif; --font-body: "Prompt", system-ui, sans-serif; }
+body.theme-constellation { background: #05060f; overflow-x: hidden; }
+#sky { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; }
+.nebula { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(60% 45% at 18% 12%, rgba(120,90,255,.20), transparent 70%), radial-gradient(55% 45% at 85% 30%, rgba(255,120,190,.14), transparent 70%), radial-gradient(70% 50% at 50% 100%, rgba(70,110,255,.16), transparent 70%); }
+#fx { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 60; pointer-events: none; }
+.main { position: relative; z-index: 2; }
+
+/* หน้าปิด */
+.gate { background: radial-gradient(80% 60% at 50% 50%, rgba(20,16,56,.55), rgba(5,6,15,.96)); gap: 8px; }
+.gate-eyebrow { font-size: 12px; letter-spacing: .38em; text-transform: uppercase; color: var(--accent); }
+.gate-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 8.5vw, 46px); line-height: 1.25; margin: 6px 0 26px; word-break: break-word; text-shadow: 0 0 28px rgba(255,217,138,.35); }
+.gate-star { position: relative; width: 120px; height: 120px; border: 0; background: transparent; padding: 0; -webkit-tap-highlight-color: transparent; }
+.gate-star i { position: absolute; inset: 26px; background: linear-gradient(135deg, #fff6d8, #ffd98a 55%, #ff9ec7); clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); filter: drop-shadow(0 0 14px rgba(255,217,138,.9)); animation: gsPulse 2.2s ease-in-out infinite; transition: transform 1.2s cubic-bezier(.3,0,.2,1), filter 1.2s; }
+.gate-star .ring { position: absolute; inset: 8px; border-radius: 50%; border: 1px solid rgba(255,217,138,.55); animation: gsRing 2.6s ease-out infinite; }
+.gate-star .r2 { animation-delay: 1.3s; }
+body.opening .gate-star i { transform: scale(7); filter: drop-shadow(0 0 40px #fff) brightness(1.6); }
+.gate-hint { margin-top: 20px; font-size: 14px; color: var(--muted); letter-spacing: .08em; animation: gsBlink 2.4s ease-in-out infinite; }
+@keyframes gsPulse { 50% { transform: scale(1.12) rotate(6deg); } }
+@keyframes gsRing { from { transform: scale(.55); opacity: .9; } to { transform: scale(1.25); opacity: 0; } }
+@keyframes gsBlink { 50% { opacity: .45; } }
+
+/* หัวเรื่อง */
+.top { text-align: center; padding: clamp(56px, 10vw, 100px) 20px 8px; }
+.eyebrow { font-size: 12px; letter-spacing: .34em; text-transform: uppercase; color: var(--accent); }
+.title { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 9vw, 58px); line-height: 1.2; margin: 8px 0 6px; text-shadow: 0 0 30px rgba(159,188,255,.35); }
+.sub { color: var(--muted); font-size: 15px; }
+.sub b { color: var(--accent); font-weight: 500; }
+.steps { color: var(--ink); }
+.steps-list .dot { background: rgba(10,10,30,.85); border: 2px solid rgba(255,255,255,.3); }
+
+/* ท้องฟ้ากลุ่มดาว */
+.sky-sec { text-align: center; padding: 22px 12px 10px; }
+.sky-count { font-size: 14px; letter-spacing: .12em; color: var(--muted); margin-bottom: 8px; }
+.sky-count b { color: var(--accent); font-size: 20px; font-weight: 500; }
+.sky-box { position: relative; width: min(94vw, 600px); aspect-ratio: 1 / 1.02; margin: 0 auto; }
+.sky-box .lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.lines .base { fill: none; stroke: rgba(180,196,255,.28); stroke-width: .22; stroke-dasharray: .8 1.1; }
+.lines .glow { fill: none; stroke: #ffe3a3; stroke-width: .5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 1.2px rgba(255,217,138,.95)); transition: stroke-dashoffset 1.2s ease; }
+.stars { position: absolute; inset: 0; }
+.dim { position: absolute; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%; background: #c9d6ff; opacity: .5; animation: twk 3.4s ease-in-out infinite; animation-delay: var(--d); box-shadow: 0 0 6px rgba(190,205,255,.7); }
+.st { position: absolute; width: 52px; height: 52px; margin: -26px 0 0 -26px; padding: 0; border: 0; background: transparent; -webkit-tap-highlight-color: transparent; z-index: 3; filter: drop-shadow(0 0 8px rgba(160,190,255,.85)); transition: filter .5s, transform .3s; }
+.st i { position: absolute; inset: 15px; background: linear-gradient(135deg, #ffffff, #bcd0ff); clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); animation: stTwk 2.2s ease-in-out infinite; animation-delay: var(--d); transition: background .6s; }
+.st.cover { width: 74px; height: 74px; margin: -37px 0 0 -37px; }
+.st.cover i { inset: 14px; }
+.st:hover, .st:focus-visible { transform: scale(1.18); outline: none; }
+.st:active { transform: scale(.92); }
+.st.lit { filter: drop-shadow(0 0 12px rgba(255,217,138,1)) drop-shadow(0 0 26px rgba(255,170,120,.6)); }
+.st.lit i { background: linear-gradient(135deg, #fff8dd, #ffd98a 55%, #ffab8a); animation: litTwk 3s ease-in-out infinite; }
+.st .n { position: absolute; left: 50%; top: 100%; transform: translateX(-50%); font-size: 10px; color: rgba(255,255,255,.6); pointer-events: none; opacity: 0; }
+@keyframes twk { 50% { opacity: .12; transform: scale(.6); } }
+@keyframes stTwk { 50% { transform: scale(.78) rotate(8deg); opacity: .75; } }
+@keyframes litTwk { 50% { transform: scale(1.14) rotate(-6deg); } }
+.sky-hint { margin-top: 12px; font-size: 14px; color: var(--muted); }
+
+/* คำอธิษฐาน */
+.wish { max-width: 640px; margin: clamp(70px, 10vw, 120px) auto 0; padding: 0 18px 10px; text-align: center; min-height: 440px; }
+.sec-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 7vw, 40px); margin-bottom: 6px; }
+.wish-sub { color: var(--muted); font-size: 15px; margin-bottom: 18px; }
+.wish-form textarea { width: 100%; resize: none; padding: 16px 18px; border-radius: 18px; color: var(--ink); font: 400 16px/1.7 var(--font-body); background: rgba(14,12,40,.72); border: 1px solid rgba(255,217,138,.4); outline: none; transition: border-color .3s, box-shadow .3s; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.wish-form textarea::placeholder { color: rgba(226,222,248,.45); }
+.wish-form textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,217,138,.15), 0 0 28px rgba(255,217,138,.18); }
+.wish-act { display: flex; gap: 12px; align-items: center; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+.wish-send { height: 48px; padding: 0 30px; border: 0; border-radius: 999px; color: #1a1236; font: 500 16px var(--font-body); background: linear-gradient(135deg, #fff1c9, #ffd98a 50%, #ff9ec7); box-shadow: 0 8px 26px rgba(255,170,150,.35); transition: transform .2s, filter .2s; }
+.wish-send:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.wish-send:disabled { opacity: .5; }
+.wish-skip { appearance: none; border: 0; background: transparent; color: var(--muted); font-size: 13px; text-decoration: underline; padding: 10px; }
+.wish-sky { position: relative; height: 230px; margin-top: 22px; border-radius: 22px; overflow: hidden; text-align: left;
+  background: radial-gradient(70% 90% at 50% 100%, rgba(120,100,255,.22), transparent 70%), rgba(8,8,26,.55); border: 1px solid rgba(160,190,255,.22); }
+.ws-empty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 0 20px; color: rgba(226,222,248,.42); font-size: 14px; }
+.wsk { position: absolute; left: var(--x); bottom: -30px; max-width: 78%; display: flex; align-items: flex-start; gap: 6px; font-size: 13px; line-height: 1.5; color: #fff4d4; text-shadow: 0 0 12px rgba(255,217,138,.7); animation: wskRise 2.6s cubic-bezier(.2,.8,.25,1) forwards, wskBob 5s ease-in-out 2.6s infinite alternate; }
+.wsk::before { content: "✦"; color: var(--accent); text-shadow: 0 0 10px #ffd98a; flex: none; animation: stTwk 2s ease-in-out infinite; }
+@keyframes wskRise { from { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } to { transform: translateY(calc(var(--up) * -1)); opacity: 1; } }
+@keyframes wskBob { from { transform: translate(0, calc(var(--up) * -1)); } to { transform: translate(8px, calc(var(--up) * -1 - 8px)); } }
+.finale { text-align: center; padding: 70px 18px 0; }
+.cta { height: 54px; padding: 0 34px; border-radius: 999px; border: 1px solid rgba(255,217,138,.6); color: var(--ink); font: 500 17px var(--font-body); background: linear-gradient(135deg, rgba(255,217,138,.18), rgba(255,158,199,.18)); box-shadow: 0 0 30px rgba(255,217,138,.2); transition: transform .2s, box-shadow .3s; }
+.cta:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 44px rgba(255,217,138,.4); }
+.cta.is-locked, .cta:disabled { opacity: .4; filter: grayscale(.5); }
+.cta.is-ready { animation: ctaPulse 2s ease-in-out infinite; }
+@keyframes ctaPulse { 50% { box-shadow: 0 0 52px rgba(255,217,138,.55); } }
+.sec-note { margin-top: 12px; font-size: 13px; color: var(--muted); }
+.foot { text-align: center; padding: 70px 20px 60px; color: var(--muted); font-size: 14px; }
+body.s3 .sec-note { display: none; }
+
+/* การ์ดความทรงจำ */
+.mem { position: fixed; inset: 0; z-index: 8000; display: grid; place-items: center; padding: 16px; background: rgba(3,3,12,.72); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); animation: memFade .35s ease both; }
+.mem[hidden] { display: none; }
+.mem-card { position: relative; width: min(420px, 100%); max-height: 94dvh; overflow: auto; scrollbar-width: none; padding: 14px 14px 12px; border-radius: 22px; background: linear-gradient(180deg, #1a1740, #0f0e28); border: 1px solid rgba(255,217,138,.45);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.04), 0 0 60px rgba(255,217,138,.28), 0 30px 80px rgba(0,0,0,.6); transform-origin: var(--ox, 50%) var(--oy, 50%); animation: memPop .75s cubic-bezier(.2,1.1,.3,1) both; }
+.mem-card::-webkit-scrollbar { display: none; }
+.mem-card figure { margin: 0; }
+.mem-card img { width: 100%; max-height: 62dvh; object-fit: cover; border-radius: 14px; background: #0b0a1f; }
+.mem-card figcaption { padding: 14px 6px 6px; text-align: center; }
+.mem-no { display: block; font-size: 11px; letter-spacing: .3em; color: var(--accent); margin-bottom: 6px; }
+.mem-cap { display: block; font: 400 17px/1.7 var(--font-body); color: var(--ink); }
+.mem-x { position: absolute; top: -14px; right: -6px; width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); background: #1a1740; color: #fff; font-size: 26px; line-height: 1; z-index: 2; }
+.mem-nav { display: flex; justify-content: space-between; padding: 6px 4px 0; }
+.mem-nav button { width: 46px; height: 40px; border: 0; background: transparent; color: var(--accent); font-size: 34px; line-height: 1; opacity: .85; }
+.mem-nav button:active { transform: scale(.9); }
+@keyframes memFade { from { opacity: 0; } }
+@keyframes memPop { 0% { opacity: 0; transform: scale(.05); filter: brightness(3) blur(6px); } 55% { opacity: 1; filter: brightness(1.5) blur(0); } 100% { transform: none; filter: none; } }
+
+@media (max-width: 520px) { .st { width: 46px; height: 46px; margin: -23px 0 0 -23px; } .st.cover { width: 64px; height: 64px; margin: -32px 0 0 -32px; } .wish { min-height: 400px; } }
+@media (prefers-reduced-motion: reduce) { .st i, .dim, .gate-star i, .gate-star .ring, .cta.is-ready { animation: none; } }

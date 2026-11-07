@@ -1,0 +1,83 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&family=Prompt:wght@300;400;500&family=Noto+Serif+Thai:wght@300;400;600&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/constellation/style.css') }}">
+{% endblock %}
+{% block favicon %}✨{% endblock %}
+{% block body_class %}theme-constellation{% endblock %}
+{% block letter_eyebrow %}Constellation of Us{% endblock %}
+
+{% block bg %}
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="nebula" aria-hidden="true"></div>
+  <canvas id="fx" aria-hidden="true"></canvas>
+{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate">
+    <p class="gate-eyebrow">Constellation of Us</p>
+    <h1 class="gate-title">กลุ่มดาวของ {{ partner_name }}</h1>
+    <button type="button" class="gate-star" data-gate data-delay="1700" aria-label="แตะดาวเพื่อเข้าสู่ท้องฟ้า"><i></i><span class="ring r1"></span><span class="ring r2"></span></button>
+    <p class="gate-hint">แตะดวงดาวเพื่อเริ่มต้น</p>
+  </div>
+{% endblock %}
+
+{% block main %}
+{% set urls = [center_photo] + (side_photos|map(attribute=1)|list) %}
+{% set stars = [] %}
+{% for u in urls %}{% set _ = stars.append({'src': u, 'cap': (captions or {}).get(u, '')}) %}{% endfor %}
+  <header class="top">
+    <p class="eyebrow">{{ occ.en }}</p>
+    <h1 class="title">กลุ่มดาวแห่งความทรงจำ</h1>
+    <p class="sub">ของ <b>{{ partner_name }}</b> · {{ occ.wish }}</p>
+    <div class="steps" data-steps data-labels="เข้าสู่ท้องฟ้า|จุดดวงดาว|อธิษฐาน"
+         data-hints="เข้าสู่ท้องฟ้ายามค่ำคืนแล้ว|แตะดวงดาวที่กะพริบให้ครบทุกดวง แต่ละดวงซ่อนความทรงจำไว้|เขียนคำอธิษฐานส่งขึ้นฟ้า หรือข้ามไปก็ได้|ปลดล็อกครบแล้ว เปิดจดหมายได้เลย"></div>
+  </header>
+
+  <section class="sky-sec">
+    <p class="sky-count">✦ จุดแล้ว <b id="litCount">0</b> / {{ stars|length }} ดวง</p>
+    <div class="sky-box" id="skyBox">
+      <svg class="lines" id="lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="stars" id="stars"></div>
+    </div>
+    <p class="sky-hint">แตะดวงดาวที่ระยิบระยับ ความทรงจำจะระเบิดแสงออกมา</p>
+  </section>
+  <script type="application/json" id="starData">{{ stars|tojson }}</script>
+
+  <section class="wish lockable" id="wish">
+    <div class="lock-note"><b>🔒</b><span>จุดดวงดาวให้ครบก่อน แล้วค่อยอธิษฐาน</span></div>
+    <h2 class="sec-title">ความปรารถนาของเรา</h2>
+    <p class="wish-sub">เขียนสิ่งที่อยากให้เป็นจริง แล้วส่งขึ้นไปลอยบนท้องฟ้า</p>
+    <form class="wish-form" id="wishForm" autocomplete="off">
+      <textarea id="wishText" maxlength="90" rows="2" placeholder="พิมพ์คำอธิษฐานของคุณที่นี่…" aria-label="คำอธิษฐาน"></textarea>
+      <div class="wish-act">
+        <button type="submit" class="wish-send" id="wishSend">ส่งขึ้นฟ้า ✦</button>
+        <button type="button" class="wish-skip" id="wishSkip">ข้ามขั้นนี้</button>
+      </div>
+    </form>
+    <div class="wish-sky" id="wishSky" aria-live="polite"><p class="ws-empty" id="wsEmpty">ท้องฟ้ายังว่างอยู่… รอคำอธิษฐานแรกของคุณ</p></div>
+  </section>
+
+  <section class="finale">
+    <button class="cta" type="button" data-letter>💌 เปิดจดหมายจากดวงดาว</button>
+    <p class="sec-note">ต้องปลดล็อกให้ครบทั้ง 3 ขั้นก่อนนะ</p>
+  </section>
+  <footer class="foot"><p>ขอให้ดาวทุกดวงบนฟ้านำพาเราไปด้วยกันตลอดไป ✦</p></footer>
+
+  <!-- การ์ดความทรงจำ ระเบิดออกมาจากดวงดาว -->
+  <div class="mem" id="mem" hidden>
+    <div class="mem-card" id="memCard" role="dialog" aria-modal="true" aria-labelledby="memCap">
+      <button type="button" class="mem-x" id="memClose" aria-label="ปิด">&times;</button>
+      <figure><img id="memImg" src="" alt=""><figcaption><span class="mem-no" id="memNo"></span><span class="mem-cap" id="memCap"></span></figcaption></figure>
+      <div class="mem-nav"><button type="button" id="memPrev" aria-label="ดวงก่อนหน้า">&lsaquo;</button><button type="button" id="memNext" aria-label="ดวงถัดไป">&rsaquo;</button></div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='themes/shared/premium.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/constellation/constellation.js') }}"></script>
+{% endblock %}
