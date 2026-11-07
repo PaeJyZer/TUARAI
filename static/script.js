@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </select>
 
                         <label class="field-label">ชื่อแฟน / คนพิเศษ</label>
-                        <input type="text" id="buyName" maxlength="60" placeholder="เช่น ใบตูน" required>
+                        <input type="text" id="buyName" maxlength="60" placeholder="พิมพ์ชื่อ" required>
 
                         <label class="field-label" id="buyDateLabel">วันที่เริ่มคบกัน (หรือวันพิเศษ)</label>
                         <input type="date" id="buyDate" required>
