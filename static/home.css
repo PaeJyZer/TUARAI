@@ -161,3 +161,49 @@ body { background: radial-gradient(1200px 600px at 78% -8%, rgba(255,42,60,.16),
 }
 @media (max-width: 420px) { .deck { max-width: 300px; padding-right: 46px; } }
 @media (prefers-reduced-motion: reduce) { .deck-aura, .deck-aura::after { animation: none; } }
+
+
+/* ===== การ์ด 3 ขั้นตอน: กระจกดำ + ขอบเรืองแสง มุมตัด ===== */
+.steps3 ol { gap: 22px; }
+.steps3 li {
+  --cut: 22px; position: relative; isolation: isolate; border: 0; padding: 36px 30px 32px; background: linear-gradient(135deg, rgba(255,42,77,.75), rgba(255,255,255,.08) 38%, rgba(255,255,255,.05) 62%, rgba(255,42,77,.45));
+  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+  transition: transform .45s cubic-bezier(.2,.85,.25,1), filter .45s;
+}
+.steps3 li::before {
+  content: ''; position: absolute; inset: 1px; z-index: -1; background: radial-gradient(120% 80% at 0% 0%, rgba(255,42,77,.10), transparent 60%), rgba(12,9,18,.94);
+  clip-path: polygon(0 0, calc(100% - var(--cut) + 1px) 0, 100% calc(var(--cut) - 1px), 100% 100%, calc(var(--cut) - 1px) 100%, 0 calc(100% - var(--cut) + 1px));
+  transition: background .45s;
+}
+.steps3 li b { font-size: 3.4rem; line-height: 1; letter-spacing: .02em; -webkit-text-stroke: 1px rgba(255,90,120,.7); transition: -webkit-text-stroke-color .4s, text-shadow .4s; }
+.steps3 li:hover { transform: translateY(-10px); filter: brightness(1.15); }
+.steps3 li:hover::before { background: radial-gradient(120% 90% at 0% 0%, rgba(255,42,77,.28), transparent 62%), rgba(14,10,20,.9); }
+.steps3 li:hover b { -webkit-text-stroke-color: #ff5a78; text-shadow: 0 0 22px rgba(255,42,77,.7); }
+.steps3 ol li { filter: drop-shadow(0 0 0 transparent); }
+.steps3 ol { filter: none; }
+
+/* ===== การ์ดแพ็กเกจ: ขอบไล่สี มุมตัด / Pro เรืองแสงวิ่งรอบ ===== */
+@property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.compare-section .package-grid { gap: 28px; align-items: stretch; }
+.pkg-wrap { position: relative; display: flex; transition: transform .45s cubic-bezier(.2,.85,.25,1); }
+.pkg-wrap:hover { transform: translateY(-8px); }
+.pkg-wrap .package-card {
+  --cut: 28px; flex: 1; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; isolation: isolate; padding: 40px 32px 34px !important;
+  background: linear-gradient(135deg, rgba(255,255,255,.28), rgba(255,255,255,.05) 40%, rgba(255,42,77,.35));
+  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+}
+.pkg-wrap .package-card::before {
+  content: ''; position: absolute; inset: 1px; z-index: -1; background: rgba(13,10,18,.95);
+  clip-path: polygon(0 0, calc(100% - var(--cut) + 1px) 0, 100% calc(var(--cut) - 1px), 100% 100%, calc(var(--cut) - 1px) 100%, 0 calc(100% - var(--cut) + 1px));
+}
+.pkg-wrap.is-pro { filter: drop-shadow(0 0 20px rgba(255,42,77,.38)) drop-shadow(0 0 50px rgba(255,42,77,.18)); }
+.pkg-wrap.is-pro .package-card {
+  background: conic-gradient(from var(--ang), #ff2a4d, #ffb36b 14%, #ff2a4d 28%, rgba(255,42,77,.15) 52%, #ff2a4d 76%, #ff7a90 90%, #ff2a4d);
+  animation: pkgSpin 5s linear infinite;
+}
+.pkg-wrap.is-pro .package-card::before { background: radial-gradient(110% 60% at 50% 0%, rgba(255,42,77,.18), transparent 70%), rgba(15,9,15,.96); }
+@keyframes pkgSpin { to { --ang: 360deg; } }
+.pkg-wrap .pkg-badge { top: 16px; right: calc(var(--cut, 28px) + 10px); background: linear-gradient(135deg, #ff2a4d, #b3122f); letter-spacing: .04em; padding: 4px 14px; box-shadow: 0 4px 14px rgba(255,42,77,.5); }
+.pkg-wrap .pkg-price { font-size: 2.6rem; }
+.pkg-wrap .pkg-features { gap: 11px; margin-top: 6px; }
+@media (prefers-reduced-motion: reduce) { .pkg-wrap.is-pro .package-card { animation: none; } .steps3 li, .pkg-wrap { transition: none; } }
