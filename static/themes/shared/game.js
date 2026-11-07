@@ -39,7 +39,7 @@
     };
     if (skipped) go();
     else {
-      sfx('win');
+      sfx('win'); document.dispatchEvent(new CustomEvent('tu:gamewin'));
       statusEl.textContent = attr('game-win', 'ปลดล็อกแล้ว! 💌');
       fill.style.width = '100%';
       setTimeout(go, 1000);

@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/letterfx.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/polish.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/romance.css') }}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{% block favicon %}💖{% endblock %}</text></svg>">
 </head>
 <body class="{% block body_class %}{% endblock %}" {% block body_attrs %}{% endblock %}>
@@ -107,6 +108,7 @@
   <script src="{{ url_for('static', filename='themes/shared/premium.js') }}"></script>
   <script src="{{ url_for('static', filename='themes/shared/ambient.js') }}"></script>
   <script src="{{ url_for('static', filename='themes/shared/polish.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/shared/romance.js') }}"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

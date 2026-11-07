@@ -1,0 +1,64 @@
+/* TUARAI - สไตล์ประกอบ romance.js (ผูกกับ class ธีม) */
+.rm-cv { position: fixed; left: 0; top: 0; z-index: 40; pointer-events: none; }
+
+/* ---------- VINTAGE: กรอบจดหมายเรืองนีออนอ่อน + เคอร์เซอร์พิมพ์ดีด ---------- */
+body.theme-diary #letterOverlay .letter-card,
+body.theme-envelope #letterOverlay .letter-card {
+  box-shadow: 0 0 0 1px rgba(255, 190, 160, .75), 0 0 10px rgba(255, 130, 150, .55), 0 0 34px rgba(255, 120, 150, .32), 0 18px 50px rgba(60, 20, 20, .35);
+  animation: rmNeon 3.4s ease-in-out infinite alternate;
+}
+@keyframes rmNeon {
+  from { box-shadow: 0 0 0 1px rgba(255, 190, 160, .6), 0 0 8px rgba(255, 130, 150, .4), 0 0 24px rgba(255, 120, 150, .22), 0 18px 50px rgba(60, 20, 20, .35); }
+  to   { box-shadow: 0 0 0 1px rgba(255, 210, 170, .95), 0 0 16px rgba(255, 140, 160, .75), 0 0 48px rgba(255, 120, 150, .42), 0 18px 50px rgba(60, 20, 20, .35); }
+}
+.letter-card.rm-typing #letterTyped::after { content: ""; display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; vertical-align: -.15em; background: #a4472f; animation: rmCaret .7s steps(1) infinite; }
+@keyframes rmCaret { 50% { opacity: 0; } }
+
+/* ---------- GAME: Cyberpunk Love (ชมพู-ม่วงเข้ม + เส้นขอบฟ้านีออน) ---------- */
+body.theme-pixel, body.theme-arcade { background: radial-gradient(120% 80% at 50% 0%, #2a0a4a 0%, #14051f 55%, #07020f 100%) fixed; }
+.rm-grid { position: fixed; left: 0; right: 0; bottom: 0; height: 46vh; z-index: 0; pointer-events: none; overflow: hidden; opacity: .75; }
+.rm-grid .sun { position: absolute; left: 50%; bottom: 36%; width: min(52vw, 280px); aspect-ratio: 1; margin-left: calc(min(52vw, 280px) / -2); border-radius: 50%;
+  background: linear-gradient(180deg, #ffe14a 0%, #ff4fd8 60%, #b04bff 100%); box-shadow: 0 0 60px 10px rgba(255, 79, 216, .45);
+  -webkit-mask: repeating-linear-gradient(180deg, #000 0 10px, transparent 10px 14px); mask: repeating-linear-gradient(180deg, #000 0 10px, transparent 10px 14px); opacity: .55; }
+.rm-grid .floor { position: absolute; left: -50%; right: -50%; bottom: 0; height: 36%; transform: perspective(240px) rotateX(58deg); transform-origin: 50% 100%;
+  background-image: linear-gradient(rgba(255, 79, 216, .75) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, .6) 1px, transparent 1px); background-size: 46px 46px;
+  animation: rmGrid 2.2s linear infinite; box-shadow: 0 -2px 24px rgba(255, 79, 216, .6); }
+@keyframes rmGrid { to { background-position: 0 46px, 46px 0; } }
+body.theme-pixel .stars, body.theme-arcade .bg, body.theme-arcade .stars { z-index: 0; }
+body.theme-pixel .hud { background: #14051f; border-bottom-color: #ff4fd8; box-shadow: 0 6px 22px rgba(255, 79, 216, .35); color: #ff9ae9; }
+body.theme-pixel .gate-title { color: #ff4fd8; text-shadow: 0 0 18px rgba(255, 79, 216, .8), 4px 4px 0 #6a1b9a, 8px 8px 0 #1a1050; }
+body.theme-pixel .pix-frame { box-shadow: 0 0 0 4px #ff4fd8, 0 0 0 8px #1a1050, 0 0 0 12px #00f0ff, 0 0 40px 14px rgba(255, 79, 216, .35), 10px 14px 0 12px rgba(0, 0, 0, .5); }
+body.theme-pixel .hero-name, body.theme-arcade .hero-name { text-shadow: 0 0 16px rgba(255, 79, 216, .8), 3px 3px 0 #b04bff; }
+body.theme-pixel .sec-title { color: #00f0ff; text-shadow: 0 0 14px rgba(0, 240, 255, .7); }
+body.theme-pixel .cta, body.theme-arcade .cta { box-shadow: 0 0 22px rgba(255, 79, 216, .55); }
+body.theme-pixel .level { box-shadow: 0 0 0 3px #b04bff, 0 0 18px rgba(176, 75, 255, .5); }
+body.theme-arcade .marquee { border-color: #ff4fd8; text-shadow: 0 0 14px #ff4fd8; }
+.rm-grid ~ .main, body.theme-pixel .main, body.theme-arcade .main { position: relative; z-index: 2; }
+
+/* ป๊อปอัปข้อความเซอร์ไพรส์ซึ้งๆ (หน้าต่างย้อนยุค) */
+.rm-pop { position: fixed; inset: 0; z-index: 9500; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(10, 2, 24, .78); opacity: 0; transition: opacity .35s ease; backdrop-filter: blur(3px); }
+.rm-pop[hidden] { display: none; }
+.rm-pop.show { opacity: 1; }
+.rm-box { width: min(92vw, 400px); background: #14051f; border: 3px solid #ff4fd8; box-shadow: 0 0 0 3px #14051f, 0 0 0 6px #00f0ff, 0 0 50px 8px rgba(255, 79, 216, .55); transform: scale(.7) translateY(24px); transition: transform .5s cubic-bezier(.2, 1.5, .4, 1); }
+.rm-pop.show .rm-box { transform: none; }
+.rm-bar { display: flex; align-items: center; gap: 6px; padding: 8px 10px; background: linear-gradient(90deg, #b04bff, #ff4fd8); }
+.rm-bar i { width: 10px; height: 10px; background: #14051f; display: block; }
+.rm-bar span { margin-left: auto; font: 400 9px/1 "Press Start 2P", "Courier New", monospace; color: #14051f; }
+.rm-in { padding: 24px 20px 22px; text-align: center; color: #fbe9ff; }
+.rm-ach { font: 400 9px/1.8 "Press Start 2P", "Courier New", monospace; color: #ffe14a; text-shadow: 0 0 10px #ffe14a; letter-spacing: .06em; animation: rmBlink 1s steps(2) infinite; }
+@keyframes rmBlink { 50% { opacity: .5; } }
+.rm-t { margin: 14px 0 16px; font: 400 clamp(15px, 4.6vw, 20px)/1.6 "Press Start 2P", "Noto Serif Thai", monospace; color: #ff9ae9; text-shadow: 0 0 14px rgba(255, 79, 216, .8), 3px 3px 0 #6a1b9a; }
+.rm-l { margin: 8px 0; font-size: 16px; line-height: 1.8; opacity: 0; transform: translateY(8px); }
+.rm-pop.show .rm-l { animation: rmLine .8s ease forwards; }
+.rm-l.l3 { color: #ffd0f4; font-weight: 600; }
+@keyframes rmLine { to { opacity: 1; transform: none; } }
+.rm-ok { appearance: none; margin-top: 18px; padding: 14px 22px; border: 0; cursor: pointer; font: 400 12px/1 "Press Start 2P", "Courier New", monospace; color: #14051f; background: #ffe14a; box-shadow: 0 -3px 0 #fff3a0 inset, 0 3px 0 #b8860b inset, 0 0 22px rgba(255, 225, 74, .6); }
+.rm-ok:active { transform: translateY(2px); }
+
+/* ---------- NATURE: ฟ้าไล่เฉดเข้มขึ้น (พระอาทิตย์ตกดิน) ---------- */
+.rm-dusk { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 2.2s ease;
+  background: linear-gradient(180deg, rgba(8, 4, 38, .95) 0%, rgba(52, 18, 84, .8) 45%, rgba(110, 30, 90, .45) 80%, rgba(150, 50, 80, .25) 100%); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-grid .floor, body.theme-diary #letterOverlay .letter-card, body.theme-envelope #letterOverlay .letter-card, .rm-ach { animation: none; }
+}
