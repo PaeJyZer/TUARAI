@@ -106,13 +106,13 @@
   <!-- เปรียบเทียบแพ็กเกจ -->
   <section class="compare-section">
     <h2 class="section-title" style="text-align: center; border: none;">เลือกแพ็กเกจให้เว็บแต่ละเว็บ</h2>
-    <p class="photo-hint" style="text-align: center; margin-bottom: 24px;">ราคาต่อ 1 เว็บ (เว็บพรีเมียมราคาตามที่แสดงบนการ์ด) ถ้าอยากได้เว็บอื่นเพิ่ม ก็ซื้อและเลือกแพ็กเกจใหม่ได้เลย</p>
+    <p class="photo-hint" style="text-align: center; margin-bottom: 24px;">ราคาขึ้นอยู่กับธีมที่เลือก ดูราคาได้บนการ์ดของแต่ละธีม ซื้อ 1 ครั้งได้ 1 เว็บ ถ้าอยากได้เว็บอื่นเพิ่มก็เลือกแพ็กเกจใหม่ได้เลย</p>
     <div class="package-grid">
       {% for key in ['basic', 'pro'] %}
       <div class="pkg-wrap {{ 'is-pro' if key == 'pro' }}"><div class="package-card {{ 'recommended' if key == 'pro' }}">
         {% if key == 'pro' %}<span class="pkg-badge">คุ้มที่สุด</span>{% endif %}
         <h3>{{ packages[key].label }}</h3>
-        <p class="pkg-price">{{ '{:,.0f}'.format(standard[0].prices[key]) if standard else '-' }} <small>฿ / เว็บ</small></p>
+        <p class="pkg-sub">{{ 'สำหรับเว็บที่อยากให้ใช้ได้ยาวและแก้ไขได้ตามใจ' if key == 'pro' else 'เริ่มต้นง่ายๆ สำหรับเว็บเซอร์ไพรส์ครั้งเดียวจบ' }}</p>
         <ul class="pkg-features">
           {% for f in features[key] %}<li>{{ f }}</li>{% endfor %}
         </ul>

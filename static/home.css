@@ -207,3 +207,5 @@ body { background: radial-gradient(1200px 600px at 78% -8%, rgba(255,42,60,.16),
 .pkg-wrap .pkg-price { font-size: 2.6rem; }
 .pkg-wrap .pkg-features { gap: 11px; margin-top: 6px; }
 @media (prefers-reduced-motion: reduce) { .pkg-wrap.is-pro .package-card { animation: none; } .steps3 li, .pkg-wrap { transition: none; } }
+
+.pkg-wrap .pkg-sub { color: #a49eb4; font-size: .92rem; line-height: 1.6; margin: 6px 0 20px; padding-bottom: 18px; border-bottom: 1px dashed rgba(255,255,255,.14); }
