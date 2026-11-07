@@ -53,16 +53,32 @@
     meteors.push({ x: x, y: y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, l: 1, len: rnd(110, 200) });
     runFx();
   }
+  function bigMeteor() {
+    var x = rnd(FW * .7, FW * 1.02), y = rnd(-10, FH * .12), ang = rnd(2.55, 2.7), sp = 9;
+    meteors.push({ x: x, y: y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, l: 1.6, len: 320, big: true });
+    runFx();
+  }
+  /* ละอองดาวเล็กๆ พุ่งจากจุดที่นิ้วแตะ */
+  function sparkle(x, y) {
+    var n = reduce ? 6 : 16;
+    for (var i = 0; i < n; i++) {
+      var a = rnd(0, 6.283), v = rnd(.8, 3.2);
+      parts.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - rnd(.4, 1.4), l: 1, d: rnd(.022, .04), c: pick(COLS), s: rnd(1, 2.2), star: Math.random() < .5 });
+    }
+    rings.push({ x: x, y: y, r: 4, l: .8 });
+    runFx();
+  }
+  function kring() { [2093, 2637, 3136, 3951].forEach(function (f, i) { TUSfx.tone({ f: f, t: i * .055, d: .3, v: .035, type: 'sine' }); }); }
   function runFx() { if (!fxRun) { fxRun = true; requestAnimationFrame(tickFx); } }
   function tickFx() {
     fc.clearRect(0, 0, FW, FH);
     for (var i = meteors.length - 1; i >= 0; i--) {
-      var m = meteors[i]; m.x += m.vx; m.y += m.vy; m.l -= .018;
+      var m = meteors[i]; m.x += m.vx; m.y += m.vy; m.l -= m.big ? .009 : .018;
       if (m.l <= 0 || m.x < -250 || m.x > FW + 250 || m.y > FH + 250) { meteors.splice(i, 1); continue; }
       var tx = m.x - m.vx / Math.hypot(m.vx, m.vy) * m.len, ty = m.y - m.vy / Math.hypot(m.vx, m.vy) * m.len;
-      var g = fc.createLinearGradient(m.x, m.y, tx, ty); g.addColorStop(0, 'rgba(255,255,255,' + m.l + ')'); g.addColorStop(.25, 'rgba(255,225,170,' + (m.l * .6) + ')'); g.addColorStop(1, 'rgba(160,190,255,0)');
-      fc.strokeStyle = g; fc.lineWidth = 2.2; fc.lineCap = 'round'; fc.beginPath(); fc.moveTo(m.x, m.y); fc.lineTo(tx, ty); fc.stroke();
-      fc.fillStyle = 'rgba(255,255,255,' + m.l + ')'; fc.beginPath(); fc.arc(m.x, m.y, 2.2, 0, 6.3); fc.fill();
+      var g = fc.createLinearGradient(m.x, m.y, tx, ty); var al = Math.min(1, m.l); g.addColorStop(0, 'rgba(255,255,255,' + al + ')'); g.addColorStop(.25, 'rgba(255,225,170,' + (al * .6) + ')'); g.addColorStop(1, 'rgba(160,190,255,0)');
+      fc.strokeStyle = g; fc.lineWidth = m.big ? 3.6 : 2.2; fc.lineCap = 'round'; fc.beginPath(); fc.moveTo(m.x, m.y); fc.lineTo(tx, ty); fc.stroke();
+      fc.fillStyle = 'rgba(255,255,255,' + al + ')'; fc.beginPath(); fc.arc(m.x, m.y, m.big ? 3.4 : 2.2, 0, 6.3); fc.fill();
     }
     for (var r = rings.length - 1; r >= 0; r--) {
       var g2 = rings[r]; g2.r += 5.5; g2.l -= .035;
@@ -210,21 +226,43 @@
       memCard.style.animation = 'none'; void memCard.offsetWidth; memCard.style.animation = '';
     }, reduce ? 0 : 320);
   }
+  starsEl.addEventListener('pointerdown', function (e) {
+    var b = e.target.closest('.st'); if (!b) return;
+    var c = starCenter(b), x = e.clientX || c.x, y = e.clientY || c.y;
+    sparkle(x, y); kring();
+    if (navigator.vibrate) { try { navigator.vibrate(12); } catch (err) {} }
+  });
+  starsEl.addEventListener('click', function (e) {
+    var b = e.target.closest('.st'); if (!b) return;
+    openStar(+b.dataset.i, b);
+  });
   function closeMem() {
     if (mem.hidden) return;
     mem.hidden = true; document.body.classList.remove('no-scroll');
     if (allLit && !TUSteps.isDone(2)) {
       TUSteps.complete(2);
-      var c = { x: innerWidth / 2, y: innerHeight * .4 };
-      for (var k = 0; k < 4; k++) setTimeout(function () { burst(rnd(innerWidth * .2, innerWidth * .8), rnd(innerHeight * .15, innerHeight * .5), 34, 1.1); TUSfx.play('sparkle'); }, k * 260);
-      for (var m = 0; m < 4; m++) setTimeout(meteor, m * 200);
-      setTimeout(function () { var w = $('wish'); if (w) w.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); }, 1300);
+      setTimeout(function () { var w = $('wish'); if (w) w.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); }, 1100);
     }
   }
-  starsEl.addEventListener('click', function (e) { var b = e.target.closest('.st'); if (b) openStar(+b.dataset.i, b); });
   $('memClose').addEventListener('click', closeMem);
   mem.addEventListener('click', function (e) { if (e.target === mem) closeMem(); });
   document.addEventListener('keydown', function (e) { if (mem.hidden) return; if (e.key === 'Escape') closeMem(); });
+
+  /* ---------- ปลดล็อก: กล่องเรืองแสงทอง/ชมพู + ดาวตก 1 ดวง ---------- */
+  function glowUnlock(sel) {
+    document.querySelectorAll(sel).forEach(function (el) { el.classList.remove('glow-unlock'); void el.offsetWidth; el.classList.add('glow-unlock'); });
+  }
+  document.addEventListener('tu:step', function (e) {
+    var n = e.detail && e.detail.n;
+    if (n === 2) {
+      glowUnlock('.wish-form textarea, .wish-send, .wish-sky');
+      bigMeteor(); TUSfx.play('unlock'); setTimeout(function () { TUSfx.play('sparkle'); }, 500);
+      setTimeout(function () { TUToast('💗 ปลดล็อกกล่องอธิษฐานแล้ว'); }, 1300);
+    } else if (n === 3) {
+      glowUnlock('.cta'); bigMeteor();
+      setTimeout(function () { TUToast('💌 เย้! คุณปลดล็อกหัวใจฉันสำเร็จแล้ว'); TUSfx.play('sparkle'); }, 900);
+    }
+  });
 
   /* ---------- คำอธิษฐาน ---------- */
   var form = $('wishForm'), txt = $('wishText'), wsky = $('wishSky'), sent = 0, MAXW = 6;
