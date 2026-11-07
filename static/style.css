@@ -898,3 +898,7 @@ tr.clk:hover td { background: rgba(255,255,255,.04); }
 .legal-toc { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
 .legal-toc a { font-size: .82rem; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-color); color: #cfc8da; text-decoration: none; }
 .legal-toc a:hover { border-color: var(--accent-red); color: #fff; }
+
+/* ซ่อนแถบเลื่อนสีขาวในหน้าต่างป๊อปอัป (ยังเลื่อนด้วยล้อเมาส์/นิ้วได้ตามปกติ) */
+.modal-overlay, .modal-content, .modal-content.buy-modal, .modal-content.qr-modal { scrollbar-width: none; -ms-overflow-style: none; }
+.modal-overlay::-webkit-scrollbar, .modal-content::-webkit-scrollbar { display: none; width: 0; height: 0; }
