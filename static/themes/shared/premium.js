@@ -128,28 +128,29 @@
 
   /* เสียงเครื่องยนต์ (ยานอวกาศ) */
   var eng = null;
-  S.engineStart = function () {
+  S.engineStart = function () { // ฮัมเบาๆ นุ่มๆ (ไซน์/สามเหลี่ยม ผ่านโลว์พาส) ไม่แสบหู
     var c = ensure(); if (!c || muted || eng) return;
-    var o = c.createOscillator(), o2 = c.createOscillator(), g = c.createGain();
-    o.type = 'sawtooth'; o2.type = 'square';
-    o.frequency.value = 45; o2.frequency.value = 90;
-    g.gain.value = 0.0001; g.gain.exponentialRampToValueAtTime(.12, c.currentTime + .3);
-    o.connect(g); o2.connect(g); g.connect(master); o.start(); o2.start();
-    eng = { o: o, o2: o2, g: g };
+    var o = c.createOscillator(), o2 = c.createOscillator(), g = c.createGain(), f = c.createBiquadFilter();
+    o.type = 'sine'; o2.type = 'triangle'; f.type = 'lowpass'; f.frequency.value = 360; f.Q.value = .4;
+    o.frequency.value = 70; o2.frequency.value = 105;
+    g.gain.value = 0.0001; g.gain.exponentialRampToValueAtTime(.035, c.currentTime + .6);
+    o.connect(f); o2.connect(f); f.connect(g); g.connect(master); o.start(); o2.start();
+    eng = { o: o, o2: o2, g: g, f: f };
   };
   S.engineSet = function (p) { // p 0..1
     if (!eng || !ctx) return;
     var t = ctx.currentTime;
-    eng.o.frequency.setTargetAtTime(45 + p * 260, t, .08);
-    eng.o2.frequency.setTargetAtTime(90 + p * 520, t, .08);
-    eng.g.gain.setTargetAtTime(.1 + p * .1, t, .08);
+    eng.o.frequency.setTargetAtTime(70 + p * 110, t, .25);
+    eng.o2.frequency.setTargetAtTime(105 + p * 170, t, .25);
+    eng.f.frequency.setTargetAtTime(360 + p * 500, t, .25);
+    eng.g.gain.setTargetAtTime(.035 + p * .035, t, .25);
   };
   S.engineStop = function () {
     if (!eng || !ctx) { eng = null; return; }
     var e = eng; eng = null;
     var t = ctx.currentTime;
-    e.g.gain.setTargetAtTime(.0001, t, .12);
-    setTimeout(function () { try { e.o.stop(); e.o2.stop(); } catch (er) {} }, 600);
+    e.g.gain.setTargetAtTime(.0001, t, .3);
+    setTimeout(function () { try { e.o.stop(); e.o2.stop(); } catch (er) {} }, 1500);
   };
 
   /* เล่นทำนองกล่องดนตรี */

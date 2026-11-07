@@ -52,7 +52,7 @@
     launched = true; holding = false; btn.classList.remove('hold'); btn.classList.add('go');
     document.body.classList.add('warp-on');
     $('gateHint').textContent = '🚀 วาร์ป!';
-    targetWarp = 1; TUSfx.play('whoosh'); TUSfx.play('boom');
+    targetWarp = 1; TUSfx.play('whoosh'); TUSfx.play('chime', 3);
     setTimeout(function () { targetWarp = .12; TUSfx.play('engineStop'); window.TU_OPEN(); }, 1300);
   }
   btn.addEventListener('pointerdown', start);
@@ -90,5 +90,5 @@
     radar.appendChild(b);
   });
   document.addEventListener('tu:skipped', function () { $('sigCount').textContent = NEED; });
-  document.addEventListener('tu:letter', function () { TUSfx.play('laser'); });
+  document.addEventListener('tu:letter', function () { TUSfx.play('chime', 5); });
 })();
