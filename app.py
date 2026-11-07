@@ -1,5 +1,5 @@
 from flask import (Flask, request, jsonify, session, render_template, redirect,
-                   url_for, send_file, send_from_directory, abort, g)
+                   url_for, send_file, send_from_directory, abort, g, Response)
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -759,7 +759,7 @@ def demo_photos():
 #  5. แสดงเว็บเซอร์ไพรส์ (ใช้ธีมตามที่ลูกค้าเลือก)
 # =====================================================================
 def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls,
-                 banner=None, toolbar=None, occasion='anniversary', dialog=None, captions=None, demo=False):
+                 banner=None, toolbar=None, occasion='anniversary', dialog=None, captions=None, demo=False, seo=None):
     """urls: ลิสต์รูป (รูปแรก = รูปหน้าปก/รูปกลาง) ไม่วนซ้ำ ถ้าไม่มีรูปเลยใช้รูปตัวอย่าง"""
     urls = (urls or demo_photos())[:20]
     center, others = urls[0], urls[1:]
@@ -782,6 +782,7 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
         banner=banner,
         toolbar=toolbar,
         demo=demo,
+        seo=seo,
         dialog=dialog or DEFAULT_DIALOG,
         pairs=[(u, (captions or {}).get(u) or f'ความทรงจำที่ {i + 1}') for i, u in enumerate(urls[:MAX_PAIRS])],
         extra_photos=urls[MAX_PAIRS:],
@@ -829,7 +830,55 @@ def serve_dashboard():
 
 @app.context_processor
 def inject_legal():
-    return {'legal_version': LEGAL_VERSION, 'contact_info': CONTACT_INFO if os.environ.get('CONTACT_INFO') else ''}
+    return {'legal_version': LEGAL_VERSION, 'contact_info': CONTACT_INFO if os.environ.get('CONTACT_INFO') else '',
+            'seo_base': seo_base(), 'google_verify': os.environ.get('GOOGLE_SITE_VERIFICATION', '').strip()}
+
+
+# ---------------- SEO: ให้ Google เก็บเฉพาะหน้าสาธารณะ ----------------
+NOINDEX_PREFIXES = ('/s/', '/preview/', '/admin', '/api/', '/dashboard', '/pay/', '/edit/', '/slips/', '/static/uploads/')
+
+
+def seo_base():
+    """ที่อยู่เว็บจริงสำหรับ canonical/sitemap (ตั้ง PUBLIC_BASE_URL เป็นโดเมนจริงของคุณ)"""
+    env = os.environ.get('PUBLIC_BASE_URL', '').strip().rstrip('/')
+    if env:
+        return env
+    try:
+        return request.host_url.rstrip('/')
+    except RuntimeError:
+        return ''
+
+
+@app.after_request
+def seo_headers(resp):
+    if request.path.startswith(NOINDEX_PREFIXES):
+        resp.headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive'
+    return resp
+
+
+@app.route('/robots.txt')
+def robots_txt():
+    lines = ['User-agent: *', 'Allow: /']
+    lines += ['Disallow: ' + p.rstrip('/') + ('/' if p.endswith('/') else '') for p in NOINDEX_PREFIXES]
+    lines += ['', 'Sitemap: ' + seo_base() + '/sitemap.xml']
+    return Response('\n'.join(lines) + '\n', mimetype='text/plain')
+
+
+@app.route('/sitemap.xml')
+def sitemap_xml():
+    base = seo_base()
+    today = datetime.now().strftime('%Y-%m-%d')
+    urls = [('/', '1.0', 'weekly'), ('/how-to-buy', '0.8', 'monthly'), ('/terms', '0.3', 'yearly'), ('/privacy', '0.3', 'yearly')]
+    urls += [('/demo/' + t['theme_code'], '0.7', 'monthly') for t in active_themes()]
+    body = ''.join(f'<url><loc>{base}{u}</loc><lastmod>{today}</lastmod><changefreq>{c}</changefreq><priority>{p}</priority></url>'
+                   for u, p, c in urls)
+    xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + body + '</urlset>'
+    return Response(xml, mimetype='application/xml')
+
+
+@app.route('/favicon.ico')
+def favicon_ico():
+    return redirect('/static/brand/icon-192.png', code=301)
 
 
 @app.template_filter('autolink')
@@ -880,6 +929,9 @@ def demo_page(theme_code):
               'ต่อจากนี้อีกกี่วัน อีกกี่เดือน อีกกี่ปี ขอให้ได้อยู่ด้วยกันแบบนี้ตลอดไปนะ')
     return render_theme(theme, 'ที่รัก', sample_date, letter, 'จากคนที่รักเธอ', demo_photos()[:n],
                         banner='ตัวอย่างเว็บ — ข้อมูลและรูปทั้งหมดเป็นของสมมติ', demo=True,
+                        seo={'title': f"{theme['name']} - ตัวอย่างเว็บเซอร์ไพรส์ | TUARAI",
+                             'desc': (str(theme['description'] or '')[:150] + ' ลองเล่นตัวอย่างฟรี ก่อนสั่งทำเว็บเซอร์ไพรส์ให้แฟนกับ TUARAI').strip(),
+                             'path': '/demo/' + theme_code},
                         occasion=request.args.get('occasion', 'anniversary'),
                         captions={u: DEMO_NOTES[i % len(DEMO_NOTES)] for i, u in enumerate(demo_photos()[:n])} if theme and theme['theme_code'] not in CAPTION_THEMES else {u: DEMO_CAPTIONS[i] for i, u in enumerate(demo_photos()[:n][:MAX_PAIRS])})
 

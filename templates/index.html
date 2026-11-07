@@ -3,7 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TUARAI - เว็บเซอร์ไพรส์วันครบรอบ</title>
+  <title>TUARAI | เว็บเซอร์ไพรส์วันครบรอบ ทำเว็บให้แฟน ดูตัวอย่างก่อนจ่าย</title>
+  {% with seo_title='TUARAI | เว็บเซอร์ไพรส์วันครบรอบ ทำเว็บให้แฟน ดูตัวอย่างก่อนจ่าย', seo_desc='ทำเว็บเซอร์ไพรส์ให้แฟนด้วยตัวเอง เลือกธีมได้ ' ~ (themes|length) ~ ' แบบ ใส่รูปและจดหมายของคุณ ดูตัวอย่างก่อนจ่าย แล้วรับเป็น QR Code มอบให้แฟนได้ทันที เหมาะกับวันครบรอบและวันเกิด', seo_path='/' %}{% include '_seo.html' %}{% endwith %}
+  <script type="application/ld+json">{{ {"@context":"https://schema.org","@graph":[
+    {"@type":"Organization","@id":seo_base~"/#org","name":"TUARAI","url":seo_base~"/","logo":seo_base~"/static/brand/icon-512.png"},
+    {"@type":"WebSite","@id":seo_base~"/#site","url":seo_base~"/","name":"TUARAI","inLanguage":"th","publisher":{"@id":seo_base~"/#org"}},
+    {"@type":"Service","name":"บริการทำเว็บเซอร์ไพรส์วันครบรอบ","serviceType":"เว็บเซอร์ไพรส์สำหรับคนรัก","provider":{"@id":seo_base~"/#org"},"areaServed":"TH","description":"ทำเว็บเซอร์ไพรส์ให้แฟน เลือกธีม ใส่รูปและจดหมาย ดูตัวอย่างก่อนจ่าย รับเป็น QR Code"},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"เว็บเซอร์ไพรส์ของ TUARAI คืออะไร","acceptedAnswer":{"@type":"Answer","text":"เป็นเว็บไซต์ส่วนตัวที่ใส่รูปและจดหมายของคุณลงในธีมที่เลือก เมื่อชำระเงินแล้วจะได้ลิงก์และ QR Code ไปมอบให้แฟนเปิดดู"}},
+      {"@type":"Question","name":"ต้องจ่ายเงินก่อนทำไหม","acceptedAnswer":{"@type":"Answer","text":"ไม่ต้อง สร้างและดูตัวอย่างเว็บได้ก่อน จ่ายเมื่อพอใจแล้วเท่านั้น"}},
+      {"@type":"Question","name":"เหมาะกับโอกาสไหนบ้าง","acceptedAnswer":{"@type":"Answer","text":"เหมาะกับวันครบรอบและวันเกิด รวมถึงโอกาสพิเศษอื่นๆ ที่อยากมอบความรู้สึกดีๆ ให้คนที่รัก"}},
+      {"@type":"Question","name":"จ่ายเงินอย่างไร","acceptedAnswer":{"@type":"Answer","text":"โอนผ่านพร้อมเพย์ แล้วแนบสลิปในหน้าชำระเงิน ทีมงานตรวจสลิปแล้วเปิดเว็บให้"}},
+      {"@type":"Question","name":"รูปและข้อมูลของฉันปลอดภัยไหม","acceptedAnswer":{"@type":"Answer","text":"เก็บเฉพาะข้อมูลที่จำเป็นต่อการทำเว็บ ไม่เผยแพร่และไม่นำไปใช้เพื่อวัตถุประสงค์อื่น ดูรายละเอียดในนโยบายความเป็นส่วนตัว"}}
+    ]}
+  ]}|tojson }}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&family=Mitr:wght@400;500&family=Permanent+Marker&display=swap" rel="stylesheet">
@@ -122,6 +135,15 @@
   </section>
 
   <!-- Notice Box -->
+  <section class="faq" id="faq">
+    <h2>คำถามที่พบบ่อย</h2>
+    <details><summary>เว็บเซอร์ไพรส์ของ TUARAI คืออะไร</summary><p>เป็นเว็บไซต์ส่วนตัวที่ใส่รูปและจดหมายของคุณลงในธีมที่เลือก เมื่อชำระเงินแล้วจะได้ลิงก์และ QR Code ไปมอบให้แฟนเปิดดู</p></details>
+    <details><summary>ต้องจ่ายเงินก่อนทำไหม</summary><p>ไม่ต้อง สร้างและดูตัวอย่างเว็บได้ก่อน จ่ายเมื่อพอใจแล้วเท่านั้น</p></details>
+    <details><summary>เหมาะกับโอกาสไหนบ้าง</summary><p>เหมาะกับวันครบรอบและวันเกิด รวมถึงโอกาสพิเศษอื่นๆ ที่อยากมอบความรู้สึกดีๆ ให้คนที่รัก</p></details>
+    <details><summary>จ่ายเงินอย่างไร</summary><p>โอนผ่านพร้อมเพย์ แล้วแนบสลิปในหน้าชำระเงิน ทีมงานตรวจสลิปแล้วเปิดเว็บให้</p></details>
+    <details><summary>รูปและข้อมูลของฉันปลอดภัยไหม</summary><p>เก็บเฉพาะข้อมูลที่จำเป็นต่อการทำเว็บ ไม่เผยแพร่และไม่นำไปใช้เพื่อวัตถุประสงค์อื่น ดูรายละเอียดใน<a href="/privacy">นโยบายความเป็นส่วนตัว</a></p></details>
+  </section>
+
   <aside class="notice-box">
     ⚠️ <strong>ข้อตกลงการใช้งาน:</strong> สินค้าทุกชิ้นเป็นบริการดิจิทัล ชำระเงินแล้วไม่รับคืนเงินทุกกรณี กรุณาตรวจสอบตัวอย่างเว็บก่อนชำระเงินทุกครั้ง
   </aside>

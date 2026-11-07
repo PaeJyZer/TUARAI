@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ 'ข้อตกลงการใช้งาน' if doc == 'terms' else 'นโยบายความเป็นส่วนตัว' }} - TUARAI</title>
+  {% with seo_title=('ข้อตกลงการใช้งาน' if doc == 'terms' else 'นโยบายความเป็นส่วนตัว') ~ ' | TUARAI', seo_desc=('ข้อตกลงการใช้งานบริการเว็บเซอร์ไพรส์ TUARAI' if doc == 'terms' else 'นโยบายความเป็นส่วนตัวและการคุ้มครองข้อมูลส่วนบุคคลของ TUARAI'), seo_path=('/terms' if doc == 'terms' else '/privacy') %}{% include '_seo.html' %}{% endwith %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&family=Mitr:wght@400;500&display=swap" rel="stylesheet">

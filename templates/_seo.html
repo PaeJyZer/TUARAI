@@ -1,0 +1,22 @@
+{#- ใส่ใน <head>: ต้องส่งตัวแปร seo_title, seo_desc, seo_path (ถ้าไม่ให้ index ส่ง seo_noindex=true) -#}
+<meta name="description" content="{{ seo_desc }}">
+{% if seo_noindex %}<meta name="robots" content="noindex, nofollow">{% else %}<meta name="robots" content="index, follow, max-image-preview:large">{% endif %}
+<link rel="canonical" href="{{ seo_base }}{{ seo_path }}">
+<meta name="theme-color" content="#d4213f">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TUARAI">
+<meta property="og:locale" content="th_TH">
+<meta property="og:title" content="{{ seo_title }}">
+<meta property="og:description" content="{{ seo_desc }}">
+<meta property="og:url" content="{{ seo_base }}{{ seo_path }}">
+<meta property="og:image" content="{{ seo_base }}/static/brand/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ seo_title }}">
+<meta name="twitter:description" content="{{ seo_desc }}">
+<meta name="twitter:image" content="{{ seo_base }}/static/brand/og-image.jpg">
+<link rel="icon" type="image/svg+xml" href="/static/brand/favicon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="/static/brand/icon-192.png">
+<link rel="apple-touch-icon" href="/static/brand/apple-touch-icon.png">
+{% if google_verify %}<meta name="google-site-verification" content="{{ google_verify }}">{% endif %}

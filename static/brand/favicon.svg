@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="TUARAI">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6b7a"/><stop offset=".55" stop-color="#d4213f"/><stop offset="1" stop-color="#7a0f2e"/></linearGradient>
+    <linearGradient id="f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#ffd9e0"/></linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#g)"/>
+  <rect x="112" y="186" width="288" height="204" rx="30" fill="#fff"/>
+  <path d="M112 216 Q112 186 142 186 H370 Q400 186 400 216 L256 322 Z" fill="url(#f)"/>
+  <path d="M122 200 L256 302 L390 200" fill="none" stroke="#f3a3b2" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M256 352 C214 322 210 288 234 279 C247 274 256 282 256 291 C256 282 265 274 278 279 C302 288 298 322 256 352 Z" fill="#d4213f" stroke="#fff" stroke-width="9" stroke-linejoin="round" paint-order="stroke"/>
+  <path d="M398 92 Q398 126 432 126 Q398 126 398 160 Q398 126 364 126 Q398 126 398 92 Z" fill="#fff3c0"/>
+  <path d="M120 120 Q120 134 134 134 Q120 134 120 148 Q120 134 106 134 Q120 134 120 120 Z" fill="#fff3c0" opacity=".8"/>
+</svg>
