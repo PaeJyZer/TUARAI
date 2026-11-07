@@ -756,7 +756,7 @@ def demo_photos():
 #  5. แสดงเว็บเซอร์ไพรส์ (ใช้ธีมตามที่ลูกค้าเลือก)
 # =====================================================================
 def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls,
-                 banner=None, toolbar=None, occasion='anniversary', dialog=None, captions=None):
+                 banner=None, toolbar=None, occasion='anniversary', dialog=None, captions=None, demo=False):
     """urls: ลิสต์รูป (รูปแรก = รูปหน้าปก/รูปกลาง) ไม่วนซ้ำ ถ้าไม่มีรูปเลยใช้รูปตัวอย่าง"""
     urls = (urls or demo_photos())[:20]
     center, others = urls[0], urls[1:]
@@ -778,6 +778,7 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
         side_photos=list(zip(slots, others)),
         banner=banner,
         toolbar=toolbar,
+        demo=demo,
         dialog=dialog or DEFAULT_DIALOG,
         pairs=[(u, (captions or {}).get(u) or f'ความทรงจำที่ {i + 1}') for i, u in enumerate(urls[:MAX_PAIRS])],
         extra_photos=urls[MAX_PAIRS:],
@@ -864,7 +865,7 @@ def demo_page(theme_code):
               'ทุกวันที่มีเธอ ทำให้เรื่องธรรมดากลายเป็นเรื่องพิเศษ\n\n'
               'ต่อจากนี้อีกกี่วัน อีกกี่เดือน อีกกี่ปี ขอให้ได้อยู่ด้วยกันแบบนี้ตลอดไปนะ')
     return render_theme(theme, 'ที่รัก', sample_date, letter, 'จากคนที่รักเธอ', demo_photos()[:n],
-                        banner='ตัวอย่างเว็บ — ข้อมูลและรูปทั้งหมดเป็นของสมมติ',
+                        banner='ตัวอย่างเว็บ — ข้อมูลและรูปทั้งหมดเป็นของสมมติ', demo=True,
                         occasion=request.args.get('occasion', 'anniversary'),
                         captions={u: DEMO_NOTES[i % len(DEMO_NOTES)] for i, u in enumerate(demo_photos()[:n])} if theme and theme['theme_code'] not in CAPTION_THEMES else {u: DEMO_CAPTIONS[i] for i, u in enumerate(demo_photos()[:n][:MAX_PAIRS])})
 

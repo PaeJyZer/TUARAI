@@ -65,6 +65,7 @@
   </div>
 
   {% if banner and not toolbar %}<div class="owner-banner">{{ banner }}</div>{% endif %}
+  {% if demo %}{% include '_demo_nav.html' %}{% endif %}
 
   {% if toolbar %}
   <!-- แถบเครื่องมือเฉพาะเจ้าของ ตอนดูตัวอย่างก่อนชำระเงิน (ไม่แสดงบนเว็บที่ส่งให้แฟน) -->
