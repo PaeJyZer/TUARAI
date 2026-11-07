@@ -24,6 +24,9 @@
     if (t.closest(SEL + ', input, textarea, select, label') || pointerish(t)) return;
     var x = e.clientX, y = e.clientY;
     if (!x && !y) return;
+    /* มีหน้าต่างทับอยู่ (จดหมาย/ซอง/รูปขยาย/เกม) → ช่วยกดเฉพาะของในหน้าต่างนั้น ห้ามทะลุไปโดนของข้างหลัง */
+    var layer = t.closest('.overlay.open');
+    if (!layer && document.querySelector('.overlay.open')) return;
     var best = null, bd = 1e9, seen = [];
     var offs = [[0, 0]];
     [R * .5, R].forEach(function (d) { for (var a = 0; a < 8; a++) offs.push([Math.cos(a * Math.PI / 4) * d, Math.sin(a * Math.PI / 4) * d]); });
@@ -32,6 +35,7 @@
       for (var i = 0; i < list.length; i++) {
         var el = list[i].closest ? list[i].closest(SEL) : null;
         if (!el && pointerish(list[i])) el = list[i];
+        if (el && layer && !layer.contains(el)) { if (list[i] === layer || layer.contains(list[i])) continue; break; }
         if (el && seen.indexOf(el) < 0) { seen.push(el); }
         if (el) break;
       }
