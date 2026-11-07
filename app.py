@@ -829,7 +829,18 @@ def serve_dashboard():
 
 @app.context_processor
 def inject_legal():
-    return {'legal_version': LEGAL_VERSION}
+    return {'legal_version': LEGAL_VERSION, 'contact_info': CONTACT_INFO if os.environ.get('CONTACT_INFO') else ''}
+
+
+@app.template_filter('autolink')
+def autolink(text):
+    """แปลงอีเมล/ลิงก์ในข้อความช่องทางติดต่อให้กดได้ (escape ก่อนเสมอ)"""
+    import re
+    from markupsafe import Markup, escape
+    t = str(escape(text or ''))
+    t = re.sub(r'([\w.+-]+@[\w-]+\.[\w.-]+)', r'<a href="mailto:\1">\1</a>', t)
+    t = re.sub(r'(?<![">])(https?://[^\s<]+)', r'<a href="\1" target="_blank" rel="noopener">\1</a>', t)
+    return Markup(t)
 
 
 @app.route('/terms')
@@ -1783,6 +1794,70 @@ def admin_reject(order_id):
     if cur.rowcount == 0:
         return err('ออเดอร์นี้ไม่ได้อยู่ในสถานะรอตรวจสอบ')
     return jsonify({'status': 'success'})
+
+
+def _rm_slip(path):
+    if path:
+        try:
+            os.remove(os.path.join(PRIVATE_ROOT, path))
+        except OSError:
+            pass
+
+
+def _purge_orders(db, ids):
+    n = 0
+    for oid in ids:
+        row = db.execute('SELECT slip_path FROM orders WHERE id = ?', (oid,)).fetchone()
+        if not row:
+            continue
+        _rm_slip(row['slip_path'])
+        db.execute('DELETE FROM orders WHERE id = ?', (oid,))
+        n += 1
+    return n
+
+
+def _purge_sites(db, site_ids):
+    n = 0
+    for sid in site_ids:
+        site = db.execute('SELECT id, slug FROM user_sites WHERE id = ?', (sid,)).fetchone()
+        if not site:
+            continue
+        _purge_orders(db, [r['id'] for r in db.execute('SELECT id FROM orders WHERE site_id = ?', (sid,)).fetchall()])
+        db.execute('DELETE FROM user_sites WHERE id = ?', (sid,))
+        remove_site_files(site['slug'])
+        n += 1
+    return n
+
+
+@app.route('/api/admin/delete', methods=['POST'])
+@admin_required
+def admin_delete():
+    """ลบถาวร: type = orders | sites | users  (ids = รายการที่เลือก) แอดมินเท่านั้น"""
+    data = request.get_json(silent=True) or {}
+    kind = data.get('type')
+    try:
+        ids = [int(i) for i in (data.get('ids') or [])][:500]
+    except (TypeError, ValueError):
+        return err('รูปแบบข้อมูลไม่ถูกต้อง')
+    if kind not in ('orders', 'sites', 'users') or not ids:
+        return err('ไม่มีรายการที่จะลบ')
+    db = get_db()
+    if kind == 'orders':
+        n = _purge_orders(db, ids)
+    elif kind == 'sites':
+        n = _purge_sites(db, ids)
+    else:
+        n = 0
+        for uid in ids:
+            u = db.execute('SELECT id FROM users WHERE id = ?', (uid,)).fetchone()
+            if not u:
+                continue
+            _purge_sites(db, [r['id'] for r in db.execute('SELECT id FROM user_sites WHERE user_id = ?', (uid,)).fetchall()])
+            _purge_orders(db, [r['id'] for r in db.execute('SELECT id FROM orders WHERE user_id = ?', (uid,)).fetchall()])
+            db.execute('DELETE FROM users WHERE id = ?', (uid,))
+            n += 1
+    db.commit()
+    return jsonify({'status': 'success', 'deleted': n})
 
 
 # =====================================================================

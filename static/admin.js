@@ -111,7 +111,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td>${o.has_slip ? `<button class="btn-small" data-act="slip" data-id="${o.id}">ดูสลิป</button>` : '-'}</td>
                 <td class="actions-cell">${actionable ? `
                     <button class="btn-small primary" data-act="approve" data-id="${o.id}">อนุมัติ</button>
-                    <button class="btn-small danger" data-act="reject" data-id="${o.id}">ปฏิเสธ</button>` : ''}</td>
+                    <button class="btn-small danger" data-act="reject" data-id="${o.id}">ปฏิเสธ</button>` : ''}
+                    <button class="btn-small" data-act="del" data-id="${o.id}" title="ลบออเดอร์นี้ถาวร">🗑</button></td>
             </tr>`;
         }).join('');
     }
@@ -158,6 +159,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         return true;
     }
 
+    /* ---------- ลบถาวร (ยืนยันก่อนทุกครั้ง) ---------- */
+    async function doDelete(type, ids, msg, typed) {
+        if (!ids.length) return false;
+        if (!window.confirm(msg)) return false;
+        if (typed && (window.prompt('พิมพ์คำว่า ลบ เพื่อยืนยันการลบถาวร') || '').trim() !== 'ลบ') return false;
+        const r = await TU.postJson('/api/admin/delete', { type, ids });
+        if (!r.ok) { TU.showAlert(esc(r.data.message || 'ลบไม่สำเร็จ')); return false; }
+        closeDet(); await refreshAll(); return true;
+    }
+    function delOrders(ids) {
+        const paid = orders.filter((o) => ids.map(String).includes(String(o.id)) && o.status === 'completed').length;
+        return doDelete('orders', ids, `ลบ ${ids.length} ออเดอร์ถาวร? ลบแล้วกู้คืนไม่ได้` + (paid ? `\n\n⚠ มี ${paid} ออเดอร์ที่ชำระแล้ว รายได้จะหายจากสถิติ (เว็บของลูกค้ายังอยู่)` : ''), paid > 0);
+    }
+    $('adBulkDel').addEventListener('click', () => {
+        const rows = orders.filter((o) => filter === 'all' || o.status === filter);
+        if (!rows.length) { TU.showAlert('ไม่มีรายการในแท็บนี้'); return; }
+        delOrders(rows.map((o) => o.id));
+    });
+
     const modal = $('adSlip');
     let cur = null;
     function openSlip(id) {
@@ -186,6 +206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!btn) return;
         const id = btn.dataset.id;
         if (btn.dataset.act === 'slip') { openSlip(id); return; }
+        if (btn.dataset.act === 'del') { await delOrders([id]); return; }
         if (btn.dataset.act === 'approve') { await approve(id); }
         else {
             const note = window.prompt('เหตุผลที่ปฏิเสธ (ลูกค้าจะเห็นว่าสลิปไม่ผ่าน)', 'ยอดเงินไม่ตรง') || '';
@@ -243,6 +264,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="ad-det-act">
             ${o.has_slip ? `<button class="btn-small" data-dact="slip" data-id="${o.id}">ดูสลิป</button>` : ''}
             ${actionable ? `<button class="btn-small primary" data-dact="approve" data-id="${o.id}">อนุมัติ</button><button class="btn-small danger" data-dact="reject" data-id="${o.id}">ปฏิเสธ</button>` : ''}
+            <button class="btn-small" data-dact="del" data-id="${o.id}">🗑 ลบออเดอร์</button>
         </div>`;
     }
     const byPeriod = (fn) => orders.filter((o) => o.status === 'completed' && fn(dayKey(o.paid_at || o.created_at)));
@@ -256,16 +278,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             const r = await TU.api('/api/admin/sites'); if (!r.ok) return;
             const list = r.data.sites.filter((x) => x.status === 'active');
             const soon = Date.now() + 7 * 864e5;
-            showDet('เว็บที่ใช้งานอยู่', `${list.length} เว็บ`, `<div class="table-wrapper"><table class="dash-table"><thead><tr><th>เว็บ</th><th>ธีม</th><th>เจ้าของ</th><th>แพ็กเกจ</th><th>หมดอายุ</th><th>รูป</th><th></th></tr></thead><tbody>
+            showDet('เว็บที่ใช้งานอยู่', `${list.length} เว็บ`, `<div class="table-wrapper"><table class="dash-table"><thead><tr><th>เว็บ</th><th>ธีม</th><th>เจ้าของ</th><th>แพ็กเกจ</th><th>หมดอายุ</th><th>รูป</th><th></th><th></th></tr></thead><tbody>
             ${list.map((x) => { const ex = x.expires_at ? new Date(x.expires_at.replace(' ', 'T') + 'Z') : null; const near = ex && ex.getTime() < soon;
                 return `<tr><td>${esc(x.partner_name || '-')}<br><small class="muted">${esc(x.slug.slice(0, 8))}</small></td><td>${esc(x.theme_name || '-')}</td><td>${esc(x.username || '-')}<br><small class="muted">${esc(x.email || '')}</small></td>
                 <td>${esc(String(x.package || '-').toUpperCase())}</td><td style="${near ? 'color:#ff7a7a' : ''}">${x.expires_at ? fmtDate(x.expires_at) + (near ? ' ⚠' : '') : 'ไม่หมดอายุ'}</td><td>${x.photos}</td>
-                <td><a href="/s/${esc(x.slug)}" target="_blank" rel="noopener" style="color:var(--accent-red)">เปิด ↗</a></td></tr>`; }).join('')}</tbody></table></div>`);
+                <td><a href="/s/${esc(x.slug)}" target="_blank" rel="noopener" style="color:var(--accent-red)">เปิด ↗</a></td><td><button class="btn-small danger" data-dact="delsite" data-id="${x.id}">🗑 ลบ</button></td></tr>`; }).join('')}</tbody></table></div>`);
         }
         if (kind === 'users') {
             const r = await TU.api('/api/admin/users'); if (!r.ok) return;
-            showDet('สมาชิกทั้งหมด', `${r.data.users.length} คน`, `<div class="table-wrapper"><table class="dash-table"><thead><tr><th>ชื่อผู้ใช้</th><th>อีเมล</th><th>สมัครเมื่อ</th><th>เว็บ</th><th>ออเดอร์</th><th>ยอดซื้อรวม</th></tr></thead><tbody>
-            ${r.data.users.map((u) => `<tr data-uid="${u.id}" class="clk"><td>${esc(u.username)}</td><td>${esc(u.email)}</td><td><small>${fmtDate(u.created_at)}</small></td><td>${u.sites}</td><td>${u.orders}</td><td><b>${baht(u.spent)}</b></td></tr>`).join('')}</tbody></table></div>`);
+            showDet('สมาชิกทั้งหมด', `${r.data.users.length} คน`, `<div class="table-wrapper"><table class="dash-table"><thead><tr><th>ชื่อผู้ใช้</th><th>อีเมล</th><th>สมัครเมื่อ</th><th>เว็บ</th><th>ออเดอร์</th><th>ยอดซื้อรวม</th><th></th></tr></thead><tbody>
+            ${r.data.users.map((u) => `<tr data-uid="${u.id}" class="clk"><td>${esc(u.username)}</td><td>${esc(u.email)}</td><td><small>${fmtDate(u.created_at)}</small></td><td>${u.sites}</td><td>${u.orders}</td><td><b>${baht(u.spent)}</b></td><td><button class="btn-small danger" data-dact="deluser" data-id="${u.id}">🗑 ลบ</button></td></tr>`).join('')}</tbody></table></div>`);
         }
     }
     function openDay(day) {
@@ -286,7 +308,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         const ut = e.target.closest('tr[data-uid]');
-        if (ut) {
+        if (ut && !e.target.closest('button, a')) {
             const name = ut.children[0].textContent, list = orders.filter((o) => o.username === name);
             showDet('สมาชิก: ' + name, esc(ut.children[1].textContent), orderTable(list, 'ยังไม่มีออเดอร์'));
             return;
@@ -294,6 +316,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const b = e.target.closest('[data-dact]'); if (!b) return;
         const id = b.dataset.id;
         if (b.dataset.dact === 'slip') { openSlip(id); return; }
+        if (b.dataset.dact === 'del') { delOrders([id]); return; }
+        if (b.dataset.dact === 'delsite') { doDelete('sites', [id], 'ลบเว็บนี้ถาวร? รูป ออเดอร์ และสลิปของเว็บนี้จะหายทั้งหมด กู้คืนไม่ได้', true); return; }
+        if (b.dataset.dact === 'deluser') { doDelete('users', [id], 'ลบสมาชิกคนนี้ถาวร? เว็บ รูป ออเดอร์ และสลิปทั้งหมดของเขาจะหาย กู้คืนไม่ได้', true); return; }
         (async () => {
             let ok;
             if (b.dataset.dact === 'approve') ok = await approve(id);
