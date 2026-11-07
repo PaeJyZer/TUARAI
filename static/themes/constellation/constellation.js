@@ -100,26 +100,80 @@
   /* ---------- กลุ่มดาวหัวใจ ---------- */
   var DATA = [];
   try { DATA = JSON.parse($('starData').textContent) || []; } catch (e) {}
-  var N = DATA.length, M = 26, lit = {}, litN = 0, cur = -1, allLit = false;
+  var N = DATA.length, lit = {}, litN = 0, cur = -1, allLit = false;
   var starsEl = $('stars'), linesEl = $('lines'), glow = null, glowLen = 1;
   function heart(t) { return { x: 50 + 16 * Math.pow(Math.sin(t), 3) * 2.78, y: 50 - (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t) + 2.5) * 2.55 }; }
+  /* จุดเรียงเท่ากันตามความยาวเส้น (ไม่กระจุกตรงปลายและรอยหยักของหัวใจ) */
+  function dense(scale) {
+    var out = [], K = 480, c = { x: 50, y: 46 };
+    for (var i = 0; i < K; i++) { var p = heart(Math.PI * 2 * i / K); out.push({ x: c.x + (p.x - c.x) * scale, y: c.y + (p.y - c.y) * scale }); }
+    return out;
+  }
+  function evenly(pts, n, off) {
+    var len = [0], i; for (i = 1; i <= pts.length; i++) { var a = pts[i - 1], b = pts[i % pts.length]; len.push(len[i - 1] + Math.hypot(b.x - a.x, b.y - a.y)); }
+    var total = len[pts.length], res = [], j = 0;
+    for (i = 0; i < n; i++) {
+      var t = ((i + (off || 0)) / n) * total; while (j < pts.length - 1 && len[j + 1] < t) j++;
+      var seg = len[j + 1] - len[j] || 1, f = (t - len[j]) / seg, p0 = pts[j], p1 = pts[(j + 1) % pts.length];
+      res.push({ x: p0.x + (p1.x - p0.x) * f, y: p0.y + (p1.y - p0.y) * f });
+    }
+    return res;
+  }
+  /* เรียงดาวตามขอบหัวใจ แล้วดันดาวที่อยู่ใกล้กันในระยะเชิงพื้นที่ (เช่นตรงรอยหยักกลางและปลายล่าง) ให้ห่างออกไปตามเส้น */
+  function spread(outline, n, fixedPt) {
+    var len = [0], i, k; for (i = 1; i <= outline.length; i++) { var a = outline[i - 1], b = outline[i % outline.length]; len.push(len[i - 1] + Math.hypot(b.x - a.x, b.y - a.y)); }
+    var total = len[outline.length];
+    function at(u) { u = ((u % total) + total) % total; var j = 0; while (j < outline.length - 1 && len[j + 1] < u) j++; var f = (u - len[j]) / ((len[j + 1] - len[j]) || 1), p0 = outline[j], p1 = outline[(j + 1) % outline.length]; return { x: p0.x + (p1.x - p0.x) * f, y: p0.y + (p1.y - p0.y) * f }; }
+    var us = [], MIN = 17, step = total / n * .08;
+    for (i = 0; i < n; i++) us.push(((i + .5) / n) * total);
+    for (var it = 0; it < 160; it++) {
+      for (i = 0; i < n; i++) {
+        var me = at(us[i]), push = 0;
+        var others = []; for (k = 0; k < n; k++) if (k !== i) others.push(at(us[k])); others.push(fixedPt);
+        var near = others.filter(function (q) { return Math.hypot(q.x - me.x, q.y - me.y) < MIN; });
+        if (!near.length) continue;
+        function score(u) { var pp = at(u); return near.reduce(function (m, q) { return Math.min(m, Math.hypot(q.x - pp.x, q.y - pp.y)); }, 99); }
+        us[i] += score(us[i] + step) >= score(us[i] - step) ? step : -step;
+      }
+    }
+    return us.map(at);
+  }
+  /* ขยับดาววงใน ให้ห่างจากดาวอื่นพอกดถนัด และอยู่ในกรอบหัวใจ */
+  function relax(inner, fixed, outline) {
+    var c = { x: 50, y: 44 }, MIN = 19, it, i, j;
+    function limit(p) {
+      var th = Math.atan2(p.y - c.y, p.x - c.x), best = 1e9, rr = 30;
+      for (var k = 0; k < outline.length; k += 3) { var q = outline[k], a = Math.atan2(q.y - c.y, q.x - c.x), dd = Math.abs(Math.atan2(Math.sin(a - th), Math.cos(a - th))); if (dd < best) { best = dd; rr = Math.hypot(q.x - c.x, q.y - c.y); } }
+      var r = Math.hypot(p.x - c.x, p.y - c.y), mx = rr * .7;
+      if (r > mx) { p.x = c.x + (p.x - c.x) * mx / r; p.y = c.y + (p.y - c.y) * mx / r; }
+    }
+    for (it = 0; it < 120; it++) {
+      for (i = 0; i < inner.length; i++) {
+        var all = fixed.concat(inner.filter(function (_, k) { return k !== i; }));
+        for (j = 0; j < all.length; j++) {
+          var dx = inner[i].x - all[j].x, dy = inner[i].y - all[j].y, d = Math.hypot(dx, dy) || .01;
+          if (d < MIN) { var f = (MIN - d) / d * .25; inner[i].x += dx * f; inner[i].y += dy * f; }
+        }
+        limit(inner[i]);
+      }
+    }
+    return inner;
+  }
   function build() {
-    var pts = [], i;
-    for (i = 0; i < M; i++) pts.push(heart(Math.PI * 2 * i / M));
-    var d = 'M' + pts.map(function (p) { return p.x.toFixed(2) + ' ' + p.y.toFixed(2); }).join(' L') + ' Z';
+    var i, outline = dense(1);
+    var d = 'M' + outline.filter(function (_, k) { return k % 8 === 0; }).map(function (p) { return p.x.toFixed(2) + ' ' + p.y.toFixed(2); }).join(' L') + ' Z';
     var base = document.createElementNS(NS, 'path'); base.setAttribute('d', d); base.setAttribute('class', 'base'); linesEl.appendChild(base);
     glow = document.createElementNS(NS, 'path'); glow.setAttribute('d', d); glow.setAttribute('class', 'glow'); glow.setAttribute('pathLength', '100'); linesEl.appendChild(glow);
     glow.style.strokeDasharray = '100'; glow.style.strokeDashoffset = '100';
-    // ดาวประดับตามเส้นหัวใจ
-    for (i = 0; i < M; i++) { var dm = document.createElement('i'); dm.className = 'dim'; dm.style.left = pts[i].x + '%'; dm.style.top = pts[i].y + '%'; dm.style.setProperty('--d', rnd(0, 3) + 's'); starsEl.appendChild(dm); }
-    // ดาวความทรงจำ: ดวงแรก (รูปปก) อยู่กลาง ที่เหลือกระจายตามขอบหัวใจ
-    var rest = N - 1, idx = [];
-    for (i = 0; i < rest; i++) idx.push(Math.round(i * M / Math.max(rest, 1) + M * .5 / Math.max(rest, 1)) % M);
-    var c = heart(0), cy = 46;
+    // ดาวประดับตามเส้นหัวใจ (กดไม่ได้ เล็กๆ)
+    evenly(outline, 30, .5).forEach(function (p) { var dm = document.createElement('i'); dm.className = 'dim'; dm.style.left = p.x + '%'; dm.style.top = p.y + '%'; dm.style.setProperty('--d', rnd(0, 3) + 's'); starsEl.appendChild(dm); });
+    // ดาวความทรงจำ: ดวงแรก (รูปปก) อยู่กลาง ที่เหลือเรียงห่างเท่าๆ กัน ขอบนอกสูงสุด 13 ดวง ที่เหลือวงในที่เล็กลง
+    var rest = N - 1, outerN = Math.min(rest, 13), innerN = rest - outerN, pos = [{ x: 50, y: 46 }];
+    pos = pos.concat(spread(outline, outerN, pos[0]));
+    if (innerN > 0) pos = pos.concat(relax(evenly(dense(.55), innerN, .25), pos, outline));
     for (i = 0; i < N; i++) {
-      var pos = i === 0 ? { x: 50, y: cy } : pts[idx[i - 1]];
       var b = document.createElement('button'); b.type = 'button'; b.className = 'st' + (i === 0 ? ' cover' : ''); b.dataset.i = i;
-      b.style.left = pos.x + '%'; b.style.top = pos.y + '%'; b.style.setProperty('--d', rnd(0, 2.2) + 's');
+      b.style.left = pos[i].x + '%'; b.style.top = pos[i].y + '%'; b.style.setProperty('--d', rnd(0, 2.2) + 's');
       b.setAttribute('aria-label', 'ดวงที่ ' + (i + 1) + ' ความทรงจำ'); b.innerHTML = '<i></i>';
       starsEl.appendChild(b);
     }
