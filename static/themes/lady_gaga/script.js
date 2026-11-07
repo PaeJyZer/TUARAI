@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // คำใต้รูปตอนกดดูใหญ่: เฉพาะรูปกลางมีคำว่า Our Best Memory (จำนวนรูปไม่ตายตัว)
   const CENTER_CAPTION = "Our Best Memory";
 
-  const TYPE_SPEED = 120;   // ความเร็วพิมพ์จดหมาย (ms/ตัวอักษร)
+  const TYPE_SPEED = 48;   // ความเร็วพิมพ์จดหมาย (ms/ตัวอักษร)
   const POP_GAP = 350;      // ช่วงห่างรูปเด้งขึ้นมา (ms)
 
   const FLOWER_MESSAGE = CFG.flowerMessage || "";
@@ -287,6 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
     letterRest.textContent = LETTER_TEXT;
 
     let n = 0;
+    const SPD = Math.max(22, Math.min(TYPE_SPEED, 15000 / Math.max(LETTER_TEXT.length, 1)));
     typeTimer = setTimeout(function tick() {
       n += 1;
       letterTyped.textContent = LETTER_TEXT.slice(0, n);
@@ -298,7 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sfx('win');
         return;
       }
-      typeTimer = setTimeout(tick, TYPE_SPEED);
+      typeTimer = setTimeout(tick, SPD);
     }, 700);
   }
 

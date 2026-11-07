@@ -13,7 +13,7 @@
   if (isNaN(START.getTime())) START = new Date();
   var TEXT = String(CFG.letterText || '').replace(/\r\n/g, '\n');
   var SIGN = CFG.letterSign || '';
-  var TYPE_SPEED = 90;
+  var TYPE_SPEED = 48;   // ms/ตัวอักษร (จดหมายยาวจะเร่งขึ้นเองให้พิมพ์จบไม่เกิน ~15 วินาที)
 
   /* ---------- ปุ่มกดเปิด ---------- */
   var gate = document.querySelector('[data-gate]');
@@ -112,14 +112,14 @@
     signEl.classList.remove('show');
     typed.textContent = '';
     rest.textContent = TEXT;
-    var n = 0;
+    var n = 0, SPD = Math.max(22, Math.min(TYPE_SPEED, 15000 / Math.max(TEXT.length, 1)));
     typeTimer = setTimeout(function tick() {
       n += 1;
       typed.textContent = TEXT.slice(0, n);
       rest.textContent = TEXT.slice(n);
       document.dispatchEvent(new CustomEvent('tu:type'));
       if (n >= TEXT.length) { typeTimer = null; signEl.classList.add('show'); document.dispatchEvent(new CustomEvent('tu:letterdone')); return; }
-      typeTimer = setTimeout(tick, TYPE_SPEED);
+      typeTimer = setTimeout(tick, SPD);
     }, 600);
   }
   function stopLetter() {
