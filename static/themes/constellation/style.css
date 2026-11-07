@@ -96,9 +96,6 @@ body.s3 .sec-note { display: none; }
 .mem-no { display: block; font-size: 11px; letter-spacing: .3em; color: var(--accent); margin-bottom: 6px; }
 .mem-cap { display: block; font: 400 17px/1.7 var(--font-body); color: var(--ink); }
 .mem-x { position: absolute; top: -14px; right: -6px; width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); background: #1a1740; color: #fff; font-size: 26px; line-height: 1; z-index: 2; }
-.mem-nav { display: flex; justify-content: space-between; padding: 6px 4px 0; }
-.mem-nav button { width: 46px; height: 40px; border: 0; background: transparent; color: var(--accent); font-size: 34px; line-height: 1; opacity: .85; }
-.mem-nav button:active { transform: scale(.9); }
 @keyframes memFade { from { opacity: 0; } }
 @keyframes memPop { 0% { opacity: 0; transform: scale(.05); filter: brightness(3) blur(6px); } 55% { opacity: 1; filter: brightness(1.5) blur(0); } 100% { transform: none; filter: none; } }
 

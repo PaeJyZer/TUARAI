@@ -167,16 +167,10 @@
       setTimeout(function () { var w = $('wish'); if (w) w.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); }, 1300);
     }
   }
-  function step(dir) {
-    var j = (cur + dir + N) % N, el = starsEl.querySelector('.st[data-i="' + j + '"]');
-    TUSfx.play('page'); burst(innerWidth / 2, innerHeight / 2, 16, .7); light(j, el); fill(j);
-  }
   starsEl.addEventListener('click', function (e) { var b = e.target.closest('.st'); if (b) openStar(+b.dataset.i, b); });
   $('memClose').addEventListener('click', closeMem);
-  $('memPrev').addEventListener('click', function () { step(-1); });
-  $('memNext').addEventListener('click', function () { step(1); });
   mem.addEventListener('click', function (e) { if (e.target === mem) closeMem(); });
-  document.addEventListener('keydown', function (e) { if (mem.hidden) return; if (e.key === 'Escape') closeMem(); if (e.key === 'ArrowRight') step(1); if (e.key === 'ArrowLeft') step(-1); });
+  document.addEventListener('keydown', function (e) { if (mem.hidden) return; if (e.key === 'Escape') closeMem(); });
 
   /* ---------- คำอธิษฐาน ---------- */
   var form = $('wishForm'), txt = $('wishText'), wsky = $('wishSky'), sent = 0, MAXW = 6;
