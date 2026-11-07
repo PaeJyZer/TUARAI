@@ -876,6 +876,12 @@ def sitemap_xml():
     return Response(xml, mimetype='application/xml')
 
 
+@app.route('/googleadd9fc8ce29528c6.html')
+def google_verify_file():
+    """ไฟล์ยืนยันความเป็นเจ้าของเว็บกับ Google Search Console"""
+    return Response('google-site-verification: googleadd9fc8ce29528c6.html', mimetype='text/html')
+
+
 @app.route('/favicon.ico')
 def favicon_ico():
     return redirect('/static/brand/icon-192.png', code=301)
