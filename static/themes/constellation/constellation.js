@@ -154,6 +154,24 @@
     }
     return us.map(at);
   }
+  /* วางดาว n ดวงบนเส้นหัวใจ ดวงที่ 0 ล็อกที่ปลายล่าง ดวงอื่นดันห่างกันตามเส้นถ้าชิดกันเกินไป (ตรงรอยหยักและปลายแหลม) */
+  function onLine(outline, n) {
+    var len = [0], i, k; for (i = 1; i <= outline.length; i++) { var a = outline[i - 1], b = outline[i % outline.length]; len.push(len[i - 1] + Math.hypot(b.x - a.x, b.y - a.y)); }
+    var total = len[outline.length];
+    function at(u) { u = ((u % total) + total) % total; var j = 0; while (j < outline.length - 1 && len[j + 1] < u) j++; var f = (u - len[j]) / ((len[j + 1] - len[j]) || 1), p0 = outline[j], p1 = outline[(j + 1) % outline.length]; return { x: p0.x + (p1.x - p0.x) * f, y: p0.y + (p1.y - p0.y) * f }; }
+    var us = [], base = total / 2, MIN = Math.min(17, total / n * .8), step = total / n * .06;
+    for (i = 0; i < n; i++) us.push(base + (i / n) * total);
+    for (var it = 0; it < 220 && n > 1; it++) {
+      for (i = 1; i < n; i++) {
+        var me = at(us[i]), near = [];
+        for (k = 0; k < n; k++) if (k !== i) { var q = at(us[k]); if (Math.hypot(q.x - me.x, q.y - me.y) < MIN) near.push(q); }
+        if (!near.length) continue;
+        var sc = function (u) { var pp = at(u); return near.reduce(function (m, q) { return Math.min(m, Math.hypot(q.x - pp.x, q.y - pp.y)); }, 99); };
+        us[i] += sc(us[i] + step) >= sc(us[i] - step) ? step : -step;
+      }
+    }
+    return us.map(at);
+  }
   /* ขยับดาววงใน ให้ห่างจากดาวอื่นพอกดถนัด และอยู่ในกรอบหัวใจ */
   function relax(inner, fixed, outline) {
     var c = { x: 50, y: 44 }, MIN = 19, it, i, j;
@@ -183,10 +201,8 @@
     glow.style.strokeDasharray = '100'; glow.style.strokeDashoffset = '100';
     // ดาวประดับตามเส้นหัวใจ (กดไม่ได้ เล็กๆ)
     evenly(outline, 30, .5).forEach(function (p) { var dm = document.createElement('i'); dm.className = 'dim'; dm.style.left = p.x + '%'; dm.style.top = p.y + '%'; dm.style.setProperty('--d', rnd(0, 3) + 's'); starsEl.appendChild(dm); });
-    // ดาวความทรงจำ: ดวงแรก (รูปปก) อยู่กลาง ที่เหลือเรียงห่างเท่าๆ กัน ขอบนอกสูงสุด 13 ดวง ที่เหลือวงในที่เล็กลง
-    var rest = N - 1, outerN = Math.min(rest, 13), innerN = rest - outerN, pos = [{ x: 50, y: 46 }];
-    pos = pos.concat(spread(outline, outerN, pos[0]));
-    if (innerN > 0) pos = pos.concat(relax(evenly(dense(.55), innerN, .25), pos, outline));
+    // ดาวความทรงจำทุกดวงอยู่บนเส้นหัวใจ: ดวงแรก (รูปปก) อยู่ที่ปลายล่าง ที่เหลือเรียงรอบเส้นห่างเท่าๆ กัน
+    var pos = onLine(outline, N);
     for (i = 0; i < N; i++) {
       var b = document.createElement('button'); b.type = 'button'; b.className = 'st' + (i === 0 ? ' cover' : ''); b.dataset.i = i;
       b.style.left = pos[i].x + '%'; b.style.top = pos[i].y + '%'; b.style.setProperty('--d', rnd(0, 2.2) + 's');

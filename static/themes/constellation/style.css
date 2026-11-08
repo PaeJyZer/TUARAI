@@ -43,7 +43,7 @@ body.opening .gate-star i { transform: scale(7); filter: drop-shadow(0 0 40px #f
 .dim { position: absolute; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%; background: #c9d6ff; opacity: .5; animation: twk 3.4s ease-in-out infinite; animation-delay: var(--d); box-shadow: 0 0 6px rgba(190,205,255,.7); }
 .st { position: absolute; width: 52px; height: 52px; margin: -26px 0 0 -26px; padding: 0; border: 0; background: transparent; -webkit-tap-highlight-color: transparent; z-index: 3; filter: drop-shadow(0 0 8px rgba(160,190,255,.85)); transition: filter .5s, transform .3s; }
 .st i { position: absolute; inset: 15px; background: linear-gradient(135deg, #ffffff, #bcd0ff); clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); animation: stTwk 2.2s ease-in-out infinite; animation-delay: var(--d); transition: background .6s; }
-.st.cover { width: 74px; height: 74px; margin: -37px 0 0 -37px; }
+.st.cover { width: 62px; height: 62px; margin: -31px 0 0 -31px; }
 .st.cover i { inset: 14px; }
 .st:hover, .st:focus-visible { transform: scale(1.18); outline: none; }
 .st:active { transform: scale(.92); }
@@ -99,7 +99,7 @@ body.s3 .sec-note { display: none; }
 @keyframes memFade { from { opacity: 0; } }
 @keyframes memPop { 0% { opacity: 0; transform: scale(.05); filter: brightness(3) blur(6px); } 55% { opacity: 1; filter: brightness(1.5) blur(0); } 100% { transform: none; filter: none; } }
 
-@media (max-width: 520px) { .st { width: 46px; height: 46px; margin: -23px 0 0 -23px; } .st.cover { width: 64px; height: 64px; margin: -32px 0 0 -32px; } .wish { min-height: 400px; } }
+@media (max-width: 520px) { .st { width: 46px; height: 46px; margin: -23px 0 0 -23px; } .st.cover { width: 54px; height: 54px; margin: -27px 0 0 -27px; } .wish { min-height: 400px; } }
 @media (prefers-reduced-motion: reduce) { .st i, .dim, .gate-star i, .gate-star .ring, .cta.is-ready { animation: none; } }
 
 /* ปลดล็อก: ค่อยๆ ชัดขึ้น + เรืองแสงทอง/ชมพู */
