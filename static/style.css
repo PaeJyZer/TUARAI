@@ -906,8 +906,13 @@ tr.clk:hover td { background: rgba(255,255,255,.04); }
 .sf-contact { margin-top: 14px; text-align: center; font-size: 14px; opacity: .85; }
 .sf-contact a { color: inherit; text-decoration: underline; }
 
+/* ฟอนต์โลโก้: ใช้ไฟล์ในเว็บเองถ้ามี (static/fonts/PermanentMarker-Regular.ttf) ไม่มีก็ใช้ของ Google เดิม */
+@font-face { font-family: 'Permanent Marker'; font-style: normal; font-weight: 400; font-display: swap;
+  src: local('Permanent Marker'), local('PermanentMarker-Regular'), url('/static/fonts/PermanentMarker-Regular.ttf') format('truetype'); }
+
 /* โลโก้ + ชื่อ */
 .logo { display: inline-flex; align-items: center; gap: 10px; }
+.logo span { font-family: 'Permanent Marker', 'Mitr', cursive; font-weight: 400; letter-spacing: 2px; }
 .logo img { width: 1.1em; height: 1.1em; flex: none; filter: drop-shadow(0 0 8px rgba(255, 42, 42, .45)); }
 
 /* คำถามที่พบบ่อย */
