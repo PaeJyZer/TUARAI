@@ -89,7 +89,7 @@ LEGAL_VERSION = '1'                 # เปลี่ยนเลขนี้เ
 LEGAL_UPDATED = '28 ตุลาคม 2569'
 CONTACT_INFO = os.environ.get('CONTACT_INFO', 'ติดต่อผ่านช่องทางที่ระบุไว้ในหน้าเว็บ TUARAI หรืออีเมลเจ้าของร้าน').strip()
 MIN_PHOTOS = 4                                    # ขั้นต่ำรูปต่อเว็บ
-MAX_SIDE = 1600                                   # ย่อรูปให้ด้านยาวสุดไม่เกินกี่พิกเซล
+MAX_SIDE = 1280                                   # ย่อรูปให้ด้านยาวสุดไม่เกินกี่พิกเซล
 MAX_DRAFTS_PER_USER = 10                          # ตัวอย่างที่ยังไม่จ่ายเงินต่อผู้ใช้
 
 OCCASIONS = {
@@ -712,7 +712,7 @@ def process_photos(files, max_side=MAX_SIDE):
                 img = img.convert('RGB')
             img.thumbnail((max_side, max_side))
             buf = io.BytesIO()
-            img.save(buf, 'JPEG', quality=85, optimize=True)
+            img.save(buf, 'JPEG', quality=80, optimize=True, progressive=True)
             results.append(buf.getvalue())
         except Exception:
             raise ValueError(f'ไฟล์ "{f.filename}" ไม่ใช่รูปภาพที่ใช้ได้ (รองรับ JPG, PNG, WEBP)')
@@ -853,6 +853,27 @@ def seo_base():
 def seo_headers(resp):
     if request.path.startswith(NOINDEX_PREFIXES):
         resp.headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive'
+    return resp
+
+
+@app.after_request
+def gzip_text(resp):
+    """บีบอัดไฟล์ข้อความ (HTML/CSS/JS/SVG/JSON) ให้โหลดเร็วบนเน็ตมือถือ"""
+    try:
+        import gzip
+        if (resp.status_code != 200 or resp.headers.get('Content-Encoding') or 'gzip' not in request.headers.get('Accept-Encoding', '')
+                or resp.mimetype not in ('text/html', 'text/css', 'application/javascript', 'text/javascript', 'image/svg+xml', 'application/json', 'application/xml', 'text/plain')):
+            return resp
+        resp.direct_passthrough = False
+        data = resp.get_data()
+        if len(data) < 800:
+            return resp
+        resp.set_data(gzip.compress(data, 6))
+        resp.headers['Content-Encoding'] = 'gzip'
+        resp.headers['Vary'] = 'Accept-Encoding'
+        resp.headers['Content-Length'] = str(len(resp.get_data()))
+    except Exception:
+        pass
     return resp
 
 

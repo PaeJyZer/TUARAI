@@ -67,3 +67,6 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 
 @media (max-width: 560px) { .letter-card { padding: 38px 22px 30px; } .pl-grain { opacity: .05; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .pl-grain { animation: none; } .reveal { filter: none; } }
+
+/* มือถือ/จอสัมผัส: ปิดฟิล์มเกรนที่ขยับตลอดเวลา (กินแรงมาก) */
+@media (hover: none) { .pl-grain { display: none; } }

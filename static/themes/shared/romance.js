@@ -63,13 +63,13 @@
     frame++;
     cx.clearRect(0, 0, W, H);
     // ---- สร้างอนุภาคพื้นหลัง ----
-    var on = opened() && !document.hidden && !reduce;
-    if (on && G === 'vintage' && P.length < 80 && Math.random() < .025 + boost * .06) {
+    var lite = window.TUPerf && TUPerf.low, on = opened() && !document.hidden && !reduce && !(window.TUPerf && TUPerf.lowest);
+    if (on && G === 'vintage' && P.length < (lite ? 24 : 80) && Math.random() < (lite ? .012 : .025) + boost * (lite ? .02 : .06)) {
       var hr = Math.random() < .22;
       P.push({ k: 'petal', x: rnd(-20, W + 20), y: -20, vy: rnd(.5, 1.2) + boost * .25, sw: rnd(.4, 1.1), ph: rnd(0, 6.3), r: rnd(0, 6.3), vr: rnd(-.03, .03), fl: rnd(0, 6.3),
         s: hr ? rnd(5, 8) : rnd(6, 11), a: rnd(.45, .8), c: pick(pal), heart: hr, life: 9999, max: 9999 });
     }
-    if (on && G === 'nature' && P.length < 40 && Math.random() < (theme === 'sakura' || theme === 'garden' ? .06 : .11)) {
+    if (on && G === 'nature' && P.length < (lite ? 14 : 40) && Math.random() < (lite ? .5 : 1) * (theme === 'sakura' || theme === 'garden' ? .06 : .11)) {
       var d = theme === 'sunset' ? dusk() : 1, y = rnd(0, H), c = pick(pal);
       if (theme === 'sunset') { // กลางวัน: ประกายบนผิวน้ำ / ค่ำลง: ดาวบนฟ้า
         if (Math.random() < .55) y = H * rnd(.72, .98); else { y = H * rnd(0, .45); if (Math.random() > d * 1.1) y = -1; }

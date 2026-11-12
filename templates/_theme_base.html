@@ -6,6 +6,7 @@
   <title>{% if demo and seo %}{{ seo.title }}{% else %}{{ occ.en }} - {{ partner_name }}{% endif %}</title>
   {% if demo and seo %}{% with seo_title=seo.title, seo_desc=seo.desc, seo_path=seo.path %}{% include '_seo.html' %}{% endwith %}
   {% else %}<meta name="robots" content="noindex, nofollow">{% endif %}
+  <script src="{{ url_for('static', filename='themes/shared/perf.js') }}"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   {% block fonts %}{% endblock %}
