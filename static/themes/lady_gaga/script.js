@@ -43,12 +43,38 @@ document.addEventListener("DOMContentLoaded", () => {
   const STAGE_W = 1600;
   const STAGE_H = 900;
 
+  // แนวตั้ง (มือถือ): ไม่บังคับหมุนจอ — สเกลตามความสูงแล้วให้ปัดซ้าย-ขวาดูเวทีได้
+  let pan = null;
+  function ensurePan() {
+    if (pan) return pan;
+    pan = document.createElement("div");
+    pan.id = "stagePan";
+    const inner = document.createElement("div");
+    inner.className = "pan-inner";
+    stage.parentNode.insertBefore(pan, stage);
+    inner.appendChild(stage);
+    pan.appendChild(inner);
+    return pan;
+  }
+
   function fitStage() {
     const vv = window.visualViewport;
     const w = vv ? vv.width : window.innerWidth;
     const h = vv ? vv.height : window.innerHeight;
-    const scale = Math.min(w / STAGE_W, h / STAGE_H);
-    stage.style.setProperty("--s", scale);
+    const portrait = h > w;
+    document.documentElement.classList.toggle("gg-portrait", portrait);
+    if (!portrait) {
+      stage.style.setProperty("--s", Math.min(w / STAGE_W, h / STAGE_H));
+      if (pan) pan.classList.remove("on");
+      return;
+    }
+    const sc = Math.min(h / STAGE_H, 0.9);
+    const p = ensurePan();
+    const first = !p.classList.contains("on");
+    p.classList.add("on");
+    stage.style.setProperty("--s", sc);
+    p.firstChild.style.width = Math.round(STAGE_W * sc) + "px";
+    if (first) p.scrollLeft = (STAGE_W * sc - w) / 2;
   }
 
   fitStage();

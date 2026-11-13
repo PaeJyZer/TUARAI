@@ -26,6 +26,7 @@
   </style>
   {% endif %}
   <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/mobile.css') }}">
 </head>
 <body>
 
@@ -105,11 +106,6 @@
       </figcaption>
     </figure>
     <button class="lb-nav" id="lbNext" type="button" aria-label="รูปถัดไป">&rsaquo;</button>
-  </div>
-
-  <div class="rotate-hint">
-    <p>หมุนหน้าจอเป็นแนวนอน</p>
-    <span></span>
   </div>
 
   {% if banner and not toolbar %}<div class="owner-banner">{{ banner }}</div>{% endif %}

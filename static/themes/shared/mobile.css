@@ -1,0 +1,40 @@
+/* TUARAI - ปรับทุกธีมให้อ่านง่าย/กดง่ายบนมือถือ (โหลดท้ายสุด ไม่เปลี่ยนโครงสร้าง) */
+@media (max-width: 640px) {
+  html, body { max-width: 100%; overflow-x: clip; }
+  body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+  /* ข้อความเล็ก ๆ ให้อ่านออก */
+  .eyebrow, .scroll-hint, .steps-skip, .steps-list li, .lab, figcaption, .tag, .rating,
+  .strip-cap, .postmark, .cta.ghost, .arc-btn, .hud-mid, .crt-tag { font-size: max(13px, 1em); }
+  .eyebrow { letter-spacing: .14em; }
+  figcaption, .lab { font-size: 13px !important; line-height: 1.5; }
+  .steps-skip { font-size: 14px !important; padding: 12px 14px; display: inline-block; }
+  .steps-list li { font-size: 14px !important; }
+
+  /* พิกเซลอาร์ต/อาร์เคด ใช้ฟอนต์พิกเซลกว้าง ต้องไม่เล็กเกิน */
+  body.theme-pixel .badge, body.theme-pixel figcaption, body.theme-arcade figcaption,
+  body.theme-arcade .sec-title, body.theme-arcade .crt-tag, body.theme-arcade .hud-mid,
+  body.theme-arcade .eyebrow, body.theme-pixel .eyebrow { font-size: 11px !important; line-height: 1.7; }
+  body.theme-pixel .cta, body.theme-arcade .cta, body.theme-arcade .arc-btn { font-size: 13px !important; padding: 16px 18px; min-height: 48px; }
+  body.theme-arcade .hud span, body.theme-arcade .hud b, body.theme-pixel .hud span { font-size: 11px !important; }
+  body.theme-arcade p[class=""], body.theme-arcade .main p { line-height: 1.7; }
+
+  /* พื้นที่กดอย่างน้อย 44px */
+  button, .cta, [role="button"], .arc-btn, a.btn { min-height: 44px; }
+  .mem-x, .close-btn, .lb-nav { min-width: 44px; min-height: 44px; }
+
+  /* รูป/สื่อไม่ล้นจอ */
+  img, video, canvas, svg { max-width: 100%; }
+  .main, main, section { max-width: 100%; }
+
+  /* แถบเดโมไม่บังหัวข้อ */
+  body.has-demo-nav, .demo-on { padding-top: 0; }
+}
+@media (max-width: 640px) {
+  .demo-nav, .demo-bar, #demoNav { font-size: 13px; }
+}
+/* ป้ายตัวอย่าง ย้ายลงล่างซ้าย ไม่ให้บังหัวข้อ */
+@media (max-width: 640px) {
+  body .owner-banner { top: auto !important; bottom: 12px !important; left: 10px !important; right: 64px !important; transform: none !important;
+    max-width: none !important; padding: 8px 12px !important; font-size: 12px !important; line-height: 1.4 !important; border-radius: 14px !important; text-align: left; height: auto !important; }
+}

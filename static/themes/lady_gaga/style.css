@@ -369,40 +369,13 @@ body {
 }
 
 /* =========================================
-   แนวตั้ง: ให้หมุนจอ
+   แนวตั้ง (มือถือ): ปัดซ้าย-ขวาดูเวที ไม่ต้องหมุนจอ
    ========================================= */
 
-.rotate-hint {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  background: var(--wine-dark);
-  color: var(--cream);
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 8px;
-}
-
-.rotate-hint p {
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
-.rotate-hint span {
-  font-size: 0.8rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(246, 233, 224, 0.65);
-}
-
-@media (orientation: portrait) {
-  .rotate-hint {
-    display: flex;
-  }
-}
+#stagePan.on { position: fixed; inset: 0; z-index: 1; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; scrollbar-width: none; }
+#stagePan.on::-webkit-scrollbar { display: none; }
+#stagePan.on .pan-inner { position: relative; height: 100%; }
+#stagePan.on .stage { left: 0; top: 50%; transform-origin: 0 50%; transform: translateY(-50%) scale(var(--s, 1)); }
 
 /* =========================================
    ปุ่มจดหมาย (อยู่ในเวที)
