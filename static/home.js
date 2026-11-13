@@ -65,3 +65,22 @@
     });
   });
 })();
+
+/* กลีบดอกไม้ร่วงในกรอบการ์ด */
+(function () {
+  try {
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('.steps3 li, .pkg-wrap .package-card').forEach(function (card) {
+      for (var i = 0; i < 6; i++) {
+        var s = document.createElement('span');
+        s.className = 'fl-petal';
+        s.style.setProperty('--x', (8 + Math.random() * 80).toFixed(0) + '%');
+        s.style.setProperty('--sz', (8 + Math.random() * 7).toFixed(0) + 'px');
+        s.style.setProperty('--sw', ((Math.random() - .5) * 60).toFixed(0) + 'px');
+        s.style.setProperty('--dur', (6 + Math.random() * 5).toFixed(1) + 's');
+        s.style.setProperty('--dl', (-Math.random() * 9).toFixed(1) + 's');
+        card.insertBefore(s, card.firstChild);
+      }
+    });
+  } catch (e) {}
+})();
