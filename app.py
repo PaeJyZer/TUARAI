@@ -82,7 +82,7 @@ PACKAGES = {
         'can_switch_theme': False,
     },
 }
-DEFAULT_PRICES = {'basic': 129.0, 'pro': 229.0}   # ใช้ถ้าธีมไม่ได้ตั้งราคาเฉพาะไว้ในตาราง themes
+DEFAULT_PRICES = {'basic': 59.0, 'pro': 99.0}   # ใช้ถ้าธีมไม่ได้ตั้งราคาเฉพาะไว้ในตาราง themes
 RENEW_PRICE = 59.0                                # ราคาต่ออายุ Basic ต่อ 1 ปี
 RENEW_DAYS = 365
 LEGAL_VERSION = '1'                 # เปลี่ยนเลขนี้เมื่อแก้ข้อตกลง → ป้ายประกาศจะเด้งให้ทุกคนเห็นอีกครั้ง
@@ -238,28 +238,28 @@ EXTRA_THEMES = [
 PREMIUM_THEMES = [
     ('birthday_cake_v1', 'Birthday Cake Party',
      'จุดเทียนบนเค้ก เป่าแล้วคอนเฟตติระเบิด ป๊อปบอลลูนปลดล็อกรูป พร้อมเสียงเอฟเฟกต์ทุกการแตะ',
-     'theme_previews/birthday_cake.jpg', 'theme_cake.html', 149, 299, 'จุดเทียน · เป่า · ป๊อปบอลลูน'),
+     'theme_previews/birthday_cake.jpg', 'theme_cake.html', 69, 109, 'จุดเทียน · เป่า · ป๊อปบอลลูน'),
     ('arcade_love_v1', 'Neon Arcade Cabinet',
      'ตู้เกมอาร์เคดนีออน หยอดเหรียญ เล่นเกมรับหัวใจ ตารางคะแนนสูงสุด ด่านรูปและบอสจดหมาย',
-     'theme_previews/arcade_love.jpg', 'theme_arcade.html', 149, 299, 'หยอดเหรียญ · เกมรับหัวใจ · บอสจดหมาย'),
+     'theme_previews/arcade_love.jpg', 'theme_arcade.html', 69, 109, 'หยอดเหรียญ · เกมรับหัวใจ · บอสจดหมาย'),
     ('space_cruise_v1', 'Galaxy Cruise',
      'ยานอวกาศพุ่งทะลุกาแล็กซี กดค้างเพื่อจุดเครื่องยนต์ วาร์ปข้ามดวงดาว สแกนดาวเคราะห์ จอโฮโลแกรมรูป',
-     'theme_previews/space_cruise.jpg', 'theme_space.html', 149, 299, 'กดค้างจุดเครื่อง · วาร์ป · สแกนดาว'),
+     'theme_previews/space_cruise.jpg', 'theme_space.html', 69, 109, 'กดค้างจุดเครื่อง · วาร์ป · สแกนดาว'),
     ('music_box_v1', 'Music Box & Vinyl',
      'ไขลานกล่องดนตรี นางรำหมุน เล่นโน้ตเปียโนเป็นทำนองเฉพาะ แผ่นเสียงหมุน รูปเป็นปกแผ่นเสียง',
-     'theme_previews/music_box.jpg', 'theme_musicbox.html', 149, 299, 'ไขลาน · เล่นโน้ต · แผ่นเสียง'),
+     'theme_previews/music_box.jpg', 'theme_musicbox.html', 69, 109, 'ไขลาน · เล่นโน้ต · แผ่นเสียง'),
     ('hanami_night_v1', 'Hanami Night Lanterns',
      'ค่ำคืนใต้ต้นซากุระ จุดโคมไฟกระดาษทีละดวง กลีบซากุระพัดตามนิ้ว เขย่าต้นไม้ โอมิคุจิคำอวยพร',
-     'theme_previews/hanami_night.jpg', 'theme_hanami.html', 149, 299, 'จุดโคมไฟ · เขย่าซากุระ · โอมิคุจิ'),
+     'theme_previews/hanami_night.jpg', 'theme_hanami.html', 69, 109, 'จุดโคมไฟ · เขย่าซากุระ · โอมิคุจิ'),
     ('palace_sakura_v1', 'Sakura Palace Story',
      'วิชวลโนเวลในวังซากุระ คุยกับแฟนผ่านบทสนทนาที่คุณเขียนเอง ให้เขา/เธอเลือกคำตอบ มีสรุปคำตอบท้ายเรื่อง เสียงนุ่มสบายหู',
-     'theme_previews/palace_sakura.jpg', 'theme_palace.html', 179, 349, 'วิชวลโนเวล · เลือกคำตอบ · ซากุระล้อมวัง'),
+     'theme_previews/palace_sakura.jpg', 'theme_palace.html', 99, 129, 'วิชวลโนเวล · เลือกคำตอบ · ซากุระล้อมวัง'),
     ('matchcat_v1', 'Lucky Cat Matsuri',
      'งานเทศกาลเกียวโตยามค่ำคืน แมวกวักนำโชคท้าให้จับคู่ความทรงจำกับรูป ลากเส้นโยง ถูกมีพลุ ผิดแมวเศร้า โยงใหม่ได้ไม่จำกัด',
-     'theme_previews/matchcat.jpg', 'theme_matchcat.html', 179, 349, 'จับคู่รูป · ลากเส้นโยง · พลุเทศกาล'),
+     'theme_previews/matchcat.jpg', 'theme_matchcat.html', 99, 129, 'จับคู่รูป · ลากเส้นโยง · พลุเทศกาล'),
     ('constellation_v1', 'Constellation of Us',
      'ท้องฟ้ายามค่ำคืนที่ดวงดาวเรียงเป็นหัวใจ แตะดาวแต่ละดวงให้ความทรงจำระเบิดแสงออกมา ดาวตกพาดผ่านตอนเลื่อนจอ และเขียนคำอธิษฐานส่งขึ้นไปลอยบนฟ้า',
-     'theme_previews/constellation.jpg', 'theme_constellation.html', 179, 349, 'กลุ่มดาวหัวใจ · ดาวตก · คำอธิษฐาน'),
+     'theme_previews/constellation.jpg', 'theme_constellation.html', 99, 129, 'กลุ่มดาวหัวใจ · ดาวตก · คำอธิษฐาน'),
 ]
 DIALOG_THEMES = {'palace_sakura_v1'}
 CAPTION_THEMES = {'matchcat_v1'}      # ธีมที่ลูกค้าเขียนคำใต้รูปแต่ละรูป (ใช้เป็นโจทย์จับคู่)
