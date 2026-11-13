@@ -925,3 +925,16 @@ tr.clk:hover td { background: rgba(255,255,255,.04); }
 .faq details[open] summary::after { content: '–'; }
 .faq p { margin-top: 10px; color: var(--text-muted, #aaa); line-height: 1.8; }
 .faq a { color: var(--accent-red); }
+
+/* ===== พื้นหลังดาร์กไล่เฉด + แสงเรืองโรแมนติก (ทุกหน้าหลักของร้าน) ===== */
+html { background: #0a0a0f; }
+body { background: linear-gradient(180deg, #0a0a0f 0%, #140d1e 28%, #1a1025 50%, #140d1e 72%, #0a0a0f 100%) fixed; background-color: #0a0a0f; position: relative; }
+body::before, body::after { content: ""; position: fixed; z-index: -1; pointer-events: none; border-radius: 50%; filter: blur(90px); will-change: transform; }
+body::before { width: min(70vw, 720px); height: min(70vw, 720px); top: -18vh; right: -14vw; background: radial-gradient(closest-side, rgba(255,70,140,.30), transparent 72%); animation: ambA 16s ease-in-out infinite alternate; }
+body::after { width: min(80vw, 820px); height: min(80vw, 820px); bottom: -24vh; left: -18vw; background: radial-gradient(closest-side, rgba(140,80,255,.28), transparent 72%); animation: ambB 19s ease-in-out infinite alternate; }
+@keyframes ambA { to { transform: translate(-6vw, 8vh) scale(1.12); } }
+@keyframes ambB { to { transform: translate(8vw, -6vh) scale(1.1); } }
+@media (prefers-reduced-motion: reduce) { body::before, body::after { animation: none; } }
+.lowfx body::before, .lowfx body::after { animation: none; filter: blur(50px); }
+@media (max-width: 640px) { body::before, body::after { filter: blur(60px); } }
+html, body { overflow-x: clip; max-width: 100%; }

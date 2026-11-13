@@ -1,7 +1,6 @@
 /* TUARAI - หน้าแรกดีไซน์ใหม่ (โล่ง สไลด์ได้ จังหวะเว้นที่กว้าง) โหลดหลัง style.css */
 :root { --hx-max: 1240px; --hx-gold: #ffd166; --hx-pink: #ff5d8f; }
 html { scroll-behavior: smooth; }
-body { background: radial-gradient(1200px 600px at 78% -8%, rgba(255,42,60,.16), transparent 60%), radial-gradient(900px 520px at -6% 18%, rgba(138,92,255,.12), transparent 60%), #0b0b0f; }
 
 /* ---------- HERO ---------- */
 .hx { max-width: var(--hx-max); margin: 0 auto; padding: clamp(56px, 9vw, 120px) 5% clamp(56px, 8vw, 100px); display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
