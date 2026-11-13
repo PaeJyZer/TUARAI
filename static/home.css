@@ -209,3 +209,15 @@ body { background: radial-gradient(1200px 600px at 78% -8%, rgba(255,42,60,.16),
 @media (prefers-reduced-motion: reduce) { .pkg-wrap.is-pro .package-card { animation: none; } .steps3 li, .pkg-wrap { transition: none; } }
 
 .pkg-wrap .pkg-sub { color: #a49eb4; font-size: .92rem; line-height: 1.6; margin: 6px 0 20px; padding-bottom: 18px; border-bottom: 1px dashed rgba(255,255,255,.14); }
+
+/* ปุ่มรูปดอกไม้ (ลองเล่น / เลือกซื้อ) */
+.hc-act { grid-template-columns: 1fr 1fr; gap: 4px; justify-items: center; margin: 0 -4px; }
+.hc-demo, .hc-buy { position: relative; width: 92px; height: 92px; border-radius: 0; border: 0; background: none !important; font-size: .9rem; font-weight: 600; color: #fff; z-index: 0; isolation: isolate; text-align: center; line-height: 1.15; padding: 0; }
+.hc-demo::before, .hc-buy::before { content: ""; position: absolute; inset: 0; z-index: -1; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Cg fill=%22%23000%22%3E%3Ccircle cx=%2281.0%22 cy=%2250.0%22 r=%2219%22/%3E%3Ccircle cx=%2271.9%22 cy=%2271.9%22 r=%2219%22/%3E%3Ccircle cx=%2250.0%22 cy=%2281.0%22 r=%2219%22/%3E%3Ccircle cx=%2228.1%22 cy=%2271.9%22 r=%2219%22/%3E%3Ccircle cx=%2219.0%22 cy=%2250.0%22 r=%2219%22/%3E%3Ccircle cx=%2228.1%22 cy=%2228.1%22 r=%2219%22/%3E%3Ccircle cx=%2250.0%22 cy=%2219.0%22 r=%2219%22/%3E%3Ccircle cx=%2271.9%22 cy=%2228.1%22 r=%2219%22/%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2234%22/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Cg fill=%22%23000%22%3E%3Ccircle cx=%2281.0%22 cy=%2250.0%22 r=%2219%22/%3E%3Ccircle cx=%2271.9%22 cy=%2271.9%22 r=%2219%22/%3E%3Ccircle cx=%2250.0%22 cy=%2281.0%22 r=%2219%22/%3E%3Ccircle cx=%2228.1%22 cy=%2271.9%22 r=%2219%22/%3E%3Ccircle cx=%2219.0%22 cy=%2250.0%22 r=%2219%22/%3E%3Ccircle cx=%2228.1%22 cy=%2228.1%22 r=%2219%22/%3E%3Ccircle cx=%2250.0%22 cy=%2219.0%22 r=%2219%22/%3E%3Ccircle cx=%2271.9%22 cy=%2228.1%22 r=%2219%22/%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2234%22/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat; transition: transform .35s cubic-bezier(.3,1.6,.5,1), filter .25s; }
+.hc-demo::before { background: linear-gradient(135deg, rgba(255,255,255,.26), rgba(255,255,255,.1)); }
+.hc-buy::before { background: linear-gradient(135deg, #ff2a4d, #b3122f); }
+.hc.premium .hc-buy::before { background: linear-gradient(135deg, #ff5d8f, #8a5cff); }
+.hc-demo:hover, .hc-buy:hover { background: none; transform: none; filter: none; }
+.hc-demo:hover::before, .hc-buy:hover::before { transform: rotate(22deg) scale(1.08); filter: brightness(1.15); }
+.hc-demo:active::before, .hc-buy:active::before { transform: scale(.94); }
+@media (prefers-reduced-motion: reduce) { .hc-demo::before, .hc-buy::before { transition: none; } }
