@@ -1,0 +1,147 @@
+/* TUARAI Classic - สไตล์ล็อกรหัส / ป้ายนับวัน / ภารกิจ (ปรับสีตามธีมผ่านตัวแปร) */
+body {
+  --cl-bg: #fffaf3; --cl-ink: #3b2a1e; --cl-sub: #7a6350; --cl-acc: #d9628a; --cl-acc2: #ffb3c8; --cl-line: rgba(0,0,0,.14);
+  --cl-r: 22px; --cl-font: var(--font-display, serif); --cl-back: rgba(20, 10, 20, .86); --cl-btn-ink: #fff;
+}
+body.theme-starry   { --cl-bg: #141a46; --cl-ink: #f5ecd2; --cl-sub: #aab2e8; --cl-acc: #ffd98a; --cl-acc2: #7f8dff; --cl-line: rgba(255,217,138,.35); --cl-back: rgba(4,6,24,.9); --cl-btn-ink: #1b2358; }
+body.theme-diary    { --cl-bg: #fbf3e2; --cl-ink: #3b2a1e; --cl-sub: #7a6350; --cl-acc: #a4472f; --cl-acc2: #d9b977; --cl-line: rgba(164,71,47,.35); --cl-r: 6px; --cl-back: rgba(30,18,10,.9); }
+body.theme-garden   { --cl-bg: #fffafb; --cl-ink: #5a2438; --cl-sub: #a06278; --cl-acc: #d9507d; --cl-acc2: #ffc2d4; --cl-line: rgba(217,80,125,.3); --cl-r: 30px; --cl-back: rgba(90,30,50,.55); }
+body.theme-sunset   { --cl-bg: #fff3e3; --cl-ink: #4b2438; --cl-sub: #8a5a60; --cl-acc: #e0663a; --cl-acc2: #ffb36b; --cl-line: rgba(224,102,58,.35); --cl-r: 18px; --cl-back: rgba(60,18,70,.82); }
+body.theme-envelope { --cl-bg: #fffdf6; --cl-ink: #4a3624; --cl-sub: #8a7058; --cl-acc: #c93c3c; --cl-acc2: #3f6fb5; --cl-line: rgba(201,60,60,.4); --cl-r: 3px; --cl-back: rgba(50,34,20,.82); }
+body.theme-sakura   { --cl-bg: #fff; --cl-ink: #5e2a3e; --cl-sub: #b0728a; --cl-acc: #ee7fa0; --cl-acc2: #ffd3e1; --cl-line: rgba(238,127,160,.35); --cl-r: 28px; --cl-back: rgba(110,40,70,.5); }
+body.theme-cinema   { --cl-bg: #15100f; --cl-ink: #f1e3c2; --cl-sub: #b6a37a; --cl-acc: #d9b977; --cl-acc2: #8e1b22; --cl-line: rgba(217,185,119,.45); --cl-r: 4px; --cl-back: rgba(0,0,0,.92); --cl-btn-ink: #1a1208; }
+body.theme-y2k      { --cl-bg: #f4eaff; --cl-ink: #3a2368; --cl-sub: #7b5cb0; --cl-acc: #b04bff; --cl-acc2: #ff7ad1; --cl-line: #9a86bd; --cl-r: 8px; --cl-back: rgba(70,40,120,.6); }
+body.theme-pixel    { --cl-bg: #1a1050; --cl-ink: #fff; --cl-sub: #9fe9ff; --cl-acc: #ffd23f; --cl-acc2: #7fe3ff; --cl-line: #7fe3ff; --cl-r: 0px; --cl-font: var(--font-px, monospace); --cl-back: rgba(8,4,28,.92); --cl-btn-ink: #1a1050; }
+
+/* ---------- ล็อกรหัส ---------- */
+body.cl-locked { overflow: hidden; }
+.cl-lock { position: fixed; inset: 0; z-index: 9400; display: flex; align-items: center; justify-content: center; padding: 20px; background: var(--cl-back); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: opacity .7s ease, transform .7s ease; }
+.cl-lock.gone { opacity: 0; transform: scale(1.04); pointer-events: none; }
+.cl-lock-card { position: relative; width: min(92vw, 380px); text-align: center; padding: 64px 22px 26px; background: var(--cl-bg); color: var(--cl-ink); border: 1.5px solid var(--cl-line); border-radius: var(--cl-r); box-shadow: 0 0 0 6px color-mix(in srgb, var(--cl-acc) 14%, transparent), 0 30px 80px rgba(0,0,0,.5); animation: clIn .6s cubic-bezier(.2,1.2,.3,1) both; }
+@keyframes clIn { from { opacity: 0; transform: translateY(30px) scale(.94); } }
+.cl-lock-card.shake { animation: clShake .45s; }
+@keyframes clShake { 20%, 60% { transform: translateX(-9px); } 40%, 80% { transform: translateX(9px); } }
+.cl-emblem { position: absolute; left: 50%; top: -34px; width: 74px; height: 80px; margin-left: -37px; }
+.cl-body { position: absolute; left: 0; right: 0; bottom: 0; height: 52px; border-radius: 14px; background: linear-gradient(160deg, var(--cl-acc), color-mix(in srgb, var(--cl-acc) 55%, #000)); display: grid; place-items: center; box-shadow: 0 10px 24px rgba(0,0,0,.35), inset 0 2px 0 rgba(255,255,255,.35); }
+.cl-body i { font-style: normal; font-size: 26px; filter: drop-shadow(0 1px 0 rgba(0,0,0,.25)); }
+.cl-shackle { position: absolute; left: 50%; top: 0; width: 40px; height: 40px; margin-left: -20px; border: 7px solid color-mix(in srgb, var(--cl-acc) 70%, #fff); border-bottom: 0; border-radius: 22px 22px 0 0; transform-origin: 100% 100%; transition: transform .6s cubic-bezier(.3,1.5,.5,1); }
+.cl-lock.ok .cl-shackle { transform: translateY(-14px) rotate(-38deg); }
+.cl-lock-title { font-family: var(--cl-font); font-size: clamp(20px, 5.4vw, 25px); font-weight: 500; margin: 0 0 6px; }
+.cl-lock-sub { font-size: 14px; color: var(--cl-sub); margin: 0 0 20px; line-height: 1.55; }
+.cl-dials { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 8px; }
+.cl-sep { font-family: var(--cl-font); font-size: 30px; color: var(--cl-sub); padding: 0 2px; align-self: center; }
+.cl-dial { width: 54px; display: flex; flex-direction: column; align-items: stretch; gap: 3px; touch-action: none; outline: none; border-radius: calc(var(--cl-r) / 2.2); }
+.cl-dial:focus-visible .cl-win { box-shadow: 0 0 0 3px var(--cl-acc); }
+.cl-dial button { appearance: none; border: 0; background: transparent; color: var(--cl-acc); font-size: 15px; min-height: 36px; cursor: pointer; border-radius: 10px; }
+.cl-dial button:active { background: color-mix(in srgb, var(--cl-acc) 18%, transparent); }
+.cl-win { display: grid; place-items: center; height: 68px; overflow: hidden; border-radius: calc(var(--cl-r) / 2.4); background: color-mix(in srgb, var(--cl-ink) 7%, var(--cl-bg)); border: 1.5px solid var(--cl-line); box-shadow: inset 0 8px 14px -8px rgba(0,0,0,.35), inset 0 -8px 14px -8px rgba(0,0,0,.35); }
+.cl-win b { font-family: var(--cl-font); font-size: 38px; font-weight: 600; color: var(--cl-ink); line-height: 1; }
+.cl-win b.up { animation: clUp .22s ease; } .cl-win b.dn { animation: clDn .22s ease; }
+@keyframes clUp { from { transform: translateY(22px); opacity: 0; } } @keyframes clDn { from { transform: translateY(-22px); opacity: 0; } }
+.cl-fmt { font-size: 12.5px; color: var(--cl-sub); margin: 0 0 6px; }
+.cl-hint { min-height: 22px; font-size: 14px; color: var(--cl-acc); margin: 4px 0 8px; font-weight: 600; }
+.cl-go { appearance: none; border: 0; cursor: pointer; width: 100%; min-height: 50px; border-radius: calc(var(--cl-r) / 1.6); font: 600 16px/1 var(--cl-font); color: var(--cl-btn-ink); background: linear-gradient(135deg, var(--cl-acc), color-mix(in srgb, var(--cl-acc) 60%, var(--cl-acc2))); box-shadow: 0 8px 22px color-mix(in srgb, var(--cl-acc) 45%, transparent); transition: transform .15s; }
+.cl-go:active { transform: scale(.97); }
+.cl-skipcode { appearance: none; border: 0; background: none; color: var(--cl-sub); font-size: 13px; margin-top: 12px; padding: 10px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.cl-demo { margin: 14px 0 0; font-size: 12.5px; color: var(--cl-sub); } .cl-demo b { color: var(--cl-acc); letter-spacing: .12em; }
+body.theme-pixel .cl-lock-card, body.theme-pixel .cl-sheet, body.theme-pixel .cl-card { box-shadow: 0 0 0 4px #7fe3ff, 8px 10px 0 4px rgba(0,0,0,.5); }
+body.theme-pixel .cl-lock-title, body.theme-pixel .cl-qt { font-size: 15px; line-height: 1.6; }
+body.theme-y2k .cl-lock-card::before { content: "password.exe"; position: absolute; left: 0; right: 0; top: 0; height: 26px; padding: 4px 10px; text-align: left; font: 600 12px/18px sans-serif; color: #fff; background: linear-gradient(90deg, #b04bff, #ff7ad1); border-radius: 6px 6px 0 0; }
+body.theme-cinema .cl-lock-card { border-style: double; border-width: 4px; }
+body.theme-envelope .cl-lock-card { border: 2px dashed var(--cl-acc); outline: 8px solid var(--cl-bg); }
+body.theme-diary .cl-lock-card::after { content: ""; position: absolute; left: 14px; top: 0; bottom: 0; border-left: 2px dotted rgba(164,71,47,.35); pointer-events: none; }
+
+/* ---------- ป้ายนับวัน ---------- */
+.cl-chip { margin: 2px auto 18px; max-width: 100%; text-align: center; }
+.cl-chip span { display: inline-block; padding: 8px 16px; font-size: 13.5px; line-height: 1.45; border-radius: 999px; background: color-mix(in srgb, var(--cl-acc) 16%, transparent); color: var(--cl-ink); border: 1px solid var(--cl-line); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+body.theme-starry .cl-chip span, body.theme-cinema .cl-chip span, body.theme-pixel .cl-chip span { color: var(--cl-ink); }
+body.theme-pixel .cl-chip span { border-radius: 0; font-size: 12px; }
+body.theme-diary .cl-chip span { border-radius: 4px 14px 4px 14px; transform: rotate(-1.2deg); background: #fff3c4; color: #5a3b1e; border-color: #d9b977; }
+body.theme-sunset .cl-chip span, body.theme-garden .cl-chip span, body.theme-sakura .cl-chip span, body.theme-envelope .cl-chip span, body.theme-y2k .cl-chip span { color: var(--cl-ink); background: rgba(255,255,255,.75); }
+@media (min-width: 960px) { .cl-chip { text-align: left; } }
+
+/* ---------- ภารกิจ ---------- */
+.cl-quest { width: min(920px, calc(100% - 32px)); margin: 30px auto 10px; padding: 30px 18px 22px; text-align: center; background: var(--cl-bg); color: var(--cl-ink); border: 1.5px solid var(--cl-line); border-radius: var(--cl-r); box-shadow: 0 0 0 5px color-mix(in srgb, var(--cl-acc) 10%, transparent), 0 20px 50px rgba(0,0,0,.28); position: relative; }
+.cl-quest.nudge { animation: clNudge .6s; }
+@keyframes clNudge { 25% { transform: scale(1.025) rotate(-.6deg); } 60% { transform: scale(1.025) rotate(.6deg); } }
+.cl-kick { margin: 0 0 4px; font-size: 12.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--cl-acc); font-weight: 600; }
+.cl-qt { font-family: var(--cl-font); font-size: clamp(22px, 5.6vw, 30px); font-weight: 500; margin: 0 0 6px; color: var(--cl-ink); }
+.cl-qs { margin: 0 0 14px; font-size: 14px; color: var(--cl-sub); }
+.cl-prog { display: flex; align-items: center; gap: 10px; max-width: 320px; margin: 0 auto 18px; }
+.cl-bar { flex: 1; height: 8px; border-radius: 99px; background: color-mix(in srgb, var(--cl-ink) 12%, transparent); overflow: hidden; }
+.cl-bar i { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--cl-acc), var(--cl-acc2)); transition: width .6s cubic-bezier(.2,1,.3,1); }
+.cl-cnt { font-size: 13px; color: var(--cl-sub); min-width: 38px; }
+.cl-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 12px; }
+.cl-card { appearance: none; position: relative; width: 100%; min-height: 76px; display: grid; grid-template-columns: 44px 38px 1fr auto; grid-template-areas: "no ic t st" "no ic s st"; align-items: center; column-gap: 8px; text-align: left; padding: 12px 14px; cursor: pointer; color: var(--cl-ink); background: color-mix(in srgb, var(--cl-acc) 7%, var(--cl-bg)); border: 1.5px solid var(--cl-line); border-radius: calc(var(--cl-r) / 1.5); font-family: inherit; transition: transform .18s, box-shadow .18s, background .18s; }
+.cl-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px color-mix(in srgb, var(--cl-acc) 28%, transparent); }
+.cl-card:active { transform: scale(.98); }
+.cl-card .cl-no { grid-area: no; font-family: var(--cl-font); font-size: 24px; color: var(--cl-acc); opacity: .8; }
+.cl-card .cl-ic { grid-area: ic; font-size: 26px; text-align: center; }
+.cl-card b { grid-area: t; font-size: 17px; font-weight: 600; align-self: end; }
+.cl-card small { grid-area: s; font-size: 13px; color: var(--cl-sub); align-self: start; }
+.cl-card .cl-st { grid-area: st; font-style: normal; font-size: 13px; padding: 6px 12px; border-radius: 99px; background: var(--cl-acc); color: var(--cl-btn-ink); font-weight: 600; white-space: nowrap; }
+.cl-card.done { background: color-mix(in srgb, #3ccf8e 14%, var(--cl-bg)); border-color: rgba(60,207,142,.6); }
+.cl-card.done .cl-st { background: #3ccf8e; color: #06321f; }
+.cl-skipq { appearance: none; border: 0; background: none; margin-top: 14px; padding: 10px 14px; font-size: 13px; color: var(--cl-sub); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.cl-quest.all .cl-qs::after { content: " จดหมายพร้อมให้อ่านแล้ว 💌"; color: var(--cl-acc); font-weight: 600; }
+@media (min-width: 760px) { .cl-cards { grid-template-columns: repeat(3, 1fr); } .cl-card { grid-template-columns: 1fr; grid-template-areas: "no" "ic" "t" "s" "st"; justify-items: center; text-align: center; row-gap: 3px; padding: 20px 12px; } .cl-card .cl-ic { font-size: 34px; } .cl-card .cl-st { margin-top: 8px; } }
+body.theme-diary .cl-quest { background-image: repeating-linear-gradient(transparent 0 27px, rgba(120,90,60,.15) 27px 28px); }
+body.theme-diary .cl-card:nth-child(odd) { transform: rotate(-.8deg); } body.theme-diary .cl-card { background: #fff7d6; }
+body.theme-envelope .cl-quest { border: 2px dashed var(--cl-acc); }
+body.theme-cinema .cl-card { border-style: dashed; border-radius: 4px; }
+body.theme-cinema .cl-card::before, body.theme-cinema .cl-card::after { content: ""; position: absolute; top: 50%; width: 14px; height: 14px; margin-top: -7px; border-radius: 50%; background: #0a0708; border: 1px solid var(--cl-line); }
+body.theme-cinema .cl-card::before { left: -8px; } body.theme-cinema .cl-card::after { right: -8px; }
+body.theme-y2k .cl-card { box-shadow: 4px 4px 0 rgba(106,74,154,.35); border-radius: 6px; }
+body.theme-pixel .cl-card, body.theme-pixel .cl-quest { border: 0; box-shadow: 0 0 0 3px var(--cl-acc2), 6px 8px 0 3px rgba(0,0,0,.45); }
+body.theme-pixel .cl-card b, body.theme-pixel .cl-card .cl-st, body.theme-pixel .cl-kick { font-family: var(--font-px, monospace); font-size: 11px; }
+body.theme-pixel .cl-card small, body.theme-pixel .cl-qs, body.theme-pixel .cl-cnt { font-size: 12px; }
+body.theme-pixel .cl-card .cl-st { border-radius: 0; }
+
+/* ---------- หน้าต่างเกม ---------- */
+.cl-modal { position: fixed; inset: 0; z-index: 9350; display: none; align-items: center; justify-content: center; padding: 16px; background: var(--cl-back); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.cl-modal.open { display: flex; animation: clFade .25s ease both; }
+@keyframes clFade { from { opacity: 0; } }
+.cl-sheet { position: relative; width: min(94vw, 430px); max-height: 92dvh; overflow: auto; padding: 26px 18px 22px; color: var(--cl-ink); background: var(--cl-bg); border: 1.5px solid var(--cl-line); border-radius: var(--cl-r); box-shadow: 0 30px 80px rgba(0,0,0,.5); animation: clIn .45s cubic-bezier(.2,1.2,.3,1) both; }
+.cl-sh { font-family: var(--cl-font); font-weight: 500; font-size: 22px; text-align: center; margin: 0 0 14px; }
+.cl-x { position: absolute; right: 8px; top: 8px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: transparent; color: var(--cl-sub); font-size: 26px; cursor: pointer; }
+.cl-qn { margin: 0 0 6px; font-size: 13px; color: var(--cl-acc); font-weight: 600; text-align: center; letter-spacing: .08em; }
+.cl-q { margin: 0 0 16px; font-size: 18px; line-height: 1.5; text-align: center; font-weight: 600; }
+.cl-opts { display: grid; gap: 10px; }
+.cl-opts.lock { pointer-events: none; }
+.cl-opt { appearance: none; min-height: 52px; padding: 10px 14px; border-radius: calc(var(--cl-r) / 2); border: 1.5px solid var(--cl-line); background: color-mix(in srgb, var(--cl-acc) 7%, var(--cl-bg)); color: var(--cl-ink); font: 600 16px/1.3 inherit; font-family: inherit; cursor: pointer; transition: transform .15s, background .15s; }
+.cl-opt:active { transform: scale(.97); }
+.cl-opt.right { background: #3ccf8e; border-color: #3ccf8e; color: #06321f; }
+.cl-opt.wrong { background: rgba(255,80,100,.18); border-color: rgba(255,80,100,.6); opacity: .65; animation: clShake .4s; }
+.cl-fb { min-height: 22px; margin: 12px 0 0; text-align: center; font-size: 14px; color: var(--cl-acc); font-weight: 600; }
+.cl-win2 { text-align: center; padding: 18px 0; } .cl-win2 span { font-size: 56px; display: block; animation: clPop .6s cubic-bezier(.2,1.6,.4,1); } .cl-win2 p { font-size: 20px; font-weight: 600; margin: 10px 0 4px; } .cl-win2 small { color: var(--cl-sub); }
+@keyframes clPop { from { transform: scale(0) rotate(-40deg); } }
+.cl-pzh { margin: 0 0 12px; font-size: 14px; text-align: center; color: var(--cl-sub); line-height: 1.5; }
+.cl-board { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 4px; width: min(80vw, 330px); aspect-ratio: 1; margin: 0 auto; padding: 4px; border-radius: calc(var(--cl-r) / 2); background: color-mix(in srgb, var(--cl-ink) 14%, var(--cl-bg)); border: 1.5px solid var(--cl-line); }
+.cl-tile { appearance: none; padding: 0; border: 0; border-radius: calc(var(--cl-r) / 4); background-color: var(--cl-acc2); cursor: pointer; font: 700 28px/1 inherit; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.5); transition: transform .12s, opacity .25s; }
+.cl-tile:active { transform: scale(.94); }
+.cl-tile.empty { opacity: 0; pointer-events: none; }
+.cl-board.solved { gap: 0; padding: 0; transition: gap .5s; } .cl-board.solved .cl-tile { border-radius: 0; }
+.cl-pzbar { display: flex; justify-content: space-between; align-items: center; margin: 14px auto 0; width: min(80vw, 330px); }
+.cl-mv { font-size: 14px; color: var(--cl-sub); }
+.cl-help { appearance: none; border: 1.5px solid var(--cl-line); background: transparent; color: var(--cl-ink); border-radius: 99px; min-height: 44px; padding: 0 16px; font: 600 14px/1 inherit; font-family: inherit; cursor: pointer; }
+.cl-hunt { text-align: center; line-height: 1.7; font-size: 16px; } .cl-hbig { font-size: 60px; animation: clBob 2.4s ease-in-out infinite; } .cl-hunt b { color: var(--cl-acc); }
+@keyframes clBob { 50% { transform: translateY(-8px) scale(1.08); } }
+.cl-go2 { appearance: none; border: 0; margin-top: 12px; min-height: 50px; padding: 0 26px; border-radius: 99px; font: 600 16px/1 var(--cl-font); color: var(--cl-btn-ink); background: linear-gradient(135deg, var(--cl-acc), var(--cl-acc2)); cursor: pointer; }
+body.theme-pixel .cl-opt, body.theme-pixel .cl-go, body.theme-pixel .cl-go2, body.theme-pixel .cl-help { border-radius: 0; font-family: var(--font-px, monospace); font-size: 11px; line-height: 1.6; }
+
+/* ---------- หัวใจลับในรูป ---------- */
+.cl-heart { position: absolute; z-index: 6; left: var(--hx); top: var(--hy); width: 44px; height: 44px; margin: -22px 0 0 -22px; display: grid; place-items: center; padding: 0; border: 0; background: transparent; font-size: 22px; line-height: 1; opacity: .5; cursor: pointer; transition: transform .25s, opacity .25s; filter: drop-shadow(0 1px 3px rgba(0,0,0,.4)); animation: clBeat 2.6s ease-in-out infinite; -webkit-tap-highlight-color: transparent; }
+.cl-heart:hover { opacity: 1; }
+.cl-heart.got { opacity: 0; transform: scale(2.4) translateY(-16px); pointer-events: none; animation: none; }
+@keyframes clBeat { 0%, 100% { transform: scale(.8); } 50% { transform: scale(1.1); } }
+html.lowfx .cl-heart, html.lowfx .cl-lock-card, html.lowfx .cl-hbig { animation: none; }
+@media (prefers-reduced-motion: reduce) { .cl-heart, .cl-hbig, .cl-lock-card, .cl-sheet, .cl-win2 span { animation: none !important; } }
+
+/* ธีมเวที: ปุ่มลอยเปิดภารกิจ */
+.cl-fab { position: fixed; z-index: 70; top: 14px; right: 14px; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 16px; border: 1.5px solid var(--cl-line); border-radius: 99px; background: var(--cl-bg); color: var(--cl-ink); font: 600 14px/1 inherit; font-family: inherit; box-shadow: 0 8px 22px rgba(0,0,0,.35); cursor: pointer; }
+.cl-fab b { color: var(--cl-acc); }
+.cl-quest.in-modal { width: 100%; margin: 0; padding: 4px 0 0; border: 0; box-shadow: none; background: transparent; opacity: 1; transform: none; filter: none; }
+.cl-quest.in-modal .cl-qh .cl-qt { display: none; }
+.cl-quest.in-modal .cl-cards { grid-template-columns: 1fr; }
+.cl-quest.in-modal .cl-card { grid-template-columns: 44px 38px 1fr auto; grid-template-areas: "no ic t st" "no ic s st"; text-align: left; justify-items: stretch; padding: 12px 14px; }
+body.theme-gaga { --cl-bg: #20111c; --cl-ink: #fbe8f0; --cl-sub: #c79ab0; --cl-acc: #ff6fa5; --cl-acc2: #ffb3d1; --cl-line: rgba(255,111,165,.4); --cl-back: rgba(14,4,12,.9); --cl-btn-ink: #2a0f1d; }

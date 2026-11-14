@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/romance.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/mobile.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/layout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/classic.css') }}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{% block favicon %}💖{% endblock %}</text></svg>">
 </head>
 <body class="{% block body_class %}{% endblock %}" {% block body_attrs %}{% endblock %}>
@@ -114,6 +115,7 @@
   <script src="{{ url_for('static', filename='themes/shared/ambient.js') }}"></script>
   <script src="{{ url_for('static', filename='themes/shared/polish.js') }}"></script>
   <script src="{{ url_for('static', filename='themes/shared/romance.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/shared/classic.js') }}"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

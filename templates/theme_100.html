@@ -27,8 +27,9 @@
   {% endif %}
   <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/mobile.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/classic.css') }}">
 </head>
-<body>
+<body class="theme-gaga">
 
   <!-- พื้นหลัง: แดงไวน์ + ลายจุด + เกรน + หัวใจลอย (หัวใจสร้างด้วย script.js) -->
   <div class="cyber-bg" id="cyberBg"></div>
@@ -148,5 +149,6 @@
   <script src="{{ url_for('static', filename='themes/shared/tapassist.js') }}"></script>
   <script src="{{ url_for('static', filename='themes/shared/premium.js') }}"></script>
   <script src="{{ url_for('static', filename='themes/lady_gaga/script.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/shared/classic.js') }}"></script>
 </body>
 </html>
