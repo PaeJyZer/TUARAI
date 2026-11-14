@@ -938,3 +938,21 @@ body::after { width: min(80vw, 820px); height: min(80vw, 820px); bottom: -24vh; 
 .lowfx body::before, .lowfx body::after { animation: none; filter: blur(50px); }
 @media (max-width: 640px) { body::before, body::after { filter: blur(60px); } }
 html, body { overflow-x: clip; max-width: 100%; }
+
+/* ===== ตัวเลือกภารกิจ (ฟอร์มสร้าง/แก้ไขเว็บ) ===== */
+.qe-box { margin-bottom: 6px; }
+.qe-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 8px 0 14px; }
+.qe-chip { appearance: none; position: relative; text-align: left; display: grid; gap: 3px; padding: 12px 12px 12px 14px; min-height: 92px; color: #f3e9ff; font-family: inherit; cursor: pointer; border-radius: 16px; border: 1.5px solid rgba(255,255,255,.16); background: rgba(255,255,255,.04); transition: border-color .2s, background .2s, transform .15s; }
+.qe-chip:active { transform: scale(.98); }
+.qe-chip .qe-ic { font-size: 22px; line-height: 1; }
+.qe-chip b { font-size: 15px; }
+.qe-chip small { font-size: 12.5px; line-height: 1.45; color: #b8a9d6; }
+.qe-chip .qe-tick { position: absolute; right: 10px; top: 10px; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 13px; color: transparent; border: 1.5px solid rgba(255,255,255,.25); }
+.qe-chip.on { border-color: #ff6fa5; background: rgba(255,111,165,.12); }
+.qe-chip.on .qe-tick { background: #ff6fa5; border-color: #ff6fa5; color: #fff; }
+.qe-panel { margin: 0 0 14px; padding: 12px; border-radius: 14px; background: rgba(255,255,255,.05); border: 1px dashed rgba(255,255,255,.2); }
+.qe-qa { display: grid; gap: 8px; margin: 10px 0 14px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.qe-qa:last-child { border: 0; padding-bottom: 0; margin-bottom: 0; }
+.qe-panel input[type="text"] { width: 100%; margin-bottom: 8px; }
+.qe-qa input { margin-bottom: 0 !important; }
+@media (min-width: 700px) { .qe-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

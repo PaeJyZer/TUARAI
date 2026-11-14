@@ -185,6 +185,81 @@ window.TU = (function () {
                  lock: function (v) { locked = !!v; data = collect(); render(); } };
     }
 
+
+    // ตัวเลือกภารกิจ (ธีม Classic): เลือก 3 จาก 6 + กรอกคำถามเอง / ข้อความลับ
+    var QUESTS = [
+        { k: 'quiz', ic: '💭', t: 'ทายใจ', d: 'ถามเดือน/ปี/จำนวนวัน (สร้างจากวันที่ให้อัตโนมัติ)' },
+        { k: 'puzzle', ic: '🧩', t: 'ต่อภาพ', d: 'เลื่อนชิ้นส่วนรูปปกให้เป็นรูปเต็ม' },
+        { k: 'hunt', ic: '💗', t: 'หัวใจลับ', d: 'ตามหาหัวใจ 5 ดวงที่ซ่อนในรูป' },
+        { k: 'match', ic: '🃏', t: 'จับคู่ความทรงจำ', d: 'พลิกการ์ดหาคู่รูปเดียวกัน (ใช้รูปของคุณ)' },
+        { k: 'ask', ic: '✍️', t: 'คำถามของเรา', d: 'คุณตั้งคำถามเอง เขาเลือกตอบ' },
+        { k: 'scratch', ic: '🎟', t: 'ขูดข้อความลับ', d: 'ขูดการ์ดเผยข้อความที่คุณเขียนซ่อนไว้' }
+    ];
+    function questEditor(root, init, opts) {
+        opts = opts || {};
+        init = init || {};
+        var MAXP = 3, locked = false;
+        var pick = (init.pick && init.pick.length ? init.pick : ['quiz', 'puzzle', 'hunt']).slice(0, MAXP);
+        var qa = (init.qa || []).slice(0, 3), sec = (init.secret || []).slice(0, 3);
+        while (qa.length < 3) qa.push({ q: '', a: '', w: ['', ''] });
+        while (sec.length < 3) sec.push('');
+        function v(x) { return escapeHtml(x || ''); }
+        var h = '<p class="photo-hint">🎯 เลือกภารกิจที่จะให้เขา/เธอเล่นก่อนอ่านจดหมาย <b>ได้ ' + MAXP + ' ข้อ (ฟรี)</b> <span id="qeCnt"></span></p><div class="qe-grid">';
+        QUESTS.forEach(function (q) {
+            h += '<button type="button" class="qe-chip" data-k="' + q.k + '"><span class="qe-ic">' + q.ic + '</span><b>' + q.t + '</b><small>' + q.d + '</small><i class="qe-tick">✓</i></button>';
+        });
+        h += '</div><div class="qe-panel" data-p="ask"><p class="field-label">✍️ คำถามของเรา (ใส่ได้ 1-3 ข้อ)</p>';
+        qa.forEach(function (it, i) {
+            var w = it.w || [];
+            h += '<div class="qe-qa"><b>ข้อ ' + (i + 1) + '</b><input type="text" class="qe-q" maxlength="120" placeholder="คำถาม เช่น เรานัดเจอกันครั้งแรกที่ไหน" value="' + v(it.q) + '">' +
+                '<input type="text" class="qe-a" maxlength="50" placeholder="✓ คำตอบที่ถูก" value="' + v(it.a) + '">' +
+                '<input type="text" class="qe-w" maxlength="50" placeholder="✗ ตัวเลือกหลอกที่ 1" value="' + v(w[0]) + '">' +
+                '<input type="text" class="qe-w" maxlength="50" placeholder="✗ ตัวเลือกหลอกที่ 2 (ไม่ใส่ก็ได้)" value="' + v(w[1]) + '"></div>';
+        });
+        h += '</div><div class="qe-panel" data-p="scratch"><p class="field-label">🎟 ข้อความลับที่ซ่อนใต้การ์ดขูด (ใส่ได้ 1-3 ข้อ)</p>';
+        sec.forEach(function (t, i) {
+            h += '<input type="text" class="qe-s" maxlength="120" placeholder="ข้อความลับที่ ' + (i + 1) + ' เช่น ขอบคุณที่อยู่ข้างกันเสมอ" value="' + v(t) + '">';
+        });
+        h += '</div>';
+        root.innerHTML = h;
+        function sync() {
+            root.querySelectorAll('.qe-chip').forEach(function (c) { c.classList.toggle('on', pick.indexOf(c.dataset.k) >= 0); });
+            root.querySelectorAll('.qe-panel').forEach(function (p) { p.style.display = pick.indexOf(p.dataset.p) >= 0 ? '' : 'none'; });
+            root.querySelector('#qeCnt').textContent = '(เลือกแล้ว ' + pick.length + '/' + MAXP + ')';
+        }
+        root.addEventListener('click', function (e) {
+            var c = e.target.closest('.qe-chip'); if (!c || locked) return;
+            var k = c.dataset.k, i = pick.indexOf(k);
+            if (i >= 0) { if (pick.length <= 1) return; pick.splice(i, 1); }
+            else {
+                if (pick.length >= MAXP) { if (window.TU && TU.showAlert) TU.showAlert('เลือกได้สูงสุด ' + MAXP + ' ภารกิจ กดยกเลิกข้ออื่นก่อนนะ'); return; }
+                pick.push(k);
+            }
+            sync();
+        });
+        function val(el) { return el.value.trim(); }
+        function collect() {
+            var qaOut = [];
+            root.querySelectorAll('.qe-qa').forEach(function (el) {
+                var ws = [].map.call(el.querySelectorAll('.qe-w'), val).filter(Boolean);
+                qaOut.push({ q: val(el.querySelector('.qe-q')), a: val(el.querySelector('.qe-a')), w: ws });
+            });
+            return { pick: pick.slice(), qa: qaOut.filter(function (x) { return x.q && x.a && x.w.length; }),
+                     secret: [].map.call(root.querySelectorAll('.qe-s'), val).filter(Boolean) };
+        }
+        sync();
+        return {
+            get: collect,
+            validate: function () {
+                var d = collect();
+                if (pick.indexOf('ask') >= 0 && !d.qa.length) return 'ภารกิจ "คำถามของเรา": กรอกอย่างน้อย 1 ข้อ ให้ครบทั้งคำถาม คำตอบที่ถูก และตัวเลือกหลอก 1 ตัวเลือก';
+                if (pick.indexOf('scratch') >= 0 && !d.secret.length) return 'ภารกิจ "ขูดข้อความลับ": กรอกข้อความลับอย่างน้อย 1 ข้อ';
+                return '';
+            },
+            lock: function (x) { locked = !!x; root.querySelectorAll('input').forEach(function (el) { el.disabled = locked; }); }
+        };
+    }
+
     function money(n) {
         return Number(n).toLocaleString('th-TH', { maximumFractionDigits: 0 });
     }
@@ -277,6 +352,6 @@ window.TU = (function () {
     return {
         escapeHtml: escapeHtml, showAlert: showAlert, api: api, postJson: postJson,
         shrinkMany: shrinkMany, copyText: copyText, fmtDate: fmtDate, fmtRemain: fmtRemain,
-        money: money, photoPicker: photoPicker, dialogEditor: dialogEditor
+        money: money, photoPicker: photoPicker, dialogEditor: dialogEditor, questEditor: questEditor
     };
 })();

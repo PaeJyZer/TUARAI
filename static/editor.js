@@ -17,8 +17,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     let site = null;
 
     let dlgEd = null;
+    let qEd = null;
     function setEditable(on) {
         if (dlgEd) dlgEd.lock(!on);
+        if (qEd) qEd.lock(!on);
         form.querySelectorAll('input, textarea, select, button').forEach((el) => { el.disabled = !on; });
         addBtn.disabled = !on;
     }
@@ -121,6 +123,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('edDialogWrap').style.display = site.has_dialog ? '' : 'none';
         if (site.has_dialog && !dlgEd) dlgEd = TU.dialogEditor(document.getElementById('edDialog'), site.dialog, { free: site.q_free, price: site.q_price, max: site.q_max, allowed: site.q_allowed, onBuy: site.q_allowed < site.q_max ? buyQuestions : null });
 
+        document.getElementById('edQuestsWrap').style.display = site.has_quests ? '' : 'none';
+        if (site.has_quests && !qEd) qEd = TU.questEditor(document.getElementById('edQuests'), site.quests);
+
         renderNotice();
         renderPhotos();
         setEditable(site.can_edit);
@@ -149,6 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             letter_text: document.getElementById('edLetter').value,
             letter_sign: document.getElementById('edSign').value,
             dialog: dlgEd ? dlgEd.get() : [],
+            quests: qEd ? qEd.get() : undefined,
             captions: capOut
         };
     }
@@ -179,6 +185,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!captionsOk()) return;
+        if (qEd) { const qp = qEd.validate(); if (qp) { TU.showAlert(qp); return; } }
         const btn = document.getElementById('edSave');
         btn.disabled = true;
         const r = await putSite();

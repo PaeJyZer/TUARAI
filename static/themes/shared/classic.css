@@ -145,3 +145,22 @@ html.lowfx .cl-heart, html.lowfx .cl-lock-card, html.lowfx .cl-hbig { animation:
 .cl-quest.in-modal .cl-cards { grid-template-columns: 1fr; }
 .cl-quest.in-modal .cl-card { grid-template-columns: 44px 38px 1fr auto; grid-template-areas: "no ic t st" "no ic s st"; text-align: left; justify-items: stretch; padding: 12px 14px; }
 body.theme-gaga { --cl-bg: #20111c; --cl-ink: #fbe8f0; --cl-sub: #c79ab0; --cl-acc: #ff6fa5; --cl-acc2: #ffb3d1; --cl-line: rgba(255,111,165,.4); --cl-back: rgba(14,4,12,.9); --cl-btn-ink: #2a0f1d; }
+
+/* ---------- ภารกิจเพิ่มเติม: จับคู่ / ขูดการ์ด ---------- */
+@media (min-width: 760px) { .cl-cards.many { grid-template-columns: repeat(3, 1fr); } }
+.cl-mgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: min(84vw, 360px); margin: 0 auto; }
+.cl-mt.c3 .cl-mgrid { grid-template-columns: repeat(3, 1fr); }
+.cl-mc { appearance: none; position: relative; padding: 0; aspect-ratio: 3 / 4; border: 0; background: none; cursor: pointer; perspective: 600px; -webkit-tap-highlight-color: transparent; }
+.cl-mc > span { position: absolute; inset: 0; border-radius: calc(var(--cl-r) / 3); backface-visibility: hidden; -webkit-backface-visibility: hidden; transition: transform .45s cubic-bezier(.3,1.2,.4,1); }
+.cl-mb { display: grid; place-items: center; font-size: 26px; background: linear-gradient(145deg, var(--cl-acc), color-mix(in srgb, var(--cl-acc) 55%, var(--cl-acc2))); border: 2px solid color-mix(in srgb, var(--cl-bg) 70%, #fff); box-shadow: 0 4px 10px rgba(0,0,0,.25), inset 0 0 0 3px rgba(255,255,255,.16); }
+.cl-mf { background-size: cover; background-position: center; transform: rotateY(180deg); border: 2px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,.3); }
+.cl-mc.flip .cl-mb, .cl-mc.ok .cl-mb { transform: rotateY(180deg); }
+.cl-mc.flip .cl-mf, .cl-mc.ok .cl-mf { transform: rotateY(0); }
+.cl-mc.ok { animation: clPop2 .5s; } .cl-mc.ok .cl-mf { border-color: #3ccf8e; box-shadow: 0 0 0 3px rgba(60,207,142,.5); }
+@keyframes clPop2 { 50% { transform: scale(1.08); } }
+.cl-scw { display: grid; gap: 12px; }
+.cl-sc { position: relative; height: 76px; border-radius: calc(var(--cl-r) / 2); overflow: hidden; background: color-mix(in srgb, var(--cl-acc) 14%, var(--cl-bg)); border: 1.5px solid var(--cl-line); display: grid; place-items: center; }
+.cl-sct { margin: 0; padding: 0 14px; text-align: center; font-size: 16px; line-height: 1.45; font-weight: 600; color: var(--cl-ink); }
+.cl-scv { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; transition: opacity .5s; }
+.cl-scv.gone { opacity: 0; pointer-events: none; }
+body.theme-pixel .cl-mb, body.theme-pixel .cl-mf, body.theme-pixel .cl-sc { border-radius: 0; }

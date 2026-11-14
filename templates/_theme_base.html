@@ -104,7 +104,8 @@
       letterText:  {{ letter_text|tojson }},
       letterSign:  {{ letter_sign|tojson }},
       mode:        {{ occ.mode|tojson }},
-      captions:    {{ (captions or {})|tojson }}
+      captions:    {{ (captions or {})|tojson }},
+      quests:      {{ (quests or {})|tojson }}
     };
   </script>
   <script src="{{ url_for('static', filename='themes/shared/game.js') }}"></script>

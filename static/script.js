@@ -180,6 +180,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                         ${theme.has_dialog ? `<label class="field-label">💬 บทสนทนาวิชวลโนเวล (ให้แฟนเลือกตอบ)</label><div id="buyDialog" class="dlg-box"></div>` : ''}
 
+                        ${theme.has_quests ? `<label class="field-label">🎯 ภารกิจก่อนอ่านจดหมาย</label><div id="buyQuests" class="qe-box"></div>` : ''}
+
                         <label class="field-label">รูปภาพความทรงจำ</label>
                         <input type="file" id="buyPhotos" accept="image/*" multiple hidden>
                         <div class="photo-pick-row">
@@ -238,6 +240,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         refreshRule();
 
         const dlgEd = theme.has_dialog ? TU.dialogEditor(document.getElementById('buyDialog'), [], { free: DATA.qFree, price: DATA.qPrice, max: DATA.qMax, allowed: DATA.qMax }) : null;
+        const qEd = theme.has_quests ? TU.questEditor(document.getElementById('buyQuests'), null) : null;
         const occSel = document.getElementById('buyOccasion');
         const occLabels = { anniversary: 'วันที่เริ่มคบกัน (หรือวันพิเศษ)', birthday: 'วันเกิดของเขา/เธอ' };
         occSel.addEventListener('change', () => {
@@ -263,6 +266,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (new Set(caps.map((x) => x.toLowerCase())).size !== caps.length) { TU.showAlert('มีคำใต้รูปซ้ำกัน กรุณาใช้คำที่ไม่ซ้ำกัน เพื่อให้เกมจับคู่ได้ชัดเจน'); return; }
             }
 
+            if (qEd) { const qp = qEd.validate(); if (qp) { TU.showAlert(qp); return; } }
+
             const btn = document.getElementById('buySubmit');
             const label = btn.textContent;
             btn.disabled = true;
@@ -277,6 +282,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             fd.append('letter_text', document.getElementById('buyLetter').value);
             fd.append('letter_sign', document.getElementById('buySign').value);
             if (dlgEd) fd.append('dialog', JSON.stringify(dlgEd.get()));
+            if (qEd) fd.append('quests', JSON.stringify(qEd.get()));
             fd.append('captions', JSON.stringify(picker.captions()));
             picker.blobs().forEach((b, i) => fd.append('images', b, `photo${i + 1}.jpg`));
 

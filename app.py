@@ -362,6 +362,7 @@ def migrate_db():
         'dialog': 'TEXT',
         'extra_q': 'INTEGER DEFAULT 0',   # ช่องคำถามเพิ่มที่ซื้อแล้ว
         'captions': 'TEXT',
+        'quests': 'TEXT',                 # ภารกิจที่ลูกค้าเลือก (ธีม Classic)
     })
 
     # เว็บเดิมที่สร้างไว้ก่อนมีแพ็กเกจ -> ให้เป็น Pro ที่ใช้งานอยู่ (ไม่ล็อกของเดิม)
@@ -537,6 +538,7 @@ def theme_dict(theme):
     d['tagline'] = PREMIUM_TAGS.get(d.get('theme_code'), '')
     d['has_dialog'] = d.get('theme_code') in DIALOG_THEMES
     d['has_captions'] = d.get('theme_code') in CAPTION_THEMES
+    d['has_quests'] = not d['is_premium']
     return d
 
 
@@ -597,6 +599,63 @@ def clean_dialog(raw):
     return out
 
 
+QUEST_KEYS = ['quiz', 'puzzle', 'hunt', 'match', 'ask', 'scratch']
+QUEST_PICK = 3          # เลือกได้กี่ภารกิจ (ฟรีทุกแพ็กเกจ)
+
+
+def clean_quests(raw):
+    """ภารกิจของธีม Classic: {'pick': [3 ข้อ], 'qa': [{q,a,w:[ผิด 1-3]}], 'secret': [ข้อความลับ]}"""
+    if isinstance(raw, str):
+        try:
+            raw = json.loads(raw) if raw.strip() else {}
+        except ValueError:
+            raw = {}
+    if not isinstance(raw, dict):
+        raw = {}
+    qa = []
+    for it in (raw.get('qa') if isinstance(raw.get('qa'), list) else [])[:3]:
+        if not isinstance(it, dict):
+            continue
+        q = str(it.get('q') or '').strip()[:120]
+        a = str(it.get('a') or '').strip()[:50]
+        w = []
+        for x in (it.get('w') if isinstance(it.get('w'), list) else [])[:3]:
+            x = str(x or '').strip()[:50]
+            if x and x != a and x not in w:
+                w.append(x)
+        if q and a and w:
+            qa.append({'q': q, 'a': a, 'w': w})
+    secret = []
+    for x in (raw.get('secret') if isinstance(raw.get('secret'), list) else [])[:3]:
+        x = ' '.join(str(x or '').split())[:120]
+        if x:
+            secret.append(x)
+    pick = []
+    for k in (raw.get('pick') if isinstance(raw.get('pick'), list) else []):
+        if k in QUEST_KEYS and k not in pick:
+            if (k == 'ask' and not qa) or (k == 'scratch' and not secret):
+                continue
+            pick.append(k)
+    pick = pick[:QUEST_PICK]
+    for k in QUEST_KEYS[:3]:            # ไม่ครบ 3 ข้อ เติมจากภารกิจพื้นฐาน
+        if len(pick) < QUEST_PICK and k not in pick:
+            pick.append(k)
+    return {'pick': pick, 'qa': qa, 'secret': secret}
+
+
+def quests_of(site):
+    try:
+        return clean_quests(site['quests'] if 'quests' in site.keys() else None)
+    except Exception:
+        return clean_quests(None)
+
+
+DEMO_QUESTS = {'pick': list(QUEST_KEYS),
+               'qa': [{'q': 'เรานัดเจอกันครั้งแรกที่ไหนนะ?', 'a': 'ร้านกาแฟหน้าปากซอย', 'w': ['สวนสาธารณะ', 'ห้างใกล้บ้าน']}],
+               'secret': ['ขอบคุณที่อยู่ข้างกันเสมอ', 'เธอคือเรื่องราวที่ดีที่สุดของฉัน', 'รักเธอมากกว่าเมื่อวานนะ'],
+               'demo': True}
+
+
 def dialog_of(site):
     try:
         d = clean_dialog(site['dialog']) if 'dialog' in site.keys() else []
@@ -650,6 +709,8 @@ def site_state(site):
         'letter_sign': site['letter_sign'] or '',
         'has_captions': bool(theme and theme['theme_code'] in CAPTION_THEMES),
         'captions': captions_of(site),
+        'has_quests': bool(theme and not theme['is_premium']),
+        'quests': quests_of(site),
         'has_dialog': bool(theme and theme['theme_code'] in DIALOG_THEMES),
         'dialog': (clean_dialog(site['dialog']) if 'dialog' in site.keys() else []),
         'q_free': FREE_QUESTIONS, 'q_price': EXTRA_Q_PRICE, 'q_max': MAX_QUESTIONS,
@@ -759,7 +820,7 @@ def demo_photos():
 #  5. แสดงเว็บเซอร์ไพรส์ (ใช้ธีมตามที่ลูกค้าเลือก)
 # =====================================================================
 def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls,
-                 banner=None, toolbar=None, occasion='anniversary', dialog=None, captions=None, demo=False, seo=None):
+                 banner=None, toolbar=None, occasion='anniversary', dialog=None, captions=None, demo=False, seo=None, quests=None):
     """urls: ลิสต์รูป (รูปแรก = รูปหน้าปก/รูปกลาง) ไม่วนซ้ำ ถ้าไม่มีรูปเลยใช้รูปตัวอย่าง"""
     urls = (urls or demo_photos())[:20]
     center, others = urls[0], urls[1:]
@@ -784,6 +845,7 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
         demo=demo,
         seo=seo,
         dialog=dialog or DEFAULT_DIALOG,
+        quests=quests or (DEMO_QUESTS if demo else clean_quests(None)),
         pairs=[(u, (captions or {}).get(u) or f'ความทรงจำที่ {i + 1}') for i, u in enumerate(urls[:MAX_PAIRS])],
         extra_photos=urls[MAX_PAIRS:],
         captions=captions or {},
@@ -795,7 +857,7 @@ def render_site(site, banner=None, toolbar=None):
     return render_theme(theme, site['partner_name'], site['start_date'], site['letter_text'],
                         site['letter_sign'], site_images(site), banner=banner, toolbar=toolbar,
                         occasion=site['occasion'] if 'occasion' in site.keys() else 'anniversary',
-                        dialog=dialog_of(site), captions=captions_of(site))
+                        dialog=dialog_of(site), captions=captions_of(site), quests=quests_of(site))
 
 
 # =====================================================================
@@ -1132,6 +1194,7 @@ def _read_fields(data):
         'letter_sign': clean_text(data.get('letter_sign'), 'letter_sign'),
         'occasion': data.get('occasion') if data.get('occasion') in OCCASIONS else 'anniversary',
         'dialog': json.dumps(clean_dialog(data.get('dialog')), ensure_ascii=False),
+        'quests': json.dumps(clean_quests(data.get('quests')), ensure_ascii=False),
     }
     if not fields['partner_name'] or not fields['letter_text'] or not fields['letter_sign']:
         return None, 'กรอกข้อมูลให้ครบทุกช่อง'
@@ -1191,11 +1254,11 @@ def create_draft():
         cap_map = clean_captions({u: str(lst[i]) for i, u in enumerate(images) if i < len(lst)})
     db.execute('''INSERT INTO user_sites
         (slug, user_id, order_id, theme_id, partner_name, start_date, letter_text, letter_sign,
-         music_url, images_json, package, status, qr_style, occasion, dialog, captions)
-        VALUES (?, ?, 0, ?, ?, ?, ?, ?, '', ?, ?, 'draft', 'plain', ?, ?, ?)''',
+         music_url, images_json, package, status, qr_style, occasion, dialog, captions, quests)
+        VALUES (?, ?, 0, ?, ?, ?, ?, ?, '', ?, ?, 'draft', 'plain', ?, ?, ?, ?)''',
                (slug, user_id, theme['id'], fields['partner_name'], fields['start_date'],
                 fields['letter_text'], fields['letter_sign'], json.dumps(images, ensure_ascii=False), pkg_key, fields['occasion'], fields['dialog'],
-                json.dumps(cap_map, ensure_ascii=False)))
+                json.dumps(cap_map, ensure_ascii=False), fields['quests']))
     db.commit()
     return jsonify({'status': 'success', 'slug': slug, 'preview_url': url_for('preview_page', slug=slug)})
 
@@ -1269,10 +1332,11 @@ def update_site(slug):
                 db.execute('UPDATE orders SET amount = ?, extra_q = ?, status = ? WHERE id = ?',
                            (base + extra * EXTRA_Q_PRICE, extra, 'pending' if order['status'] == 'rejected' else order['status'], order['id']))
     db.execute('''UPDATE user_sites SET partner_name = ?, start_date = ?, letter_text = ?, letter_sign = ?,
-                  occasion = ?, dialog = ?, captions = ?, theme_id = ?, updated_at = CURRENT_TIMESTAMP WHERE slug = ?''',
+                  occasion = ?, dialog = ?, captions = ?, quests = ?, theme_id = ?, updated_at = CURRENT_TIMESTAMP WHERE slug = ?''',
                (fields['partner_name'], fields['start_date'], fields['letter_text'], fields['letter_sign'],
                 fields['occasion'], fields['dialog'],
                 json.dumps(clean_captions(data.get('captions') if 'captions' in data else captions_of(site), set(site_images(site))), ensure_ascii=False),
+                fields['quests'] if 'quests' in data else json.dumps(quests_of(site), ensure_ascii=False),
                 theme_id, slug))
     db.commit()
     return jsonify({'status': 'success', 'message': 'บันทึกเรียบร้อยแล้ว'})

@@ -157,9 +157,25 @@
   /* =====================================================
      3) ภารกิจ
      ===================================================== */
-  var done = { quiz: store.get('quiz') === '1', puzzle: store.get('puzzle') === '1', hunt: store.get('hunt') === '1' };
+  var QC = CFG.quests || {};
+  var ALLK = ['quiz', 'puzzle', 'hunt', 'match', 'ask', 'scratch'];
+  var QA = (QC.qa || []).filter(function (x) { return x && x.q && x.a && x.w && x.w.length; });
+  var SECRETS = (QC.secret || []).filter(Boolean);
+  var LIST = (QC.pick || []).filter(function (k, i, a) { return ALLK.indexOf(k) >= 0 && a.indexOf(k) === i && (k !== 'ask' || QA.length) && (k !== 'scratch' || SECRETS.length); });
+  if (!LIST.length) LIST = ['quiz', 'puzzle', 'hunt'];
+  var NEED = QC.demo ? 3 : LIST.length;
+  var META = {
+    quiz:    { ic: '💭', t: 'ทายใจ', s: 'ตอบ 3 ข้อ' },
+    puzzle:  { ic: '🧩', t: 'ต่อภาพ', s: 'ต่อรูปคู่ของเรา' },
+    hunt:    { ic: EMO, t: 'หัวใจลับ', s: 'ซ่อนอยู่ในรูป' },
+    match:   { ic: '🃏', t: 'จับคู่ความทรงจำ', s: 'พลิกการ์ดหาคู่รูป' },
+    ask:     { ic: '✍️', t: 'คำถามของเรา', s: 'ตอบคำถามที่เขียนไว้' },
+    scratch: { ic: '🎟', t: 'ขูดข้อความลับ', s: 'ขูดการ์ดเผยข้อความ' }
+  };
+  var done = {}; ALLK.forEach(function (k) { done[k] = store.get(k) === '1'; });
   var quest = null, modal = null, sheet = null, letterOpen = store.get('letter') === '1';
-  function allDone() { return done.quiz && done.puzzle && done.hunt; }
+  function doneCount() { return LIST.filter(function (k) { return done[k]; }).length; }
+  function allDone() { return doneCount() >= NEED; }
   function setLetters() {
     var lock = !(allDone() || letterOpen);
     document.querySelectorAll(LET).forEach(function (b) {
@@ -170,18 +186,17 @@
   }
   function refresh() {
     if (!quest) return;
-    var n = 0;
-    ['quiz', 'puzzle', 'hunt'].forEach(function (k) {
+    var n = doneCount();
+    LIST.forEach(function (k) {
       var c = quest.querySelector('[data-q="' + k + '"]');
       c.classList.toggle('done', !!done[k]);
       c.querySelector('.cl-st').textContent = done[k] ? '✓ เสร็จแล้ว' : 'เริ่มเลย';
-      if (done[k]) n++;
     });
-    quest.querySelector('.cl-bar i').style.width = (n / 3 * 100) + '%';
-    quest.querySelector('.cl-cnt').textContent = n + ' / 3';
-    var fn = document.querySelector('.cl-fabn'); if (fn) fn.textContent = n + '/3';
-    quest.classList.toggle('all', n === 3);
-    var sk2 = quest.querySelector('.cl-skipq'); if (sk2) sk2.hidden = n === 3;
+    quest.querySelector('.cl-bar i').style.width = (Math.min(n, NEED) / NEED * 100) + '%';
+    quest.querySelector('.cl-cnt').textContent = Math.min(n, NEED) + ' / ' + NEED;
+    var fn = document.querySelector('.cl-fabn'); if (fn) fn.textContent = Math.min(n, NEED) + '/' + NEED;
+    quest.classList.toggle('all', n >= NEED);
+    var sk2 = quest.querySelector('.cl-skipq'); if (sk2) sk2.hidden = n >= NEED;
     setLetters();
   }
   function finish(k) {
@@ -235,6 +250,9 @@
       var dO = [rd]; [.78, 1.22, 1.45, .6].forEach(function (f) { var v = Math.max(1, days > 100 ? Math.round(days * f / 10) * 10 : Math.round(days * f)); if (dO.indexOf(v) < 0 && dO.length < 4) dO.push(v); });
       qs.push({ q: 'จนถึงวันนี้ เราอยู่ด้วยกันมากี่วันแล้ว? (ประมาณ)', o: dO.map(function (v) { return (days > 100 ? 'ราว ' : '') + v.toLocaleString('th-TH') + ' วัน'; }), a: (days > 100 ? 'ราว ' : '') + rd.toLocaleString('th-TH') + ' วัน' });
     }
+    runQuiz('ทายใจ', qs, 'quiz', 'ตอบถูกครบทุกข้อ!', 'รู้ใจกันสุดๆ');
+  }
+  function runQuiz(title, qs, key, winT, winS) {
     var i = 0, box = el('div', 'cl-quiz');
     function render() {
       var q = qs[i];
@@ -246,14 +264,17 @@
           if (t === q.a) {
             b.classList.add('right'); sfx('coin'); wrap.classList.add('lock');
             if (window.TUFx) { var r = b.getBoundingClientRect(); TUFx.confetti(r.left + r.width / 2, r.top, 26, null, .5); }
-            setTimeout(function () { i++; if (i < qs.length) render(); else { box.innerHTML = '<div class="cl-win2"><span>' + EMO + '</span><p>ตอบถูกครบทุกข้อ!</p><small>รู้ใจกันสุดๆ</small></div>'; finish('quiz'); setTimeout(closeModal, 1400); } }, 650);
+            setTimeout(function () { i++; if (i < qs.length) render(); else { box.innerHTML = '<div class="cl-win2"><span>' + EMO + '</span><p>' + winT + '</p><small>' + winS + '</small></div>'; finish(key); setTimeout(closeModal, 1400); } }, 650);
           } else { b.classList.add('wrong'); b.disabled = true; sfx('tap'); box.querySelector('.cl-fb').textContent = 'ยังไม่ใช่นะ ลองอีกที 💭'; }
         });
         wrap.appendChild(b);
       });
     }
     render();
-    openModal('ทายใจ', box, stageBack);
+    openModal(title, box, stageBack);
+  }
+  function ask() {
+    runQuiz('คำถามของเรา', QA.map(function (x) { return { q: x.q, o: [x.a].concat(x.w), a: x.a }; }), 'ask', 'ตอบถูกหมดเลย!', 'รู้เรื่องของเราดีจริงๆ');
   }
 
   /* --- ต่อภาพ (สไลด์พัซเซิล 3x3 จากรูปปก) --- */
@@ -326,6 +347,82 @@
     openModal('ต่อภาพของเรา', box, stageBack);
   }
 
+
+  /* --- จับคู่ความทรงจำ (พลิกการ์ดหาคู่รูป) --- */
+  function match() {
+    var seen = {}, srcs = [];
+    PH().forEach(function (f) { var im = f.querySelector('img'); var u = im && (im.currentSrc || im.src); if (u && !seen[u]) { seen[u] = 1; srcs.push(u); } });
+    var pairs = Math.min(4, srcs.length);
+    if (pairs < 2) { finish('match'); return; }
+    var cards = shuffle(srcs.slice(0, pairs).concat(srcs.slice(0, pairs)));
+    var box = el('div', 'cl-mt' + (pairs <= 3 ? ' c3' : ''));
+    box.innerHTML = '<p class="cl-pzh">พลิกการ์ดทีละ 2 ใบ หาคู่ที่เป็นรูปเดียวกัน</p><div class="cl-mgrid"></div><div class="cl-pzbar"><span class="cl-mv">0 ครั้ง</span><span class="cl-mv cl-mp">0 / ' + pairs + ' คู่</span></div>';
+    var grid = box.querySelector('.cl-mgrid'), mv = box.querySelector('.cl-mv'), mp = box.querySelector('.cl-mp');
+    var open = [], busy = false, moves = 0, got = 0;
+    cards.forEach(function (u) {
+      var b = el('button', 'cl-mc', '<span class="cl-mb">' + EMO + '</span><span class="cl-mf"></span>'); b.type = 'button'; b.dataset.u = u;
+      b.querySelector('.cl-mf').style.backgroundImage = 'url("' + u + '")';
+      b.addEventListener('click', function () {
+        if (busy || b.classList.contains('flip') || b.classList.contains('ok')) return;
+        b.classList.add('flip'); sfx('tick'); open.push(b);
+        if (open.length < 2) return;
+        busy = true; moves++; mv.textContent = moves + ' ครั้ง';
+        var a = open[0], c = open[1]; open = [];
+        if (a.dataset.u === c.dataset.u) {
+          setTimeout(function () {
+            a.classList.add('ok'); c.classList.add('ok'); got++; mp.textContent = got + ' / ' + pairs + ' คู่'; sfx('coin'); busy = false;
+            if (window.TUFx) { var r = c.getBoundingClientRect(); TUFx.confetti(r.left + r.width / 2, r.top + r.height / 2, 22, null, .5); }
+            if (got === pairs) { sfx('win'); if (window.TUFx) TUFx.confetti(innerWidth / 2, innerHeight * .45, 80); finish('match'); setTimeout(closeModal, 1500); }
+          }, 350);
+        } else {
+          setTimeout(function () { a.classList.remove('flip'); c.classList.remove('flip'); busy = false; }, 800);
+        }
+      });
+      grid.appendChild(b);
+    });
+    openModal('จับคู่ความทรงจำ', box, stageBack);
+  }
+
+  /* --- ขูดการ์ดข้อความลับ --- */
+  function scratch() {
+    var box = el('div', 'cl-scw'), left = SECRETS.length;
+    box.innerHTML = '<p class="cl-pzh">ใช้นิ้วขูดการ์ดให้เห็นข้อความที่ซ่อนอยู่</p>';
+    SECRETS.forEach(function (t, i) {
+      var w = el('div', 'cl-sc'); w.innerHTML = '<p class="cl-sct">' + escapeText(t) + '</p><canvas class="cl-scv" aria-label="การ์ดขูดใบที่ ' + (i + 1) + '"></canvas>';
+      box.appendChild(w);
+    });
+    function escapeText(x) { return String(x).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    openModal('ขูดข้อความลับ', box, stageBack);
+    box.querySelectorAll('.cl-sc').forEach(function (w, i) {
+      var cv = w.querySelector('canvas'), W = w.clientWidth, H = w.clientHeight; if (!W) { W = 300; H = 76; }
+      cv.width = W; cv.height = H; var cx = cv.getContext('2d');
+      var g = cx.createLinearGradient(0, 0, W, H); g.addColorStop(0, '#c9ccd6'); g.addColorStop(.5, '#f3f4f8'); g.addColorStop(1, '#a9adbb');
+      cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+      cx.fillStyle = 'rgba(70,74,96,.55)'; cx.font = '600 15px sans-serif'; cx.textAlign = 'center'; cx.textBaseline = 'middle';
+      cx.fillText('✦ ขูดตรงนี้ ✦  ข้อความลับที่ ' + (i + 1), W / 2, H / 2);
+      cx.globalCompositeOperation = 'destination-out';
+      var down = false, n = 0, ok = false;
+      function pt(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height }; }
+      function dot(e) { var p = pt(e); cx.beginPath(); cx.arc(p.x, p.y, 20, 0, 7); cx.fill(); if (++n % 3 === 0) { sfx('tick'); } if (n % 6 === 0) check(); }
+      function check() {
+        if (ok) return;
+        try {
+          var d = cx.getImageData(0, 0, W, H).data, c = 0, t = 0;
+          for (var k = 3; k < d.length; k += 64) { t++; if (d[k] < 40) c++; }
+          if (c / t > .5) reveal();
+        } catch (e) { reveal(); }
+      }
+      function reveal() {
+        if (ok) return; ok = true; cv.classList.add('gone'); sfx('coin'); left--;
+        if (window.TUFx) { var r = w.getBoundingClientRect(); TUFx.confetti(r.left + r.width / 2, r.top + r.height / 2, 24, null, .5); }
+        if (left <= 0) { sfx('win'); finish('scratch'); setTimeout(closeModal, 1500); }
+      }
+      cv.addEventListener('pointerdown', function (e) { down = true; try { cv.setPointerCapture(e.pointerId); } catch (x) {} dot(e); });
+      cv.addEventListener('pointermove', function (e) { if (down) dot(e); });
+      ['pointerup', 'pointercancel'].forEach(function (n2) { cv.addEventListener(n2, function () { down = false; check(); }); });
+    });
+  }
+
   /* --- หัวใจลับ 5 ดวง ซ่อนอยู่ในรูป --- */
   var huntOn = false, found = 0, huntTotal = 5;
   function plantHearts() {
@@ -367,27 +464,26 @@
   function mountQuest() {
     var foot = $('.foot'); var main = $('#main'); if (!main && !STAGE) return;
     quest = el('section', 'cl-quest reveal');
+    var cardsHtml = LIST.map(function (k, i) {
+      var m = META[k];
+      return '<li><button type="button" class="cl-card" data-q="' + k + '"><span class="cl-no">0' + (i + 1) + '</span><span class="cl-ic">' + m.ic + '</span><b>' + m.t + '</b><small>' + m.s + '</small><i class="cl-st">เริ่มเลย</i></button></li>';
+    }).join('');
     quest.innerHTML =
       '<header class="cl-qh"><p class="cl-kick">' + sk.q + '</p><h2 class="cl-qt">ภารกิจก่อนอ่านจดหมาย</h2>' +
-      '<p class="cl-qs">ทำครบ 3 ข้อเพื่อปลดล็อกจดหมาย ไม่มีแพ้ ลองกี่ครั้งก็ได้</p>' +
-      '<div class="cl-prog"><div class="cl-bar"><i></i></div><span class="cl-cnt">0 / 3</span></div></header>' +
-      '<ol class="cl-cards">' +
-        '<li><button type="button" class="cl-card" data-q="quiz"><span class="cl-no">01</span><span class="cl-ic">💭</span><b>ทายใจ</b><small>ตอบ 3 ข้อ</small><i class="cl-st">เริ่มเลย</i></button></li>' +
-        '<li><button type="button" class="cl-card" data-q="puzzle"><span class="cl-no">02</span><span class="cl-ic">🧩</span><b>ต่อภาพ</b><small>ต่อรูปคู่ของเรา</small><i class="cl-st">เริ่มเลย</i></button></li>' +
-        '<li><button type="button" class="cl-card" data-q="hunt"><span class="cl-no">03</span><span class="cl-ic">' + EMO + '</span><b>หัวใจลับ</b><small>ซ่อนอยู่ในรูป</small><i class="cl-st">เริ่มเลย</i></button></li>' +
-      '</ol><button type="button" class="cl-skipq">ข้ามภารกิจ →</button>';
+      '<p class="cl-qs">' + (QC.demo ? 'ตัวอย่างมี ' + LIST.length + ' ภารกิจ (ลูกค้าเลือกเองได้ 3 ข้อ) ทำข้อไหนก็ได้ ' + NEED + ' ข้อเพื่อปลดล็อกจดหมาย' : 'ทำครบ ' + NEED + ' ข้อเพื่อปลดล็อกจดหมาย ไม่มีแพ้ ลองกี่ครั้งก็ได้') + '</p>' +
+      '<div class="cl-prog"><div class="cl-bar"><i></i></div><span class="cl-cnt">0 / ' + NEED + '</span></div></header>' +
+      '<ol class="cl-cards' + (LIST.length > 3 ? ' many' : '') + '">' + cardsHtml + '</ol><button type="button" class="cl-skipq">ข้ามภารกิจ →</button>';
     if (STAGE) {
-      var fab = el('button', 'cl-fab', '<span>' + EMO + '</span> ภารกิจ <b class="cl-fabn">0/3</b>'); fab.type = 'button';
+      var fab = el('button', 'cl-fab', '<span>' + EMO + '</span> ภารกิจ <b class="cl-fabn">0/' + NEED + '</b>'); fab.type = 'button';
       fab.addEventListener('click', function () { sfx('tap'); questModal(); });
       document.body.appendChild(fab);
     } else if (foot) foot.parentNode.insertBefore(quest, foot); else main.appendChild(quest);
-    quest.querySelector('[data-q="quiz"]').addEventListener('click', function () { sfx('tap'); quiz(); });
-    quest.querySelector('[data-q="puzzle"]').addEventListener('click', function () { sfx('tap'); puzzle(); });
-    quest.querySelector('[data-q="hunt"]').addEventListener('click', function () { sfx('tap'); hunt(); });
-    quest.querySelector('.cl-skipq').addEventListener('click', function () { ['quiz', 'puzzle', 'hunt'].forEach(function (k) { done[k] = true; store.set(k, '1'); }); letterOpen = true; store.set('letter', '1'); refresh(); toast('ข้ามภารกิจแล้ว'); document.querySelectorAll('.cl-heart').forEach(function (h) { h.remove(); }); });
+    var RUN = { quiz: quiz, puzzle: puzzle, hunt: hunt, match: match, ask: ask, scratch: scratch };
+    LIST.forEach(function (k) { quest.querySelector('[data-q="' + k + '"]').addEventListener('click', function () { sfx('tap'); RUN[k](); }); });
+    quest.querySelector('.cl-skipq').addEventListener('click', function () { LIST.forEach(function (k) { done[k] = true; store.set(k, '1'); }); letterOpen = true; store.set('letter', '1'); refresh(); toast('ข้ามภารกิจแล้ว'); document.querySelectorAll('.cl-heart').forEach(function (h) { h.remove(); }); });
     if (window.IntersectionObserver === undefined || STAGE) quest.classList.add('in');
     refresh(); updateHuntLabel();
-    plantHearts();
+    if (LIST.indexOf('hunt') >= 0) plantHearts();
   }
 
   // ปุ่มจดหมายที่ยังล็อก: กดแล้วพาไปที่ภารกิจ
@@ -395,7 +491,7 @@
     var b = e.target.closest && e.target.closest(LET);
     if (!b || !quest || allDone() || letterOpen) return;
     e.stopImmediatePropagation(); e.preventDefault();
-    sfx('tap'); toast('ไขภารกิจให้ครบ 3 ข้อก่อนนะ 🔒');
+    sfx('tap'); toast('ไขภารกิจให้ครบ ' + NEED + ' ข้อก่อนนะ 🔒');
     if (STAGE) { questModal(); return; }
     quest.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
     quest.classList.remove('nudge'); void quest.offsetWidth; quest.classList.add('nudge');
@@ -403,7 +499,7 @@
 
   function init() {
     mountLock(); mountChip(); mountQuest(); setLetters();
-    if (STAGE) { var t0 = setInterval(function () { if (!huntOn && !done.hunt && document.querySelector('.scatter-item')) { plantHearts(); } if (huntOn) clearInterval(t0); }, 600); }
+    if (STAGE && LIST.indexOf('hunt') >= 0) { var t0 = setInterval(function () { if (!huntOn && !done.hunt && document.querySelector('.scatter-item')) { plantHearts(); } if (huntOn) clearInterval(t0); }, 600); }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

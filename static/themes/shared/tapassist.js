@@ -21,7 +21,7 @@
     if (!e.isTrusted || e.defaultPrevented) return;
     var t = e.target;
     if (!t || !t.closest) return;
-    if (t.closest(SEL + ', input, textarea, select, label') || pointerish(t)) return;
+    if (t.closest('.cl-modal, .cl-scv') || t.closest(SEL + ', input, textarea, select, label') || pointerish(t)) return;
     var x = e.clientX, y = e.clientY;
     if (!x && !y) return;
     /* มีหน้าต่างทับอยู่ (จดหมาย/ซอง/รูปขยาย/เกม) → ช่วยกดเฉพาะของในหน้าต่างนั้น ห้ามทะลุไปโดนของข้างหลัง */
