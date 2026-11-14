@@ -1,0 +1,135 @@
+/* TUARAI – โทนสว่างหรูพรีเมียม (เฉพาะหน้าร้าน: หน้าแรก/วิธีสั่งซื้อ/ข้อตกลง/แดชบอร์ด/ชำระเงิน/แก้ไข/แอดมิน)
+   ครีมงาช้าง + ทองแชมเปญ + หมึกม่วงเข้ม  ไม่แตะธีมเว็บเซอร์ไพรส์ของลูกค้า */
+:root {
+  --bg-color: #faf6ef; --card-bg: #ffffff; --accent-wine: #a3162f; --accent-red: #b3122f;
+  --text-main: #2a2230; --text-muted: #6f6578; --border-color: #e8dccb;
+  --lt-gold: #b98a3e; --lt-gold2: #e6c98a; --lt-ink: #2a2230; --lt-sub: #6f6578; --lt-card: #ffffff; --lt-line: #e8dccb;
+  --hx-gold: #b98a3e;
+  color-scheme: light;
+}
+html { background: #faf6ef; }
+body {
+  background: linear-gradient(180deg, #fdfaf4 0%, #f8f1e6 45%, #fbf6ee 100%) fixed; background-color: #faf6ef; color: var(--lt-ink);
+}
+body::before { background: radial-gradient(closest-side, rgba(233,190,120,.34), transparent 72%); }
+body::after { background: radial-gradient(closest-side, rgba(244,160,176,.26), transparent 72%); }
+/* ลายเส้นละเอียดบางๆ ให้ดูเป็นกระดาษพรีเมียม */
+body > *:first-child { position: relative; }
+
+/* แถบเมนู */
+.navbar { background: rgba(253,250,244,.82); border-bottom: 1px solid var(--lt-line); box-shadow: 0 1px 0 rgba(255,255,255,.8) inset, 0 8px 30px rgba(120,90,40,.06); }
+.logo { color: #a3162f; text-shadow: none; }
+.logo img { filter: none; }
+.nav-item { color: var(--lt-ink); } .nav-item:hover, .nav-item.active { color: #a3162f; }
+.btn-login { background: linear-gradient(135deg, #b3122f, #8e0f27); color: #fff; border-radius: 999px; box-shadow: 0 6px 18px rgba(163,22,47,.25); }
+.btn-login:hover { background: linear-gradient(135deg, #c4163a, #a3162f); }
+
+/* หน้าแรก */
+.hx-eyebrow { color: #8a7a64; } .hx-eyebrow i { background: linear-gradient(90deg, var(--lt-gold), transparent); }
+.hx-title { color: var(--lt-ink); }
+.hx-title em { background: linear-gradient(95deg, #c2263f, #a3162f 45%, #b98a3e); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.hx-sub { color: #5f5568; }
+.hx-btn.primary { background: linear-gradient(135deg, #b3122f, #8e0f27); box-shadow: 0 12px 30px rgba(163,22,47,.28); }
+.hx-btn.primary:hover { box-shadow: 0 18px 40px rgba(163,22,47,.38); }
+.hx-btn.ghost { color: var(--lt-ink); border: 1px solid #cdb88f; background: rgba(255,255,255,.55); }
+.hx-btn.ghost:hover { background: #fff; }
+.hx-stats { border-top: 1px solid var(--lt-line); } .hx-stats dt { color: var(--lt-ink); } .hx-stats dd { color: var(--lt-sub); }
+.hx-shot { border: 1px solid rgba(255,255,255,.9); box-shadow: 0 30px 60px rgba(90,60,30,.22), 0 4px 14px rgba(90,60,30,.12); }
+
+.rail-eyebrow { color: #9a8760; } .rail-title, .rail h2, .rail-head h2 { color: var(--lt-ink); }
+.rail-sub { color: var(--lt-sub); }
+.rc { border: 1px solid #d9c8a6; background: rgba(255,255,255,.8); color: var(--lt-ink); } .rc:hover { background: #fff; }
+.rail-bar { background: rgba(120,90,40,.12); }
+.deck-name { color: #8a7a64; } .deck-count { color: var(--lt-sub); } .deck-count b { color: var(--lt-ink); }
+
+/* การ์ดธีม */
+.hc { background: #fff; border-color: var(--lt-line); box-shadow: 0 14px 36px rgba(120,90,40,.12); color: var(--lt-ink); }
+.hc:hover { border-color: #d9c08a; box-shadow: 0 26px 54px rgba(120,90,40,.2); }
+.hc.premium:hover { border-color: var(--lt-gold); box-shadow: 0 26px 54px rgba(185,138,62,.25); }
+.hc h3, .hc-name, .hc-title { color: var(--lt-ink); }
+.hc-line { color: var(--lt-sub); } .hc.premium .hc-line { color: #8c6a22; }
+.hc-price { color: var(--lt-ink); } .hc-price small { color: var(--lt-sub); }
+.hc-demo { border: 0 !important; color: #4a3414; }
+.hc-demo::before { background: linear-gradient(135deg, #f6e4bd, #e2c17c) !important; filter: drop-shadow(0 4px 8px rgba(150,110,40,.25)); }
+.hc-demo:hover { background: transparent; }
+
+/* ขั้นตอน + แพ็กเกจ */
+.steps3 li { background: rgba(255,255,255,.78); border: 1px solid var(--lt-line); box-shadow: 0 10px 30px rgba(120,90,40,.08); }
+.steps3 li b { -webkit-text-stroke: 1px rgba(163,22,47,.55); }
+.steps3 li h3, .steps3 li strong { color: var(--lt-ink); } .steps3 li p { color: var(--lt-sub); }
+.pkg-wrap .package-card { background: #fff; color: var(--lt-ink); box-shadow: 0 16px 40px rgba(120,90,40,.14); }
+.pkg-wrap .pkg-sub { color: var(--lt-sub); border-bottom-color: rgba(120,90,40,.25); }
+.pkg-wrap .package-card li, .pkg-wrap .package-card h3, .pkg-wrap .package-card .price { color: var(--lt-ink); }
+
+/* ทั่วไป */
+h1, h2, h3, h4 { color: var(--lt-ink); }
+.hero-title { background: linear-gradient(180deg, #2a2230 0%, #5a4a66 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.hero-subtitle { color: var(--lt-sub); }
+.filter-btn { background: #fff; border-color: var(--lt-line); color: var(--lt-ink); } .filter-btn:hover, .filter-btn.active { background: #a3162f; border-color: #a3162f; color: #fff; }
+.site-foot { border-top: 1px solid var(--lt-line); } .sf-in { color: var(--lt-sub); } .sf-in a { color: #5f5568; } .sf-in a:hover { color: #a3162f; }
+
+/* ข้อตกลง / FAQ */
+.legal-tabs { border-color: var(--lt-line); background: rgba(255,255,255,.7); } .legal-tabs a { color: var(--lt-sub); } .legal-tabs a.on { background: #a3162f; color: #fff; }
+.legal-sum { background: rgba(185,138,62,.1); border-color: rgba(185,138,62,.4); }
+.legal-wrap h2, .legal-wrap strong { color: var(--lt-ink); } .legal-wrap p, .legal-wrap li { color: #4f4658; }
+.legal-toc a { border-color: var(--lt-line); color: #5f5568; background: #fff; } .legal-toc a:hover { border-color: #a3162f; color: #a3162f; }
+.faq details { border: 1px solid var(--lt-line); background: rgba(255,255,255,.8); } .faq p { color: var(--lt-sub); }
+
+/* ฟอร์ม / หน้าต่างป๊อปอัป / ตาราง */
+input, select, textarea { background: #fff; color: var(--lt-ink); border-color: #dccfb8; }
+input::placeholder, textarea::placeholder { color: #a99e9f; }
+.modal-content { background: #fffdf9; color: var(--lt-ink); border-color: var(--lt-line); box-shadow: 0 30px 80px rgba(70,50,20,.28); }
+.modal-overlay { background: rgba(60,45,30,.45); }
+.qe-chip { color: var(--lt-ink); border-color: #dccfb8; background: #fff; } .qe-chip small { color: var(--lt-sub); } .qe-chip .qe-tick { border-color: #cdb88f; }
+.qe-chip.on { border-color: #a3162f; background: rgba(163,22,47,.06); } .qe-chip.on .qe-tick { background: #a3162f; border-color: #a3162f; }
+.qe-panel { background: #fbf6ec; border-color: #d9c8a6; } .qe-qa { border-bottom-color: var(--lt-line); }
+
+/* กรอบดอกไม้ (3 ขั้นตอน + แพ็กเกจ) โทนสว่าง */
+.steps3 li, .pkg-wrap .package-card {
+  background: radial-gradient(120% 80% at 0% 0%, color-mix(in srgb, var(--fc) 20%, #fff), transparent 62%), #fffdf9 !important;
+  border: 1.5px solid color-mix(in srgb, var(--fc) 60%, #fff) !important; color: var(--lt-ink);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--fc) 12%, transparent), 0 14px 36px color-mix(in srgb, var(--fc) 26%, transparent) !important;
+}
+.steps3 li:hover, .pkg-wrap:hover .package-card { box-shadow: 0 0 0 4px color-mix(in srgb, var(--fc) 20%, transparent), 0 20px 46px color-mix(in srgb, var(--fc) 38%, transparent) !important; }
+.steps3 li b { text-shadow: none; -webkit-text-stroke: 1.2px color-mix(in srgb, var(--fc) 80%, #333); }
+.steps3 li h3, .steps3 li strong, .steps3 li span { color: var(--lt-ink); }
+.steps3 li p { color: var(--lt-sub); }
+.pkg-wrap .package-card h3 { color: color-mix(in srgb, var(--fc) 70%, #2a2230); }
+.pkg-wrap .pkg-price, .pkg-wrap .pkg-features li { color: var(--lt-ink); }
+.pkg-wrap .pkg-sub { color: var(--lt-sub); border-bottom-color: rgba(120,90,40,.25); }
+.pkg-wrap .pkg-features li::marker, .pkg-wrap .pkg-features li::before { color: color-mix(in srgb, var(--fc) 75%, #333); }
+.fl-petal { opacity: 0; }
+/* ป้ายราคาบนหัวกอง */
+.deck-price, .deck-col .deck-price { filter: saturate(.85) brightness(.82); }
+.compare-section h2, .compare-section h3, .pkg-wrap h3 { color: var(--lt-ink); }
+.compare-section p, .compare-sub { color: var(--lt-sub); }
+.owner-banner { color: inherit; }
+
+/* ===== ส่วนที่เคยเป็นสีเข้มตายตัว: แดชบอร์ด / แก้ไข / วิธีสั่งซื้อ / ชำระเงิน / แอดมิน ===== */
+.auth-form input, .auth-form textarea, .auth-form select, .cap-in, .ad-slip-side input { background: #fff !important; color: var(--lt-ink) !important; border: 1px solid #dccfb8 !important; }
+.auth-form input:focus, .auth-form textarea:focus, .auth-form select:focus, .cap-in:focus { border-color: #a3162f !important; box-shadow: 0 0 0 3px rgba(163,22,47,.12); }
+.btn-small { background: #fff; color: var(--lt-ink); border: 1px solid #d4c4a4; border-radius: 999px; }
+.btn-small:hover { background: #a3162f; border-color: #a3162f; color: #fff; }
+.dash-table { background: #fff; } .dash-table th { background: #f3eadb; color: #6a5a45; } .dash-table td { color: var(--lt-ink); border-color: var(--lt-line); }
+.photo-thumb { background: #efe6d6; border-color: var(--lt-line); }
+.photo-thumb button { background: rgba(255,255,255,.9); color: var(--lt-ink); }
+.pkg-option, .qr-style { background: #fff; border-color: #dccfb8; color: var(--lt-ink); }
+.pkg-option:hover, .qr-style:hover { border-color: #b98a3e; }
+.pkg-tag.pkg-basic { background: #efe6d6; color: var(--lt-ink); }
+.badge-status { background: #efe6d6; color: var(--lt-ink); }
+.step-card { background: #fff; border-color: var(--lt-line); color: var(--lt-ink); box-shadow: 0 8px 24px rgba(120,90,40,.07); }
+.step-card.highlight-step { background: linear-gradient(135deg, #fff 0%, #fbeee6 100%); border-color: #d8a5ae; }
+.step-card h3, .step-card h4, .step-details, .step-details p, .step-details li { color: var(--lt-ink); }
+.step-details code { background: #f3eadb; color: #8e0f27; }
+.step-number { color: #a3162f; }
+.profile-card, .stat-card, .dash-section, .pay-card, .order-card, .form-card, .editor-card, .card, .panel { background: #fff; border-color: var(--lt-line); color: var(--lt-ink); }
+.stat-value { color: #a3162f; }
+.premium-banner { background: linear-gradient(160deg, #fff7ee 0%, #fbeee2 55%, #fdf3ea 100%); }
+.pb-card { background: #fff; border-color: var(--lt-line); } .pb-img { background: #efe6d6; }
+.ad-modal { background: rgba(60,45,30,.55); } .ad-slip-img { background: #efe6d6; }
+.ad-bar .b { background: #eadfce; }
+.ad-card .up { color: #178a4c; } .ad-card .down { color: #c0392b; }
+.owner-banner { color: inherit; }
+.edit-card, .profile-card, .stat-card { box-shadow: 0 8px 26px rgba(120,90,40,.08); border-radius: 14px; }
+.dlg-item { border-color: var(--lt-line) !important; background: #fffdf9; }
+.notice-inline { background: rgba(163,22,47,.07); color: var(--lt-ink); }
