@@ -1,0 +1,12 @@
+/* เลื่อนแล้วค่อยๆ โผล่ / เลื่อนพ้นแล้วหายกลับ (ใช้ translate/scale/opacity จึงไม่ชนกับ transform ของ hover) */
+.rv { opacity: 0; translate: var(--rx, 0px) var(--ry, 38px); scale: var(--rs, .96); will-change: opacity, translate, scale; }
+.rv.in  { animation: rvIn .8s cubic-bezier(.2,.85,.25,1) calc(var(--i, 0) * 85ms) both !important; }
+.rv.out { animation: rvOut .42s ease-in both !important; }
+.rv[data-rv="left"]  { --rx: -48px; --ry: 0px; }
+.rv[data-rv="right"] { --rx: 48px;  --ry: 0px; }
+.rv[data-rv="zoom"]  { --rs: .86; --ry: 24px; }
+.rv.out { --rx: 0px; }
+.rv.out[data-rv="left"]  { --rx: -48px; } .rv.out[data-rv="right"] { --rx: 48px; }
+@keyframes rvIn  { from { opacity: 0; translate: var(--rx, 0px) var(--ry, 38px); scale: var(--rs, .96); } to { opacity: 1; translate: 0px 0px; scale: 1; } }
+@keyframes rvOut { from { opacity: 1; translate: 0px 0px; scale: 1; } to { opacity: 0; translate: var(--rx, 0px) var(--ry, 38px); scale: var(--rs, .96); } }
+@media (prefers-reduced-motion: reduce) { .rv { opacity: 1 !important; translate: none !important; scale: none !important; animation: none !important; } }
