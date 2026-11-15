@@ -1,0 +1,55 @@
+/* ธีมปาร์ตี้: ลูกโป่งลอย กดแตกแล้วรูปลอยมาแขวนราวตากรูป */
+:root { --hand: "Mali", "Bradley Hand", "Comic Sans MS", cursive; --ink: #6a3a4c; }
+body.theme-cake { background: #fde4e6; color: var(--ink); font-family: var(--hand); }
+.doo { display: block; width: 100%; height: auto; overflow: visible; }
+.gate { background: radial-gradient(circle at 50% 30%, #fff6dc, #fbd3dc 60%, #f3b8cf); overflow: hidden; }
+.g-body { position: relative; text-align: center; display: flex; flex-direction: column; align-items: center; padding: 54px 22px 0; }
+.gate-eyebrow { font-size: 13px; letter-spacing: .3em; text-transform: uppercase; color: #b25a78; }
+.gate-title { font: 600 clamp(28px, 7vw, 40px) var(--hand); color: #8f3b5c; margin: 8px 0 16px; word-break: break-word; }
+.g-trio { display: flex; align-items: flex-end; gap: 6px; height: 170px; }
+.g-trio .doo { width: 70px; animation: bobB 3s ease-in-out infinite; transform-origin: 50% 100%; }
+.g-trio .doo:nth-child(2) { width: 92px; animation-delay: -1s; } .g-trio .doo:nth-child(3) { animation-delay: -2s; }
+@keyframes bobB { 50% { transform: translateY(-14px) rotate(3deg); } }
+.go-btn { margin-top: 24px; appearance: none; border: 0; border-radius: 999px; padding: 14px 32px; font: 600 17px var(--hand); color: #fff; background: #e8788c; box-shadow: 0 8px 0 #c25570, 0 14px 24px rgba(150, 60, 90, .3); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.go-btn:active { transform: translateY(5px); box-shadow: 0 3px 0 #c25570; }
+.gate-hint { margin-top: 18px; font-size: 14px; color: #a56077; }
+.bunting { position: absolute; left: 0; right: 0; top: 0; height: 54px; pointer-events: none; z-index: 1; }
+.bunting svg { width: 100%; height: 54px; display: block; }
+.party { position: relative; padding-bottom: 20px; background: #fde4e6 radial-gradient(circle, rgba(232, 120, 140, .13) 3px, transparent 3.5px) 0 0 / 34px 34px; min-height: 100vh; overflow: hidden; }
+.p-head { text-align: center; padding: 70px 18px 10px; }
+.p-head .eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: #b25a78; }
+.p-head h1 { font: 600 clamp(25px, 6.6vw, 40px) var(--hand); color: #8f3b5c; margin: 6px 0; word-break: break-word; }
+.p-sub { font-size: 14px; color: #86506a; }
+.rows { width: min(980px, 100%); margin: 0 auto; }
+.row { position: relative; padding: 4px 0 8px; }
+.bals { display: flex; justify-content: space-around; align-items: flex-end; min-height: 188px; padding: 0 6%; }
+.bal { position: relative; width: 92px; appearance: none; border: 0; background: none; padding: 0; cursor: pointer; transform-origin: 50% 100%; animation: floatB 4.4s ease-in-out infinite; animation-delay: var(--dl, 0s); -webkit-tap-highlight-color: transparent; }
+.bal .doo { filter: drop-shadow(0 6px 6px rgba(150, 60, 90, .18)); }
+.bal:active { transform: scale(.94); }
+@keyframes floatB { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-14px) rotate(2.5deg); } }
+.bal .hintd { position: absolute; left: 50%; top: 26%; transform: translateX(-50%); font-size: 11px; color: rgba(255, 255, 255, .95); text-shadow: 0 1px 2px rgba(0, 0, 0, .25); pointer-events: none; }
+.bal.pop { pointer-events: none; animation: none; }
+.bal.pop .doo { animation: balPop .22s ease-out forwards; }
+@keyframes balPop { 0% { transform: scale(1); } 40% { transform: scale(1.25); } 100% { transform: scale(1.6); opacity: 0; } }
+.scrap { position: absolute; width: 9px; height: 9px; border-radius: 50%; pointer-events: none; z-index: 5; }
+.line { position: relative; height: 140px; margin: 0 4%; }
+.line::before { content: ""; position: absolute; left: -4%; right: -4%; top: 6px; height: 14px; background: radial-gradient(ellipse at 50% 0, transparent 60%, rgba(0, 0, 0, 0) 61%); border-top: 2px solid #b79778; border-radius: 0 0 50% 50% / 0 0 100% 100%; opacity: .75; }
+.line .slot { position: absolute; top: 4px; width: 38%; max-width: 160px; opacity: 0; pointer-events: none; }
+.line .slot.on { opacity: 1; pointer-events: auto; animation: dropIn .8s cubic-bezier(.3, 1.4, .5, 1) both; animation-delay: var(--d, 0s); }
+.line .slot .pg { position: absolute; left: 50%; top: -6px; width: 14px; height: 26px; margin-left: -7px; border-radius: 3px; background: #e8a05a; z-index: 2; box-shadow: 0 1px 2px rgba(0, 0, 0, .2); }
+.line .slot figure { margin: 18px 0 0; background: #fff; padding: 4% 4% 14%; box-shadow: 0 4px 10px rgba(120, 50, 80, .3); transform: rotate(var(--r, 0deg)); transform-origin: 50% 0; cursor: zoom-in; position: relative; }
+.line .slot .ph { aspect-ratio: 4 / 3; background: #eee center / cover no-repeat; }
+.line .slot figcaption { position: absolute; left: 5%; right: 5%; bottom: 3%; font-size: 11px; color: #6b5444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@keyframes dropIn { from { opacity: 0; transform: translateY(-150px) scale(.4) rotate(40deg); } 60% { opacity: 1; } }
+.table { position: relative; margin: 34px auto 0; text-align: center; padding: 10px 16px 28px; }
+.table::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: #f5c9a6; border-radius: 30px 30px 0 0; box-shadow: inset 0 6px 0 #fbd9bd; }
+.cake { position: relative; width: 190px; margin: 0 auto -10px; transition: filter .6s, transform .6s; filter: saturate(.7); }
+.cake.lit { filter: drop-shadow(0 0 18px rgba(255, 210, 120, .85)); animation: cakeB 2.4s ease-in-out infinite; }
+@keyframes cakeB { 50% { transform: translateY(-5px); } }
+.cut-btn { position: relative; margin-top: 14px; appearance: none; border: 0; border-radius: 999px; padding: 13px 28px; font: 600 16px var(--hand); color: #fff; background: #e8788c; box-shadow: 0 6px 0 #c25570; cursor: pointer; }
+.cut-btn.is-locked { background: #d4a7b3; box-shadow: 0 6px 0 #b98c99; }
+.cake-note { position: relative; margin-top: 18px; font-size: 13px; color: #8a5068; }
+.foot { text-align: center; padding: 26px 16px 16px; color: #86506a; }
+.pool { display: none; }
+@media (min-width: 900px) { .bal { width: 112px; } .bals { min-height: 220px; } .line { height: 160px; } .line .slot { width: 15%; max-width: 170px; } }
+@media (prefers-reduced-motion: reduce) { .bal, .g-trio .doo, .cake.lit { animation: none; } }

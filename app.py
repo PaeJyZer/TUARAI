@@ -207,13 +207,13 @@ EXTRA_THEMES = [
      'ท้องฟ้าดาวระยิบ มีดาวตก แตะดาวเพื่อเปิด รูปลอยเป็นกลุ่มดาว และจดหมายพิมพ์ทีละตัว',
      'theme_previews/starry_night.jpg', 'theme_starry.html'),
     ('vintage_diary_v1', 'Vintage Diary & Film',
-     'สมุดไดอารี่ปกหนัง แตะเพื่อเปิดสมุด รูปเรียงเป็นม้วนฟิล์มโทนอบอุ่น จดหมายบนกระดาษมีเส้น',
+     'สมุดไดอารี่เล่มจริง เปิดปกแล้วพลิกหน้าได้ หน้าละ 2 รูปติดเทป ลายเส้นหมีน่ารัก จดหมายอยู่หน้าสุดท้าย',
      'theme_previews/vintage_diary.jpg', 'theme_diary.html'),
     ('flower_garden_v1', 'Blooming Flower Garden',
      'แตะดอกไม้ให้บาน กลีบดอกไม้ร่วงเบาๆ รูปในกรอบโค้งและดอกไม้ โทนพาสเทลหวานๆ',
      'theme_previews/flower_garden.jpg', 'theme_garden.html'),
     ('sunset_beach_v1', 'Sunset Beach Letters',
-     'ทะเลพระอาทิตย์ตก แตะขวดแก้วเพื่อเปิด ขูดทรายเผยรูป รูปโพลารอยด์แขวนบนราว',
+     'ชายหาดพระอาทิตย์ตก ปูลายเส้นหมีเดินไปมา แตะเปลือกหอยเพื่อเปิดความทรงจำ 1-2 รูป มีขวดจดหมายริมหาด',
      'theme_previews/sunset_beach.jpg', 'theme_sunset.html'),
     ('love_post_v1', 'Love Post Envelope',
      'ซองจดหมายไปรษณีย์ แตะตราประทับเพื่อเปิดซอง หาตราไปรษณียากรหัวใจ รูปเป็นโปสการ์ด',
@@ -222,13 +222,13 @@ EXTRA_THEMES = [
      'ซากุระร่วงโทนใสสไตล์เกาหลี กดชัตเตอร์เพื่อเปิด หาหัวใจซ่อนในภาพ รูปเรียงเป็นแถบโฟโต้บูธ',
      'theme_previews/sakura_clear.jpg', 'theme_sakura.html'),
     ('movie_night_v1', 'Our Movie Night',
-     'โรงหนังม่านแดง กดเล่นเพื่อเปิดม่าน ขูดตั๋วเข้าโรง โปสเตอร์หนังและฉากสตีลของเรา',
+     'นั่งดูหนังในโรงภาพยนตร์ แสงโปรเจกเตอร์กะพริบแบบหนังเก่า ภาพและคลิปของเราฉายบนจอ จบด้วยข้อความตอนจบ',
      'theme_previews/movie_night.jpg', 'theme_cinema.html'),
     ('y2k_pop_v1', 'Y2K Pop Cute',
      'โทนชมพูฟ้าโฮโลแกรม หน้าต่างคอมยุค 2000 กดสตาร์ทเพื่อเปิด ขูดสติกเกอร์ รูปในหน้าต่างน่ารัก',
      'theme_previews/y2k_pop.jpg', 'theme_y2k.html'),
     ('pixel_love_v1', '8-Bit Love Quest',
-     'เกมพิกเซลย้อนยุค กด PRESS START เก็บหัวใจที่ซ่อนอยู่ รูปเป็นด่านต่างๆ จดหมายเป็นด่านสุดท้าย',
+     'เกมพิกเซลพลิกการ์ดจับคู่ ได้คู่ไหนรูปคู่นั้นโผล่ออกมาแบบพิกเซลแล้วค่อยคมชัด ผ่านทีละด่าน จดหมายเป็นบอสสุดท้าย',
      'theme_previews/pixel_love.jpg', 'theme_pixel.html'),
 ]
 
@@ -237,11 +237,11 @@ EXTRA_THEMES = [
 # (code, name, desc, preview, template, price_basic, price_pro, tagline)
 PREMIUM_THEMES = [
     ('birthday_cake_v1', 'Birthday Cake Party',
-     'จุดเทียนบนเค้ก เป่าแล้วคอนเฟตติระเบิด ป๊อปบอลลูนปลดล็อกรูป พร้อมเสียงเอฟเฟกต์ทุกการแตะ',
-     'theme_previews/birthday_cake.jpg', 'theme_cake.html', 69, 109, 'จุดเทียน · เป่า · ป๊อปบอลลูน'),
+     'ปาร์ตี้ลูกโป่งลอย แตะให้แตกแล้วรูปลอยมาแขวนบนราว พร้อมเสียงเอฟเฟกต์ มีเค้กส่องแสงเมื่อแตกครบ',
+     'theme_previews/birthday_cake.jpg', 'theme_cake.html', 69, 109, 'ลูกโป่งลอย · แตกแล้วเจอรูป · ราวตากรูป'),
     ('arcade_love_v1', 'Neon Arcade Cabinet',
-     'ตู้เกมอาร์เคดนีออน หยอดเหรียญ เล่นเกมรับหัวใจ ตารางคะแนนสูงสุด ด่านรูปและบอสจดหมาย',
-     'theme_previews/arcade_love.jpg', 'theme_arcade.html', 69, 109, 'หยอดเหรียญ · เกมรับหัวใจ · บอสจดหมาย'),
+     'ตู้คีบนีออน บังคับก้ามคีบไปคีบแคปซูล เปิดแคปซูลเจอรูป 1-2 รูป เก็บของรางวัลเข้ากระเป๋า',
+     'theme_previews/arcade_love.jpg', 'theme_arcade.html', 69, 109, 'ตู้คีบ · แคปซูล · ของรางวัล'),
     ('space_cruise_v1', 'Galaxy Cruise',
      'ยานอวกาศพุ่งทะลุกาแล็กซี กดค้างเพื่อจุดเครื่องยนต์ วาร์ปข้ามดวงดาว สแกนดาวเคราะห์ จอโฮโลแกรมรูป',
      'theme_previews/space_cruise.jpg', 'theme_space.html', 69, 109, 'กดค้างจุดเครื่อง · วาร์ป · สแกนดาว'),
@@ -255,8 +255,8 @@ PREMIUM_THEMES = [
      'วิชวลโนเวลในวังซากุระ คุยกับแฟนผ่านบทสนทนาที่คุณเขียนเอง ให้เขา/เธอเลือกคำตอบ มีสรุปคำตอบท้ายเรื่อง เสียงนุ่มสบายหู',
      'theme_previews/palace_sakura.jpg', 'theme_palace.html', 99, 129, 'วิชวลโนเวล · เลือกคำตอบ · ซากุระล้อมวัง'),
     ('matchcat_v1', 'Lucky Cat Matsuri',
-     'งานเทศกาลเกียวโตยามค่ำคืน แมวกวักนำโชคท้าให้จับคู่ความทรงจำกับรูป ลากเส้นโยง ถูกมีพลุ ผิดแมวเศร้า โยงใหม่ได้ไม่จำกัด',
-     'theme_previews/matchcat.jpg', 'theme_matchcat.html', 99, 129, 'จับคู่รูป · ลากเส้นโยง · พลุเทศกาล'),
+     'งานเทศกาลโคมไฟ แมวกวักนำโชคนั่งดูอยู่ข้างกระดาน สไลด์กระเบื้องให้เรียงเป็นรูป ต่อสำเร็จได้รูปเข้าอัลบั้ม',
+     'theme_previews/matchcat.jpg', 'theme_matchcat.html', 99, 129, 'สไลด์ปริศนา · แมวนำโชค · อัลบั้ม'),
     ('constellation_v1', 'Constellation of Us',
      'ท้องฟ้ายามค่ำคืนที่ดวงดาวเรียงเป็นหัวใจ แตะดาวแต่ละดวงให้ความทรงจำระเบิดแสงออกมา ดาวตกพาดผ่านตอนเลื่อนจอ และเขียนคำอธิษฐานส่งขึ้นไปลอยบนฟ้า',
      'theme_previews/constellation.jpg', 'theme_constellation.html', 99, 129, 'กลุ่มดาวหัวใจ · ดาวตก · คำอธิษฐาน'),
@@ -387,6 +387,14 @@ def migrate_db():
         if not conn.execute('SELECT 1 FROM themes WHERE theme_code = ?', (code,)).fetchone():
             conn.execute('''INSERT INTO themes (name, description, preview_img, theme_code, template_file, sort_order)
                             VALUES (?, ?, ?, ?, ?, ?)''', (name, desc, preview, code, tpl, order))
+    # ซิงก์คำอธิบายธีมที่ปรับปรุงใหม่จากโค้ด (ชุดธีมโครงสร้างใหม่)
+    for _c, _d in (('vintage_diary_v1', None), ('sunset_beach_v1', None), ('movie_night_v1', None), ('pixel_love_v1', None)):
+        for _t in EXTRA_THEMES:
+            if _t[0] == _c:
+                conn.execute('UPDATE themes SET description = ? WHERE theme_code = ?', (_t[2], _c))
+    for _t in PREMIUM_THEMES:
+        if _t[0] in ('birthday_cake_v1', 'arcade_love_v1', 'matchcat_v1'):
+            conn.execute('UPDATE themes SET description = ? WHERE theme_code = ?', (_t[2], _t[0]))
     # ธีมพรีเมียม: เพิ่มธีมถ้ายังไม่มี และซิงก์ราคาจากโค้ดทุกครั้งที่เริ่มระบบ
     for order, (code, name, desc, preview, tpl, pb, pp, _tag) in enumerate(PREMIUM_THEMES, start=101):
         if not conn.execute('SELECT 1 FROM themes WHERE theme_code = ?', (code,)).fetchone():

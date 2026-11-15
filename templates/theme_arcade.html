@@ -1,85 +1,55 @@
 {% extends "_theme_base.html" %}
 {% block fonts %}
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Serif+Thai:wght@400;500;600;700&family=Kodchasan:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Mali:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Thai:wght@400;500;600;700&family=Kodchasan:wght@400;500;600&display=swap" rel="stylesheet">
 {% endblock %}
-{% block head %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/premium.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='themes/arcade/style.css') }}">
-{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/arcade/claw.css') }}">{% endblock %}
 {% block favicon %}🕹️{% endblock %}
 {% block body_class %}theme-arcade{% endblock %}
-{% block letter_eyebrow %}Final stage{% endblock %}
-
-{% block bg %}<div class="grid-floor" aria-hidden="true"></div><div class="scan" aria-hidden="true"></div>{% endblock %}
+{% block letter_eyebrow %}Final prize{% endblock %}
 
 {% block gate %}
-  <div class="gate" id="gate" data-manual-gate="1500">
-    <div class="cab">
-      <div class="marquee">LOVE ARCADE</div>
-      <div class="screen">
-        <p class="scr-small">PLAYER 1</p>
-        <p class="scr-name">{{ partner_name }}</p>
-        <p class="scr-blink" id="scrMsg">INSERT COIN</p>
-        <p class="scr-small" id="credit">CREDIT 00</p>
-      </div>
-      <div class="panel">
-        <button type="button" class="coin-slot" id="coinBtn" aria-label="หยอดเหรียญ"><span class="coin" id="coin">🪙</span><span class="slot"></span></button>
-        <button type="button" class="start-btn" id="startBtn" disabled>START</button>
-      </div>
-    </div>
-    <p class="gate-hint" id="gateHint">แตะช่องหยอดเหรียญ 🪙</p>
+  <div class="gate" id="gate">
+    <div class="g-neon">CLAW LOVE</div>
+    <h1 class="gate-title">ถึง {{ partner_name }}</h1>
+    <p class="gate-eyebrow">คีบความทรงจำของเราไปด้วยกัน</p>
+    <button class="coin-btn" type="button" data-gate data-delay="900" aria-label="หยอดเหรียญ"><span class="coin">🪙</span><b>INSERT COIN</b></button>
+    <p class="gate-hint">แตะเพื่อหยอดเหรียญแล้วเริ่มเล่น</p>
   </div>
 {% endblock %}
 
 {% block main %}
-  <div class="hud"><span>1UP <b id="score">000000</b></span><span class="hud-mid">{{ occ.en }}</span><span>HI <b id="hiscore">999999</b></span></div>
-  <header class="hero">
-    <p class="eyebrow">PLAYER 1</p>
-    <h1 class="hero-name">{{ partner_name }}</h1>
-    <div class="crt" data-photo><img src="{{ center_photo }}" alt="รูปของเรา"><span class="crt-tag">★ {{ occ.en }} ★</span></div>
-    <p class="hero-sub">{{ occ.wish }}</p>
-    <div class="steps" data-steps data-labels="หยอดเหรียญ|รับหัวใจ|เปิดดูฉาก"
-         data-hints="เริ่มเกมแล้ว!|ลากนิ้วรับหัวใจให้ครบ 10 ดวงเพื่อปลดล็อกฉากรูป (ไม่มีแพ้นะ)|แตะดูฉากรูปสักฉากเพื่อปลดล็อกบอสสุดท้าย|ปลดล็อกครบแล้ว! ไปสู้บอสสุดท้ายได้เลย"></div>
-  </header>
-
-  <section class="game-sec">
-    <h2 class="sec-title">STAGE 1 · CATCH THE HEARTS <span id="heartCount">0</span>/10</h2>
-    <div class="game-wrap" id="gameWrap">
-      <canvas id="game" aria-label="เกมรับหัวใจ"></canvas>
-      <div class="game-over" id="gameOver">
-        <p id="gameMsg">ลากซ้าย-ขวา เพื่อรับหัวใจ</p>
-        <button type="button" class="arc-btn" id="gameStart">▶ START GAME</button>
+  <section class="arc">
+    <header class="a-head"><p class="eyebrow">{{ occ.en }}</p><h1>ตู้คีบของ {{ partner_name }}</h1><p class="a-sub">คีบแคปซูลให้ได้ แล้วเปิดดูความทรงจำข้างใน <b id="prCount"></b></p></header>
+    <div class="cab">
+      <div class="marq"><span>CLAW LOVE</span><i class="bulbs"></i></div>
+      <div class="glass" id="glass">
+        <div class="rail"></div>
+        <div class="claw" id="claw" style="left:50%">
+          <div class="cable" id="cable"></div>
+          <div class="head"><div class="hold" id="hold"></div><svg class="prongs" viewBox="0 0 60 44"><g class="pr l"><path d="M30 2 C14 4 6 18 12 40" /></g><g class="pr r"><path d="M30 2 C46 4 54 18 48 40" /></g><circle cx="30" cy="4" r="6" class="hub"/></svg></div>
+        </div>
+        <div class="pile" id="pile"></div>
+        <div class="chute"><span>PRIZE</span></div>
+        <div class="glare"></div>
       </div>
+      <div class="panel">
+        <div class="joy"><button type="button" id="bL" class="jb" aria-label="เลื่อนซ้าย">◀</button><button type="button" id="bR" class="jb" aria-label="เลื่อนขวา">▶</button></div>
+        <button type="button" id="bGo" class="grab">GRAB</button>
+      </div>
+      <p class="tip" id="tip">กดค้าง ◀ ▶ เพื่อเลื่อนก้ามคีบ แล้วกด GRAB</p>
     </div>
-    <div class="hiscore" id="hiTable" hidden>
-      <h3>HIGH SCORES</h3>
-      <ol><li><span>{{ partner_name }}</span><b>999999</b></li><li><span>ME</span><b>888888</b></li><li><span>CUPID</span><b>777777</b></li></ol>
-    </div>
+    <section class="shelf"><h2>ของรางวัลที่คีบได้</h2><div class="sh-row" id="shRow"></div>
+      <button class="boss" id="bossBtn" type="button" data-letter>รางวัลสุดท้าย · เปิดจดหมาย</button></section>
+    <footer class="foot"><p>ขอบคุณที่เล่นด้วยกันนะ</p></footer>
   </section>
-
-  <section class="stages lockable">
-    <div class="lock-note"><b>🔒</b><span>รับหัวใจให้ครบ 10 ดวงเพื่อปลดล็อกฉากรูป</span></div>
-    <h2 class="sec-title">STAGE 2 · MEMORIES</h2>
-    <div class="stage-grid">
-      {% for slot, src in side_photos %}
-      <figure class="cart reveal" data-photo>
-        <img src="{{ src }}" alt="ฉากที่ {{ loop.index }}" loading="lazy">
-        <figcaption>STAGE {{ '%02d'|format(loop.index) }}</figcaption>
-      </figure>
-      {% endfor %}
-    </div>
-  </section>
-
-  <section class="boss">
-    <h2 class="sec-title">FINAL BOSS</h2>
-    <div class="hpbar"><span id="hp"></span></div>
-    <button class="cta" type="button" data-letter>⚔ อ่านจดหมายสู้บอส</button>
-    <p class="sec-note">ปลดล็อกให้ครบ 3 ขั้นก่อนนะ</p>
-  </section>
-  <footer class="foot"><p>THANK YOU PLAYER 1 · GAME OVER? NEVER.</p></footer>
+  <div class="prize" id="prize" aria-hidden="true"><div class="pz-card" id="pzCard"></div></div>
+  <div class="pool" aria-hidden="true" hidden>
+    {% for p in photos %}<figure data-photo><img src="{{ p.src }}" alt="" decoding="async"></figure>{% endfor %}
+  </div>
 {% endblock %}
 
 {% block scripts %}
-  <script src="{{ url_for('static', filename='themes/shared/premium.js') }}"></script>
-  <script src="{{ url_for('static', filename='themes/arcade/arcade.js') }}"></script>
+  <script>window.TU_PHOTOS = {{ photos|tojson }};</script>
+  <script src="{{ url_for('static', filename='themes/shared/doodles.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/arcade/claw.js') }}"></script>
 {% endblock %}

@@ -1,14 +1,11 @@
 {% extends "_theme_base.html" %}
 {% block fonts %}
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,500;1,500&family=Noto+Serif+Thai:wght@400;500;600;700&family=Kodchasan:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Mali:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Thai:wght@400;500;600;700&family=Kodchasan:wght@400;500;600&display=swap" rel="stylesheet">
 {% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/cinema/style.css') }}">{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/cinema/hall.css') }}">{% endblock %}
 {% block favicon %}🎬{% endblock %}
 {% block body_class %}theme-cinema{% endblock %}
-{% block body_attrs %}data-game="scratch" data-game-title="ขูดตั๋วเข้าโรงหนัง" data-game-hint="ขูดแถบทองบนตั๋ว เพื่อเผยฉากพิเศษของเรื่องนี้" data-cover-a="#f1d47a" data-cover-b="#b8902c" data-cover-ink="#5a420d" data-cover-text="ขูดตั๋วเลย!" data-cover-icon="🎟️" data-game-win="ตั๋วถูกรางวัล! เข้าโรงได้เลย 🎬" data-game-eyebrow="Admit one"{% endblock %}
 {% block letter_eyebrow %}The final scene{% endblock %}
-
-{% block bg %}<div class="spot" aria-hidden="true"></div>{% endblock %}
 
 {% block gate %}
   <div class="gate" id="gate">
@@ -16,45 +13,43 @@
     <div class="gate-center">
       <p class="gate-eyebrow">Now showing</p>
       <h1 class="gate-title">{{ partner_name }} <small>&amp;</small> ME</h1>
-      <button class="play-btn" type="button" data-gate data-delay="2400" aria-label="กดเล่นหนัง"><span>▶</span></button>
-      <p class="gate-hint">กดปุ่มเพื่อเปิดม่านและเริ่มภาพยนตร์เรื่องของเรา</p>
+      <button class="play-btn" type="button" data-gate data-delay="2200" aria-label="เข้าโรงภาพยนตร์"><span>▶</span></button>
+      <p class="gate-hint">กดปุ่มเพื่อเปิดม่านและนั่งดูภาพยนตร์เรื่องของเรา</p>
     </div>
   </div>
 {% endblock %}
 
 {% block main %}
-  <header class="hero">
-    <div class="poster" data-photo>
-      <img src="{{ center_photo }}" alt="รูปคู่ของเรา">
-      <div class="poster-shade"></div>
-      <div class="poster-text">
-        <p class="tag">A LOVE STORY</p>
-        <h1>{{ partner_name }}<br><small>&amp; ME</small></h1>
-        <p class="rating">★★★★★ &nbsp;{{ occ.en }}</p>
+  <section class="hall" id="hall">
+    <div class="wall l"></div><div class="wall r"></div>
+    <div class="marquee"><span>NOW SHOWING</span> · <b>{{ partner_name }} &amp; ME</b></div>
+    <div class="screen-wrap">
+      <div class="screen" id="screen">
+        <div class="lay" id="layA"></div><div class="lay" id="layB"></div>
+        <div class="endcard" id="endCard"><div class="et" id="endText"></div></div>
+        <canvas class="grain" id="grain" width="320" height="200"></canvas>
+        <div class="scratches" id="scr"></div>
+        <div class="vig"></div><div class="cue" id="cue"></div>
       </div>
+      <div class="timeline"><i id="tlFill"></i></div>
     </div>
-    <button class="cta" type="button" data-letter>▶ ตอนจบ: เปิดจดหมาย</button>
-  </header>
-
-  {% if side_photos %}
-  <section class="scenes">
-    <h2 class="sec-title">SCENES</h2>
-    <div class="still-grid">
-      {% for slot, src in side_photos %}
-      <figure class="still reveal" data-photo style="--i: {{ loop.index0 }}">
-        <img src="{{ src }}" alt="ฉากที่ {{ loop.index }}" loading="lazy">
-        <figcaption><b>SCENE {{ '%02d' % loop.index }}</b><span>00:{{ '%02d' % ((loop.index * 7) % 60) }}:{{ '%02d' % ((loop.index * 13) % 60) }}</span></figcaption>
-      </figure>
-      {% endfor %}
+    <div class="beam" id="beam"></div>
+    <div class="dust" id="dust"></div>
+    <div class="seats" id="seats"></div>
+    <div class="hall-ctl">
+      <button type="button" id="skipBtn" class="mini">ข้ามไปตอนจบ ▸▸</button>
+      <button type="button" id="againBtn" class="mini" hidden>↺ ดูอีกครั้ง</button>
+      <button type="button" id="endBtn" class="endbtn" data-letter data-own hidden>ตอนจบ · ปลดล็อกด้วยภารกิจ</button>
     </div>
   </section>
-  {% endif %}
+  <footer class="foot"><p>ขอบคุณที่ดูหนังเรื่องนี้ไปกับฉันนะ</p></footer>
+  <div class="pool" aria-hidden="true" hidden>
+    {% for p in photos %}{% if not (p.src.endswith('.mp4') or p.src.endswith('.webm') or p.src.endswith('.mov')) %}<figure data-photo><img src="{{ p.src }}" alt="" decoding="async"></figure>{% endif %}{% endfor %}
+  </div>
+{% endblock %}
 
-  <footer class="foot">
-    <div class="ticket">
-      <div class="t-main"><small>ADMIT ONE</small><b>{{ partner_name }}</b><span>FOREVER · ROW A · SEAT 1-2</span></div>
-      <div class="t-stub">THE<br>END</div>
-    </div>
-    <button class="cta ghost" type="button" data-letter>อ่านจดหมายอีกครั้ง</button>
-  </footer>
+{% block scripts %}
+  <script>window.TU_PHOTOS = {{ photos|tojson }};</script>
+  <script src="{{ url_for('static', filename='themes/shared/doodles.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/cinema/hall.js') }}"></script>
 {% endblock %}

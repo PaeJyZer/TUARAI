@@ -1,0 +1,61 @@
+/* ธีมแมวกวักนำโชค: สไลด์พัซเซิลรูป แมวมานั่งดูข้างกระดาน */
+:root { --hand: "Mali", "Comic Sans MS", cursive; --ink: #5a2a2a; --red: #d8453b; --gold: #f2b84b; }
+body.theme-matchcat { background: #2a1432; color: #fff1dd; font-family: var(--hand); }
+.doo { display: block; width: 100%; height: auto; overflow: visible; }
+.gate { background: radial-gradient(circle at 50% 30%, #6b2a52, #2a1432 70%); text-align: center; padding: 0 20px; overflow: hidden; }
+.lantern-row { position: absolute; left: 0; right: 0; top: 0; height: 90px; display: flex; justify-content: space-around; pointer-events: none; z-index: 1; }
+.lantern { width: 44px; margin-top: -4px; transform-origin: 50% 0; animation: swing 4s ease-in-out infinite; }
+.lantern:nth-child(even) { animation-delay: -2s; margin-top: 12px; }
+@keyframes swing { 50% { transform: rotate(5deg); } 0%, 100% { transform: rotate(-5deg); } }
+.g-body { position: relative; display: flex; flex-direction: column; align-items: center; }
+.gate-eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
+.gate-title { font: 600 clamp(26px, 7vw, 38px) var(--hand); margin: 8px 0 14px; word-break: break-word; }
+.g-cat { width: 150px; animation: cat 1.6s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes cat { 50% { transform: rotate(-3deg) translateY(-4px); } }
+.go-btn { margin-top: 24px; appearance: none; border: 0; border-radius: 999px; padding: 14px 30px; font: 600 17px var(--hand); color: #5a2a2a; background: var(--gold); box-shadow: 0 7px 0 #b8841f; cursor: pointer; }
+.go-btn:active { transform: translateY(5px); box-shadow: 0 2px 0 #b8841f; }
+.gate-hint { margin-top: 18px; font-size: 14px; color: #d9b7d2; }
+.pz { position: relative; padding: 140px 14px 30px; max-width: 520px; margin: 0 auto; text-align: center; }
+.pz .lantern-row { top: 50px; height: 76px; }
+.z-head .eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
+.z-head h1 { font: 600 clamp(24px, 6.4vw, 34px) var(--hand); margin: 8px 0 4px; word-break: break-word; }
+.z-sub { font-size: 14px; color: #d9b7d2; margin-bottom: 14px; }
+.paws { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-bottom: 14px; min-height: 22px; }
+.paws i { width: 22px; height: 22px; opacity: .3; filter: grayscale(1); }
+.paws i.on { opacity: 1; filter: none; animation: ipop .5s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes ipop { from { transform: scale(.2); } }
+.board-wrap { position: relative; width: min(100%, 380px); margin: 0 auto; }
+.zb { position: relative; width: 100%; aspect-ratio: 4 / 5; background: #3d1f48; border-radius: 12px; box-shadow: 0 0 0 6px #5a2a52, 0 0 0 9px var(--gold), 0 18px 30px rgba(0, 0, 0, .5); overflow: hidden; touch-action: manipulation; }
+.tile { position: absolute; width: calc(100% / var(--c)); height: calc(100% / var(--r)); left: calc(var(--x) * 100% / var(--c)); top: calc(var(--y) * 100% / var(--r)); transition: left .18s ease, top .18s ease; padding: 2px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tile .t { width: 100%; height: 100%; background-size: calc(var(--c) * 100%) calc(var(--r) * 100%); background-position: calc(var(--tx) * 100% / (var(--c) - 1)) calc(var(--ty) * 100% / (var(--r) - 1)); border-radius: 6px; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .5), 0 2px 5px rgba(0, 0, 0, .4); }
+.tile.hint .t { animation: hintP .5s 4; }
+@keyframes hintP { 50% { box-shadow: inset 0 0 0 4px var(--gold), 0 0 16px var(--gold); } }
+.zb.solved .tile { padding: 0; transition: padding .4s; } .zb.solved .tile .t { border-radius: 0; box-shadow: none; }
+.cat-sit { position: absolute; right: -14px; bottom: -34px; width: 96px; z-index: 5; pointer-events: auto; cursor: pointer; transform-origin: 50% 100%; animation: sit 3s ease-in-out infinite; }
+@keyframes sit { 50% { transform: rotate(3deg); } 0%, 100% { transform: rotate(-2deg); } }
+.cat-sit.meow { animation: meow .5s 1; }
+@keyframes meow { 40% { transform: scale(1.12) rotate(-6deg); } }
+.z-ctl { display: flex; gap: 10px; justify-content: center; margin-top: 42px; }
+.z-btn { appearance: none; border: 0; border-radius: 999px; padding: 11px 20px; font: 600 14px var(--hand); color: #5a2a2a; background: var(--gold); box-shadow: 0 5px 0 #b8841f; cursor: pointer; }
+.z-btn.alt { background: #f8d7c0; box-shadow: 0 5px 0 #c99a7a; } .z-btn.big { margin-top: 18px; font-size: 16px; padding: 13px 26px; background: var(--red); color: #fff; box-shadow: 0 6px 0 #8f2a22; }
+.z-btn.big.is-locked { opacity: .6; }
+.z-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #b8841f; }
+.z-msg { margin-top: 14px; font-size: 13px; color: #d9b7d2; min-height: 20px; }
+.album { margin-top: 24px; }
+.album h2 { font: 600 15px var(--hand); color: var(--gold); margin-bottom: 12px; }
+.al-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.al-row .it { width: 78px; padding: 3px 3px 12px; background: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, .4); transform: rotate(var(--r, 0deg)); cursor: zoom-in; animation: ipop .5s cubic-bezier(.3, 1.6, .5, 1) both; }
+.al-row .it .ph { aspect-ratio: 1; background: #ddd center / cover no-repeat; }
+.al-row .empty { font-size: 13px; color: #a68aa5; }
+.foot { text-align: center; padding: 28px 8px 8px; color: #b79bb6; }
+.done-ov { position: fixed; inset: 0; z-index: 8000; display: grid; place-items: center; padding: 16px; background: rgba(30, 10, 38, .8); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); opacity: 0; visibility: hidden; transition: opacity .3s; }
+.done-ov.open { opacity: 1; visibility: visible; }
+.done-card { width: min(380px, 100%); text-align: center; }
+.done-card .pol { background: #fff; padding: 3% 3% 13%; position: relative; box-shadow: 0 8px 24px rgba(0, 0, 0, .55); transform: rotate(-2deg); cursor: zoom-in; animation: popin .6s cubic-bezier(.3, 1.5, .5, 1) both; color: #5b4636; }
+.done-card .pol .ph { aspect-ratio: 4 / 5; background: #ddd center / cover no-repeat; }
+.done-card .pol figcaption { position: absolute; left: 4%; right: 4%; bottom: 3%; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@keyframes popin { from { transform: scale(.3) rotate(20deg); opacity: 0; } }
+.done-card h3 { font: 600 20px var(--hand); color: var(--gold); margin-bottom: 14px; }
+.done-card .z-btn { margin-top: 18px; }
+.pool { display: none; }
+@media (prefers-reduced-motion: reduce) { .lantern, .g-cat, .cat-sit { animation: none; } .tile { transition: none; } }

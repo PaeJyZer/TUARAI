@@ -2,55 +2,37 @@
 {% block fonts %}
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Serif+Thai:wght@400;500;600;700&family=Kodchasan:wght@400;500;600&display=swap" rel="stylesheet">
 {% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/pixel/style.css') }}">{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/pixel/memory.css') }}">{% endblock %}
 {% block favicon %}🎮{% endblock %}
 {% block body_class %}theme-pixel{% endblock %}
-{% block body_attrs %}data-game="hearts" data-game-count="3" data-game-item="❤️" data-game-title="STAGE 0: เก็บหัวใจ" data-game-hint="แตะหัวใจ 3 ดวงที่ซ่อนอยู่ในฉากให้ครบ (ไม่มีเวลา ไม่มีแพ้)" data-game-win="STAGE CLEAR! ⭐" data-game-eyebrow="BONUS STAGE"{% endblock %}
-{% block letter_eyebrow %}FINAL STAGE{% endblock %}
-
-{% block bg %}<div class="stars" aria-hidden="true"></div><div class="scan" aria-hidden="true"></div>{% endblock %}
+{% block letter_eyebrow %}Final stage{% endblock %}
 
 {% block gate %}
   <div class="gate" id="gate">
-    <p class="gate-eyebrow">PLAYER 1 : {{ partner_name }}</p>
-    <h1 class="gate-title">LOVE<br>QUEST</h1>
-    <p class="gate-sub">♥ {{ occ.en|upper }} EDITION ♥</p>
-    <button class="start" type="button" data-gate data-delay="1200">PRESS START</button>
-    <p class="gate-hint">แตะปุ่มเพื่อเริ่มเกม</p>
+    <div class="px-title">8-BIT<br>LOVE QUEST</div>
+    <p class="px-name">PLAYER: {{ partner_name }}</p>
+    <div class="px-sprite" id="gSprite"></div>
+    <button class="px-btn" type="button" data-gate data-delay="700">PRESS START</button>
   </div>
 {% endblock %}
 
 {% block main %}
-  <div class="desk">
-    <div class="hud"><span>PLAYER 1</span><span>♥ ♥ ♥</span><span>1UP</span></div>
-    <header class="hero">
-      <p class="eyebrow">{{ occ.en }}</p>
-      <div class="pix-frame" data-photo>
-        <img src="{{ center_photo }}" alt="รูปคู่ของเรา">
-        <span class="badge">WORLD 1-1</span>
-      </div>
-      <h1 class="hero-name">{{ partner_name }}</h1>
-      <p class="hero-sub">เธอคือเลเวลที่ดีที่สุดในเกมชีวิตของฉัน</p>
-      <button class="cta" type="button" data-letter>▶ FINAL STAGE: เปิดจดหมาย</button>
-    </header>
-
-    {% if side_photos %}
-    <section class="levels">
-      <h2 class="sec-title">SELECT STAGE</h2>
-      <div class="level-grid">
-        {% for slot, src in side_photos %}
-        <figure class="level reveal" data-photo style="--i: {{ loop.index0 }}">
-          <img src="{{ src }}" alt="ด่านที่ {{ loop.index }}" loading="lazy">
-          <figcaption>STAGE {{ ((loop.index0 // 4) + 1) }}-{{ (loop.index0 % 4) + 1 }}</figcaption>
-        </figure>
-        {% endfor %}
-      </div>
-    </section>
-    {% endif %}
-
-    <footer class="foot">
-      <p>THANK YOU FOR PLAYING</p>
-      <button class="cta ghost" type="button" data-letter>▶ PLAY AGAIN</button>
-    </footer>
+  <section class="mem">
+    <div class="hud"><span>STAGE <b id="hStage">1</b>/<b id="hStages">1</b></span><span>MOVES <b id="hMoves">0</b></span><span>ITEM <b id="hItem">0</b>/<b id="hItems">0</b></span></div>
+    <h1 class="m-title">ความทรงจำของ {{ partner_name }}</h1>
+    <p class="m-sub" id="mSub">เปิดการ์ดทีละ 2 ใบ ถ้าสัญลักษณ์เหมือนกัน จะได้รูปความทรงจำ 1 รูป</p>
+    <div class="board" id="board"></div>
+    <div class="bag"><p class="bag-t">ITEM BAG</p><div class="bag-row" id="bagRow"><span class="empty">ยังว่างอยู่…</span></div></div>
+    <button class="px-btn boss" id="bossBtn" type="button" data-letter>FINAL BOSS · เปิดจดหมาย</button>
+    <footer class="foot"><p>THANK YOU FOR PLAYING</p></footer>
+  </section>
+  <div class="get" id="get" aria-hidden="true"><div class="get-card" id="getCard"></div></div>
+  <div class="pool" aria-hidden="true" hidden>
+    {% for p in photos %}<figure data-photo><img src="{{ p.src }}" alt="" decoding="async"></figure>{% endfor %}
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>window.TU_PHOTOS = {{ photos|tojson }};</script>
+  <script src="{{ url_for('static', filename='themes/pixel/memory.js') }}"></script>
 {% endblock %}

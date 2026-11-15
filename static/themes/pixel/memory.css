@@ -1,0 +1,46 @@
+/* ธีมพิกเซล: เกมพลิกการ์ดจับคู่ ได้คู่ไหนเปิดรูปคู่นั้น */
+:root { --px: "Press Start 2P", "Courier New", monospace; --g1: #0f0b2a; --pk: #ff4d8d; --yl: #ffd23f; --cy: #3de4ff; }
+body.theme-pixel { background: var(--g1) repeating-linear-gradient(0deg, rgba(255, 255, 255, .03) 0 2px, transparent 2px 4px); color: #f3ecff; font-family: var(--px); image-rendering: pixelated; }
+.gate { background: radial-gradient(#2b1a66, #0f0b2a 70%); text-align: center; padding: 0 20px; }
+.px-title { font: 400 clamp(22px, 7vw, 36px)/1.5 var(--px); color: var(--yl); text-shadow: 4px 4px 0 var(--pk); margin-bottom: 18px; }
+.px-name { font: 400 10px var(--px); color: var(--cy); margin-bottom: 22px; word-break: break-all; }
+.px-sprite { width: 96px; height: 96px; margin: 0 auto 26px; animation: hop .8s steps(2) infinite; }
+@keyframes hop { 50% { transform: translateY(-10px); } }
+.px-btn { appearance: none; border: 0; background: var(--pk); color: #fff; font: 400 12px var(--px); padding: 16px 22px; box-shadow: 0 6px 0 #a0245a, inset 0 0 0 3px rgba(255, 255, 255, .25); cursor: pointer; animation: blink 1s steps(2) infinite; }
+.px-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #a0245a; }
+.px-btn.boss { margin-top: 24px; animation: none; background: var(--yl); color: #3a2a00; box-shadow: 0 6px 0 #b8861b; }
+.px-btn.boss.is-locked { opacity: .55; }
+@keyframes blink { 50% { filter: brightness(1.25); } }
+.mem { padding: 76px 12px 30px; max-width: 520px; margin: 0 auto; text-align: center; }
+.hud { display: flex; justify-content: space-between; gap: 6px; font: 400 9px var(--px); color: var(--cy); padding: 10px 12px; background: #1c1448; box-shadow: inset 0 0 0 3px #3b2a88; }
+.hud b { color: var(--yl); }
+.m-title { font: 400 14px/1.6 var(--px); margin: 22px 0 10px; color: #fff; word-break: break-word; }
+.m-sub { font: 400 9px/1.9 var(--px); color: #b9a8ff; margin-bottom: 18px; }
+.board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 12px; background: #1c1448; box-shadow: inset 0 0 0 4px #3b2a88; }
+.card { position: relative; aspect-ratio: 3 / 4; perspective: 600px; appearance: none; border: 0; background: none; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.card .in { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .4s steps(6); }
+.card.up .in { transform: rotateY(180deg); }
+.card .f, .card .b { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: grid; place-items: center; box-shadow: inset 0 0 0 3px rgba(0, 0, 0, .35); }
+.card .b { background: repeating-linear-gradient(45deg, #5b3fd0 0 6px, #4a30b8 6px 12px); }
+.card .b::after { content: "?"; font: 400 20px var(--px); color: #cbbfff; }
+.card .f { background: #fff4d6; transform: rotateY(180deg); }
+.card .f svg { width: 70%; height: auto; image-rendering: pixelated; }
+.card.done .f { background: #c8ffd4; animation: matched .5s steps(4); }
+.card.done { pointer-events: none; }
+@keyframes matched { 50% { transform: rotateY(180deg) scale(1.15); } }
+.bag { margin-top: 20px; }
+.bag-t { font: 400 9px var(--px); color: var(--yl); margin-bottom: 10px; }
+.bag-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; min-height: 40px; }
+.bag-row .it { width: 62px; height: 62px; background: #fff center / cover no-repeat; box-shadow: 0 0 0 3px var(--yl), 4px 4px 0 3px rgba(0, 0, 0, .4); cursor: zoom-in; animation: ipx .5s steps(5) both; image-rendering: auto; }
+@keyframes ipx { from { transform: scale(.2); opacity: 0; } }
+.bag-row .empty { font: 400 9px var(--px); color: #7a6bd0; }
+.foot { text-align: center; padding: 30px 8px 10px; font: 400 9px var(--px); color: #7a6bd0; }
+.get { position: fixed; inset: 0; z-index: 8000; display: grid; place-items: center; padding: 14px; background: rgba(8, 5, 28, .82); opacity: 0; visibility: hidden; transition: opacity .2s; }
+.get.open { opacity: 1; visibility: visible; }
+.get-card { width: min(380px, 100%); background: #1c1448; padding: 18px 16px 20px; text-align: center; box-shadow: 0 0 0 4px var(--yl), 8px 8px 0 4px rgba(0, 0, 0, .5); }
+.get-card h3 { font: 400 14px var(--px); color: var(--yl); margin-bottom: 14px; animation: blink .6s steps(2) infinite; }
+.get-card canvas { width: 100%; height: auto; background: #000; box-shadow: 0 0 0 3px var(--cy); cursor: zoom-in; display: block; }
+.get-card p { font: 400 10px/1.9 var(--px); margin-top: 12px; color: #e9e1ff; word-break: break-word; }
+.get-card .px-btn { margin-top: 16px; animation: none; }
+.pool { display: none; }
+@media (prefers-reduced-motion: reduce) { .px-sprite, .px-btn, .get-card h3 { animation: none; } }

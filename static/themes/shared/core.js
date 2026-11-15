@@ -144,6 +144,7 @@
   }
   window.TUOverlay = { open: openOverlay, close: closeOverlay };
   document.querySelectorAll('[data-letter]').forEach(function (b) {
+    if (b.hasAttribute('data-own')) return;
     b.addEventListener('click', function () {
       // ถ้าธีมมีเกม ให้เล่น (หรือข้าม) ก่อน แล้วค่อยเปิดจดหมาย
       if (window.TUGame && window.TUGame.shouldRun()) window.TUGame.run(showLetter);
