@@ -14,7 +14,6 @@ body {
 body::before { background: radial-gradient(closest-side, rgba(224,112,128,.34), transparent 72%); }
 body::after { background: radial-gradient(closest-side, rgba(236,160,130,.30), transparent 72%); }
 /* ลายเส้นละเอียดบางๆ ให้ดูเป็นกระดาษพรีเมียม */
-body > *:first-child { position: relative; }
 
 /* แถบเมนู */
 .navbar { background: rgba(247,228,225,.88); border-bottom: 1px solid var(--lt-line); box-shadow: 0 1px 0 rgba(255,255,255,.8) inset, 0 8px 30px rgba(120,90,40,.06); }
@@ -136,7 +135,6 @@ input::placeholder, textarea::placeholder { color: #a99e9f; }
 
 /* ===== พื้นหลังกระดาษ: เกรนกระดาษ + ลายจุด/สมุดตาราง/กิงแฮม/สีน้ำ ต่างกันตามส่วน ===== */
 body { position: relative; }
-body > .grain, html::after { content: none; }
 body::selection { background: #f0c46255; }
 .hx, .decks-sec, .steps3, .compare-section, .faq2 { position: relative; isolation: isolate; }
 .hx::before, .decks-sec::before, .steps3::before, .compare-section::before, .faq2::before {
