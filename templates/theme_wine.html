@@ -1,0 +1,42 @@
+{% extends "_theme_base.html" %}
+{% block fonts %}
+  <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Thai:wght@400;500;600;700&family=Kodchasan:wght@400;500;600&display=swap" rel="stylesheet">
+{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/memcard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/wine/neon.css') }}">
+{% endblock %}
+{% block favicon %}🍷{% endblock %}
+{% block body_class %}theme-wine{% endblock %}
+{% block letter_eyebrow %}Neon alley{% endblock %}
+
+{% block gate %}
+  <div class="gate" id="gate">
+    <div class="g-body">
+      <p class="gate-eyebrow">After dark</p>
+      <h1 class="gate-title">ถึง {{ partner_name }}</h1>
+      <div class="g-art" id="gArt"></div>
+      <button class="go-btn" type="button" data-gate data-delay="900">เดินเข้าซอยนีออน</button>
+      <p class="gate-hint">เปิดป้ายไฟทีละป้าย แล้วดูว่าในแสงมีอะไร</p>
+    </div>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <section class="wn" id="wn">
+    <header class="hd"><p class="eyebrow">{{ occ.en }}</p><h1>ซอยนีออนของ {{ partner_name }}</h1><p class="sub">แตะสวิตช์ใต้ป้ายเพื่อเปิดไฟ <b id="cnt"></b></p></header>
+    <div class="wall" id="wall"></div>
+    <div class="open-wrap"><button class="openbtn" id="openBtn" type="button" data-letter aria-label="ป้ายเปิดร้าน"><span>OPEN</span><small>ป้ายสุดท้าย · จดหมาย</small></button></div>
+    <footer class="foot"><p>ขอบคุณที่เป็นแสงสว่างยามค่ำคืนของฉัน</p></footer>
+  </section>
+  <div class="pool" aria-hidden="true" hidden>
+    {% for p in photos %}<figure data-photo><img src="{{ p.src }}" alt="" decoding="async"></figure>{% endfor %}
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>window.TU_PHOTOS = {{ photos|tojson }};</script>
+  <script src="{{ url_for('static', filename='themes/shared/doodles.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/shared/memcard.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/wine/neon.js') }}"></script>
+{% endblock %}

@@ -204,7 +204,7 @@ def _add_columns(conn, table, cols):
 
 EXTRA_THEMES = [
     ('starry_night_v1', 'Starry Night Universe',
-     'ท้องฟ้าดาวระยิบ มีดาวตก แตะดาวเพื่อเปิด รูปลอยเป็นกลุ่มดาว และจดหมายพิมพ์ทีละตัว',
+     'ท้องฟ้ายามค่ำคืนมีหิ่งห้อยบินวน แตะจับหิ่งห้อยใส่โหลแก้ว แต่ละตัวพกความทรงจำ 1-2 รูปมาให้',
      'theme_previews/starry_night.jpg', 'theme_starry.html'),
     ('vintage_diary_v1', 'Vintage Diary & Film',
      'สมุดไดอารี่เล่มจริง เปิดปกแล้วพลิกหน้าได้ หน้าละ 2 รูปติดเทป ลายเส้นหมีน่ารัก จดหมายอยู่หน้าสุดท้าย',
@@ -216,7 +216,7 @@ EXTRA_THEMES = [
      'ชายหาดพระอาทิตย์ตก ปูลายเส้นหมีเดินไปมา แตะเปลือกหอยเพื่อเปิดความทรงจำ 1-2 รูป มีขวดจดหมายริมหาด',
      'theme_previews/sunset_beach.jpg', 'theme_sunset.html'),
     ('love_post_v1', 'Love Post Envelope',
-     'ซองจดหมายไปรษณีย์ แตะตราประทับเพื่อเปิดซอง หาตราไปรษณียากรหัวใจ รูปเป็นโปสการ์ด',
+     'กองโปสการ์ดไปรษณีย์ปัดดูทีละใบ แตะพลิกด้านหลังอ่านข้อความและตราไปรษณียากร รูปเป็นด้านหน้าโปสการ์ด',
      'theme_previews/love_post.jpg', 'theme_envelope.html'),
     ('sakura_clear_v1', 'Sakura Photobooth',
      'ต้นซากุระใหญ่ เขย่าต้นให้กลีบทองร่วง แตะจับกลีบเพื่อเปิดรูป แล้ววางบนผ้าปิกนิก',
@@ -243,10 +243,10 @@ PREMIUM_THEMES = [
      'ตู้คีบนีออน บังคับก้ามคีบไปคีบแคปซูล เปิดแคปซูลเจอรูป 1-2 รูป เก็บของรางวัลเข้ากระเป๋า',
      'theme_previews/arcade_love.jpg', 'theme_arcade.html', 69, 109, 'ตู้คีบ · แคปซูล · ของรางวัล'),
     ('space_cruise_v1', 'Galaxy Cruise',
-     'ยานอวกาศพุ่งทะลุกาแล็กซี กดค้างเพื่อจุดเครื่องยนต์ วาร์ปข้ามดวงดาว สแกนดาวเคราะห์ จอโฮโลแกรมรูป',
+     'ระบบสุริยะที่ดาวเคราะห์โคจรรอบดวงอาทิตย์ แตะดาวเพื่อร่อนลงสำรวจ แต่ละดวงซ่อนความทรงจำ 1-2 รูป',
      'theme_previews/space_cruise.jpg', 'theme_space.html', 69, 109, 'กดค้างจุดเครื่อง · วาร์ป · สแกนดาว'),
     ('music_box_v1', 'Music Box & Vinyl',
-     'ไขลานกล่องดนตรี นางรำหมุน เล่นโน้ตเปียโนเป็นทำนองเฉพาะ แผ่นเสียงหมุน รูปเป็นปกแผ่นเสียง',
+     'ตู้แผ่นเสียงสุดวินเทจ เลื่อนเลือกปกแผ่น วางบนเครื่องเล่น เข็มลงแผ่นหมุน พลิกด้าน A/B เพื่อดูรูป 2 ใบ',
      'theme_previews/music_box.jpg', 'theme_musicbox.html', 69, 109, 'ไขลาน · เล่นโน้ต · แผ่นเสียง'),
     ('hanami_night_v1', 'Hanami Night Lanterns',
      'ค่ำคืนเทศกาลโคมไฟ แตะโคมริมน้ำเพื่อจุดไฟแล้วปล่อยขึ้นฟ้า โคมแต่ละดวงเปิดความทรงจำ 1-2 รูป',
@@ -258,7 +258,7 @@ PREMIUM_THEMES = [
      'งานเทศกาลโคมไฟ แมวกวักนำโชคนั่งดูอยู่ข้างกระดาน สไลด์กระเบื้องให้เรียงเป็นรูป ต่อสำเร็จได้รูปเข้าอัลบั้ม',
      'theme_previews/matchcat.jpg', 'theme_matchcat.html', 99, 129, 'สไลด์ปริศนา · แมวนำโชค · อัลบั้ม'),
     ('constellation_v1', 'Constellation of Us',
-     'ท้องฟ้ายามค่ำคืนที่ดวงดาวเรียงเป็นหัวใจ แตะดาวแต่ละดวงให้ความทรงจำระเบิดแสงออกมา ดาวตกพาดผ่านตอนเลื่อนจอ และเขียนคำอธิษฐานส่งขึ้นไปลอยบนฟ้า',
+     'แผนที่ดาวที่ต้องแตะดาวเรียงตามเลข ลากเส้นเป็นกลุ่มดาวของเรา เมื่อต่อครบกลุ่มดาวจะเปิดความทรงจำ 1-2 รูป',
      'theme_previews/constellation.jpg', 'theme_constellation.html', 99, 129, 'กลุ่มดาวหัวใจ · ดาวตก · คำอธิษฐาน'),
 ]
 DIALOG_THEMES = {'palace_sakura_v1'}
@@ -406,6 +406,12 @@ def migrate_db():
     prem_codes = [t[0] for t in PREMIUM_THEMES]
     conn.execute('UPDATE themes SET price_basic = ?, price_pro = ? WHERE theme_code NOT IN (%s)' % ','.join('?' * len(prem_codes)),
                  (DEFAULT_PRICES['basic'], DEFAULT_PRICES['pro'], *prem_codes))
+    for _c,_f in (('starry_night_v1','theme_starry.html'),('constellation_v1','theme_constellation.html'),('space_cruise_v1','theme_space.html'),('music_box_v1','theme_musicbox.html'),('love_post_v1','theme_envelope.html'),('cyberpunk_wine_v1','theme_wine.html')):
+        conn.execute('UPDATE themes SET template_file = ? WHERE theme_code = ?', (_f, _c))
+        for _t in list(PREMIUM_THEMES)+list(EXTRA_THEMES):
+            if _t[0] == _c:
+                conn.execute('UPDATE themes SET description = ? WHERE theme_code = ?', (_t[2], _c))
+    conn.execute('UPDATE themes SET description = ? WHERE theme_code = ?', ('ซอยนีออนยามค่ำคืน สับสวิตช์เปิดป้ายไฟทีละป้าย ไฟกะพริบติดแล้วรูปเรืองแสงในกรอบนีออน 1-2 รูป', 'cyberpunk_wine_v1'))
     conn.execute("UPDATE themes SET template_file = 'theme_100.html' WHERE template_file IS NULL")
     conn.execute('UPDATE themes SET is_active = 1 WHERE is_active IS NULL')
     conn.execute('UPDATE themes SET price_basic = ? WHERE price_basic IS NULL', (DEFAULT_PRICES['basic'],))

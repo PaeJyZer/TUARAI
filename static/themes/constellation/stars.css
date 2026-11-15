@@ -1,0 +1,41 @@
+:root { --hand: "Mali","Comic Sans MS",cursive; --acc: #8fd0ff; --mc-accent: #8fd0ff; --mc-paper: #16215a; --mc-ink: #e8eeff; --mc-bg: rgba(4,7,28,.82); --mc-edge: rgba(143,208,255,.5); }
+body.theme-constellation { background: #0a1030; color: #e8eeff; font-family: var(--hand); }
+.doo { display: block; width: 100%; height: auto; overflow: visible; }
+.gate { background: linear-gradient(#060a22,#101a4e 70%,#1f2d72); text-align: center; padding: 0 20px; overflow: hidden; }
+.g-body { position: relative; display: flex; flex-direction: column; align-items: center; }
+.gate-eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: #8fd0ff; }
+.gate-title { font: 600 clamp(28px, 7vw, 40px) var(--hand); margin: 8px 0 14px; word-break: break-word; color: #e8eeff; }
+.g-art { width: 130px; animation: gB 3.4s ease-in-out infinite; }
+@keyframes gB { 50% { transform: translateY(-12px) rotate(3deg); } }
+.go-btn { margin-top: 26px; appearance: none; border: 0; border-radius: 999px; padding: 14px 30px; font: 600 17px var(--hand); color: #06204a; background: #8fd0ff; box-shadow: 0 7px 0 rgba(0,0,0,.28); cursor: pointer; }
+.go-btn:active { transform: translateY(5px); }
+.gate-hint { margin-top: 18px; font-size: 14px; color: #a9b8ec; }
+.hd { position: relative; text-align: center; padding: 76px 14px 8px; z-index: 3; }
+.hd .eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: #8fd0ff; }
+.hd h1 { font: 600 clamp(24px, 6.4vw, 36px) var(--hand); margin: 6px 0; word-break: break-word; }
+.hd .sub { font-size: 14px; color: #a9b8ec; margin-bottom: 8px; }
+.foot { position: relative; text-align: center; padding: 30px 8px 16px; color: #a9b8ec; z-index: 3; }
+.pool { display: none; }
+@media (prefers-reduced-motion: reduce) { .g-art { animation: none; } }
+
+.cn { position: relative; min-height: 100vh; background: linear-gradient(#060a22, #101a4e 60%, #1f2d72); overflow: hidden; }
+.maps { position: relative; width: min(520px, 100%); margin: 0 auto; padding: 0 12px; }
+.map { position: relative; margin: 18px 0; aspect-ratio: 4 / 3; border-radius: 18px; background: rgba(255, 255, 255, .04); box-shadow: inset 0 0 0 2px rgba(143, 208, 255, .25); overflow: hidden; }
+.map h3 { position: absolute; left: 14px; top: 10px; font: 600 13px var(--hand); color: #8fd0ff; z-index: 2; }
+.map svg.lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.map .ln { stroke: #cfeaff; stroke-width: .9; stroke-linecap: round; filter: drop-shadow(0 0 3px #8fd0ff); stroke-dasharray: 200; stroke-dashoffset: 200; animation: draw .6s ease-out forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.pt { position: absolute; width: 40px; height: 40px; margin: -20px 0 0 -20px; appearance: none; border: 0; background: none; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; z-index: 2; }
+.pt i { position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px; border-radius: 50%; background: #dfeeff; box-shadow: 0 0 8px 2px rgba(180, 220, 255, .6); transition: transform .3s, background .3s; }
+.pt b { position: absolute; left: 50%; top: 50%; transform: translate(8px, -22px); font: 600 12px var(--hand); color: #a9c8f5; }
+.pt.next i { animation: nxt 1s ease-in-out infinite; background: #fff6b0; box-shadow: 0 0 14px 5px rgba(255, 230, 120, .75); }
+@keyframes nxt { 50% { transform: scale(1.5); } }
+.pt.on i { background: #fff; transform: scale(1.3); box-shadow: 0 0 16px 6px rgba(180, 225, 255, .9); animation: none; }
+.pt.wrong { animation: wr .35s; } @keyframes wr { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.map.done { box-shadow: inset 0 0 0 2px rgba(255, 230, 140, .7), 0 0 28px rgba(143, 208, 255, .3); cursor: pointer; }
+.map .tap { position: absolute; left: 0; right: 0; bottom: 10px; text-align: center; font: 600 13px var(--hand); color: #ffe9a0; opacity: 0; z-index: 3; }
+.map.done .tap { opacity: 1; }
+.polar { display: flex; justify-content: center; margin-top: 10px; }
+.pol-btn { appearance: none; border: 0; background: none; width: 130px; cursor: pointer; color: #ffe9a0; text-align: center; animation: gB 4s ease-in-out infinite; }
+.pol-btn small { display: block; font: 600 12px var(--hand); margin-top: 4px; }
+.pol-btn.is-locked { opacity: .8; }

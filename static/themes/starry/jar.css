@@ -1,0 +1,41 @@
+:root { --hand: "Mali","Comic Sans MS",cursive; --acc: #ffd86b; --mc-accent: #ffd86b; --mc-paper: #1b2557; --mc-ink: #eaf0ff; --mc-bg: rgba(5,8,28,.8); --mc-edge: rgba(255,216,107,.5); }
+body.theme-starry { background: #0c1230; color: #eaf0ff; font-family: var(--hand); }
+.doo { display: block; width: 100%; height: auto; overflow: visible; }
+.gate { background: linear-gradient(#070b24,#16205a 70%,#27357a); text-align: center; padding: 0 20px; overflow: hidden; }
+.g-body { position: relative; display: flex; flex-direction: column; align-items: center; }
+.gate-eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: #ffd86b; }
+.gate-title { font: 600 clamp(28px, 7vw, 40px) var(--hand); margin: 8px 0 14px; word-break: break-word; color: #eaf0ff; }
+.g-art { width: 130px; animation: gB 3.4s ease-in-out infinite; }
+@keyframes gB { 50% { transform: translateY(-12px) rotate(3deg); } }
+.go-btn { margin-top: 26px; appearance: none; border: 0; border-radius: 999px; padding: 14px 30px; font: 600 17px var(--hand); color: #4a3200; background: #ffd86b; box-shadow: 0 7px 0 rgba(0,0,0,.28); cursor: pointer; }
+.go-btn:active { transform: translateY(5px); }
+.gate-hint { margin-top: 18px; font-size: 14px; color: #aebbe8; }
+.hd { position: relative; text-align: center; padding: 76px 14px 8px; z-index: 3; }
+.hd .eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: #ffd86b; }
+.hd h1 { font: 600 clamp(24px, 6.4vw, 36px) var(--hand); margin: 6px 0; word-break: break-word; }
+.hd .sub { font-size: 14px; color: #aebbe8; margin-bottom: 8px; }
+.foot { position: relative; text-align: center; padding: 30px 8px 16px; color: #aebbe8; z-index: 3; }
+.pool { display: none; }
+@media (prefers-reduced-motion: reduce) { .g-art { animation: none; } }
+
+.st { position: relative; min-height: 100vh; overflow: hidden; background: linear-gradient(#070b24, #16205a 60%, #27357a 100%); }
+.st::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.9) 0 1px, transparent 1.5px) 0 0 / 70px 70px, radial-gradient(circle at 70% 60%, rgba(255,255,255,.7) 0 1px, transparent 1.5px) 0 0 / 110px 110px; opacity: .6; pointer-events: none; }
+.sky { position: relative; height: 420px; z-index: 2; }
+.ff { position: absolute; width: 54px; height: 54px; margin: -27px 0 0 -27px; appearance: none; border: 0; background: none; padding: 0; cursor: pointer; animation: wander var(--t, 14s) ease-in-out infinite alternate; animation-delay: var(--dl, 0s); -webkit-tap-highlight-color: transparent; }
+.ff i { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px; border-radius: 50%; background: #fff6b0; box-shadow: 0 0 14px 6px rgba(255, 230, 120, .8), 0 0 40px 16px rgba(255, 220, 90, .35); animation: blink 2.2s ease-in-out infinite; }
+.ff::before, .ff::after { content: ""; position: absolute; top: 50%; width: 13px; height: 8px; margin-top: -9px; border-radius: 50%; background: rgba(210, 235, 255, .55); }
+.ff::before { right: 50%; margin-right: 3px; transform: rotate(-24deg); animation: wing .16s linear infinite alternate; } .ff::after { left: 50%; margin-left: 3px; transform: rotate(24deg); animation: wing .16s linear infinite alternate-reverse; }
+@keyframes wing { to { transform: rotate(0deg) scaleY(.5); } }
+@keyframes blink { 50% { opacity: .45; transform: scale(.8); } }
+@keyframes wander { 0% { transform: translate(0, 0); } 25% { transform: translate(var(--x1, 40px), var(--y1, -30px)); } 50% { transform: translate(var(--x2, -30px), var(--y2, 40px)); } 75% { transform: translate(var(--x3, 50px), var(--y3, 20px)); } 100% { transform: translate(var(--x4, -40px), var(--y4, -20px)); } }
+.ff.caught { animation: none; pointer-events: none; transition: left .9s cubic-bezier(.4, 0, .2, 1), top .9s cubic-bezier(.4, 0, .2, 1), opacity .5s .7s; opacity: 0; }
+.jarwrap { position: relative; display: flex; justify-content: center; z-index: 3; margin-top: -10px; }
+.jar { appearance: none; border: 0; background: none; cursor: pointer; width: 150px; text-align: center; color: #ffeaa8; }
+.jar-art { display: block; position: relative; }
+.jar-lbl { display: block; font: 600 12px var(--hand); margin-top: 4px; }
+.jar.is-locked { opacity: .85; }
+.glowj { transition: opacity 1s; }
+.jar-art .fill { transition: opacity .8s; }
+.foot { padding-top: 40px; }
+@media (min-width: 760px) { .sky { height: 480px; } }
+@media (prefers-reduced-motion: reduce) { .ff, .ff i, .ff::before, .ff::after { animation: none; } }

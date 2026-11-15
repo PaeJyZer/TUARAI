@@ -1,59 +1,42 @@
 {% extends "_theme_base.html" %}
 {% block fonts %}
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Serif+Thai:wght@400;500;600;700&family=Kodchasan:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Thai:wght@400;500;600;700&family=Kodchasan:wght@400;500;600&display=swap" rel="stylesheet">
 {% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/starry/style.css') }}">{% endblock %}
-{% block favicon %}✨{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/shared/memcard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='themes/starry/jar.css') }}">
+{% endblock %}
+{% block favicon %}⭐{% endblock %}
 {% block body_class %}theme-starry{% endblock %}
-{% block letter_eyebrow %}A letter under the stars{% endblock %}
-
-{% block bg %}
-  <canvas id="skyCanvas" aria-hidden="true"></canvas>
-{% endblock %}
+{% block letter_eyebrow %}Wish upon the stars{% endblock %}
 
 {% block gate %}
   <div class="gate" id="gate">
-    <p class="gate-eyebrow">A little universe for you</p>
-    <h1 class="gate-title">ถึง {{ partner_name }}</h1>
-    <button class="star-btn" type="button" data-gate data-delay="1500" aria-label="แตะดาวเพื่อเปิด">
-      <span class="star-glow"></span><span class="star-core"></span>
-    </button>
-    <p class="gate-hint">แตะดาวดวงนี้เพื่อเปิดจักรวาลของเรา</p>
+    <div class="g-body">
+      <p class="gate-eyebrow">A jar of fireflies</p>
+      <h1 class="gate-title">ถึง {{ partner_name }}</h1>
+      <div class="g-art" id="gArt"></div>
+      <button class="go-btn" type="button" data-gate data-delay="900">เดินเข้าทุ่งหิ่งห้อย</button>
+      <p class="gate-hint">หิ่งห้อยทุกตัวถือความทรงจำไว้ จับใส่โหลให้ครบ</p>
+    </div>
   </div>
 {% endblock %}
 
 {% block main %}
-  <header class="hero">
-    <div class="orbit">
-      <span class="ring r1"></span><span class="ring r2"></span>
-      <div class="cover" data-photo><img src="{{ center_photo }}" alt="รูปคู่ของเรา"></div>
-    </div>
-    <p class="eyebrow">{{ occ.en }}</p>
-    <h1 class="hero-name">{{ partner_name }}</h1>
-    <p class="hero-sub">ท่ามกลางดวงดาวนับล้าน ฉันเลือกเธอ</p>
-    <button class="cta" type="button" data-letter>✦ จดหมายถึงเธอ</button>
-    <span class="scroll-hint">เลื่อนลงดูดวงดาวของเรา</span>
-  </header>
-
-  {% if side_photos %}
-  <section class="galaxy">
-    <h2 class="sec-title">ดวงดาวของเรา</h2>
-    <div class="constellation">
-      {% for slot, src in side_photos %}
-      <figure class="star-photo reveal" data-photo style="--i: {{ loop.index0 }}">
-        <img src="{{ src }}" alt="ความทรงจำที่ {{ loop.index }}" loading="lazy">
-      </figure>
-      {% endfor %}
-    </div>
+  <section class="st" id="st">
+    <header class="hd"><p class="eyebrow">{{ occ.en }}</p><h1>ท้องฟ้าของ {{ partner_name }}</h1><p class="sub">แตะหิ่งห้อยที่บินผ่านเพื่อจับใส่โหลแก้ว <b id="cnt"></b></p></header>
+    <div class="sky" id="sky"></div>
+    <div class="jarwrap"><button class="jar" id="jarBtn" type="button" data-letter aria-label="เปิดโหลดาว"><span class="jar-art" id="jarArt"></span><span class="jar-lbl">โหลดาว · จดหมาย</span></button></div>
+    <footer class="foot"><p>ขอบคุณที่เป็นดวงดาวดวงเดียวของฉัน</p></footer>
   </section>
-  {% endif %}
-
-  <footer class="foot">
-    <p>ขอบคุณที่เป็นดาวดวงที่สว่างที่สุดของฉัน</p>
-    <button class="cta ghost" type="button" data-letter>อ่านจดหมายอีกครั้ง</button>
-  </footer>
+  <div class="pool" aria-hidden="true" hidden>
+    {% for p in photos %}<figure data-photo><img src="{{ p.src }}" alt="" decoding="async"></figure>{% endfor %}
+  </div>
 {% endblock %}
 
 {% block scripts %}
-  <script src="{{ url_for('static', filename='themes/starry/sky.js') }}"></script>
+  <script>window.TU_PHOTOS = {{ photos|tojson }};</script>
+  <script src="{{ url_for('static', filename='themes/shared/doodles.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/shared/memcard.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/starry/jar.js') }}"></script>
 {% endblock %}
