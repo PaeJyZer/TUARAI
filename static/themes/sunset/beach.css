@@ -1,0 +1,72 @@
+/* ธีมชายหาด: เปลือกหอย/ปู/ขวดจดหมาย ลายเส้นหมี กดเปลือกหอยเปิดรูปทีละ 1-2 รูป */
+:root { --hand: "Mali", "Bradley Hand", "Comic Sans MS", cursive; --ink: #5a3b2a; }
+body.theme-sunset { background: #f6d9b4; color: var(--ink); font-family: var(--hand); }
+.doo { display: block; width: 100%; height: auto; overflow: visible; }
+.gate { background: linear-gradient(#f9c9a0 0%, #f5a3a0 38%, #b98bb5 62%, #6f6ea6 100%); overflow: hidden; }
+.g-sun { position: absolute; left: 50%; top: 24%; width: 190px; height: 190px; margin-left: -95px; border-radius: 50%; background: radial-gradient(circle, #fff3c4 0 36%, #ffd689 62%, rgba(255, 214, 137, 0) 72%); animation: sunBreath 5s ease-in-out infinite; }
+@keyframes sunBreath { 50% { transform: scale(1.06); } }
+.g-sea { position: absolute; left: 0; right: 0; bottom: 0; height: 36%; background: linear-gradient(rgba(255, 255, 255, .0), rgba(255, 255, 255, .18)), repeating-linear-gradient(90deg, rgba(255, 255, 255, .0) 0 40px, rgba(255, 255, 255, .12) 40px 44px); }
+.g-body { position: relative; text-align: center; display: flex; flex-direction: column; align-items: center; padding: 0 22px; }
+.gate-eyebrow { font-size: 13px; letter-spacing: .3em; text-transform: uppercase; color: rgba(255, 255, 255, .85); }
+.gate-title { font: 600 clamp(28px, 7vw, 40px) var(--hand); color: #fff; margin: 8px 0 14px; text-shadow: 0 2px 10px rgba(90, 40, 60, .35); word-break: break-word; }
+.g-crab { width: 130px; animation: crabHop 2.4s ease-in-out infinite; }
+@keyframes crabHop { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
+.go-btn { margin-top: 20px; appearance: none; border: 0; border-radius: 999px; padding: 14px 30px; font: 600 17px var(--hand); color: #7a3a2e; background: #fff4dc; box-shadow: 0 8px 0 #d9a982, 0 14px 24px rgba(60, 30, 40, .3); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.go-btn:active { transform: translateY(5px); box-shadow: 0 3px 0 #d9a982; }
+.gate-hint { margin-top: 18px; font-size: 14px; color: rgba(255, 255, 255, .85); }
+
+.beach { position: relative; min-height: 100vh; overflow: hidden; }
+.sky { position: relative; height: 330px; background: linear-gradient(#f9c9a0, #f8b6a4 55%, #f5a3a0); overflow: hidden; }
+.sun { position: absolute; left: 50%; bottom: -70px; width: 220px; height: 220px; margin-left: -110px; border-radius: 50%; background: radial-gradient(circle, #fff3c4 0 38%, #ffd689 64%, rgba(255, 214, 137, 0) 72%); }
+.cloud { position: absolute; height: 26px; width: 110px; border-radius: 30px; background: rgba(255, 255, 255, .6); animation: drift 40s linear infinite; }
+.cloud::before, .cloud::after { content: ""; position: absolute; background: inherit; border-radius: 50%; }
+.cloud::before { width: 44px; height: 44px; left: 16px; top: -22px; } .cloud::after { width: 34px; height: 34px; right: 16px; top: -14px; }
+.cloud.c1 { top: 60px; left: -120px; } .cloud.c2 { top: 120px; left: -120px; animation-duration: 55s; animation-delay: -20s; transform: scale(.7); }
+@keyframes drift { to { transform: translateX(calc(100vw + 260px)); } }
+.b-head { position: absolute; left: 0; right: 0; top: 70px; text-align: center; padding: 0 18px; color: #7a3a2e; }
+.b-head .eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; opacity: .75; }
+.b-head h1 { font: 600 clamp(24px, 6.4vw, 38px) var(--hand); margin: 6px 0; word-break: break-word; }
+.b-sub { font-size: 14px; opacity: .85; }
+.sea { position: relative; height: 70px; margin-top: -1px; background: linear-gradient(#7fc4cf, #a9dcdc); }
+.sea .wave { position: absolute; left: -10%; width: 120%; height: 40px; }
+.sea .w1 { top: -22px; fill: #7fc4cf; animation: wv 7s ease-in-out infinite; } .sea .w2 { top: -10px; fill: #a9dcdc; opacity: .9; animation: wv 5s ease-in-out infinite reverse; }
+@keyframes wv { 50% { transform: translateX(5%); } }
+.sand { position: relative; background: linear-gradient(#f3dcb0, #ecca95); padding: 30px 0 40px; min-height: 360px; }
+.sand::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle, rgba(160, 110, 60, .13) 1px, transparent 1.6px) 0 0 / 14px 14px; pointer-events: none; }
+.sand::after { content: ""; position: absolute; left: 0; right: 0; top: -2px; height: 22px; background: linear-gradient(rgba(255, 255, 255, .6), transparent); pointer-events: none; }
+.shells { position: relative; width: min(960px, 100%); margin: 0 auto; }
+.sh { position: absolute; width: 92px; appearance: none; border: 0; background: none; padding: 0; cursor: pointer; transform: translate(-50%, 0) rotate(var(--r, 0deg)); transition: transform .35s cubic-bezier(.3, 1.6, .5, 1); -webkit-tap-highlight-color: transparent; }
+.sh:hover { transform: translate(-50%, -6px) rotate(var(--r, 0deg)) scale(1.07); }
+.sh:active { transform: translate(-50%, 0) rotate(var(--r, 0deg)) scale(.92); }
+.sh .doo { filter: drop-shadow(0 4px 3px rgba(120, 80, 30, .16)); }
+.sh.hint .doo { animation: shHint 2.2s ease-in-out infinite; }
+@keyframes shHint { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px) rotate(-4deg); } }
+.sh .num { position: absolute; left: 50%; top: 100%; transform: translateX(-50%) rotate(calc(var(--r, 0deg) * -1)); margin-top: -4px; font-size: 11px; color: #8a6446; opacity: .7; white-space: nowrap; }
+.sh.opened .doo { opacity: .45; filter: grayscale(.3); }
+.sh.opened::after { content: ""; position: absolute; right: 2px; top: -6px; width: 28px; height: 26px; background: var(--ic-heart) center / contain no-repeat; }
+.bottle-l { position: absolute; right: 6%; top: -34px; width: 64px; appearance: none; border: 0; background: none; padding: 0; cursor: pointer; animation: bob 3.4s ease-in-out infinite; transform: rotate(-24deg); z-index: 3; }
+.bottle-l small { display: block; margin-top: 4px; font: 600 11px var(--hand); color: #7a3a2e; transform: rotate(24deg); white-space: nowrap; }
+.bottle-l.is-locked { filter: grayscale(.5); opacity: .8; }
+@keyframes bob { 50% { transform: rotate(-18deg) translateY(-6px); } }
+.crab-walk { position: absolute; left: 0; bottom: 18px; width: 74px; animation: crabWalk 16s ease-in-out infinite alternate; pointer-events: auto; cursor: pointer; z-index: 2; }
+.crab-walk .doo { animation: crabBob .5s ease-in-out infinite; }
+.crab-walk.hop .doo { animation: crabHop .6s 1; }
+@keyframes crabWalk { to { left: calc(100% - 74px); } }
+@keyframes crabBob { 50% { transform: translateY(-3px) rotate(3deg); } }
+.foot { text-align: center; padding: 34px 16px 16px; color: #7a5a3e; }
+.foot .cl-quest { text-align: left; }
+.sh-ov { position: fixed; inset: 0; z-index: 8000; display: grid; place-items: center; padding: 16px; background: rgba(250, 205, 160, .55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); opacity: 0; visibility: hidden; transition: opacity .3s; }
+.sh-ov.open { opacity: 1; visibility: visible; }
+.sh-card { position: relative; width: min(420px, 100%); max-height: 92vh; overflow: auto; text-align: center; padding: 22px 16px 20px; border-radius: 28px 28px 20px 20px; background: #fbeed3; box-shadow: 0 0 0 6px #f3dcb0, 0 24px 50px rgba(120, 60, 30, .35); transform: scale(.7) rotate(-4deg); transition: transform .5s cubic-bezier(.3, 1.5, .5, 1); }
+.sh-ov.open .sh-card { transform: none; }
+.sh-card h3 { font: 600 19px var(--hand); color: #7a3a2e; margin-bottom: 10px; }
+.sh-card .ph-row { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.sh-card .pol { width: 78%; background: #fff; padding: 3% 3% 12%; box-shadow: 0 3px 10px rgba(60, 35, 15, .3); position: relative; cursor: zoom-in; transform: rotate(var(--r, -2deg)); animation: polIn .6s cubic-bezier(.3, 1.5, .5, 1) both; animation-delay: var(--d, 0s); }
+.sh-card .pol .ph { aspect-ratio: 4 / 3; background: #e8dcc8 center / cover no-repeat; }
+.sh-card .pol figcaption { position: absolute; left: 4%; right: 4%; bottom: 3%; font-size: 14px; color: #5b4636; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@keyframes polIn { from { opacity: 0; transform: translateY(60px) scale(.6) rotate(0deg); } }
+.sh-card .x { position: absolute; right: 10px; top: 8px; width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(122, 58, 46, .1); font-size: 24px; color: #7a3a2e; cursor: pointer; }
+.sh-card .sh-top { width: 64px; margin: 0 auto 2px; }
+.pool { display: none; }
+@media (min-width: 760px) { .sh { width: 128px; } .sh-card { width: 560px; } .sh-card .ph-row { flex-direction: row; justify-content: center; } .sh-card .pol { width: 44%; } }
+@media (prefers-reduced-motion: reduce) { .cloud, .crab-walk, .crab-walk .doo, .sh.hint .doo, .bottle-l { animation: none; } }

@@ -1,61 +1,47 @@
 {% extends "_theme_base.html" %}
 {% block fonts %}
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Noto+Serif+Thai:wght@400;500;600;700&family=Kodchasan:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Thai:wght@400;500;600;700&family=Kodchasan:wght@400;500;600&display=swap" rel="stylesheet">
 {% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/sunset/style.css') }}">{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/sunset/beach.css') }}">{% endblock %}
 {% block favicon %}🌅{% endblock %}
 {% block body_class %}theme-sunset{% endblock %}
-{% block body_attrs %}data-game="scratch" data-game-title="ขูดทรายเผยรูป" data-game-hint="ใช้นิ้วขูดทรายออก ให้เห็นรูปที่ฝังอยู่ใต้ชายหาด" data-cover-a="#f4dca8" data-cover-b="#d8b172" data-cover-ink="#7a5328" data-cover-text="ขูดทรายตรงนี้" data-cover-icon="🏖️" data-game-win="เจอแล้ว! ขวดจดหมายลอยมาถึงฝั่ง 🍾" data-game-eyebrow="Treasure on the beach"{% endblock %}
 {% block letter_eyebrow %}A message in a bottle{% endblock %}
-
-{% block bg %}
-  <div class="sky" aria-hidden="true"><div class="sun"></div></div>
-  <div class="waves" aria-hidden="true">
-    <svg class="wave w1" viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0 60 Q 90 20 180 60 T 360 60 T 540 60 T 720 60 T 900 60 T 1080 60 T 1260 60 T 1440 60 V120 H0Z"/></svg>
-    <svg class="wave w2" viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0 60 Q 90 100 180 60 T 360 60 T 540 60 T 720 60 T 900 60 T 1080 60 T 1260 60 T 1440 60 V120 H0Z"/></svg>
-  </div>
-{% endblock %}
 
 {% block gate %}
   <div class="gate" id="gate">
-    <p class="gate-eyebrow">A message for you</p>
-    <h1 class="gate-title">ถึง {{ partner_name }}</h1>
-    <button class="bottle-btn" type="button" data-gate data-delay="1700" aria-label="แตะขวดเพื่อเปิด">
-      <span class="bottle"><span class="cork"></span><span class="neck"></span><span class="glass"><span class="scroll"></span></span></span>
-      <span class="ripple"></span>
-    </button>
-    <p class="gate-hint">มีขวดแก้วลอยมาที่ชายหาด แตะขวดเพื่อเปิดอ่านข้อความข้างใน</p>
+    <div class="g-sun"></div>
+    <div class="g-sea"></div>
+    <div class="g-body">
+      <p class="gate-eyebrow">A message for you</p>
+      <h1 class="gate-title">ถึง {{ partner_name }}</h1>
+      <div class="g-crab" id="gCrab"></div>
+      <button class="go-btn" type="button" data-gate data-delay="1100">เดินลงหาดไปด้วยกัน</button>
+      <p class="gate-hint">ริมหาดมีเปลือกหอยซ่อนความทรงจำของเราไว้</p>
+    </div>
   </div>
 {% endblock %}
 
 {% block main %}
-  <header class="hero">
-    <p class="eyebrow">{{ occ.en }}</p>
-    <h1 class="hero-name">{{ partner_name }}</h1>
-    <div class="hero-pol" data-photo>
-      <img src="{{ center_photo }}" alt="รูปคู่ของเรา">
-      <span>Our golden hour</span>
+  <div class="beach" id="beach">
+    <div class="sky"><div class="sun"></div><span class="cloud c1"></span><span class="cloud c2"></span></div>
+    <header class="b-head"><p class="eyebrow">{{ occ.en }}</p><h1>ชายหาดของ {{ partner_name }}</h1><p class="b-sub">แตะเปลือกหอยเพื่อเปิดดูความทรงจำ <b id="shCount"></b></p></header>
+    <div class="sea"><svg class="wave w1" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0 30 Q 90 6 180 30 T 360 30 T 540 30 T 720 30 T 900 30 T 1080 30 T 1260 30 T 1440 30 V60 H0Z"/></svg>
+      <svg class="wave w2" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0 30 Q 90 54 180 30 T 360 30 T 540 30 T 720 30 T 900 30 T 1080 30 T 1260 30 T 1440 30 V60 H0Z"/></svg></div>
+    <div class="sand" id="sand">
+      <button class="bottle-l" id="bottleL" type="button" data-letter aria-label="เปิดขวดจดหมาย"><span class="bl-art"></span><small>ขวดจดหมาย</small></button>
+      <div class="shells" id="shells"></div>
+      <div class="crab-walk" id="crabWalk"></div>
     </div>
-    <p class="hero-sub">ทุกพระอาทิตย์ตกดิน ฉันนึกถึงเธอเสมอ</p>
-    <button class="cta" type="button" data-letter>🍾 เปิดขวดจดหมาย</button>
-  </header>
+    <footer class="foot"><p>ขอบคุณที่เดินริมหาดเป็นเพื่อนกันนะ</p></footer>
+  </div>
+  <div class="sh-ov" id="shOv" aria-hidden="true"><div class="sh-card" id="shCard"></div></div>
+  <div class="pool" aria-hidden="true" hidden>
+    {% for p in photos %}<figure data-photo><img src="{{ p.src }}" alt="" decoding="async"></figure>{% endfor %}
+  </div>
+{% endblock %}
 
-  {% if side_photos %}
-  <section class="shore">
-    <h2 class="sec-title">ความทรงจำริมหาด</h2>
-    <div class="line">
-      {% for slot, src in side_photos %}
-      <figure class="hang reveal" data-photo style="--i: {{ loop.index0 }}; --tilt: {{ ['-3deg','2deg','-1.5deg','3deg','-2.5deg','1.5deg'][loop.index0 % 6] }}">
-        <span class="pin"></span>
-        <img src="{{ src }}" alt="ความทรงจำที่ {{ loop.index }}" loading="lazy">
-      </figure>
-      {% endfor %}
-    </div>
-  </section>
-  {% endif %}
-
-  <footer class="foot">
-    <p>ขอบคุณที่เป็นแสงสุดท้ายของวันที่สวยที่สุด</p>
-    <button class="cta ghost" type="button" data-letter>อ่านจดหมายอีกครั้ง</button>
-  </footer>
+{% block scripts %}
+  <script>window.TU_PHOTOS = {{ photos|tojson }};</script>
+  <script src="{{ url_for('static', filename='themes/shared/doodles.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/sunset/beach.js') }}"></script>
 {% endblock %}

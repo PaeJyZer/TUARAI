@@ -19,7 +19,7 @@
   var SH = [['#f7c6b8', '#efa593'], ['#f6dfa6', '#e8c36f'], ['#cfe0ee', '#a9c6df'], ['#e3cdee', '#c8a8dd'], ['#bfe3d3', '#8fcab2']];
   D.shell = function (i) {
     var c = SH[i % SH.length], r = '';
-    for (var k = 0; k < 7; k++) { var a = (-72 + k * 24) * Math.PI / 180; r += '<path d="M50 78 L' + (50 + 44 * Math.cos(a)).toFixed(1) + ' ' + (78 + 44 * Math.sin(a)).toFixed(1) + '" ' + st(2.2, .5) + '/>'; }
+    for (var k = 0; k < 7; k++) { var a = (-54 + k * 18) * Math.PI / 180 - Math.PI / 2 + Math.PI / 2; r += '<path d="M50 76 L' + (50 + 34 * Math.sin(a)).toFixed(1) + ' ' + (76 - 34 * Math.cos(a)).toFixed(1) + '" ' + st(2.2, .5) + '/>'; }
     return svg('0 0 100 100',
       '<ellipse cx="50" cy="93" rx="30" ry="4.5" fill="#7a5222" opacity=".13"/>' +
       '<path d="M50 80 C14 78 6 50 14 38 q4 -4 8 -2 q4 -8 11 -6 q5 -9 13 -6 q8 -3 13 6 q7 -2 11 6 q4 -2 8 2 C94 50 86 78 50 80Z" fill="' + c[0] + '"/>' +
