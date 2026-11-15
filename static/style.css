@@ -956,3 +956,7 @@ html, body { overflow-x: clip; max-width: 100%; }
 .qe-panel input[type="text"] { width: 100%; margin-bottom: 8px; }
 .qe-qa input { margin-bottom: 0 !important; }
 @media (min-width: 700px) { .qe-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.qe-off { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 14px; margin-bottom: 10px; border: 2px dashed #c9a46a; border-radius: 12px; background: #fff8ec; cursor: pointer; }
+.qe-off input { width: 20px; height: 20px; accent-color: #b0102a; }
+.qe-off small { color: #8a7355; }
+.qe-chip.dis { opacity: .45; cursor: not-allowed; filter: grayscale(.8); }

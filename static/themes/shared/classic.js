@@ -168,7 +168,8 @@
   var QA = (QC.qa || []).filter(function (x) { return x && x.q && x.a && x.w && x.w.length; });
   var SECRETS = (QC.secret || []).filter(Boolean);
   var LIST = (QC.pick || []).filter(function (k, i, a) { return ALLK.indexOf(k) >= 0 && a.indexOf(k) === i && (k !== 'ask' || QA.length) && (k !== 'scratch' || SECRETS.length); });
-  if (!LIST.length) LIST = ['quiz', 'puzzle', 'hunt'];
+  if (QC.nohunt) LIST = LIST.filter(function (k) { return k !== 'hunt'; });
+  if (!LIST.length) LIST = QC.nohunt ? ['quiz', 'puzzle', 'match'] : ['quiz', 'puzzle', 'hunt'];
   var NEED = QC.demo ? 3 : LIST.length;
   var META = {
     quiz:    { ic: '💭', t: 'ทายใจ', s: 'ตอบ 3 ข้อ' },
@@ -504,6 +505,7 @@
   }, true);
 
   function init() {
+    if (QC.off) { letterOpen = true; setLetters(); return; }
     mountLock(); mountChip(); mountQuest(); setLetters();
     if (STAGE && LIST.indexOf('hunt') >= 0) { var t0 = setInterval(function () { if (!huntOn && !done.hunt && document.querySelector('.scatter-item')) { plantHearts(); } if (huntOn) clearInterval(t0); }, 600); }
   }

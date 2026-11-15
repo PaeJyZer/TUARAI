@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (site.has_dialog && !dlgEd) dlgEd = TU.dialogEditor(document.getElementById('edDialog'), site.dialog, { free: site.q_free, price: site.q_price, max: site.q_max, allowed: site.q_allowed, noPrice: site.q_max <= site.q_free, hint: site.q_max <= site.q_free ? 'ลุงเจ้าของร้านจะถามคำถามเหล่านี้ ใส่ {name} แทนชื่อแฟนได้ ตัวเลือกตอบ 2-4 ข้อ และเขียนคำตอบของลุงได้' : '', onBuy: site.q_allowed < site.q_max ? buyQuestions : null });
 
         document.getElementById('edQuestsWrap').style.display = site.has_quests ? '' : 'none';
-        if (site.has_quests && !qEd) qEd = TU.questEditor(document.getElementById('edQuests'), site.quests);
+        if (site.has_quests && !qEd) qEd = TU.questEditor(document.getElementById('edQuests'), site.quests, { noHunt: !!site.no_hunt });
 
         renderNotice();
         renderPhotos();

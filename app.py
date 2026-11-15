@@ -569,6 +569,7 @@ def theme_dict(theme):
     d['tagline'] = PREMIUM_TAGS.get(d.get('theme_code'), '')
     d['has_dialog'] = d.get('theme_code') in DIALOG_THEMES
     d['has_captions'] = d.get('theme_code') in CAPTION_THEMES
+    d['no_hunt'] = d.get('theme_code') not in HUNT_THEMES
     d['has_quests'] = True          # ภารกิจมีในทุกธีม (18 เว็บ)
     return d
 
@@ -631,6 +632,8 @@ def clean_dialog(raw):
 
 
 QUEST_KEYS = ['quiz', 'puzzle', 'hunt', 'match', 'ask', 'scratch']
+# ธีมที่เล่นภารกิจ "หัวใจลับ" ได้ (ธีมอื่นเก็บรูปไว้ในการ์ด/กลไกเฉพาะ ไม่มีรูปบนหน้าให้ซ่อนหัวใจ)
+HUNT_THEMES = {'cyberpunk_wine_v1', 'palace_sakura_v1'}
 QUEST_PICK = 3          # เลือกได้กี่ภารกิจ (ฟรีทุกแพ็กเกจ)
 
 
@@ -671,7 +674,7 @@ def clean_quests(raw):
     for k in QUEST_KEYS[:3]:            # ไม่ครบ 3 ข้อ เติมจากภารกิจพื้นฐาน
         if len(pick) < QUEST_PICK and k not in pick:
             pick.append(k)
-    return {'pick': pick, 'qa': qa, 'secret': secret}
+    return {'pick': pick, 'qa': qa, 'secret': secret, 'off': bool(raw.get('off'))}
 
 
 def quests_of(site):
@@ -740,6 +743,7 @@ def site_state(site):
         'letter_sign': site['letter_sign'] or '',
         'has_captions': bool(theme and theme['theme_code'] in CAPTION_THEMES),
         'captions': captions_of(site),
+        'no_hunt': bool(theme and theme['theme_code'] not in HUNT_THEMES),
         'has_quests': bool(theme),
         'quests': quests_of(site),
         'has_dialog': bool(theme and theme['theme_code'] in DIALOG_THEMES),
@@ -892,6 +896,15 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
     occasion = occasion if occasion in OCCASIONS else 'anniversary'
     if theme and theme['theme_code'] == Y2K_CODE:
         dialog = (dialog if dialog and dialog is not DEFAULT_DIALOG else Y2K_DIALOG)[:Y2K_MAX_Q]
+    quests = dict(quests or (DEMO_QUESTS if demo else clean_quests(None)))
+    if theme and theme['theme_code'] not in HUNT_THEMES:
+        quests['nohunt'] = True
+        pk = [k for k in quests.get('pick', []) if k != 'hunt']
+        want = len(quests.get('pick', [])) or QUEST_PICK
+        for k in ('quiz', 'puzzle', 'match', 'ask', 'scratch'):
+            if len(pk) < want and k not in pk and not (k == 'ask' and not quests.get('qa')) and not (k == 'scratch' and not quests.get('secret')):
+                pk.append(k)
+        quests['pick'] = pk
     template = os.path.basename((theme['template_file'] if theme else None) or 'theme_100.html')
     if not os.path.isfile(os.path.join(app.root_path, 'templates', template)):
         template = 'theme_100.html'
@@ -911,7 +924,7 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
         demo=demo,
         seo=seo,
         dialog=dialog or DEFAULT_DIALOG,
-        quests=quests or (DEMO_QUESTS if demo else clean_quests(None)),
+        quests=quests,
         pairs=[(u, (captions or {}).get(u) or f'ความทรงจำที่ {i + 1}') for i, u in enumerate(urls[:MAX_PAIRS])],
         extra_photos=urls[MAX_PAIRS:],
         captions=captions or {},

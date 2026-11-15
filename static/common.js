@@ -200,14 +200,17 @@ window.TU = (function () {
         opts = opts || {};
         init = init || {};
         var MAXP = 3, locked = false;
-        var pick = (init.pick && init.pick.length ? init.pick : ['quiz', 'puzzle', 'hunt']).slice(0, MAXP);
+        var NOH = !!opts.noHunt, off = !!init.off;
+        var pick = (init.pick && init.pick.length ? init.pick : (NOH ? ['quiz', 'puzzle', 'match'] : ['quiz', 'puzzle', 'hunt'])).filter(function (k) { return !(NOH && k === 'hunt'); }).slice(0, MAXP);
+        if (!pick.length) pick = ['quiz', 'puzzle', 'match'];
         var qa = (init.qa || []).slice(0, 3), sec = (init.secret || []).slice(0, 3);
         while (qa.length < 3) qa.push({ q: '', a: '', w: ['', ''] });
         while (sec.length < 3) sec.push('');
         function v(x) { return escapeHtml(x || ''); }
-        var h = '<p class="photo-hint">🎯 เลือกภารกิจที่จะให้เขา/เธอเล่นก่อนอ่านจดหมาย <b>ได้ ' + MAXP + ' ข้อ (ฟรี)</b> <span id="qeCnt"></span></p><div class="qe-grid">';
+        var h = '<label class="qe-off"><input type="checkbox" id="qeOff"' + (off ? ' checked' : '') + '> <b>ไม่เอาภารกิจ</b> <small>(เล่นธีมอย่างเดียว ผู้รับเปิดอ่านจดหมายได้เลย)</small></label><div id="qeBody"><p class="photo-hint">🎯 เลือกภารกิจที่จะให้เขา/เธอเล่นก่อนอ่านจดหมาย <b>ได้ ' + MAXP + ' ข้อ (ฟรี)</b> <span id="qeCnt"></span></p><div class="qe-grid">';
         QUESTS.forEach(function (q) {
-            h += '<button type="button" class="qe-chip" data-k="' + q.k + '"><span class="qe-ic">' + q.ic + '</span><b>' + q.t + '</b><small>' + q.d + '</small><i class="qe-tick">✓</i></button>';
+            var dis = NOH && q.k === 'hunt';
+            h += '<button type="button" class="qe-chip' + (dis ? ' dis' : '') + '" data-k="' + q.k + '"' + (dis ? ' disabled' : '') + '><span class="qe-ic">' + q.ic + '</span><b>' + q.t + '</b><small>' + (dis ? 'ธีมนี้เล่นหัวใจลับไม่ได้' : q.d) + '</small><i class="qe-tick">✓</i></button>';
         });
         h += '</div><div class="qe-panel" data-p="ask"><p class="field-label">✍️ คำถามของเรา (ใส่ได้ 1-3 ข้อ)</p>';
         qa.forEach(function (it, i) {
@@ -221,15 +224,17 @@ window.TU = (function () {
         sec.forEach(function (t, i) {
             h += '<input type="text" class="qe-s" maxlength="120" placeholder="ข้อความลับที่ ' + (i + 1) + ' เช่น ขอบคุณที่อยู่ข้างกันเสมอ" value="' + v(t) + '">';
         });
-        h += '</div>';
+        h += '</div></div>';
         root.innerHTML = h;
         function sync() {
             root.querySelectorAll('.qe-chip').forEach(function (c) { c.classList.toggle('on', pick.indexOf(c.dataset.k) >= 0); });
             root.querySelectorAll('.qe-panel').forEach(function (p) { p.style.display = pick.indexOf(p.dataset.p) >= 0 ? '' : 'none'; });
+            root.querySelector('#qeBody').style.display = off ? 'none' : '';
             root.querySelector('#qeCnt').textContent = '(เลือกแล้ว ' + pick.length + '/' + MAXP + ')';
         }
         root.addEventListener('click', function (e) {
-            var c = e.target.closest('.qe-chip'); if (!c || locked) return;
+            if (e.target.id === 'qeOff') { if (!locked) { off = e.target.checked; sync(); } else e.target.checked = off; return; }
+            var c = e.target.closest('.qe-chip'); if (!c || locked || c.classList.contains('dis')) return;
             var k = c.dataset.k, i = pick.indexOf(k);
             if (i >= 0) { if (pick.length <= 1) return; pick.splice(i, 1); }
             else {
@@ -245,14 +250,14 @@ window.TU = (function () {
                 var ws = [].map.call(el.querySelectorAll('.qe-w'), val).filter(Boolean);
                 qaOut.push({ q: val(el.querySelector('.qe-q')), a: val(el.querySelector('.qe-a')), w: ws });
             });
-            return { pick: pick.slice(), qa: qaOut.filter(function (x) { return x.q && x.a && x.w.length; }),
+            return { off: off, pick: pick.slice(), qa: qaOut.filter(function (x) { return x.q && x.a && x.w.length; }),
                      secret: [].map.call(root.querySelectorAll('.qe-s'), val).filter(Boolean) };
         }
         sync();
         return {
             get: collect,
             validate: function () {
-                var d = collect();
+                var d = collect(); if (off) return '';
                 if (pick.indexOf('ask') >= 0 && !d.qa.length) return 'ภารกิจ "คำถามของเรา": กรอกอย่างน้อย 1 ข้อ ให้ครบทั้งคำถาม คำตอบที่ถูก และตัวเลือกหลอก 1 ตัวเลือก';
                 if (pick.indexOf('scratch') >= 0 && !d.secret.length) return 'ภารกิจ "ขูดข้อความลับ": กรอกข้อความลับอย่างน้อย 1 ข้อ';
                 return '';
