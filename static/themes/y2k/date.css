@@ -1,0 +1,69 @@
+:root { --hand: "Mali","Kodchasan",cursive; --acc: #ff5fae; --mc-accent: #ff5fae; --mc-paper: #fff; --mc-ink: #5a2a7a; --mc-bg: rgba(70,30,100,.6); --mc-edge: rgba(255,95,174,.5); }
+body.theme-y2k2 { background: #fbe8ff; color: #5a2a7a; font-family: var(--hand); }
+.doo { display: block; width: 100%; height: auto; overflow: visible; }
+.gate { background: linear-gradient(160deg,#ffd6f0,#d6ecff 60%,#f4e0ff); text-align: center; padding: 0 20px; overflow: hidden; }
+.g-body { position: relative; display: flex; flex-direction: column; align-items: center; }
+.gate-eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: #ff5fae; }
+.gate-title { font: 600 clamp(28px, 7vw, 40px) var(--hand); margin: 8px 0 14px; word-break: break-word; color: #5a2a7a; }
+.g-art { width: 130px; animation: gB 3.4s ease-in-out infinite; }
+@keyframes gB { 50% { transform: translateY(-12px) rotate(3deg); } }
+.go-btn { margin-top: 26px; appearance: none; border: 0; border-radius: 999px; padding: 14px 30px; font: 600 17px var(--hand); color: #fff; background: linear-gradient(#ff9ed0,#ff5fae); box-shadow: 0 7px 0 rgba(0,0,0,.28); cursor: pointer; }
+.go-btn:active { transform: translateY(5px); }
+.gate-hint { margin-top: 18px; font-size: 14px; color: #8a5aa8; }
+.hd { position: relative; text-align: center; padding: 76px 14px 8px; z-index: 3; }
+.hd .eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: #ff5fae; }
+.hd h1 { font: 600 clamp(24px, 6.4vw, 36px) var(--hand); margin: 6px 0; word-break: break-word; }
+.hd .sub { font-size: 14px; color: #8a5aa8; margin-bottom: 8px; }
+.foot { position: relative; text-align: center; padding: 30px 8px 16px; color: #8a5aa8; z-index: 3; }
+.pool { display: none; }
+@media (prefers-reduced-motion: reduce) { .g-art { animation: none; } }
+
+.gate-title { font: 400 clamp(22px,6vw,32px) "Press Start 2P", monospace; color: #ff5fae; text-shadow: 3px 3px 0 #b9e7ff; }
+.go-btn { font-family: "Press Start 2P", monospace; font-size: 14px; border: 3px solid #fff; box-shadow: 0 6px 0 #c23a86, 0 0 0 3px #ff5fae; }
+.y2 { position: relative; min-height: 100vh; background: radial-gradient(circle at 20% 10%, #fff 0 2px, transparent 3px) 0 0 / 38px 38px, linear-gradient(#ffe3f6, #e3f0ff 55%, #f6e6ff); overflow: hidden; padding-bottom: 20px; }
+.hd h1 { font-family: "Mali", cursive; color: #8a2f98; }
+.game { width: min(520px, 94vw); margin: 4px auto 0; padding: 10px; border: 3px solid #fff; border-radius: 16px; background: linear-gradient(#e6f4ff, #ffe3f6); box-shadow: 0 0 0 3px #b9a8ff, 0 14px 0 rgba(120,80,180,.18); }
+.scr { position: relative; border: 4px solid #8a5aa8; border-radius: 8px; overflow: hidden; background: #000; aspect-ratio: 240 / 170; }
+#cv { display: block; width: 100%; height: 100%; image-rendering: pixelated; image-rendering: crisp-edges; }
+.flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; transition: opacity .25s; }
+.flash.on { opacity: 1; transition: opacity .06s; }
+.pick { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: rgba(255, 224, 244, .88); text-align: center; }
+.pick[hidden] { display: none; }
+.pick p { font: 400 11px/1.6 "Press Start 2P", monospace; color: #8a2f98; margin: 0 0 4px; }
+.pick button { appearance: none; border: 3px solid #fff; border-radius: 12px; padding: 10px 26px; font: 600 16px "Mali", cursive; color: #fff; background: linear-gradient(#ff9ed0, #ff5fae); box-shadow: 0 5px 0 #c23a86; cursor: pointer; width: 190px; }
+.pick button:nth-of-type(2) { background: linear-gradient(#8ec5ff, #5a8bff); box-shadow: 0 5px 0 #3556b8; }
+.pick button span { margin-right: 8px; font-size: 20px; }
+.pick button:active { transform: translateY(4px); box-shadow: 0 1px 0; }
+.vf { position: absolute; inset: 8% 6%; pointer-events: none; display: grid; place-items: center; }
+.vf[hidden] { display: none; }
+.vf i { position: absolute; width: 22px; height: 22px; border: 3px solid #fff; }
+.vf i:nth-child(1) { left: 0; top: 0; border-right: 0; border-bottom: 0; } .vf i:nth-child(2) { right: 0; top: 0; border-left: 0; border-bottom: 0; }
+.vf i:nth-child(3) { left: 0; bottom: 0; border-right: 0; border-top: 0; } .vf i:nth-child(4) { right: 0; bottom: 0; border-left: 0; border-top: 0; }
+.vf .rec { position: absolute; left: 30px; top: 4px; font: 400 9px "Press Start 2P", monospace; color: #ff3b6b; animation: blk 1s steps(1) infinite; }
+@keyframes blk { 50% { opacity: 0; } }
+.vf b { font: 400 54px "Press Start 2P", monospace; color: #fff; text-shadow: 4px 4px 0 #ff5fae; }
+.dlg { margin-top: 10px; padding: 12px 12px 10px; border: 3px solid #8a5aa8; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 3px #ffd6ee; min-height: 112px; }
+.dlg[hidden] { display: none; }
+.dlg .who { display: inline-block; font: 400 10px "Press Start 2P", monospace; color: #fff; background: #ff5fae; padding: 4px 8px; border-radius: 6px; margin-bottom: 8px; }
+.dlg .say { margin: 0; font: 500 15px/1.65 "Mali", "Kodchasan", sans-serif; color: #4a2a6a; min-height: 50px; }
+.dlg .opts { display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
+.dlg .opts button { appearance: none; text-align: left; border: 2px solid #b9a8ff; border-radius: 10px; padding: 9px 12px; font: 600 14px "Mali", sans-serif; color: #5a2a7a; background: linear-gradient(#fff, #f3e8ff); cursor: pointer; }
+.dlg .opts button:active { background: #ffd6ee; }
+.walk { display: block; margin: 12px auto 2px; appearance: none; border: 3px solid #fff; border-radius: 999px; padding: 12px 34px; font: 400 13px "Press Start 2P", monospace; color: #fff; background: linear-gradient(#ff9ed0, #ff5fae); box-shadow: 0 6px 0 #c23a86, 0 0 0 3px #ff5fae; cursor: pointer; }
+.walk[hidden] { display: none; } .walk:disabled { opacity: .55; } .walk:active { transform: translateY(4px); }
+.wall { width: min(560px, 94vw); margin: 22px auto 0; text-align: center; }
+.wall[hidden], .ltr[hidden] { display: none; }
+.wall h2 { font: 400 12px "Press Start 2P", monospace; color: #8a2f98; margin: 0 0 14px; line-height: 1.7; }
+.pls { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px 16px; padding: 8px 4px 4px; }
+.pl { appearance: none; border: 0; background: #fff; padding: 8px 8px 0; width: 150px; box-shadow: 0 8px 16px rgba(110, 60, 150, .3); transform: rotate(var(--r, 0deg)); position: relative; cursor: pointer; animation: slideIn .8s cubic-bezier(.2, .9, .3, 1.2) both; -webkit-tap-highlight-color: transparent; }
+@keyframes slideIn { from { transform: translateY(-90px) rotate(0deg) scale(.7); opacity: 0; } }
+.pl .tp { position: absolute; left: 50%; top: -9px; width: 54px; height: 16px; margin-left: -27px; background: rgba(255, 190, 220, .75); transform: rotate(-3deg); }
+.pl .ph { display: block; width: 100%; aspect-ratio: 1; background: #ddd center / cover no-repeat; transition: filter 2.4s, opacity 2.4s; }
+.pl.dev .ph { filter: brightness(2.2) saturate(.2) blur(4px); opacity: .6; }
+.pl em { display: block; font: normal 600 12px/1.3 "Mali", cursive; color: #8a2f98; padding: 8px 2px 10px; min-height: 36px; overflow-wrap: anywhere; }
+.ltr { display: flex; justify-content: center; margin-top: 30px; }
+.ycard { appearance: none; border: 0; background: none; width: 150px; cursor: pointer; text-align: center; color: #8a2f98; animation: gB 3.4s ease-in-out infinite; }
+.ycard small { display: block; font: 400 9px "Press Start 2P", monospace; margin-top: 10px; line-height: 1.6; }
+.ycard.is-locked { opacity: .75; }
+@media (min-width: 820px) { .game { width: 560px; } .pl { width: 170px; } }
+@media (prefers-reduced-motion: reduce) { .pl, .ycard { animation: none; } }

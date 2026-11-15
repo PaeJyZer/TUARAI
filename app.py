@@ -225,7 +225,7 @@ EXTRA_THEMES = [
      'นั่งดูหนังในโรงภาพยนตร์ แสงโปรเจกเตอร์กะพริบแบบหนังเก่า ภาพและคลิปของเราฉายบนจอ จบด้วยข้อความตอนจบ',
      'theme_previews/movie_night.jpg', 'theme_cinema.html'),
     ('y2k_pop_v1', 'Y2K Pop Cute',
-     'โทนชมพูฟ้าโฮโลแกรม หน้าต่างคอมยุค 2000 กดสตาร์ทเพื่อเปิด ขูดสติกเกอร์ รูปในหน้าต่างน่ารัก',
+     'เดินเดทในเมืองยุค 2000 มุมมองบุคคลที่หนึ่งแบบพิกเซล 3D จับมือเดินไปร้านลุงช่างภาพ ตอบคำถามที่คุณเขียน แฟลชถ่ายรูปคู่ แล้วรูปออกมาเป็นโพลารอยด์ จบด้วยการ์ด Y2K',
      'theme_previews/y2k_pop.jpg', 'theme_y2k.html'),
     ('pixel_love_v1', '8-Bit Love Quest',
      'เกมพิกเซลพลิกการ์ดจับคู่ ได้คู่ไหนรูปคู่นั้นโผล่ออกมาแบบพิกเซลแล้วค่อยคมชัด ผ่านทีละด่าน จดหมายเป็นบอสสุดท้าย',
@@ -261,7 +261,18 @@ PREMIUM_THEMES = [
      'แผนที่ดาวที่ต้องแตะดาวเรียงตามเลข ลากเส้นเป็นกลุ่มดาวของเรา เมื่อต่อครบกลุ่มดาวจะเปิดความทรงจำ 1-2 รูป',
      'theme_previews/constellation.jpg', 'theme_constellation.html', 99, 129, 'กลุ่มดาวหัวใจ · ดาวตก · คำอธิษฐาน'),
 ]
-DIALOG_THEMES = {'palace_sakura_v1'}
+DIALOG_THEMES = {'palace_sakura_v1', 'y2k_pop_v1'}
+Y2K_CODE = 'y2k_pop_v1'
+Y2K_MAX_Q = 5             # ธีม Y2K: ลุงเจ้าของร้านถามได้ 1-5 ข้อ (รวมในราคา ไม่มีค่าเพิ่ม)
+Y2K_DIALOG = [
+    {'q': 'ว่าไงหนุ่มสาว! ลุงอยากรู้หน่อยว่า {name} ชอบอะไรในตัวแฟนมากที่สุดจ๊ะ',
+     'options': ['รอยยิ้ม', 'ความใจดี', 'ทุกอย่างเลย'],
+     'replies': ['รอยยิ้มนี่เองสินะ ลุงเห็นแล้วก็ยิ้มตามเลย', 'คนใจดีหายากนะ ดูแลกันไว้ดีๆ จ้ะ', 'โอ้โห ตอบเก่งจริงๆ ลุงเขินแทนเลย'],
+     'reply': 'น่ารักจริงๆ เลยจ้ะ'},
+    {'q': 'ถ้าได้ย้อนกลับไปปี 2000 ด้วยกัน อยากไปทำอะไรกันจ๊ะ',
+     'options': ['เดินเล่นห้างด้วยกัน', 'ถ่ายสติกเกอร์ตู้ถ่ายรูป'],
+     'reply': 'ฟังแล้วคิดถึงสมัยหนุ่มๆ ของลุงเลย'},
+]
 CAPTION_THEMES = {'matchcat_v1'}      # ธีมที่ลูกค้าเขียนคำใต้รูปแต่ละรูป (ใช้เป็นโจทย์จับคู่)
 MAX_PAIRS = 8
 DEMO_NOTES = ['วันแรกที่เราไปเที่ยวด้วยกัน', 'รอยยิ้มที่ฉันชอบที่สุด', 'มื้อนี้อร่อยเพราะมีเธอ', 'วันที่ฝนตกแต่ใจอบอุ่น', 'ถ่ายรูปคู่กันครั้งแรก', 'เซอร์ไพรส์เล็กๆ ที่ไม่ลืม']
@@ -406,7 +417,7 @@ def migrate_db():
     prem_codes = [t[0] for t in PREMIUM_THEMES]
     conn.execute('UPDATE themes SET price_basic = ?, price_pro = ? WHERE theme_code NOT IN (%s)' % ','.join('?' * len(prem_codes)),
                  (DEFAULT_PRICES['basic'], DEFAULT_PRICES['pro'], *prem_codes))
-    for _c,_f in (('starry_night_v1','theme_starry.html'),('constellation_v1','theme_constellation.html'),('space_cruise_v1','theme_space.html'),('music_box_v1','theme_musicbox.html'),('love_post_v1','theme_envelope.html'),('cyberpunk_wine_v1','theme_wine.html')):
+    for _c,_f in (('starry_night_v1','theme_starry.html'),('y2k_pop_v1','theme_y2k.html'),('constellation_v1','theme_constellation.html'),('space_cruise_v1','theme_space.html'),('music_box_v1','theme_musicbox.html'),('love_post_v1','theme_envelope.html'),('cyberpunk_wine_v1','theme_wine.html')):
         conn.execute('UPDATE themes SET template_file = ? WHERE theme_code = ?', (_f, _c))
         for _t in list(PREMIUM_THEMES)+list(EXTRA_THEMES):
             if _t[0] == _c:
@@ -547,6 +558,10 @@ PREMIUM_TAGS = {t[0]: t[7] for t in PREMIUM_THEMES}
 
 def theme_dict(theme):
     d = dict(theme)
+    if d.get('theme_code') == Y2K_CODE:
+        d['q_max'] = Y2K_MAX_Q
+        d['q_free'] = Y2K_MAX_Q
+        d['dialog_label'] = '💬 คำถามจากลุงเจ้าของร้านถ่ายรูป (ใส่ได้ 1-5 ข้อ ฟรี)'
     d['prices'] = theme_prices(theme)
     d['is_premium'] = bool(d.get('is_premium'))
     d['tagline'] = PREMIUM_TAGS.get(d.get('theme_code'), '')
@@ -727,8 +742,10 @@ def site_state(site):
         'quests': quests_of(site),
         'has_dialog': bool(theme and theme['theme_code'] in DIALOG_THEMES),
         'dialog': (clean_dialog(site['dialog']) if 'dialog' in site.keys() else []),
-        'q_free': FREE_QUESTIONS, 'q_price': EXTRA_Q_PRICE, 'q_max': MAX_QUESTIONS,
-        'q_allowed': MAX_QUESTIONS if stored_status == 'draft' else site_q_allowed(site),
+        'q_free': Y2K_MAX_Q if (theme and theme['theme_code'] == Y2K_CODE) else FREE_QUESTIONS, 'q_price': EXTRA_Q_PRICE,
+        'q_max': Y2K_MAX_Q if (theme and theme['theme_code'] == Y2K_CODE) else MAX_QUESTIONS,
+        'dialog_label': '💬 คำถามจากลุงเจ้าของร้านถ่ายรูป (ใส่ได้ 1-5 ข้อ ฟรี)' if (theme and theme['theme_code'] == Y2K_CODE) else '💬 บทสนทนาวิชวลโนเวล (ให้แฟนเลือกตอบ)',
+        'q_allowed': Y2K_MAX_Q if (theme and theme['theme_code'] == Y2K_CODE) else (MAX_QUESTIONS if stored_status == 'draft' else site_q_allowed(site)),
         'theme_id': site['theme_id'],
         'theme_name': theme['name'] if theme else '-',
         'package': pkg_key,
@@ -840,6 +857,8 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
     center, others = urls[0], urls[1:]
     slots = LAYOUTS[len(others)]
     occasion = occasion if occasion in OCCASIONS else 'anniversary'
+    if theme and theme['theme_code'] == Y2K_CODE:
+        dialog = (dialog if dialog and dialog is not DEFAULT_DIALOG else Y2K_DIALOG)[:Y2K_MAX_Q]
     template = os.path.basename((theme['template_file'] if theme else None) or 'theme_100.html')
     if not os.path.isfile(os.path.join(app.root_path, 'templates', template)):
         template = 'theme_100.html'

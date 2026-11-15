@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <label class="field-label">ลงชื่อผู้ส่ง (ของคุณ)</label>
                         <input type="text" id="buySign" maxlength="60" placeholder="เช่น จากพี่เอง" required>
 
-                        ${theme.has_dialog ? `<label class="field-label">💬 บทสนทนาวิชวลโนเวล (ให้แฟนเลือกตอบ)</label><div id="buyDialog" class="dlg-box"></div>` : ''}
+                        ${theme.has_dialog ? `<label class="field-label">${theme.dialog_label || '💬 บทสนทนาวิชวลโนเวล (ให้แฟนเลือกตอบ)'}</label><div id="buyDialog" class="dlg-box"></div>` : ''}
 
                         ${theme.has_quests ? `<label class="field-label">🎯 ภารกิจก่อนอ่านจดหมาย</label><div id="buyQuests" class="qe-box"></div>` : ''}
 
@@ -239,7 +239,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         refreshRule();
 
-        const dlgEd = theme.has_dialog ? TU.dialogEditor(document.getElementById('buyDialog'), [], { free: DATA.qFree, price: DATA.qPrice, max: DATA.qMax, allowed: DATA.qMax }) : null;
+        const Y2K_HINT = 'ลุงเจ้าของร้านจะถามคำถามเหล่านี้ตอนเขา/เธอเดินเข้าร้าน ใส่ {name} แทนชื่อแฟนได้ ตัวเลือกตอบ 2-4 ข้อ และเขียนคำตอบของลุงได้ (ก่อนถ่ายรูป ลุงจะถามคำถามสุดท้ายให้เอง)';
+        const dlgEd = theme.has_dialog ? TU.dialogEditor(document.getElementById('buyDialog'), [], { free: theme.q_free || DATA.qFree, price: DATA.qPrice, max: theme.q_max || DATA.qMax, allowed: theme.q_max || DATA.qMax, noPrice: !!(theme.q_max && theme.q_max <= (theme.q_free || 0)), hint: theme.q_max ? Y2K_HINT : '' }) : null;
         const qEd = theme.has_quests ? TU.questEditor(document.getElementById('buyQuests'), null) : null;
         const occSel = document.getElementById('buyOccasion');
         const occLabels = { anniversary: 'วันที่เริ่มคบกัน (หรือวันพิเศษ)', birthday: 'วันเกิดของเขา/เธอ' };

@@ -146,10 +146,10 @@ window.TU = (function () {
             return out;
         }
         function render() {
-            var h = '<p class="photo-hint">ใส่ {name} ตรงไหนก็ได้ ระบบจะเปลี่ยนเป็นชื่อแฟนให้ (ตอบได้ 2-4 ตัวเลือกต่อคำถาม) ถ้าไม่กรอกอะไรเลย ระบบจะใช้บทสนทนาตัวอย่างให้</p>' +
+            var h = '<p class="photo-hint">' + (opts.hint || 'ใส่ {name} ตรงไหนก็ได้ ระบบจะเปลี่ยนเป็นชื่อแฟนให้ (ตอบได้ 2-4 ตัวเลือกต่อคำถาม) ถ้าไม่กรอกอะไรเลย ระบบจะใช้บทสนทนาตัวอย่างให้') + '</p>' +
                 '<p class="dlg-price" id="dlgPrice"></p>';
             data.forEach(function (d, i) {
-                h += '<div class="dlg-item"><div class="dlg-head"><b>คำถามที่ ' + (i + 1) + (i >= FREE ? ' <span class="dlg-extra">+' + PRICE + ' ฿</span>' : '') + '</b>' +
+                h += '<div class="dlg-item"><div class="dlg-head"><b>คำถามที่ ' + (i + 1) + (i >= FREE && !opts.noPrice ? ' <span class="dlg-extra">+' + PRICE + ' ฿</span>' : '') + '</b>' +
                     '<button type="button" class="btn-small dlg-del" data-i="' + i + '">ลบ</button></div>' +
                     '<textarea class="dlg-q" rows="2" maxlength="160" placeholder="เช่น ถ้าไปเที่ยวด้วยกัน อยากไปไหน">' + escapeHtml(d.q) + '</textarea>';
                 for (var k = 0; k < 4; k++) {
@@ -167,6 +167,7 @@ window.TU = (function () {
         }
         function note() {
             var el = root.querySelector('#dlgPrice'); if (!el) return;
+            if (opts.noPrice) { el.innerHTML = 'ใส่ได้สูงสุด <b>' + ABS + '</b> คำถาม (ฟรี ไม่มีค่าเพิ่ม)'; return; }
             var n = [].filter.call(root.querySelectorAll('.dlg-item'), function (it) { return it.querySelector('.dlg-q').value.trim(); }).length;
             if (opts.onBuy) { el.innerHTML = 'ใช้ได้ <b>' + MAXQ + '</b> คำถาม (ฟรี ' + FREE + ' ข้อ) · ซื้อเพิ่มข้อละ ' + PRICE + ' ฿ สูงสุด ' + ABS + ' ข้อ'; return; }
             el.innerHTML = 'ฟรี ' + FREE + ' คำถามแรก · ข้อที่ ' + (FREE + 1) + ' เป็นต้นไปข้อละ <b>' + PRICE + ' ฿</b> (สูงสุด ' + ABS + ' ข้อ)' +
