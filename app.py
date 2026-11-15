@@ -538,7 +538,7 @@ def theme_dict(theme):
     d['tagline'] = PREMIUM_TAGS.get(d.get('theme_code'), '')
     d['has_dialog'] = d.get('theme_code') in DIALOG_THEMES
     d['has_captions'] = d.get('theme_code') in CAPTION_THEMES
-    d['has_quests'] = not d['is_premium']
+    d['has_quests'] = True          # ภารกิจมีในทุกธีม (18 เว็บ)
     return d
 
 
@@ -709,7 +709,7 @@ def site_state(site):
         'letter_sign': site['letter_sign'] or '',
         'has_captions': bool(theme and theme['theme_code'] in CAPTION_THEMES),
         'captions': captions_of(site),
-        'has_quests': bool(theme and not theme['is_premium']),
+        'has_quests': bool(theme),
         'quests': quests_of(site),
         'has_dialog': bool(theme and theme['theme_code'] in DIALOG_THEMES),
         'dialog': (clean_dialog(site['dialog']) if 'dialog' in site.keys() else []),

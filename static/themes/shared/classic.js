@@ -8,11 +8,17 @@
 (function () {
   'use strict';
   var body = document.body;
-  if (document.querySelector('[data-steps]')) return;      // ธีมพรีเมียมมีระบบของตัวเองแล้ว
   var CFG = window.SITE_CONFIG || {};
   var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(CFG.startDate || ''));
   if (!m) return;                                           // ไม่มีวันที่ = ไม่ใส่ล็อก/ภารกิจ
   var Y = +m[1], MO = +m[2], D = +m[3];
+  var PREM = !!document.querySelector('[data-steps]');       // ธีมพรีเมียม/เลเจนดารี: มีด่านของตัวเองอยู่แล้ว ภารกิจนี้ต่อท้ายก่อนเปิดจดหมาย
+  /* ฟิลเตอร์ขอบกระดาษฉีก (ใช้กับกรอบล็อก/ภารกิจ/หน้าต่างเกม) */
+  if (!document.getElementById('cl-torn-svg')) {
+    var tf = document.createElement('div'); tf.id = 'cl-torn-svg'; tf.setAttribute('aria-hidden', 'true'); tf.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
+    tf.innerHTML = '<svg width="0" height="0" xmlns="http://www.w3.org/2000/svg"><filter id="cl-torn" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.04 0.055" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter></svg>';
+    body.appendChild(tf);
+  }
   var AGE = CFG.mode === 'age';
   var NAME = CFG.partnerName || '';
   var CODE = ('0' + D).slice(-2) + ('0' + MO).slice(-2);

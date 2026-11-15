@@ -3,15 +3,24 @@ body {
   --cl-bg: #fffaf3; --cl-ink: #3b2a1e; --cl-sub: #7a6350; --cl-acc: #d9628a; --cl-acc2: #ffb3c8; --cl-line: rgba(0,0,0,.14);
   --cl-r: 22px; --cl-font: var(--font-display, serif); --cl-back: rgba(20, 10, 20, .86); --cl-btn-ink: #fff;
 }
-body.theme-starry   { --cl-bg: #141a46; --cl-ink: #f5ecd2; --cl-sub: #aab2e8; --cl-acc: #ffd98a; --cl-acc2: #7f8dff; --cl-line: rgba(255,217,138,.35); --cl-back: rgba(4,6,24,.9); --cl-btn-ink: #1b2358; }
+body.theme-starry { --cl-bg: #f7f0dc; --cl-ink: #1f2556; --cl-sub: #5a6296; --cl-acc: #c07a1d; --cl-acc2: #6f7cf0; --cl-line: rgba(31,37,86,.3); --cl-back: rgba(4,6,24,.82); --cl-btn-ink: #fff; }
 body.theme-diary    { --cl-bg: #fbf3e2; --cl-ink: #3b2a1e; --cl-sub: #7a6350; --cl-acc: #a4472f; --cl-acc2: #d9b977; --cl-line: rgba(164,71,47,.35); --cl-r: 6px; --cl-back: rgba(30,18,10,.9); }
 body.theme-garden   { --cl-bg: #fffafb; --cl-ink: #5a2438; --cl-sub: #a06278; --cl-acc: #d9507d; --cl-acc2: #ffc2d4; --cl-line: rgba(217,80,125,.3); --cl-r: 30px; --cl-back: rgba(90,30,50,.55); }
 body.theme-sunset   { --cl-bg: #fff3e3; --cl-ink: #4b2438; --cl-sub: #8a5a60; --cl-acc: #e0663a; --cl-acc2: #ffb36b; --cl-line: rgba(224,102,58,.35); --cl-r: 18px; --cl-back: rgba(60,18,70,.82); }
 body.theme-envelope { --cl-bg: #fffdf6; --cl-ink: #4a3624; --cl-sub: #8a7058; --cl-acc: #c93c3c; --cl-acc2: #3f6fb5; --cl-line: rgba(201,60,60,.4); --cl-r: 3px; --cl-back: rgba(50,34,20,.82); }
 body.theme-sakura   { --cl-bg: #fff; --cl-ink: #5e2a3e; --cl-sub: #b0728a; --cl-acc: #ee7fa0; --cl-acc2: #ffd3e1; --cl-line: rgba(238,127,160,.35); --cl-r: 28px; --cl-back: rgba(110,40,70,.5); }
-body.theme-cinema   { --cl-bg: #15100f; --cl-ink: #f1e3c2; --cl-sub: #b6a37a; --cl-acc: #d9b977; --cl-acc2: #8e1b22; --cl-line: rgba(217,185,119,.45); --cl-r: 4px; --cl-back: rgba(0,0,0,.92); --cl-btn-ink: #1a1208; }
+body.theme-cinema { --cl-bg: #efe2c1; --cl-ink: #2b1a12; --cl-sub: #7a6244; --cl-acc: #8e1b22; --cl-acc2: #c79a3c; --cl-line: rgba(142,27,34,.4); --cl-back: rgba(0,0,0,.86); --cl-btn-ink: #fff; --cl-r: 4px; }
 body.theme-y2k      { --cl-bg: #f4eaff; --cl-ink: #3a2368; --cl-sub: #7b5cb0; --cl-acc: #b04bff; --cl-acc2: #ff7ad1; --cl-line: #9a86bd; --cl-r: 8px; --cl-back: rgba(70,40,120,.6); }
-body.theme-pixel    { --cl-bg: #1a1050; --cl-ink: #fff; --cl-sub: #9fe9ff; --cl-acc: #ffd23f; --cl-acc2: #7fe3ff; --cl-line: #7fe3ff; --cl-r: 0px; --cl-font: var(--font-px, monospace); --cl-back: rgba(8,4,28,.92); --cl-btn-ink: #1a1050; }
+body.theme-pixel { --cl-bg: #fff3c8; --cl-ink: #1a1050; --cl-sub: #5b4a9a; --cl-acc: #e0457b; --cl-acc2: #3fb8d8; --cl-line: rgba(26,16,80,.55); --cl-back: rgba(8,4,28,.88); --cl-btn-ink: #fff; --cl-r: 2px; --cl-font: var(--font-px, monospace); }
+
+body.theme-cake { --cl-bg: #fff6ee; --cl-ink: #4a1d3a; --cl-sub: #8a5a78; --cl-acc: #e0457b; --cl-acc2: #ffb347; --cl-line: rgba(224,69,123,.35); --cl-back: rgba(43,18,56,.82); --cl-btn-ink: #fff; }
+body.theme-matchcat { --cl-bg: #fff1d6; --cl-ink: #2a1620; --cl-sub: #7a5a4a; --cl-acc: #c9302c; --cl-acc2: #f0a030; --cl-line: rgba(201,48,44,.4); --cl-back: rgba(14,18,54,.84); --cl-btn-ink: #fff; }
+body.theme-musicbox { --cl-bg: #f6ead2; --cl-ink: #3a2412; --cl-sub: #85684a; --cl-acc: #a8662a; --cl-acc2: #e8c27a; --cl-line: rgba(168,102,42,.4); --cl-back: rgba(34,19,12,.86); --cl-btn-ink: #fff; }
+body.theme-constellation { --cl-bg: #f3f0ff; --cl-ink: #231f4a; --cl-sub: #6a6395; --cl-acc: #6b5be0; --cl-acc2: #ff9ec7; --cl-line: rgba(107,91,224,.35); --cl-back: rgba(5,6,15,.86); --cl-btn-ink: #fff; }
+body.theme-arcade { --cl-bg: #fbf3ff; --cl-ink: #1f1040; --cl-sub: #6a4a9a; --cl-acc: #d11fb5; --cl-acc2: #00b8c8; --cl-line: rgba(31,16,64,.45); --cl-back: rgba(7,4,15,.88); --cl-btn-ink: #fff; }
+body.theme-palace { --cl-bg: #fff1f3; --cl-ink: #4a2540; --cl-sub: #94607a; --cl-acc: #d9618a; --cl-acc2: #e8c170; --cl-line: rgba(217,97,138,.4); --cl-back: rgba(42,25,54,.84); --cl-btn-ink: #fff; }
+body.theme-space { --cl-bg: #eef6ff; --cl-ink: #0f2447; --cl-sub: #55709a; --cl-acc: #1b8fb8; --cl-acc2: #5ee7ff; --cl-line: rgba(27,143,184,.4); --cl-back: rgba(5,9,20,.86); --cl-btn-ink: #fff; }
+body.theme-hanami { --cl-bg: #fff0f4; --cl-ink: #4a2038; --cl-sub: #94607a; --cl-acc: #e0608a; --cl-acc2: #ffb0c8; --cl-line: rgba(224,96,138,.4); --cl-back: rgba(11,15,46,.84); --cl-btn-ink: #fff; }
 
 /* ---------- ล็อกรหัส ---------- */
 body.cl-locked { overflow: hidden; }
@@ -44,12 +53,8 @@ body.cl-locked { overflow: hidden; }
 .cl-go:active { transform: scale(.97); }
 .cl-skipcode { appearance: none; border: 0; background: none; color: var(--cl-sub); font-size: 13px; margin-top: 12px; padding: 10px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .cl-demo { margin: 14px 0 0; font-size: 12.5px; color: var(--cl-sub); } .cl-demo b { color: var(--cl-acc); letter-spacing: .12em; }
-body.theme-pixel .cl-lock-card, body.theme-pixel .cl-sheet, body.theme-pixel .cl-card { box-shadow: 0 0 0 4px #7fe3ff, 8px 10px 0 4px rgba(0,0,0,.5); }
+
 body.theme-pixel .cl-lock-title, body.theme-pixel .cl-qt { font-size: 15px; line-height: 1.6; }
-body.theme-y2k .cl-lock-card::before { content: "password.exe"; position: absolute; left: 0; right: 0; top: 0; height: 26px; padding: 4px 10px; text-align: left; font: 600 12px/18px sans-serif; color: #fff; background: linear-gradient(90deg, #b04bff, #ff7ad1); border-radius: 6px 6px 0 0; }
-body.theme-cinema .cl-lock-card { border-style: double; border-width: 4px; }
-body.theme-envelope .cl-lock-card { border: 2px dashed var(--cl-acc); outline: 8px solid var(--cl-bg); }
-body.theme-diary .cl-lock-card::after { content: ""; position: absolute; left: 14px; top: 0; bottom: 0; border-left: 2px dotted rgba(164,71,47,.35); pointer-events: none; }
 
 /* ---------- ป้ายนับวัน ---------- */
 .cl-chip { margin: 2px auto 18px; max-width: 100%; text-align: center; }
@@ -85,14 +90,7 @@ body.theme-sunset .cl-chip span, body.theme-garden .cl-chip span, body.theme-sak
 .cl-skipq { appearance: none; border: 0; background: none; margin-top: 14px; padding: 10px 14px; font-size: 13px; color: var(--cl-sub); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .cl-quest.all .cl-qs::after { content: " จดหมายพร้อมให้อ่านแล้ว 💌"; color: var(--cl-acc); font-weight: 600; }
 @media (min-width: 760px) { .cl-cards { grid-template-columns: repeat(3, 1fr); } .cl-card { grid-template-columns: 1fr; grid-template-areas: "no" "ic" "t" "s" "st"; justify-items: center; text-align: center; row-gap: 3px; padding: 20px 12px; } .cl-card .cl-ic { font-size: 34px; } .cl-card .cl-st { margin-top: 8px; } }
-body.theme-diary .cl-quest { background-image: repeating-linear-gradient(transparent 0 27px, rgba(120,90,60,.15) 27px 28px); }
-body.theme-diary .cl-card:nth-child(odd) { transform: rotate(-.8deg); } body.theme-diary .cl-card { background: #fff7d6; }
-body.theme-envelope .cl-quest { border: 2px dashed var(--cl-acc); }
-body.theme-cinema .cl-card { border-style: dashed; border-radius: 4px; }
-body.theme-cinema .cl-card::before, body.theme-cinema .cl-card::after { content: ""; position: absolute; top: 50%; width: 14px; height: 14px; margin-top: -7px; border-radius: 50%; background: #0a0708; border: 1px solid var(--cl-line); }
-body.theme-cinema .cl-card::before { left: -8px; } body.theme-cinema .cl-card::after { right: -8px; }
-body.theme-y2k .cl-card { box-shadow: 4px 4px 0 rgba(106,74,154,.35); border-radius: 6px; }
-body.theme-pixel .cl-card, body.theme-pixel .cl-quest { border: 0; box-shadow: 0 0 0 3px var(--cl-acc2), 6px 8px 0 3px rgba(0,0,0,.45); }
+
 body.theme-pixel .cl-card b, body.theme-pixel .cl-card .cl-st, body.theme-pixel .cl-kick { font-family: var(--font-px, monospace); font-size: 11px; }
 body.theme-pixel .cl-card small, body.theme-pixel .cl-qs, body.theme-pixel .cl-cnt { font-size: 12px; }
 body.theme-pixel .cl-card .cl-st { border-radius: 0; }
@@ -144,7 +142,7 @@ html.lowfx .cl-heart, html.lowfx .cl-lock-card, html.lowfx .cl-hbig { animation:
 .cl-quest.in-modal .cl-qh .cl-qt { display: none; }
 .cl-quest.in-modal .cl-cards { grid-template-columns: 1fr; }
 .cl-quest.in-modal .cl-card { grid-template-columns: 44px 38px 1fr auto; grid-template-areas: "no ic t st" "no ic s st"; text-align: left; justify-items: stretch; padding: 12px 14px; }
-body.theme-gaga { --cl-bg: #20111c; --cl-ink: #fbe8f0; --cl-sub: #c79ab0; --cl-acc: #ff6fa5; --cl-acc2: #ffb3d1; --cl-line: rgba(255,111,165,.4); --cl-back: rgba(14,4,12,.9); --cl-btn-ink: #2a0f1d; }
+body.theme-gaga { --cl-bg: #fdeef3; --cl-ink: #3a1226; --cl-sub: #915070; --cl-acc: #e0457f; --cl-acc2: #ffb3d1; --cl-line: rgba(224,69,127,.4); --cl-back: rgba(14,4,12,.86); --cl-btn-ink: #fff; }
 
 /* ---------- ภารกิจเพิ่มเติม: จับคู่ / ขูดการ์ด ---------- */
 @media (min-width: 760px) { .cl-cards.many { grid-template-columns: repeat(3, 1fr); } }
@@ -164,3 +162,95 @@ body.theme-gaga { --cl-bg: #20111c; --cl-ink: #fbe8f0; --cl-sub: #c79ab0; --cl-a
 .cl-scv { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; transition: opacity .5s; }
 .cl-scv.gone { opacity: 0; pointer-events: none; }
 body.theme-pixel .cl-mb, body.theme-pixel .cl-mf, body.theme-pixel .cl-sc { border-radius: 0; }
+
+/* =====================================================
+   โทน "กระดาษ": แผ่นกระดาษขอบฉีก + เทปกาว + ปักหมุด + ตราประทับ
+   (สีกระดาษ/หมึก/เทป มาจากตัวแปรของแต่ละธีมด้านบน)
+   ===================================================== */
+body {
+  --cl-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .32  0 0 0 0 .2  0 0 0 .13 0'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
+  --cl-tape: color-mix(in srgb, var(--cl-acc2) 62%, #fff);
+}
+.cl-lock-card, .cl-quest, .cl-sheet { background: transparent !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; isolation: isolate; }
+.cl-lock-card::before, .cl-quest::before, .cl-sheet::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 3px;
+  background:
+    var(--cl-grain),
+    linear-gradient(115deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 38%, rgba(120,80,30,.07) 100%),
+    var(--cl-bg);
+  filter: url(#cl-torn) drop-shadow(0 18px 24px rgba(0,0,0,.34));
+}
+/* เทปกาววาชิ */
+.cl-lock-card::after, .cl-quest::after, .cl-sheet::after {
+  content: ""; position: absolute; z-index: 3; top: -13px; left: 50%; width: 104px; height: 28px; margin-left: -52px; transform: rotate(-2.5deg); pointer-events: none;
+  background: repeating-linear-gradient(135deg, rgba(255,255,255,.38) 0 7px, rgba(255,255,255,0) 7px 14px), var(--cl-tape);
+  opacity: .92; box-shadow: 0 2px 4px rgba(0,0,0,.18);
+  clip-path: polygon(0 0, 100% 0, 98% 20%, 100% 40%, 98% 60%, 100% 80%, 98% 100%, 0 100%, 2% 80%, 0 60%, 2% 40%, 0 20%);
+}
+.cl-lock-card { transform: rotate(-1.1deg); }
+.cl-lock-card::after { left: 22px; top: 10px; margin-left: 0; transform: rotate(-38deg); width: 92px; }
+.cl-sheet { transform: rotate(.5deg); }
+.cl-sheet::after { left: auto; right: 26px; margin-left: 0; transform: rotate(4deg); }
+.cl-quest { padding: 34px 20px 26px; }
+
+/* ตราประทับขี้ผึ้งแทนแม่กุญแจ */
+.cl-emblem { top: -38px; width: 78px; height: 78px; margin-left: -39px; z-index: 4; }
+.cl-shackle { display: none; }
+.cl-body { inset: 0; height: auto; border-radius: 52% 48% 50% 46% / 48% 52% 46% 50%;
+  background: radial-gradient(circle at 34% 28%, color-mix(in srgb, var(--cl-acc) 55%, #fff) 0%, var(--cl-acc) 45%, color-mix(in srgb, var(--cl-acc) 50%, #000) 100%);
+  box-shadow: inset 0 -5px 9px rgba(0,0,0,.28), inset 0 3px 5px rgba(255,255,255,.3), 0 7px 14px rgba(0,0,0,.35); }
+.cl-body::before { content: ""; position: absolute; inset: 9px; border-radius: 50%; border: 2px dashed rgba(255,255,255,.4); }
+.cl-body i { position: relative; font-size: 28px; }
+.cl-lock.ok .cl-body { animation: clSeal .7s cubic-bezier(.4,0,.6,1) forwards; }
+@keyframes clSeal { 30% { transform: scale(1.18) rotate(-6deg); } 100% { transform: translateY(-26px) rotate(24deg) scale(.7); opacity: 0; } }
+.cl-lock-title { font-weight: 600; letter-spacing: .01em; }
+.cl-win { background: color-mix(in srgb, var(--cl-ink) 5%, var(--cl-bg)); border: 2px dashed var(--cl-line); border-radius: 8px; box-shadow: inset 0 6px 10px -8px rgba(0,0,0,.3), inset 0 -6px 10px -8px rgba(0,0,0,.3); }
+.cl-dial button { border-radius: 8px; }
+/* ปุ่มกระดาษตัด: มีขอบล่างหนา กดแล้วยุบลง */
+.cl-go, .cl-go2 { border-radius: 12px; box-shadow: 0 5px 0 color-mix(in srgb, var(--cl-acc) 55%, #000), 0 10px 16px rgba(0,0,0,.2); transition: transform .12s, box-shadow .12s; }
+.cl-go:active, .cl-go2:active { transform: translateY(4px); box-shadow: 0 1px 0 color-mix(in srgb, var(--cl-acc) 55%, #000), 0 3px 6px rgba(0,0,0,.2); }
+.cl-demo b { background: color-mix(in srgb, var(--cl-acc) 14%, transparent); padding: 1px 7px; border-radius: 4px; }
+
+/* ป้ายนับวัน = ป้ายกระดาษแปะเทป */
+.cl-chip span { border: 1.5px dashed var(--cl-line); border-radius: 6px; background: color-mix(in srgb, var(--cl-bg) 94%, #fff); color: var(--cl-ink);
+  box-shadow: 0 3px 0 rgba(0,0,0,.1), 0 8px 14px rgba(0,0,0,.16); transform: rotate(-1.2deg); backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+/* แผงภารกิจ */
+.cl-kick { display: inline-block; margin: 0 0 8px; padding: 3px 14px; transform: rotate(-1.6deg); color: color-mix(in srgb, var(--cl-ink) 85%, var(--cl-acc)); background: var(--cl-tape); letter-spacing: .2em; font-size: 12px;
+  clip-path: polygon(0 0, 100% 0, 98% 30%, 100% 60%, 98% 100%, 0 100%, 2% 70%, 0 40%); }
+.cl-qt { font-weight: 600; }
+.cl-bar { height: 10px; border-radius: 6px; background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--cl-ink) 14%, transparent) 0 8px, transparent 8px 11px); }
+.cl-bar i { border-radius: 6px; }
+.cl-cards { gap: 16px; }
+.cl-card { border: 1.5px dashed var(--cl-line); border-radius: 6px; background: color-mix(in srgb, var(--cl-bg) 55%, #fff);
+  box-shadow: 0 3px 0 rgba(0,0,0,.09), 0 10px 16px -4px rgba(0,0,0,.22); margin-top: 6px; }
+.cl-cards > li:nth-child(odd) > .cl-card { transform: rotate(-.7deg); } .cl-cards > li:nth-child(even) > .cl-card { transform: rotate(.6deg); }
+.cl-card:hover { transform: translateY(-3px) rotate(0deg); box-shadow: 0 3px 0 rgba(0,0,0,.09), 0 16px 22px -6px rgba(0,0,0,.3); }
+.cl-card::before { content: ""; position: absolute; left: 50%; top: -9px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; z-index: 2;
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--cl-acc) 45%, #fff), var(--cl-acc) 55%, color-mix(in srgb, var(--cl-acc) 55%, #000)); box-shadow: 0 3px 3px rgba(0,0,0,.35); }
+.cl-card .cl-no { font-weight: 700; opacity: .55; }
+/* ปุ่ม "เริ่มเลย" = ตราปั๊มหมึก */
+.cl-card .cl-st { background: transparent; color: var(--cl-acc); border: 2px solid var(--cl-acc); border-radius: 8px; transform: rotate(-4deg); letter-spacing: .04em; box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--cl-acc) 14%, transparent); font-weight: 700; }
+.cl-card.done { background: color-mix(in srgb, #3ccf8e 10%, var(--cl-bg)); border-color: rgba(30,150,100,.55); }
+.cl-card.done .cl-st { background: transparent; color: #168a5b; border: 2.5px double #168a5b; border-radius: 50px; transform: rotate(-9deg); padding: 6px 14px; box-shadow: none; }
+.cl-card.done b, .cl-card.done small { opacity: .75; }
+.cl-skipq, .cl-skipcode { color: color-mix(in srgb, var(--cl-ink) 55%, var(--cl-bg)); }
+
+/* หน้าต่างเกม */
+.cl-sheet { padding: 30px 20px 24px; }
+.cl-x { color: var(--cl-ink); opacity: .6; }
+.cl-opt { border: 1.5px dashed var(--cl-line); border-radius: 8px; background: color-mix(in srgb, var(--cl-bg) 55%, #fff); box-shadow: 0 3px 0 rgba(0,0,0,.1); }
+.cl-opt:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,.1); }
+.cl-opt.right { background: #bff0d8; border: 1.5px solid #29a56f; color: #0a4a2e; }
+.cl-opt.wrong { background: #ffd9dc; border: 1.5px solid #e0606c; color: #6a1a22; }
+.cl-board { background: color-mix(in srgb, var(--cl-ink) 10%, var(--cl-bg)); border: 2px dashed var(--cl-line); border-radius: 8px; }
+.cl-tile { border-radius: 4px; }
+.cl-sc { border: 2px dashed var(--cl-line); border-radius: 8px; background: color-mix(in srgb, var(--cl-acc) 10%, var(--cl-bg)); }
+.cl-mb { border: 3px solid color-mix(in srgb, var(--cl-bg) 80%, #fff); }
+.cl-mf { border: 4px solid #fff; border-radius: 3px; box-shadow: 0 3px 8px rgba(0,0,0,.3); }
+.cl-help { border-radius: 10px; border-style: dashed; }
+.cl-fab { background: var(--cl-bg); color: var(--cl-ink); border: 2px dashed var(--cl-line); border-radius: 10px; transform: rotate(1.2deg); }
+
+@media (max-width: 480px) { .cl-lock-card::after { width: 78px; } .cl-quest { padding: 32px 14px 24px; } }
+html.lowfx .cl-lock-card::before, html.lowfx .cl-quest::before, html.lowfx .cl-sheet::before { filter: drop-shadow(0 12px 16px rgba(0,0,0,.3)); }
+@media (prefers-reduced-motion: reduce) { .cl-lock.ok .cl-body { animation: none; opacity: 0; } }
