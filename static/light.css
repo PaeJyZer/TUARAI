@@ -1,23 +1,23 @@
 /* TUARAI – โทนสว่างหรูพรีเมียม (เฉพาะหน้าร้าน: หน้าแรก/วิธีสั่งซื้อ/ข้อตกลง/แดชบอร์ด/ชำระเงิน/แก้ไข/แอดมิน)
    ครีมงาช้าง + ทองแชมเปญ + หมึกม่วงเข้ม  ไม่แตะธีมเว็บเซอร์ไพรส์ของลูกค้า */
 :root {
-  --bg-color: #faf6ef; --card-bg: #ffffff; --accent-wine: #a3162f; --accent-red: #b3122f;
-  --text-main: #2a2230; --text-muted: #6f6578; --border-color: #e8dccb;
-  --lt-gold: #b98a3e; --lt-gold2: #e6c98a; --lt-ink: #2a2230; --lt-sub: #6f6578; --lt-card: #ffffff; --lt-line: #e8dccb;
+  --bg-color: #f3e8cf; --card-bg: #ffffff; --accent-wine: #a3162f; --accent-red: #b3122f;
+  --text-main: #2a2230; --text-muted: #6f6578; --border-color: #e0cfa8;
+  --lt-gold: #b98a3e; --lt-gold2: #e6c98a; --lt-ink: #2a2230; --lt-sub: #6f6578; --lt-card: #ffffff; --lt-line: #e0cfa8;
   --hx-gold: #b98a3e;
   color-scheme: light;
 }
-html { background: #faf6ef; }
+html { background: #f3e8cf; }
 body {
-  background: linear-gradient(180deg, #fdfaf4 0%, #f8f1e6 45%, #fbf6ee 100%) fixed; background-color: #faf6ef; color: var(--lt-ink);
+  background: linear-gradient(180deg, #f8efd9 0%, #f2e6cb 50%, #f6ecd5 100%) fixed; background-color: #f3e8cf; color: var(--lt-ink);
 }
-body::before { background: radial-gradient(closest-side, rgba(233,190,120,.34), transparent 72%); }
-body::after { background: radial-gradient(closest-side, rgba(244,160,176,.26), transparent 72%); }
+body::before { background: radial-gradient(closest-side, rgba(240,196,98,.38), transparent 72%); }
+body::after { background: radial-gradient(closest-side, rgba(170,196,140,.30), transparent 72%); }
 /* ลายเส้นละเอียดบางๆ ให้ดูเป็นกระดาษพรีเมียม */
 body > *:first-child { position: relative; }
 
 /* แถบเมนู */
-.navbar { background: rgba(253,250,244,.82); border-bottom: 1px solid var(--lt-line); box-shadow: 0 1px 0 rgba(255,255,255,.8) inset, 0 8px 30px rgba(120,90,40,.06); }
+.navbar { background: rgba(246,237,214,.86); border-bottom: 1px solid var(--lt-line); box-shadow: 0 1px 0 rgba(255,255,255,.8) inset, 0 8px 30px rgba(120,90,40,.06); }
 .logo { color: #a3162f; text-shadow: none; }
 .logo img { filter: none; }
 .nav-item { color: var(--lt-ink); } .nav-item:hover, .nav-item.active { color: #a3162f; }
@@ -133,3 +133,107 @@ input::placeholder, textarea::placeholder { color: #a99e9f; }
 .edit-card, .profile-card, .stat-card { box-shadow: 0 8px 26px rgba(120,90,40,.08); border-radius: 14px; }
 .dlg-item { border-color: var(--lt-line) !important; background: #fffdf9; }
 .notice-inline { background: rgba(163,22,47,.07); color: var(--lt-ink); }
+
+/* ===== พื้นหลังกระดาษ: เกรนกระดาษ + ลายจุด/สมุดตาราง/กิงแฮม/สีน้ำ ต่างกันตามส่วน ===== */
+body { position: relative; }
+body > .grain, html::after { content: none; }
+body::selection { background: #f0c46255; }
+.hx, .decks-sec, .steps3, .compare-section, .faq2 { position: relative; isolation: isolate; }
+.hx::before, .decks-sec::before, .steps3::before, .compare-section::before, .faq2::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; margin-left: -50vw; z-index: -1; pointer-events: none;
+}
+/* ฮีโร่: จุดกลมเล็กๆ เหมือนกระดาษลายจุด + แสงเหลืองอ่อนๆ */
+.hx::before {
+  background:
+    radial-gradient(circle at 78% 40%, rgba(247,205,110,.42), transparent 46%),
+    radial-gradient(rgba(150,108,44,.20) 1.6px, transparent 1.9px) 0 0 / 26px 26px;
+  -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent); mask-image: linear-gradient(180deg, #000 70%, transparent);
+}
+/* กองไพ่: สมุดตารางบางๆ */
+.decks-sec::before {
+  background:
+    linear-gradient(rgba(150,108,44,.11) 1px, transparent 1px) 0 0 / 30px 30px,
+    linear-gradient(90deg, rgba(150,108,44,.11) 1px, transparent 1px) 0 0 / 30px 30px,
+    linear-gradient(180deg, rgba(255,250,235,.55), rgba(255,250,235,0) 30%);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
+}
+/* 3 ขั้นตอน: ผ้ากิงแฮมสีเหลืองเนย */
+.steps3::before {
+  top: 3%; bottom: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(232,184,72,.16) 0 22px, transparent 22px 44px),
+    repeating-linear-gradient(90deg, rgba(232,184,72,.16) 0 22px, transparent 22px 44px);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 18%, #000 80%, transparent); mask-image: linear-gradient(180deg, transparent, #000 18%, #000 80%, transparent);
+}
+/* แพ็กเกจ: สีน้ำ เหลือง/เขียวเสจ/ส้มแอปริคอต */
+.compare-section::before {
+  top: -60px; bottom: -40px;
+  background:
+    radial-gradient(40% 46% at 12% 30%, rgba(190,210,150,.42), transparent 70%),
+    radial-gradient(38% 44% at 88% 22%, rgba(244,190,110,.40), transparent 70%),
+    radial-gradient(46% 40% at 55% 92%, rgba(246,214,120,.40), transparent 70%);
+}
+/* คำถาม: จุดสีน้ำกลมๆ หลายสี */
+.faq2::before {
+  top: -30px; bottom: -40px;
+  background:
+    radial-gradient(circle, rgba(244,196,92,.30) 0 13px, transparent 14px) 0 0 / 92px 92px,
+    radial-gradient(circle, rgba(176,204,150,.30) 0 11px, transparent 12px) 46px 46px / 92px 92px,
+    radial-gradient(circle, rgba(236,168,118,.24) 0 9px, transparent 10px) 23px 69px / 92px 92px;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent); mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent);
+}
+/* เกรนกระดาษ ทั้งหน้า (ไม่ล็อกการคลิก) */
+html::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .52  0 0 0 0 .40  0 0 0 0 .22  0 0 0 .16 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.steps3 li, .hc, .pkg-wrap .package-card { backdrop-filter: none; }
+.hx-btn.ghost { background: rgba(255,250,235,.7); border-color: #c9b080; }
+.rc, .filter-btn { background: #fffaf0; }
+.hc, .edit-card, .profile-card, .stat-card, .step-card { background-color: #fffcf4; }
+
+/* ===== FAQ: การ์ดมีน้องหมียืนข้างๆ ===== */
+.faq2 { max-width: 860px; margin: clamp(70px, 9vw, 120px) auto 30px; padding: 0 5%; }
+.faq2 .rail-eyebrow { text-align: center; margin: 0 0 6px; letter-spacing: .24em; }
+.faq2 h2 { text-align: center; font-size: clamp(1.5rem, 3.4vw, 2.1rem); margin: 0 0 54px; color: var(--lt-ink); }
+.faq2 details.fq {
+  position: relative; margin: 0 0 50px; padding: 20px 56px 20px 160px; min-height: 92px; border-radius: 26px;
+  background: #fffcf4; border: 1.5px solid #e2cfa3; box-shadow: 0 12px 30px rgba(130,96,40,.12); transition: box-shadow .25s, transform .25s;
+}
+.faq2 details.fq::before { content: ""; position: absolute; inset: 6px; border-radius: 20px; border: 1.5px dashed #e8d6ac; pointer-events: none; }
+.faq2 details.fq:hover { transform: translateY(-2px); box-shadow: 0 18px 38px rgba(130,96,40,.18); }
+.faq2 details.fq[open] { border-color: #d7b872; }
+.faq2 summary { list-style: none; cursor: pointer; display: flex; align-items: center; min-height: 52px; font-weight: 600; font-size: 1.05rem; color: var(--lt-ink); position: static; }
+.faq2 summary::-webkit-details-marker { display: none; }
+.faq2 summary::after {
+  content: "+"; position: absolute; right: 18px; top: 50%; translate: 0 -50%; width: 30px; height: 30px; border-radius: 50%;
+  background: #a3162f; color: #fff; display: grid; place-items: center; font-size: 1.15rem; line-height: 1; box-shadow: 0 4px 10px rgba(163,22,47,.3); transition: transform .3s;
+}
+.faq2 details[open] summary::after { content: "–"; transform: rotate(180deg); }
+.faq2 details > p { margin: 10px 0 0; color: #5d5266; line-height: 1.85; animation: fqIn .35s ease both; }
+.faq2 details a { color: #a3162f; }
+@keyframes fqIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+.faq2 .bear { position: absolute; left: 8px; bottom: 6px; width: 148px; height: auto; overflow: visible; pointer-events: none; z-index: 2; filter: drop-shadow(0 6px 8px rgba(110,76,30,.15)); }
+.bear .eye-h, .bear .m-o { display: none; }
+.faq2 details[open] .bear .eye-n, .faq2 details[open] .bear .m-n { display: none; }
+.faq2 details[open] .bear .eye-h, .faq2 details[open] .bear .m-o { display: block; }
+.bear .b-all { animation: bearBob 3.8s ease-in-out infinite; }
+.bear .eyes { transform-box: fill-box; transform-origin: center; animation: bearBlink 5.2s infinite; }
+.bear .b-head { transform-origin: 100px 126px; transition: transform .4s cubic-bezier(.3,1.6,.5,1); }
+.faq2 details:hover .bear .b-head { transform: rotate(-6deg); }
+.faq2 details[open] .bear .b-all { animation: bearHop .8s cubic-bezier(.3,1.4,.5,1) 1, bearBob 3.8s ease-in-out .8s infinite; }
+.bear .p-sign, .bear .p-bal, .bear .p-coin { transform-box: fill-box; transform-origin: 50% 100%; }
+.faq2 details:hover .bear .p-sign { animation: bearWag 1s ease-in-out infinite; }
+.bear .p-bal { transform-origin: 50% 100%; animation: bearFloat 3.4s ease-in-out infinite; }
+@keyframes bearBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes bearBlink { 0%,93%,100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+@keyframes bearHop { 0% { transform: translateY(0); } 35% { transform: translateY(-14px); } 100% { transform: translateY(0); } }
+@keyframes bearWag { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+@keyframes bearFloat { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-5px) rotate(2deg); } }
+@media (max-width: 640px) {
+  .faq2 details.fq { padding: 16px 50px 16px 112px; margin-bottom: 44px; min-height: 84px; }
+  .faq2 .bear { width: 112px; left: 2px; }
+  .faq2 summary { font-size: .98rem; } .faq2 summary::after { right: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .bear *, .faq2 details > p { animation: none !important; } }
