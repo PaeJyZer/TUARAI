@@ -212,8 +212,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             counter: document.getElementById('buyPhotoCount'),
             getMax: () => pk[selectedPkg()].max_photos,
             captions: true,
-            required: !!theme.has_captions
+            required: !!theme.has_captions,
+            allowVideo: () => theme.theme_code === 'movie_night_v1'
         });
+        if (theme.theme_code === 'movie_night_v1') { document.getElementById('buyPhotos').accept = 'image/*,video/*'; document.getElementById('buyPhotoRule').insertAdjacentHTML('afterend', '<p class="photo-hint">🎬 ธีมนี้ใส่คลิปสั้นได้ด้วย (MP4/MOV/WEBM ไม่เกิน 15MB ต่อคลิป สูงสุด 2 คลิป) คลิปจะเล่นบนจอโรงหนัง</p>'); }
         document.getElementById('buyPhotoPreview').classList.add('with-cap');
         if (theme.has_captions) document.getElementById('buyPhotoHintCap').style.display = '';
 
@@ -285,7 +287,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (dlgEd) fd.append('dialog', JSON.stringify(dlgEd.get()));
             if (qEd) fd.append('quests', JSON.stringify(qEd.get()));
             fd.append('captions', JSON.stringify(picker.captions()));
-            picker.blobs().forEach((b, i) => fd.append('images', b, `photo${i + 1}.jpg`));
+            picker.blobs().forEach((b, i) => fd.append('images', b, TU.uploadName(b, i)));
 
             const r = await TU.api('/api/drafts', { method: 'POST', body: fd });
             if (r.ok) {

@@ -267,17 +267,23 @@ window.TU = (function () {
 
     // ---------- ตัวเลือกรูปแบบมีพรีวิว (ใช้ในฟอร์มสั่งซื้อ) ----------
     // opts: { input, button, preview, counter, getMax() }
+    function uploadName(b, i) {
+        var m = b && b.name && /\.(mp4|mov|webm|m4v)$/i.exec(b.name);
+        return m ? 'clip' + (i + 1) + m[0].toLowerCase() : 'photo' + (i + 1) + '.jpg';
+    }
+    var isVidUrl = function (u) { return /\.(mp4|mov|webm)(\?|$)/i.test(u || ''); };
+
     function photoPicker(opts) {
-        var items = [];  // { blob, url }
+        var items = [];  // { blob, url, video }
 
         function render() {
             opts.preview.innerHTML = '';
             items.forEach(function (p, i) {
                 var box = document.createElement('div');
                 box.className = 'photo-thumb';
-                var img = document.createElement('img');
+                var img = document.createElement(p.video ? 'video' : 'img');
                 img.src = p.url;
-                img.alt = 'รูปที่ ' + (i + 1);
+                if (p.video) { img.muted = true; img.setAttribute('playsinline', ''); img.preload = 'metadata'; } else img.alt = 'รูปที่ ' + (i + 1);
                 var del = document.createElement('button');
                 del.type = 'button';
                 del.textContent = '×';
@@ -315,8 +321,23 @@ window.TU = (function () {
             opts.input.value = '';
             if (!files.length) return;
 
+            var notes = [], vids = [];
+            if (opts.allowVideo && opts.allowVideo()) {
+                vids = files.filter(function (f) { return (f.type || '').indexOf('video/') === 0 || /\.(mp4|mov|webm|m4v)$/i.test(f.name); });
+                files = files.filter(function (f) { return vids.indexOf(f) < 0; });
+            } else if (files.some(function (f) { return (f.type || '').indexOf('video/') === 0; })) {
+                files = files.filter(function (f) { return (f.type || '').indexOf('video/') !== 0; });
+                notes.push('ธีมนี้ใช้ได้เฉพาะรูปภาพ');
+            }
             var room = opts.getMax() - items.length;
-            var notes = [];
+            var haveV = items.filter(function (p) { return p.video; }).length;
+            vids = vids.filter(function (f) {
+                if (f.size > 15 * 1024 * 1024) { notes.push('คลิป "' + escapeHtml(f.name) + '" ใหญ่เกิน 15MB (ตัดคลิปให้สั้นลงก่อน)'); return false; }
+                return true;
+            });
+            if (haveV + vids.length > 2) { notes.push('ใส่คลิปได้สูงสุด 2 คลิป'); vids = vids.slice(0, Math.max(0, 2 - haveV)); }
+            vids = vids.slice(0, Math.max(0, room)); room -= vids.length;
+            vids.forEach(function (f) { items.push({ blob: f, url: URL.createObjectURL(f), video: true }); });
             if (files.length > room) {
                 notes.push('แพ็กเกจนี้เลือกรูปได้สูงสุด ' + opts.getMax() + ' รูป ตอนนี้เพิ่มได้อีก ' + Math.max(room, 0) + ' รูป');
             }
@@ -353,6 +374,6 @@ window.TU = (function () {
     return {
         escapeHtml: escapeHtml, showAlert: showAlert, api: api, postJson: postJson,
         shrinkMany: shrinkMany, copyText: copyText, fmtDate: fmtDate, fmtRemain: fmtRemain,
-        money: money, photoPicker: photoPicker, dialogEditor: dialogEditor, questEditor: questEditor
+        money: money, uploadName: uploadName, isVidUrl: isVidUrl, photoPicker: photoPicker, dialogEditor: dialogEditor, questEditor: questEditor
     };
 })();

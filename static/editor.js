@@ -60,10 +60,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         site.images.forEach((url, i) => {
             const box = document.createElement('div');
             box.className = 'photo-thumb';
-            const img = document.createElement('img');
+            const isV = TU.isVidUrl(url);
+            const img = document.createElement(isV ? 'video' : 'img');
             img.src = url;
-            img.alt = `รูปที่ ${i + 1}`;
-            img.loading = 'lazy';
+            if (isV) { img.muted = true; img.setAttribute('playsinline', ''); img.preload = 'metadata'; } else { img.alt = `รูปที่ ${i + 1}`; img.loading = 'lazy'; }
             box.appendChild(img);
             {
                 if (!(url in caps)) caps[url] = (site.captions || {})[url] || '';
@@ -141,6 +141,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         site = r.data.site;
+        photoInput.accept = site.theme_code === 'movie_night_v1' ? 'image/*,video/*' : 'image/*';
         document.getElementById('editTitle').textContent = `✏️ แก้ไขเว็บของ ${site.partner_name}`;
         fill();
     }
@@ -216,12 +217,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         addBtn.disabled = true;
         addBtn.textContent = 'กำลังอัปโหลด...';
-        const out = await TU.shrinkMany(files.slice(0, room));
+        const isMovie = site.theme_code === 'movie_night_v1';
+        const vids = isMovie ? files.filter((f) => (f.type || '').startsWith('video/') || /\.(mp4|mov|webm|m4v)$/i.test(f.name)) : [];
+        const picks = files.filter((f) => !vids.includes(f)).filter((f) => isMovie || !(f.type || '').startsWith('video/'));
+        const haveV = site.images.filter((u) => TU.isVidUrl(u)).length;
+        const okVids = vids.filter((f) => { if (f.size > 15 * 1024 * 1024) { notes.push('คลิป ' + esc(f.name) + ' ใหญ่เกิน 15MB'); return false; } return true; }).slice(0, Math.max(0, 2 - haveV));
+        if (vids.length > okVids.length && !notes.length) notes.push('ใส่คลิปได้สูงสุด 2 คลิป');
+        const out = await TU.shrinkMany(picks.slice(0, Math.max(0, room - okVids.length)));
+        okVids.slice(0, room).forEach((f) => out.blobs.push(f));
         if (out.failed.length) notes.push('เปิดไฟล์เหล่านี้ไม่ได้: ' + out.failed.map(esc).join(', '));
 
         if (out.blobs.length) {
             const fd = new FormData();
-            out.blobs.forEach((b, i) => fd.append('images', b, `photo${i + 1}.jpg`));
+            out.blobs.forEach((b, i) => fd.append('images', b, TU.uploadName(b, i)));
             const r = await TU.api(`/api/sites/${slug}/images`, { method: 'POST', body: fd });
             if (r.ok) { site.images = r.data.images; site.image_count = site.images.length; renderPhotos(); }
             else notes.push(esc(r.data.message || 'อัปโหลดไม่สำเร็จ'));

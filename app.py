@@ -747,6 +747,7 @@ def site_state(site):
         'dialog_label': '💬 คำถามจากลุงเจ้าของร้านถ่ายรูป (ใส่ได้ 1-5 ข้อ ฟรี)' if (theme and theme['theme_code'] == Y2K_CODE) else '💬 บทสนทนาวิชวลโนเวล (ให้แฟนเลือกตอบ)',
         'q_allowed': Y2K_MAX_Q if (theme and theme['theme_code'] == Y2K_CODE) else (MAX_QUESTIONS if stored_status == 'draft' else site_q_allowed(site)),
         'theme_id': site['theme_id'],
+        'theme_code': theme['theme_code'] if theme else '',
         'theme_name': theme['name'] if theme else '-',
         'package': pkg_key,
         'package_label': pkg['label'],
@@ -785,12 +786,42 @@ def owned_site(slug):
 Image.MAX_IMAGE_PIXELS = 60_000_000  # กันรูปขนาดใหญ่ผิดปกติ
 
 
-def process_photos(files, max_side=MAX_SIDE):
+MOVIE_CODE = 'movie_night_v1'
+MAX_VIDEO_BYTES = 15 * 1024 * 1024
+MAX_VIDEOS = 2
+
+
+class VidBlob(bytes):
+    ext = '.mp4'
+
+
+def read_video(f):
+    data = f.stream.read(MAX_VIDEO_BYTES + 1)
+    if len(data) > MAX_VIDEO_BYTES:
+        raise ValueError(f'คลิป "{f.filename}" ใหญ่เกิน 15MB')
+    if data[:4] == b'\x1a\x45\xdf\xa3':
+        v = VidBlob(data); v.ext = '.webm'; return v
+    if data[4:8] == b'ftyp':
+        v = VidBlob(data); v.ext = '.mov' if data[8:12] == b'qt  ' else '.mp4'; return v
+    raise ValueError(f'ไฟล์ "{f.filename}" ไม่ใช่คลิปที่ใช้ได้ (รองรับ MP4, MOV, WEBM)')
+
+
+def is_video_upload(f):
+    n = (f.filename or '').lower()
+    return n.endswith(('.mp4', '.mov', '.webm', '.m4v')) or (f.mimetype or '').startswith('video/')
+
+
+def process_photos(files, max_side=MAX_SIDE, allow_video=False):
     """ตรวจว่าเป็นรูปจริง หมุนตาม EXIF ย่อขนาด แล้วแปลงเป็น JPEG
     คืนลิสต์ bytes ถ้ามีไฟล์ที่ใช้ไม่ได้จะ raise ValueError"""
     results = []
     for f in files:
         if not f or not f.filename:
+            continue
+        if is_video_upload(f):
+            if not allow_video:
+                raise ValueError('ธีมนี้ใช้ได้เฉพาะรูปภาพ (คลิปวิดีโอใช้ได้กับธีม Movie Night)')
+            results.append(read_video(f))
             continue
         try:
             img = Image.open(f.stream)
@@ -817,7 +848,7 @@ def write_photos(slug, blobs):
     os.makedirs(folder, exist_ok=True)
     urls = []
     for blob in blobs:
-        name = secrets.token_hex(6) + '.jpg'
+        name = secrets.token_hex(6) + getattr(blob, 'ext', '.jpg')
         with open(os.path.join(folder, name), 'wb') as fp:
             fp.write(blob)
         urls.append(f'/static/uploads/{slug}/{name}')
@@ -1273,7 +1304,9 @@ def create_draft():
         return err(f'มีตัวอย่างที่ยังไม่ชำระเงินครบ {MAX_DRAFTS_PER_USER} รายการแล้ว กรุณาชำระเงินหรือลบบางรายการใน Dashboard ก่อน')
 
     try:
-        blobs = process_photos(files)
+        blobs = process_photos(files, allow_video=(theme['theme_code'] == MOVIE_CODE))
+        if sum(isinstance(b, VidBlob) for b in blobs) > MAX_VIDEOS:
+            return err(f'ใส่คลิปได้สูงสุด {MAX_VIDEOS} คลิป')
     except ValueError as e:
         return err(str(e))
 
@@ -1412,7 +1445,11 @@ def add_site_images(slug):
         return err(f'แพ็กเกจ {state["package_label"]} มีรูปได้สูงสุด {state["max_photos"]} รูป ตอนนี้มี {len(current)} รูป '
                    f'เพิ่มได้อีก {max(room, 0)} รูป')
     try:
-        blobs = process_photos(files)
+        th = get_theme(site['theme_id'])
+        blobs = process_photos(files, allow_video=bool(th and th['theme_code'] == MOVIE_CODE))
+        have = sum(1 for u in current if u.lower().endswith(('.mp4', '.mov', '.webm')))
+        if have + sum(isinstance(b, VidBlob) for b in blobs) > MAX_VIDEOS:
+            return err(f'ใส่คลิปได้สูงสุด {MAX_VIDEOS} คลิป')
     except ValueError as e:
         return err(str(e))
 
