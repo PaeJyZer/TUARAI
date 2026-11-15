@@ -417,12 +417,14 @@ def migrate_db():
     prem_codes = [t[0] for t in PREMIUM_THEMES]
     conn.execute('UPDATE themes SET price_basic = ?, price_pro = ? WHERE theme_code NOT IN (%s)' % ','.join('?' * len(prem_codes)),
                  (DEFAULT_PRICES['basic'], DEFAULT_PRICES['pro'], *prem_codes))
-    for _c,_f in (('starry_night_v1','theme_starry.html'),('y2k_pop_v1','theme_y2k.html'),('constellation_v1','theme_constellation.html'),('space_cruise_v1','theme_space.html'),('music_box_v1','theme_musicbox.html'),('love_post_v1','theme_envelope.html'),('cyberpunk_wine_v1','theme_wine.html')):
+    for _c,_f in (('starry_night_v1','theme_starry.html'),('y2k_pop_v1','theme_y2k.html'),('constellation_v1','theme_constellation.html'),('space_cruise_v1','theme_space.html'),('music_box_v1','theme_musicbox.html'),('love_post_v1','theme_envelope.html')):
         conn.execute('UPDATE themes SET template_file = ? WHERE theme_code = ?', (_f, _c))
         for _t in list(PREMIUM_THEMES)+list(EXTRA_THEMES):
             if _t[0] == _c:
                 conn.execute('UPDATE themes SET description = ? WHERE theme_code = ?', (_t[2], _c))
-    conn.execute('UPDATE themes SET description = ? WHERE theme_code = ?', ('ซอยนีออนยามค่ำคืน สับสวิตช์เปิดป้ายไฟทีละป้าย ไฟกะพริบติดแล้วรูปเรืองแสงในกรอบนีออน 1-2 รูป', 'cyberpunk_wine_v1'))
+    # Wine Polaroid Memories: กลับไปใช้ธีมดั้งเดิม (โพลารอยด์กระจายเต็มจอ)
+    conn.execute("UPDATE themes SET template_file = 'theme_100.html', description = ? WHERE theme_code = 'cyberpunk_wine_v1'",
+                 ('รูปโพลารอยด์กระจายเต็มจอ จดหมายพิมพ์ทีละตัว ตัวนับวันที่คบกัน และกุหลาบแตกเต็มจอ',))
     conn.execute("UPDATE themes SET template_file = 'theme_100.html' WHERE template_file IS NULL")
     conn.execute('UPDATE themes SET is_active = 1 WHERE is_active IS NULL')
     conn.execute('UPDATE themes SET price_basic = ? WHERE price_basic IS NULL', (DEFAULT_PRICES['basic'],))
