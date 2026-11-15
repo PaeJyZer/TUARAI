@@ -39,7 +39,7 @@ body.theme-hanami { background: linear-gradient(180deg, #0b0f2e 0%, #1b1647 55%,
 .lantern .lbody { width: 100%; aspect-ratio: .82; border-radius: 46% 46% 44% 44% / 40% 40% 54% 54%; background: radial-gradient(circle at 50% 55%, #6a3b34, #3b1f24 80%); border: 2px solid #261016; display: grid; place-items: center; font-family: var(--font-display); color: rgba(255,255,255,.35); font-size: 26px; transition: all .4s; }
 .lantern .tassel { width: 6px; height: 22px; background: linear-gradient(#c8334a, #8e1c2f); border-radius: 0 0 4px 4px; }
 .lantern.lit .lbody { background: radial-gradient(circle at 50% 55%, #fff1b8, #ffb454 55%, #e0661e); color: #7a2a00; box-shadow: 0 0 34px 10px rgba(255,180,84,.7); border-color: #b84a12; }
-.lantern:not(.lit)::after { content: "👆"; position: absolute; top: 46%; font-size: 18px; animation: tapHint 1.2s ease-in-out infinite; }
+.lantern:not(.lit)::after { content: ""; display: inline-block; width: 1.1em; height: 1.1em; background: var(--ic-pointer) center / contain no-repeat; position: absolute; top: 46%; font-size: 18px; animation: tapHint 1.2s ease-in-out infinite; }
 @keyframes tapHint { 0%, 100% { transform: translateY(0); opacity: .9; } 50% { transform: translateY(7px); opacity: .4; } }
 @keyframes lsway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
 

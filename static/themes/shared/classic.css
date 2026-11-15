@@ -81,14 +81,14 @@ body.theme-sunset .cl-chip span, body.theme-garden .cl-chip span, body.theme-sak
 .cl-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px color-mix(in srgb, var(--cl-acc) 28%, transparent); }
 .cl-card:active { transform: scale(.98); }
 .cl-card .cl-no { grid-area: no; font-family: var(--cl-font); font-size: 24px; color: var(--cl-acc); opacity: .8; }
-.cl-card .cl-ic { grid-area: ic; font-size: 26px; text-align: center; }
+.cl-card .cl-ic { grid-area: ic; font-size: 30px; text-align: center; line-height: 1; }
 .cl-card b { grid-area: t; font-size: 17px; font-weight: 600; align-self: end; }
 .cl-card small { grid-area: s; font-size: 13px; color: var(--cl-sub); align-self: start; }
 .cl-card .cl-st { grid-area: st; font-style: normal; font-size: 13px; padding: 6px 12px; border-radius: 99px; background: var(--cl-acc); color: var(--cl-btn-ink); font-weight: 600; white-space: nowrap; }
 .cl-card.done { background: color-mix(in srgb, #3ccf8e 14%, var(--cl-bg)); border-color: rgba(60,207,142,.6); }
 .cl-card.done .cl-st { background: #3ccf8e; color: #06321f; }
 .cl-skipq { appearance: none; border: 0; background: none; margin-top: 14px; padding: 10px 14px; font-size: 13px; color: var(--cl-sub); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-.cl-quest.all .cl-qs::after { content: " จดหมายพร้อมให้อ่านแล้ว 💌"; color: var(--cl-acc); font-weight: 600; }
+.cl-quest.all .cl-qs::after { content: " จดหมายพร้อมให้อ่านแล้ว"; color: var(--cl-acc); font-weight: 600; }
 @media (min-width: 760px) { .cl-cards { grid-template-columns: repeat(3, 1fr); } .cl-card { grid-template-columns: 1fr; grid-template-areas: "no" "ic" "t" "s" "st"; justify-items: center; text-align: center; row-gap: 3px; padding: 20px 12px; } .cl-card .cl-ic { font-size: 34px; } .cl-card .cl-st { margin-top: 8px; } }
 
 body.theme-pixel .cl-card b, body.theme-pixel .cl-card .cl-st, body.theme-pixel .cl-kick { font-family: var(--font-px, monospace); font-size: 11px; }
@@ -200,7 +200,7 @@ body {
   background: radial-gradient(circle at 34% 28%, color-mix(in srgb, var(--cl-acc) 55%, #fff) 0%, var(--cl-acc) 45%, color-mix(in srgb, var(--cl-acc) 50%, #000) 100%);
   box-shadow: inset 0 -5px 9px rgba(0,0,0,.28), inset 0 3px 5px rgba(255,255,255,.3), 0 7px 14px rgba(0,0,0,.35); }
 .cl-body::before { content: ""; position: absolute; inset: 9px; border-radius: 50%; border: 2px dashed rgba(255,255,255,.4); }
-.cl-body i { position: relative; font-size: 28px; }
+.cl-body i { position: relative; font-size: 38px; line-height: 1; display: grid; place-items: center; }
 .cl-lock.ok .cl-body { animation: clSeal .7s cubic-bezier(.4,0,.6,1) forwards; }
 @keyframes clSeal { 30% { transform: scale(1.18) rotate(-6deg); } 100% { transform: translateY(-26px) rotate(24deg) scale(.7); opacity: 0; } }
 .cl-lock-title { font-weight: 600; letter-spacing: .01em; }

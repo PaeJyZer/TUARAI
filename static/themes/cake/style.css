@@ -18,7 +18,7 @@ body.theme-cake { background: radial-gradient(120% 80% at 50% 0%, #4b1f63 0%, #2
 .candle .flame { position: absolute; left: 50%; bottom: 50%; width: 46%; height: 44%; transform: translateX(-50%) scale(0); transform-origin: 50% 100%; border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
   background: radial-gradient(circle at 50% 70%, #fff 0 18%, #ffe27a 40%, #ff8a3d 100%); box-shadow: 0 0 18px 6px rgba(255,190,80,.7); transition: transform .3s cubic-bezier(.3,1.6,.5,1); }
 .candle.lit .flame { transform: translateX(-50%) scale(1); animation: flick .35s ease-in-out infinite alternate; }
-.candle:not(.lit)::before { content: "👆"; position: absolute; left: 50%; top: -6px; font-size: 18px; transform: translateX(-50%); animation: tapHint 1.2s ease-in-out infinite; }
+.candle:not(.lit)::before { content: ""; display: inline-block; width: 1.1em; height: 1.1em; background: var(--ic-pointer) center / contain no-repeat; position: absolute; left: 50%; top: -6px; font-size: 18px; transform: translateX(-50%); animation: tapHint 1.2s ease-in-out infinite; }
 .candle.out .flame { transform: translateX(-50%) scale(0); animation: none; }
 @keyframes flick { from { transform: translateX(-50%) scale(1) rotate(-3deg); } to { transform: translateX(-50%) scale(1.1, .94) rotate(3deg); } }
 @keyframes tapHint { 0%, 100% { transform: translate(-50%, 0); opacity: .9; } 50% { transform: translate(-50%, 7px); opacity: .4; } }

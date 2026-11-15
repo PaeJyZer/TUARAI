@@ -68,7 +68,7 @@ body.theme-palace { background: #2a1936; overflow-x: hidden; }
 @keyframes nextB { to { transform: translateY(5px); } }
 .vn-choices { display: flex; flex-direction: column; gap: 9px; margin-top: 12px; }
 .vn-choice { appearance: none; text-align: left; width: 100%; border: 2px solid #d9b36a; background: #fff; color: #3a2142; border-radius: 12px; padding: 12px 14px; font: inherit; font-size: 16px; line-height: 1.4; transition: transform .15s, background .2s; animation: chIn .4s both; animation-delay: calc(var(--k) * .08s); }
-.vn-choice::before { content: "🌸 "; }
+.vn-choice::before { content: ""; display: inline-block; width: 1.1em; height: 1.1em; background: var(--ic-sakura) center / contain no-repeat; }
 .vn-choice:hover, .vn-choice:focus-visible { background: #ffe9f0; transform: translateX(4px); outline: none; }
 .vn-choice.picked { background: #f6b8c8; border-color: #c8414c; }
 @keyframes chIn { from { opacity: 0; transform: translateY(10px); } }

@@ -41,7 +41,7 @@ body.theme-space { background: radial-gradient(120% 90% at 50% 100%, #1a1050 0%,
 .planet:nth-child(3n) { animation-duration: 4.2s; }
 .planet::after { content: ""; position: absolute; left: -22%; top: 42%; width: 144%; height: 16%; border-radius: 50%; border: 2px solid rgba(255,255,255,.45); transform: rotate(-18deg); }
 .planet.scanned { animation: none; filter: saturate(.25) brightness(.7); pointer-events: none; }
-.planet.scanned::before { content: "❤"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 22px; color: #ff5d8f; z-index: 2; filter: none; }
+.planet.scanned::before { content: ""; display: inline-block; width: 1.1em; height: 1.1em; background: var(--ic-heart) center / 62% no-repeat; position: absolute; inset: 0; width: auto; height: auto; display: grid; place-items: center; font-size: 22px; color: #ff5d8f; z-index: 2; filter: none; }
 @keyframes orb { from { transform: translateY(-7px); } to { transform: translateY(7px); } }
 .pulse { position: absolute; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%; border: 2px solid var(--accent); pointer-events: none; animation: pulseOut 1s ease-out forwards; }
 @keyframes pulseOut { to { transform: scale(9); opacity: 0; } }
