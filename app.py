@@ -210,7 +210,7 @@ EXTRA_THEMES = [
      'สมุดไดอารี่เล่มจริง เปิดปกแล้วพลิกหน้าได้ หน้าละ 2 รูปติดเทป ลายเส้นหมีน่ารัก จดหมายอยู่หน้าสุดท้าย',
      'theme_previews/vintage_diary.jpg', 'theme_diary.html'),
     ('flower_garden_v1', 'Blooming Flower Garden',
-     'แตะดอกไม้ให้บาน กลีบดอกไม้ร่วงเบาๆ รูปในกรอบโค้งและดอกไม้ โทนพาสเทลหวานๆ',
+     'สวนดอกไม้เป็นแปลง กดดอกตูมค้างเพื่อรดน้ำให้บาน รูปซ่อนอยู่ในเกสร ปลดล็อกแปลงถัดไป มีกล่องจดหมายประจำสวน',
      'theme_previews/flower_garden.jpg', 'theme_garden.html'),
     ('sunset_beach_v1', 'Sunset Beach Letters',
      'ชายหาดพระอาทิตย์ตก ปูลายเส้นหมีเดินไปมา แตะเปลือกหอยเพื่อเปิดความทรงจำ 1-2 รูป มีขวดจดหมายริมหาด',
@@ -219,7 +219,7 @@ EXTRA_THEMES = [
      'ซองจดหมายไปรษณีย์ แตะตราประทับเพื่อเปิดซอง หาตราไปรษณียากรหัวใจ รูปเป็นโปสการ์ด',
      'theme_previews/love_post.jpg', 'theme_envelope.html'),
     ('sakura_clear_v1', 'Sakura Photobooth',
-     'ซากุระร่วงโทนใสสไตล์เกาหลี กดชัตเตอร์เพื่อเปิด หาหัวใจซ่อนในภาพ รูปเรียงเป็นแถบโฟโต้บูธ',
+     'ต้นซากุระใหญ่ เขย่าต้นให้กลีบทองร่วง แตะจับกลีบเพื่อเปิดรูป แล้ววางบนผ้าปิกนิก',
      'theme_previews/sakura_clear.jpg', 'theme_sakura.html'),
     ('movie_night_v1', 'Our Movie Night',
      'นั่งดูหนังในโรงภาพยนตร์ แสงโปรเจกเตอร์กะพริบแบบหนังเก่า ภาพและคลิปของเราฉายบนจอ จบด้วยข้อความตอนจบ',
@@ -249,7 +249,7 @@ PREMIUM_THEMES = [
      'ไขลานกล่องดนตรี นางรำหมุน เล่นโน้ตเปียโนเป็นทำนองเฉพาะ แผ่นเสียงหมุน รูปเป็นปกแผ่นเสียง',
      'theme_previews/music_box.jpg', 'theme_musicbox.html', 69, 109, 'ไขลาน · เล่นโน้ต · แผ่นเสียง'),
     ('hanami_night_v1', 'Hanami Night Lanterns',
-     'ค่ำคืนใต้ต้นซากุระ จุดโคมไฟกระดาษทีละดวง กลีบซากุระพัดตามนิ้ว เขย่าต้นไม้ โอมิคุจิคำอวยพร',
+     'ค่ำคืนเทศกาลโคมไฟ แตะโคมริมน้ำเพื่อจุดไฟแล้วปล่อยขึ้นฟ้า โคมแต่ละดวงเปิดความทรงจำ 1-2 รูป',
      'theme_previews/hanami_night.jpg', 'theme_hanami.html', 69, 109, 'จุดโคมไฟ · เขย่าซากุระ · โอมิคุจิ'),
     ('palace_sakura_v1', 'Sakura Palace Story',
      'วิชวลโนเวลในวังซากุระ คุยกับแฟนผ่านบทสนทนาที่คุณเขียนเอง ให้เขา/เธอเลือกคำตอบ มีสรุปคำตอบท้ายเรื่อง เสียงนุ่มสบายหู',
@@ -388,12 +388,12 @@ def migrate_db():
             conn.execute('''INSERT INTO themes (name, description, preview_img, theme_code, template_file, sort_order)
                             VALUES (?, ?, ?, ?, ?, ?)''', (name, desc, preview, code, tpl, order))
     # ซิงก์คำอธิบายธีมที่ปรับปรุงใหม่จากโค้ด (ชุดธีมโครงสร้างใหม่)
-    for _c, _d in (('vintage_diary_v1', None), ('sunset_beach_v1', None), ('movie_night_v1', None), ('pixel_love_v1', None)):
+    for _c, _d in (('vintage_diary_v1', None), ('sunset_beach_v1', None), ('movie_night_v1', None), ('pixel_love_v1', None), ('flower_garden_v1', None), ('sakura_clear_v1', None)):
         for _t in EXTRA_THEMES:
             if _t[0] == _c:
                 conn.execute('UPDATE themes SET description = ? WHERE theme_code = ?', (_t[2], _c))
     for _t in PREMIUM_THEMES:
-        if _t[0] in ('birthday_cake_v1', 'arcade_love_v1', 'matchcat_v1'):
+        if _t[0] in ('birthday_cake_v1', 'arcade_love_v1', 'matchcat_v1', 'hanami_night_v1'):
             conn.execute('UPDATE themes SET description = ? WHERE theme_code = ?', (_t[2], _t[0]))
     # ธีมพรีเมียม: เพิ่มธีมถ้ายังไม่มี และซิงก์ราคาจากโค้ดทุกครั้งที่เริ่มระบบ
     for order, (code, name, desc, preview, tpl, pb, pp, _tag) in enumerate(PREMIUM_THEMES, start=101):

@@ -1,0 +1,43 @@
+:root { --hand: "Mali", "Comic Sans MS", cursive; --mc-accent: #e8545a; --mc-paper: #2c1c3c; --mc-ink: #ffeacb; --mc-bg: rgba(8, 4, 24, .8); --mc-edge: rgba(255, 190, 110, .55); }
+body.theme-hanami { background: #120a26; color: #ffeacb; font-family: var(--hand); }
+.doo { display: block; width: 100%; height: auto; overflow: visible; }
+.gate { background: linear-gradient(#0b0620, #281650 70%, #4a2a6e); text-align: center; padding: 0 20px; overflow: hidden; }
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.stars i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff; animation: tw 3s ease-in-out infinite; }
+@keyframes tw { 50% { opacity: .25; } }
+.g-body { position: relative; display: flex; flex-direction: column; align-items: center; }
+.gate-eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: #ffbe6e; }
+.gate-title { font: 600 clamp(28px, 7vw, 40px) var(--hand); margin: 8px 0 14px; word-break: break-word; }
+.g-lan { width: 110px; animation: lb 3.6s ease-in-out infinite; }
+@keyframes lb { 50% { transform: translateY(-14px) rotate(3deg); } }
+.go-btn { margin-top: 26px; appearance: none; border: 0; border-radius: 999px; padding: 14px 30px; font: 600 17px var(--hand); color: #4a1a00; background: #ffbe6e; box-shadow: 0 7px 0 #b87a30, 0 0 26px rgba(255, 190, 110, .5); cursor: pointer; }
+.go-btn:active { transform: translateY(5px); }
+.gate-hint { margin-top: 18px; font-size: 14px; color: #cdb6e8; }
+.hn { position: relative; padding: 76px 0 0; overflow: hidden; background: linear-gradient(#0b0620, #231446 55%, #3a2062); min-height: 100vh; }
+.h-head { position: relative; text-align: center; padding: 0 14px; z-index: 2; }
+.h-head .eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: #ffbe6e; }
+.h-head h1 { font: 600 clamp(24px, 6.4vw, 36px) var(--hand); margin: 6px 0; word-break: break-word; }
+.h-sub { font-size: 14px; color: #cdb6e8; margin-bottom: 8px; }
+.field { position: relative; width: min(560px, 100%); margin: 0 auto; z-index: 2; }
+.lan { position: absolute; width: 62px; margin-left: -31px; appearance: none; border: 0; background: none; padding: 0; cursor: pointer; transition: left 2.4s cubic-bezier(.3, .6, .3, 1), top 2.4s cubic-bezier(.3, .6, .3, 1), transform 2.4s; -webkit-tap-highlight-color: transparent; }
+.lan .body { display: block; filter: brightness(.55) saturate(.7); transition: filter 1s; }
+.lan.lit .body { filter: none; }
+.lan .glow { position: absolute; left: 50%; top: 40%; width: 190%; aspect-ratio: 1; margin: -95% 0 0 -95%; border-radius: 50%; background: radial-gradient(circle, rgba(255, 196, 110, .55), transparent 62%); opacity: 0; transition: opacity 1s; pointer-events: none; }
+.lan.lit .glow { opacity: 1; animation: gl 2s ease-in-out infinite alternate; }
+@keyframes gl { to { transform: scale(1.15); opacity: .8; } }
+.lan.up { transform: translateX(0); }
+.lan.up .body { animation: lbob 4s ease-in-out infinite; }
+@keyframes lbob { 50% { transform: translateY(-8px) rotate(2deg); } }
+.lan .ph { position: absolute; left: 50%; top: 24%; width: 34%; aspect-ratio: 1; margin-left: -17%; border-radius: 50%; background: center / cover no-repeat; opacity: 0; transition: opacity 1.4s 1s; mix-blend-mode: normal; }
+.lan.up .ph { opacity: .85; }
+.river { position: relative; height: 120px; margin-top: 12px; background: linear-gradient(#1a2b66, #0e1840); z-index: 1; overflow: hidden; }
+.river .w { position: absolute; left: -10%; right: -10%; top: 10px; height: 3px; background: repeating-linear-gradient(90deg, rgba(255, 220, 160, .25) 0 22px, transparent 22px 44px); animation: rv 6s linear infinite; }
+.river .w2 { top: 40px; animation-duration: 9s; opacity: .7; }
+@keyframes rv { to { transform: translateX(44px); } }
+.h-ctl { position: relative; margin-top: -90px; display: flex; justify-content: center; z-index: 3; }
+.big-lan { appearance: none; border: 0; background: none; cursor: pointer; width: 130px; text-align: center; animation: lb 4s ease-in-out infinite; }
+.big-lan small { display: block; margin-top: 6px; font: 600 12px var(--hand); color: #ffd9a0; }
+.big-lan.is-locked { filter: grayscale(.5); opacity: .8; }
+.foot { position: relative; text-align: center; padding: 70px 8px 16px; color: #b9a2d8; z-index: 2; }
+.pool { display: none; }
+@media (prefers-reduced-motion: reduce) { .lan.up .body, .lan.lit .glow, .g-lan, .big-lan, .stars i { animation: none; } .lan { transition-duration: .01s; } }

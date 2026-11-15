@@ -1,0 +1,43 @@
+:root { --hand: "Mali", "Comic Sans MS", cursive; --ink: #5a3b4a; --mc-accent: #e8788c; --mc-paper: #fff8ee; --mc-bg: rgba(255, 220, 230, .6); }
+body.theme-garden { background: #fdf0e6; color: var(--ink); font-family: var(--hand); }
+.doo { display: block; width: 100%; height: auto; overflow: visible; }
+.gate { background: linear-gradient(#fbe3ec, #f8d3d7 55%, #cfe8c8); text-align: center; padding: 0 20px; }
+.gate-eyebrow { font-size: 13px; letter-spacing: .3em; text-transform: uppercase; color: #b25a78; }
+.gate-title { font: 600 clamp(28px, 7vw, 40px) var(--hand); color: #8f3b5c; margin: 8px 0 14px; word-break: break-word; }
+.g-fl { width: 170px; animation: gsw 3s ease-in-out infinite; transform-origin: 50% 100%; margin: 0 auto; }
+@keyframes gsw { 50% { transform: rotate(3deg); } 0%, 100% { transform: rotate(-3deg); } }
+.go-btn { margin-top: 24px; appearance: none; border: 0; border-radius: 999px; padding: 14px 30px; font: 600 17px var(--hand); color: #fff; background: #e8788c; box-shadow: 0 7px 0 #c25570; cursor: pointer; }
+.go-btn:active { transform: translateY(5px); box-shadow: 0 2px 0 #c25570; }
+.gate-hint { margin-top: 18px; font-size: 14px; color: #a56077; }
+.gd { max-width: 560px; margin: 0 auto; padding: 76px 12px 30px; text-align: center; }
+.g-head .eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: #b25a78; }
+.g-head h1 { font: 600 clamp(25px, 6.6vw, 38px) var(--hand); color: #8f3b5c; margin: 6px 0; word-break: break-word; }
+.g-sub { font-size: 14px; color: #86506a; margin-bottom: 16px; }
+.bed { position: relative; margin: 16px 0 6px; padding: 22px 8px 14px; border-radius: 22px; background: linear-gradient(#a9764b, #8f5f3b); box-shadow: inset 0 6px 0 #b98a5e, 0 8px 0 #6f4a2c, 0 14px 22px rgba(80, 40, 20, .25); }
+.bed::before { content: ""; position: absolute; inset: 0; border-radius: 22px; background: radial-gradient(circle, rgba(60, 30, 10, .3) 2px, transparent 2.6px) 0 0 / 18px 18px; pointer-events: none; }
+.bed-tag { position: absolute; left: 14px; top: -14px; font: 600 12px var(--hand); background: #fff8ee; color: #8f5f3b; border-radius: 999px; padding: 3px 12px; box-shadow: 0 2px 6px rgba(0, 0, 0, .2); }
+.bed-row { position: relative; display: flex; justify-content: space-around; align-items: flex-end; gap: 6px; min-height: 150px; }
+.bed.locked .bed-row { filter: grayscale(.7) brightness(.8); pointer-events: none; }
+.bed.locked::after { content: "รดน้ำแปลงก่อนหน้าให้บานก่อน"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font: 600 13px var(--hand); background: #fff8ee; color: #8f5f3b; padding: 8px 16px; border-radius: 999px; box-shadow: 0 4px 10px rgba(0, 0, 0, .25); white-space: nowrap; }
+.fl { position: relative; flex: 1; max-width: 160px; appearance: none; border: 0; background: none; padding: 0; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; }
+.fl .stem { width: 100%; }
+.fl .ring { position: absolute; left: 50%; top: 12%; width: 56px; height: 56px; margin-left: -28px; pointer-events: none; opacity: 0; }
+.fl.water .ring { opacity: 1; }
+.fl .ring circle { fill: none; stroke: #6fc3e8; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 150; stroke-dashoffset: 150; transform: rotate(-90deg); transform-origin: 28px 28px; }
+.fl.water .ring circle { animation: ringf var(--hold, 900ms) linear forwards; }
+@keyframes ringf { to { stroke-dashoffset: 0; } }
+.fl .drops { position: absolute; left: 20%; right: 20%; top: -10px; height: 40px; pointer-events: none; opacity: 0; }
+.fl.water .drops { opacity: 1; background: radial-gradient(circle, #8fd3f0 0 3px, transparent 3.5px) 0 0 / 14px 18px; animation: dr .5s linear infinite; }
+@keyframes dr { to { background-position: 0 18px; } }
+.fl.bud .head { animation: budSway 3s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes budSway { 50% { transform: rotate(4deg); } 0%, 100% { transform: rotate(-3deg); } }
+.fl.bloom .head { animation: bloomUp .9s cubic-bezier(.3, 1.6, .5, 1) both; transform-origin: 50% 70%; }
+@keyframes bloomUp { from { transform: scale(.3) rotate(-30deg); } }
+.fl .lbl { display: block; font-size: 11px; color: #fff3e0; margin-top: -4px; opacity: .9; }
+.mailbox { margin-top: 26px; }
+.mb { appearance: none; border: 0; background: none; cursor: pointer; width: 120px; text-align: center; }
+.mb small { display: block; margin-top: 4px; font: 600 12px var(--hand); color: #8f3b5c; }
+.mb.is-locked { filter: grayscale(.5); opacity: .8; }
+.foot { text-align: center; padding: 26px 8px 10px; color: #86506a; }
+.pool { display: none; }
+@media (prefers-reduced-motion: reduce) { .g-fl, .fl.bud .head, .fl.water .drops { animation: none; } }
