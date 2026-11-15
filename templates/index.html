@@ -56,6 +56,36 @@
     </div>
   </section>
 
+  {% set _all = (standard + premium) if premium else standard %}
+  {% set y2k = (_all|selectattr('theme_code', 'equalto', 'y2k_pop_v1')|list|first) if (_all|selectattr('theme_code', 'equalto', 'y2k_pop_v1')|list) else none %}
+  {% if y2k %}
+  <!-- ธีมแนะนำ: Y2K -->
+  <section class="y2f" id="featured">
+    <div class="y2f-in">
+      <div class="y2f-shots" aria-hidden="true">
+        <figure class="a"><img src="{{ url_for('static', filename='home/y2k_street.png') }}" alt="" loading="lazy"></figure>
+        <figure class="b"><img src="{{ url_for('static', filename='home/y2k_shop.png') }}" alt="" loading="lazy"></figure>
+        <span class="tag">★ NEW · แนะนำ</span>
+      </div>
+      <div class="y2f-copy">
+        <p class="y2f-eyebrow">Y2K DATE · THE BEST ONE</p>
+        <h2>เดินเดทกันในเมืองยุค 2000<br><em>เหมือนได้เล่นเกมของเราสองคน</em></h2>
+        <p class="y2f-sub">ธีมที่คนชอบที่สุด เป็นเกมพิกเซล 3D มุมมองบุคคลที่หนึ่ง แฟนของคุณจะได้จับมือเดินไปกับคุณ เข้าร้านลุงช่างภาพที่ถามคำถามที่คุณเขียนไว้ แล้วแฟลชวาบถ่ายรูปคู่ รูปของคุณจะค่อยๆ ล้างออกมาเป็นโพลารอยด์</p>
+        <ul class="y2f-list">
+          <li>🎮 เลือกเล่นเป็นผู้ชายหรือผู้หญิงได้</li>
+          <li>👴 ลุงเจ้าของร้านถามคำถามที่คุณเขียนเอง 1–5 ข้อ</li>
+          <li>📸 แฟลชถ่ายรูปคู่ แล้วรูปกลายเป็นโพลารอยด์พร้อมคำใต้รูป</li>
+          <li>💌 จบด้วยการ์ด Y2K ที่เปิดอ่านจดหมายของคุณ</li>
+        </ul>
+        <div class="y2f-cta">
+          <a class="hx-btn primary" href="{{ url_for('demo_page', theme_code=y2k.theme_code) }}" target="_blank" rel="noopener">▶ ลองเล่นเดโมฟรี</a>
+          <button class="hx-btn ghost btn-choose" type="button" data-theme-id="{{ y2k.id }}">เลือกซื้อ ฿{{ '{:,.0f}'.format(y2k.prices.basic) }}</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
   <div id="collection"></div>
   <!-- กองไพ่: แยกตามราคา -->
   {% set allthemes = (standard + premium) if premium else standard %}

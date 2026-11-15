@@ -58,7 +58,7 @@
       while (!hit && tries++ < 80) { if (sdx < sdy) { sdx += ddx; mx += sx; side = 0; } else { sdy += ddy; my += sy; side = 1; } if (my < 0 || my >= map.length || mx < 0 || mx > 6) { hit = 5; break; } hit = map[my][mx]; }
       var pd = side === 0 ? sdx - ddx : sdy - ddy; if (pd < .05) pd = .05;
       var wx = side === 0 ? posY + pd * rdy : posX + pd * rdx; wx -= Math.floor(wx);
-      var tx = Math.floor(wx * 64); if ((side === 0 && rdx > 0) || (side === 1 && rdy < 0)) tx = 63 - tx;
+      var tx = Math.floor(wx * 64); if (side === 0 && rdx < 0) tx = 63 - tx;
       var lh = Math.floor(H * wallK / pd), st = Math.floor(hz - lh / 2);
       ctx.drawImage(T[hit] || T[5], tx, 0, 1, 64, x, st, 1, lh);
       if (side === 0) { ctx.fillStyle = 'rgba(110,70,170,.16)'; ctx.fillRect(x, st, 1, lh); }
