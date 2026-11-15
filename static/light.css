@@ -1,23 +1,23 @@
 /* TUARAI – โทนสว่างหรูพรีเมียม (เฉพาะหน้าร้าน: หน้าแรก/วิธีสั่งซื้อ/ข้อตกลง/แดชบอร์ด/ชำระเงิน/แก้ไข/แอดมิน)
    ครีมงาช้าง + ทองแชมเปญ + หมึกม่วงเข้ม  ไม่แตะธีมเว็บเซอร์ไพรส์ของลูกค้า */
 :root {
-  --bg-color: #f3e8cf; --card-bg: #ffffff; --accent-wine: #a3162f; --accent-red: #b3122f;
-  --text-main: #2a2230; --text-muted: #6f6578; --border-color: #e0cfa8;
-  --lt-gold: #b98a3e; --lt-gold2: #e6c98a; --lt-ink: #2a2230; --lt-sub: #6f6578; --lt-card: #ffffff; --lt-line: #e0cfa8;
+  --bg-color: #f1d8d5; --card-bg: #ffffff; --accent-wine: #a3162f; --accent-red: #b3122f;
+  --text-main: #2a2230; --text-muted: #6f6578; --border-color: #e9c4c2;
+  --lt-gold: #b98a3e; --lt-gold2: #e6c98a; --lt-ink: #2a2230; --lt-sub: #6f6578; --lt-card: #ffffff; --lt-line: #e9c4c2;
   --hx-gold: #b98a3e;
   color-scheme: light;
 }
-html { background: #f3e8cf; }
+html { background: #f1d8d5; }
 body {
-  background: linear-gradient(180deg, #f8efd9 0%, #f2e6cb 50%, #f6ecd5 100%) fixed; background-color: #f3e8cf; color: var(--lt-ink);
+  background: linear-gradient(180deg, #f7e3df 0%, #f0d3d0 50%, #f5dedb 100%) fixed; background-color: #f1d8d5; color: var(--lt-ink);
 }
-body::before { background: radial-gradient(closest-side, rgba(240,196,98,.38), transparent 72%); }
-body::after { background: radial-gradient(closest-side, rgba(170,196,140,.30), transparent 72%); }
+body::before { background: radial-gradient(closest-side, rgba(224,112,128,.34), transparent 72%); }
+body::after { background: radial-gradient(closest-side, rgba(236,160,130,.30), transparent 72%); }
 /* ลายเส้นละเอียดบางๆ ให้ดูเป็นกระดาษพรีเมียม */
 body > *:first-child { position: relative; }
 
 /* แถบเมนู */
-.navbar { background: rgba(246,237,214,.86); border-bottom: 1px solid var(--lt-line); box-shadow: 0 1px 0 rgba(255,255,255,.8) inset, 0 8px 30px rgba(120,90,40,.06); }
+.navbar { background: rgba(247,228,225,.88); border-bottom: 1px solid var(--lt-line); box-shadow: 0 1px 0 rgba(255,255,255,.8) inset, 0 8px 30px rgba(120,90,40,.06); }
 .logo { color: #a3162f; text-shadow: none; }
 .logo img { filter: none; }
 .nav-item { color: var(--lt-ink); } .nav-item:hover, .nav-item.active { color: #a3162f; }
@@ -25,7 +25,7 @@ body > *:first-child { position: relative; }
 .btn-login:hover { background: linear-gradient(135deg, #c4163a, #a3162f); }
 
 /* หน้าแรก */
-.hx-eyebrow { color: #8a7a64; } .hx-eyebrow i { background: linear-gradient(90deg, var(--lt-gold), transparent); }
+.hx-eyebrow { color: #9a7378; } .hx-eyebrow i { background: linear-gradient(90deg, var(--lt-gold), transparent); }
 .hx-title { color: var(--lt-ink); }
 .hx-title em { background: linear-gradient(95deg, #c2263f, #a3162f 45%, #b98a3e); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .hx-sub { color: #5f5568; }
@@ -36,7 +36,7 @@ body > *:first-child { position: relative; }
 .hx-stats { border-top: 1px solid var(--lt-line); } .hx-stats dt { color: var(--lt-ink); } .hx-stats dd { color: var(--lt-sub); }
 .hx-shot { border: 1px solid rgba(255,255,255,.9); box-shadow: 0 30px 60px rgba(90,60,30,.22), 0 4px 14px rgba(90,60,30,.12); }
 
-.rail-eyebrow { color: #9a8760; } .rail-title, .rail h2, .rail-head h2 { color: var(--lt-ink); }
+.rail-eyebrow { color: #a67a7e; } .rail-title, .rail h2, .rail-head h2 { color: var(--lt-ink); }
 .rail-sub { color: var(--lt-sub); }
 .rc { border: 1px solid #d9c8a6; background: rgba(255,255,255,.8); color: var(--lt-ink); } .rc:hover { background: #fff; }
 .rail-bar { background: rgba(120,90,40,.12); }
@@ -145,52 +145,52 @@ body::selection { background: #f0c46255; }
 /* ฮีโร่: จุดกลมเล็กๆ เหมือนกระดาษลายจุด + แสงเหลืองอ่อนๆ */
 .hx::before {
   background:
-    radial-gradient(circle at 78% 40%, rgba(247,205,110,.42), transparent 46%),
-    radial-gradient(rgba(150,108,44,.20) 1.6px, transparent 1.9px) 0 0 / 26px 26px;
+    radial-gradient(circle at 78% 40%, rgba(232,120,135,.34), transparent 46%),
+    radial-gradient(rgba(163,22,47,.17) 1.6px, transparent 1.9px) 0 0 / 26px 26px;
   -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent); mask-image: linear-gradient(180deg, #000 70%, transparent);
 }
 /* กองไพ่: สมุดตารางบางๆ */
 .decks-sec::before {
   background:
-    linear-gradient(rgba(150,108,44,.11) 1px, transparent 1px) 0 0 / 30px 30px,
-    linear-gradient(90deg, rgba(150,108,44,.11) 1px, transparent 1px) 0 0 / 30px 30px,
-    linear-gradient(180deg, rgba(255,250,235,.55), rgba(255,250,235,0) 30%);
+    linear-gradient(rgba(163,22,47,.09) 1px, transparent 1px) 0 0 / 30px 30px,
+    linear-gradient(90deg, rgba(163,22,47,.09) 1px, transparent 1px) 0 0 / 30px 30px,
+    linear-gradient(180deg, rgba(255,244,242,.55), rgba(255,244,242,0) 30%);
   -webkit-mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
 }
 /* 3 ขั้นตอน: ผ้ากิงแฮมสีเหลืองเนย */
 .steps3::before {
   top: 3%; bottom: 0;
   background:
-    repeating-linear-gradient(0deg, rgba(232,184,72,.16) 0 22px, transparent 22px 44px),
-    repeating-linear-gradient(90deg, rgba(232,184,72,.16) 0 22px, transparent 22px 44px);
+    repeating-linear-gradient(0deg, rgba(214,98,112,.15) 0 22px, transparent 22px 44px),
+    repeating-linear-gradient(90deg, rgba(214,98,112,.15) 0 22px, transparent 22px 44px);
   -webkit-mask-image: linear-gradient(180deg, transparent, #000 18%, #000 80%, transparent); mask-image: linear-gradient(180deg, transparent, #000 18%, #000 80%, transparent);
 }
 /* แพ็กเกจ: สีน้ำ เหลือง/เขียวเสจ/ส้มแอปริคอต */
 .compare-section::before {
   top: -60px; bottom: -40px;
   background:
-    radial-gradient(40% 46% at 12% 30%, rgba(190,210,150,.42), transparent 70%),
-    radial-gradient(38% 44% at 88% 22%, rgba(244,190,110,.40), transparent 70%),
-    radial-gradient(46% 40% at 55% 92%, rgba(246,214,120,.40), transparent 70%);
+    radial-gradient(40% 46% at 12% 30%, rgba(232,130,140,.34), transparent 70%),
+    radial-gradient(38% 44% at 88% 22%, rgba(240,160,130,.36), transparent 70%),
+    radial-gradient(46% 40% at 55% 92%, rgba(236,146,150,.32), transparent 70%);
 }
 /* คำถาม: จุดสีน้ำกลมๆ หลายสี */
 .faq2::before {
   top: -30px; bottom: -40px;
   background:
-    radial-gradient(circle, rgba(244,196,92,.30) 0 13px, transparent 14px) 0 0 / 92px 92px,
-    radial-gradient(circle, rgba(176,204,150,.30) 0 11px, transparent 12px) 46px 46px / 92px 92px,
-    radial-gradient(circle, rgba(236,168,118,.24) 0 9px, transparent 10px) 23px 69px / 92px 92px;
+    radial-gradient(circle, rgba(224,110,126,.28) 0 13px, transparent 14px) 0 0 / 92px 92px,
+    radial-gradient(circle, rgba(240,170,150,.30) 0 11px, transparent 12px) 46px 46px / 92px 92px,
+    radial-gradient(circle, rgba(205,85,105,.20) 0 9px, transparent 10px) 23px 69px / 92px 92px;
   -webkit-mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent); mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent);
 }
 /* เกรนกระดาษ ทั้งหน้า (ไม่ล็อกการคลิก) */
 html::before {
   content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5; mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .52  0 0 0 0 .40  0 0 0 0 .22  0 0 0 .16 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .56  0 0 0 0 .34  0 0 0 0 .34  0 0 0 .16 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 .steps3 li, .hc, .pkg-wrap .package-card { backdrop-filter: none; }
-.hx-btn.ghost { background: rgba(255,250,235,.7); border-color: #c9b080; }
-.rc, .filter-btn { background: #fffaf0; }
-.hc, .edit-card, .profile-card, .stat-card, .step-card { background-color: #fffcf4; }
+.hx-btn.ghost { background: rgba(255,244,242,.75); border-color: #d9a3a3; }
+.rc, .filter-btn { background: #fff6f4; }
+.hc, .edit-card, .profile-card, .stat-card, .step-card { background-color: #fff8f6; }
 
 /* ===== FAQ: การ์ดมีน้องหมียืนข้างๆ ===== */
 .faq2 { max-width: 860px; margin: clamp(70px, 9vw, 120px) auto 30px; padding: 0 5%; }
@@ -198,11 +198,11 @@ html::before {
 .faq2 h2 { text-align: center; font-size: clamp(1.5rem, 3.4vw, 2.1rem); margin: 0 0 54px; color: var(--lt-ink); }
 .faq2 details.fq {
   position: relative; margin: 0 0 50px; padding: 20px 56px 20px 160px; min-height: 92px; border-radius: 26px;
-  background: #fffcf4; border: 1.5px solid #e2cfa3; box-shadow: 0 12px 30px rgba(130,96,40,.12); transition: box-shadow .25s, transform .25s;
+  background: #fff8f6; border: 1.5px solid #ebc3c1; box-shadow: 0 12px 30px rgba(150,60,70,.14); transition: box-shadow .25s, transform .25s;
 }
-.faq2 details.fq::before { content: ""; position: absolute; inset: 6px; border-radius: 20px; border: 1.5px dashed #e8d6ac; pointer-events: none; }
-.faq2 details.fq:hover { transform: translateY(-2px); box-shadow: 0 18px 38px rgba(130,96,40,.18); }
-.faq2 details.fq[open] { border-color: #d7b872; }
+.faq2 details.fq::before { content: ""; position: absolute; inset: 6px; border-radius: 20px; border: 1.5px dashed #f0cac8; pointer-events: none; }
+.faq2 details.fq:hover { transform: translateY(-2px); box-shadow: 0 18px 38px rgba(150,60,70,.2); }
+.faq2 details.fq[open] { border-color: #dc9aa0; }
 .faq2 summary { list-style: none; cursor: pointer; display: flex; align-items: center; min-height: 52px; font-weight: 600; font-size: 1.05rem; color: var(--lt-ink); position: static; }
 .faq2 summary::-webkit-details-marker { display: none; }
 .faq2 summary::after {
