@@ -1,17 +1,17 @@
 {% extends "_theme_base.html" %}
 {% block fonts %}
-  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Noto+Serif+Thai:wght@400;500;600;700&family=Kodchasan:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Mali:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Thai:wght@400;500;600;700&family=Kodchasan:wght@400;500;600&display=swap" rel="stylesheet">
 {% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/diary/style.css') }}">{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='themes/diary/book.css') }}">{% endblock %}
 {% block favicon %}📔{% endblock %}
 {% block body_class %}theme-diary{% endblock %}
 {% block letter_eyebrow %}Dear diary{% endblock %}
 
 {% block gate %}
   <div class="gate" id="gate">
-    <div class="book">
-      <div class="book-inner"></div>
-      <div class="book-cover">
+    <div class="book-closed">
+      <div class="bc-inner"></div>
+      <div class="bc-cover">
         <span class="cover-line"></span>
         <p class="cover-small">Our Diary</p>
         <h1 class="cover-name">{{ partner_name }}</h1>
@@ -27,35 +27,25 @@
 
 {% block main %}
   <div class="desk">
-    <header class="title-page">
-      <div class="polaroid-cover" data-photo>
-        <span class="tape t1"></span><span class="tape t2"></span>
-        <img src="{{ center_photo }}" alt="รูปคู่ของเรา">
-        <p class="pol-cap">Our Best Memory</p>
-      </div>
-      <p class="eyebrow">{{ occ.en }}</p>
-      <h1 class="page-title">ถึง {{ partner_name }}</h1>
-      <p class="page-sub">ฉันเก็บทุกวันของเราไว้ในสมุดเล่มนี้</p>
-      <button class="stamp-btn" type="button" data-letter>✉ เปิดจดหมาย</button>
-    </header>
-
-    {% if side_photos %}
-    <section class="film-wrap">
-      <h2 class="sec-title">ม้วนฟิล์มความทรงจำ</h2>
-      <div class="film">
-        {% for slot, src in side_photos %}
-        <figure class="frame reveal" data-photo style="--tilt: {{ ['-1.6deg','1.2deg','-.8deg','1.8deg','-1.2deg','.7deg'][loop.index0 % 6] }}">
-          <div class="frame-img"><img src="{{ src }}" alt="ความทรงจำที่ {{ loop.index }}" loading="lazy"></div>
-          <figcaption>No. {{ '%02d' % loop.index }}</figcaption>
-        </figure>
-        {% endfor %}
-      </div>
-    </section>
-    {% endif %}
-
-    <footer class="foot">
-      <p>ขอบคุณที่เป็นหน้าที่ดีที่สุดในสมุดของฉัน</p>
-      <button class="stamp-btn" type="button" data-letter>อ่านจดหมายอีกครั้ง</button>
-    </footer>
+    <div class="bk-wrap">
+      <div class="bk" id="bk" aria-live="polite"></div>
+    </div>
+    <div class="bk-ctl">
+      <button class="bk-arrow" id="bkPrev" type="button" aria-label="หน้าก่อนหน้า">&lsaquo;</button>
+      <span class="bk-count" id="bkCount"></span>
+      <button class="bk-arrow" id="bkNext" type="button" aria-label="หน้าถัดไป">&rsaquo;</button>
+    </div>
+    <p class="bk-hint">ปัดหรือแตะลูกศรเพื่อพลิกหน้า · แตะรูปเพื่อดูภาพใหญ่</p>
+    <button class="stamp-btn" id="bkLetter" type="button" data-letter>✉ เปิดจดหมายท้ายเล่ม</button>
+    <footer class="foot"><p>ขอบคุณที่เป็นหน้าที่ดีที่สุดในสมุดของฉัน</p></footer>
   </div>
+  <div class="pool" aria-hidden="true" hidden>
+    {% for p in photos %}<figure data-photo><img src="{{ p.src }}" alt="" decoding="async"></figure>{% endfor %}
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>window.TU_PHOTOS = {{ photos|tojson }};</script>
+  <script src="{{ url_for('static', filename='themes/shared/doodles.js') }}"></script>
+  <script src="{{ url_for('static', filename='themes/diary/book.js') }}"></script>
 {% endblock %}

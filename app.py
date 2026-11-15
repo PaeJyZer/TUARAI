@@ -849,6 +849,7 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
         pairs=[(u, (captions or {}).get(u) or f'ความทรงจำที่ {i + 1}') for i, u in enumerate(urls[:MAX_PAIRS])],
         extra_photos=urls[MAX_PAIRS:],
         captions=captions or {},
+        photos=[{'src': u, 'cap': (captions or {}).get(u, '')} for u in urls],
     )
 
 
