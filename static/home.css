@@ -237,3 +237,9 @@ html { scroll-behavior: smooth; }
 @media (max-width: 760px) { .y2f-in { grid-template-columns: 1fr; padding: 20px 16px 24px; gap: 18px; } .y2f-shots { min-height: 250px; } }
 .y2f-cta .hx-btn.ghost { background: #fff; color: #c23a86; border: 2px solid #ff9ed0; }
 .y2f-cta .hx-btn.primary { background: linear-gradient(#ff7eb8, #ff3d9a); color: #fff; box-shadow: 0 5px 0 #c23a86; }
+
+/* ===== 2 กองราคา: จัดกึ่งกลาง ใหญ่ขึ้น สมดุล ===== */
+.decks { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 940px; margin: 0 auto; gap: clamp(28px, 6vw, 96px); }
+.decks .deck { max-width: 430px; padding-right: 60px; }
+.decks-sec { padding-bottom: clamp(30px, 5vw, 64px); }
+@media (max-width: 760px) { .decks { grid-template-columns: 1fr; gap: 56px; max-width: 440px; } .decks .deck { max-width: 360px; padding-right: 50px; } }
