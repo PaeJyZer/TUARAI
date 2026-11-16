@@ -65,8 +65,13 @@
     if (store.get('unlocked') === '1') return;
     locked = true;
     body.classList.add('cl-locked');
+    /* กั้นพื้นหลังจริงๆ: ปิดการกด/โฟกัส/คีย์บอร์ดของทุกอย่างหลังหน้าต่างรหัส จนกว่าจะใส่รหัสถูก */
+    var frozen = [].filter.call(body.children, function (n) { return !/^(SCRIPT|STYLE|LINK|NOSCRIPT)$/.test(n.tagName) && !n.classList.contains('cl-lock') && !/demo/i.test(n.className + ' ' + n.id) && !n.hasAttribute('inert'); });
+    frozen.forEach(function (n) { n.setAttribute('inert', ''); n.setAttribute('aria-hidden', 'true'); });
+    function unfreeze() { frozen.forEach(function (n) { n.removeAttribute('inert'); n.removeAttribute('aria-hidden'); }); frozen = []; }
     var vals = [0, 0, 0, 0], wrong = 0;
     var ov = el('div', 'cl-lock');
+    ['click', 'pointerdown', 'pointerup', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'dblclick'].forEach(function (t) { ov.addEventListener(t, function (e) { e.stopPropagation(); }); });
     ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-label', sk.t);
     ov.innerHTML =
       '<div class="cl-lock-card">' +
@@ -121,7 +126,7 @@
       store.set('unlocked', '1'); locked = false;
       ov.classList.add('ok');
       if (!quiet) { sfx('unlock'); sfx('sparkle'); if (window.TUFx) TUFx.confetti(innerWidth / 2, innerHeight * .42, 80); }
-      setTimeout(function () { ov.classList.add('gone'); body.classList.remove('cl-locked'); setTimeout(function () { ov.remove(); }, 700); }, quiet ? 80 : 900);
+      setTimeout(function () { ov.classList.add('gone'); body.classList.remove('cl-locked'); unfreeze(); setTimeout(function () { ov.remove(); }, 700); }, quiet ? 80 : 900);
     }
     function go() {
       if (vals.join('') === CODE) { open(false); return; }
