@@ -83,6 +83,10 @@ PACKAGES = {
     },
 }
 DEFAULT_PRICES = {'basic': 59.0, 'pro': 99.0}   # ใช้ถ้าธีมไม่ได้ตั้งราคาเฉพาะไว้ในตาราง themes
+TIER_PRICES = {'premium': (59.0, 79.0), 'legendary': (99.0, 129.0)}
+# ธีมที่ระบบ/ลูกเล่นซับซ้อน (เกมหลายขั้น เรื่องราว กลไกเฉพาะตัว) = Legendary ส่วนที่เหลือ = Premium
+LEGENDARY_THEMES = {'y2k_pop_v1', 'palace_sakura_v1', 'arcade_love_v1', 'movie_night_v1', 'music_box_v1',
+                    'vintage_diary_v1', 'space_cruise_v1', 'hanami_night_v1', 'matchcat_v1'}
 RENEW_PRICE = 59.0                                # ราคาต่ออายุ Basic ต่อ 1 ปี
 RENEW_DAYS = 365
 LEGAL_VERSION = '1'                 # เปลี่ยนเลขนี้เมื่อแก้ข้อตกลง → ป้ายประกาศจะเด้งให้ทุกคนเห็นอีกครั้ง
@@ -429,6 +433,11 @@ def migrate_db():
     conn.execute('UPDATE themes SET is_active = 1 WHERE is_active IS NULL')
     conn.execute('UPDATE themes SET price_basic = ? WHERE price_basic IS NULL', (DEFAULT_PRICES['basic'],))
     conn.execute('UPDATE themes SET price_pro = ? WHERE price_pro IS NULL', (DEFAULT_PRICES['pro'],))
+    # เหลือ 2 กองราคา: Premium (ระบบเรียบง่ายกว่า) และ Legendary (ลูกเล่น/ระบบซับซ้อน) ราคาใหม่ใช้กับออเดอร์ใหม่เท่านั้น
+    for (_code,) in conn.execute('SELECT theme_code FROM themes').fetchall():
+        _leg = _code in LEGENDARY_THEMES
+        conn.execute('UPDATE themes SET is_premium = 1, price_basic = ?, price_pro = ? WHERE theme_code = ?',
+                     ((TIER_PRICES['legendary'] if _leg else TIER_PRICES['premium'])[0], (TIER_PRICES['legendary'] if _leg else TIER_PRICES['premium'])[1], _code))
     conn.commit()
     conn.close()
 
