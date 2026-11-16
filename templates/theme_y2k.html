@@ -58,7 +58,7 @@
 {% endblock %}
 
 {% block scripts %}
-  <script>window.TU_PHOTOS = {{ photos|tojson }}; window.TU_DIALOG = {{ dialog|tojson }};</script>
+  <script>window.TU_PHOTOS = {{ photos|tojson }}; window.TU_DIALOG = {{ dialog|tojson }}; window.TU_WALK = {{ ((quests or {}).get('walk') or [])|tojson }};</script>
   <script src="{{ url_for('static', filename='themes/shared/doodles.js') }}"></script>
   <script src="{{ url_for('static', filename='themes/shared/memcard.js') }}"></script>
   <script src="{{ url_for('static', filename='themes/y2k/date.js') }}"></script>

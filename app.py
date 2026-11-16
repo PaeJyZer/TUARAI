@@ -674,7 +674,12 @@ def clean_quests(raw):
     for k in QUEST_KEYS[:3]:            # ไม่ครบ 3 ข้อ เติมจากภารกิจพื้นฐาน
         if len(pick) < QUEST_PICK and k not in pick:
             pick.append(k)
-    return {'pick': pick, 'qa': qa, 'secret': secret, 'off': bool(raw.get('off'))}
+    walk = []
+    for x in (raw.get('walk') if isinstance(raw.get('walk'), list) else [])[:5]:
+        walk.append(' '.join(str(x or '').split())[:160])
+    if not any(walk):
+        walk = []
+    return {'pick': pick, 'qa': qa, 'secret': secret, 'off': bool(raw.get('off')), 'walk': walk}
 
 
 def quests_of(site):

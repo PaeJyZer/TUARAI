@@ -136,9 +136,15 @@ window.TU = (function () {
         var data = (items && items.length ? items : [{ q: '', options: ['', ''], replies: ['', ''], reply: '' }]).map(function (x) {
             return { q: x.q || '', options: (x.options || []).slice(), replies: (x.replies || []).slice(), reply: x.reply || '' };
         });
+        var walkData = (opts.walk || []).slice(0, 5);
+        function collectWalk() {
+            var ins = root.querySelectorAll('.dlg-walk');
+            if (ins.length) walkData = [].map.call(ins, function (i) { return i.value.trim(); });
+            return walkData.some(Boolean) ? walkData : [];
+        }
         function collect() {
             var out = [];
-            root.querySelectorAll('.dlg-item').forEach(function (el) {
+            root.querySelectorAll('.dlg-item:not(.dlg-walkbox)').forEach(function (el) {
                 var opts = [], reps = [], ins = el.querySelectorAll('.dlg-opt'), rs = el.querySelectorAll('.dlg-orep');
                 [].forEach.call(ins, function (inp, k) { var v = inp.value.trim(); if (v) { opts.push(v); reps.push(rs[k].value.trim()); } });
                 out.push({ q: el.querySelector('.dlg-q').value.trim(), options: opts, replies: reps, reply: el.querySelector('.dlg-reply').value.trim() });
@@ -148,6 +154,13 @@ window.TU = (function () {
         function render() {
             var h = '<p class="photo-hint">' + (opts.hint || 'ใส่ {name} ตรงไหนก็ได้ ระบบจะเปลี่ยนเป็นชื่อแฟนให้ (ตอบได้ 2-4 ตัวเลือกต่อคำถาม) ถ้าไม่กรอกอะไรเลย ระบบจะใช้บทสนทนาตัวอย่างให้') + '</p>' +
                 '<p class="dlg-price" id="dlgPrice"></p>';
+            if (opts.walk) {
+                collectWalk();
+                var WL = ['ตอนเริ่มเดิน', 'ป้ายที่ 1 (ร้านไอศกรีม)', 'ป้ายที่ 2 (ตู้เกม)', 'ป้ายที่ 3 (ร้านสติกเกอร์)', 'ตอนถึงหน้าร้านลุง'];
+                h += '<div class="dlg-item dlg-walkbox"><div class="dlg-head"><b>💭 ข้อความตอนเดินจับมือไปร้าน</b></div><p class="photo-hint" style="margin:0 0 8px">พิมพ์เองได้ 5 จุด ช่องไหนเว้นว่างระบบใช้ข้อความตัวอย่างให้ (ใส่ {name} แทนชื่อแฟนได้)</p>';
+                for (var w = 0; w < 5; w++) h += '<input type="text" class="dlg-walk" maxlength="160" placeholder="' + WL[w] + '" value="' + escapeHtml(walkData[w] || '') + '">';
+                h += '</div>';
+            }
             data.forEach(function (d, i) {
                 h += '<div class="dlg-item"><div class="dlg-head"><b>คำถามที่ ' + (i + 1) + (i >= FREE && !opts.noPrice ? ' <span class="dlg-extra">+' + PRICE + ' ฿</span>' : '') + '</b>' +
                     '<button type="button" class="btn-small dlg-del" data-i="' + i + '">ลบ</button></div>' +
@@ -182,7 +195,7 @@ window.TU = (function () {
             if (e.target.closest('.dlg-add')) { data = collect(); if (data.length < MAXQ) data.push({ q: '', options: ['', ''], replies: ['', ''], reply: '' }); render(); }
         });
         render();
-        return { get: function () { return collect().filter(function (d) { return d.q && d.options.length >= 2; }); },
+        return { getWalk: collectWalk, get: function () { return collect().filter(function (d) { return d.q && d.options.length >= 2; }); },
                  lock: function (v) { locked = !!v; data = collect(); render(); } };
     }
 

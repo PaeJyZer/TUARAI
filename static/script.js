@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         refreshRule();
 
         const Y2K_HINT = 'ลุงเจ้าของร้านจะถามคำถามเหล่านี้ตอนเขา/เธอเดินเข้าร้าน ใส่ {name} แทนชื่อแฟนได้ ตัวเลือกตอบ 2-4 ข้อ และเขียนคำตอบของลุงได้ (ก่อนถ่ายรูป ลุงจะถามคำถามสุดท้ายให้เอง)';
-        const dlgEd = theme.has_dialog ? TU.dialogEditor(document.getElementById('buyDialog'), [], { free: theme.q_free || DATA.qFree, price: DATA.qPrice, max: theme.q_max || DATA.qMax, allowed: theme.q_max || DATA.qMax, noPrice: !!(theme.q_max && theme.q_max <= (theme.q_free || 0)), hint: theme.q_max ? Y2K_HINT : '' }) : null;
+        const dlgEd = theme.has_dialog ? TU.dialogEditor(document.getElementById('buyDialog'), [], { free: theme.q_free || DATA.qFree, price: DATA.qPrice, max: theme.q_max || DATA.qMax, allowed: theme.q_max || DATA.qMax, noPrice: !!(theme.q_max && theme.q_max <= (theme.q_free || 0)), hint: theme.q_max ? Y2K_HINT : '', walk: theme.q_max ? [] : undefined }) : null;
         const qEd = theme.has_quests ? TU.questEditor(document.getElementById('buyQuests'), null, { noHunt: !!theme.no_hunt }) : null;
         const occSel = document.getElementById('buyOccasion');
         const occLabels = { anniversary: 'วันที่เริ่มคบกัน (หรือวันพิเศษ)', birthday: 'วันเกิดของเขา/เธอ' };
@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             fd.append('letter_text', document.getElementById('buyLetter').value);
             fd.append('letter_sign', document.getElementById('buySign').value);
             if (dlgEd) fd.append('dialog', JSON.stringify(dlgEd.get()));
-            if (qEd) fd.append('quests', JSON.stringify(qEd.get()));
+            if (qEd) fd.append('quests', JSON.stringify(Object.assign(qEd.get(), dlgEd && dlgEd.getWalk ? { walk: dlgEd.getWalk() } : {})));
             fd.append('captions', JSON.stringify(picker.captions()));
             picker.blobs().forEach((b, i) => fd.append('images', b, TU.uploadName(b, i)));
 

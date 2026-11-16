@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  var P = window.TU_PHOTOS || [], DLG = window.TU_DIALOG || [], CFG = window.SITE_CONFIG || {};
+  var WALK = window.TU_WALK || [], P = window.TU_PHOTOS || [], DLG = window.TU_DIALOG || [], CFG = window.SITE_CONFIG || {};
   var NAME = CFG.partnerName || 'เธอ';
   var $ = function (id) { return document.getElementById(id); };
   var sfx = function (n) { try { if (window.TUSfx) TUSfx.play(n); } catch (e) {} };
@@ -129,6 +129,7 @@
     { y: 12, t: 'ร้านสติกเกอร์หัวใจกับกิ๊บติดผมสีลูกกวาด ซื้อคู่กันไหมนะ…' },
     { y: 6, t: 'นั่นไง! ร้านถ่ายรูป PHOTO STUDIO ของลุงช่างภาพประจำซอย เข้าไปกัน!' }
   ];
+  STOPS.forEach(function (s, i) { if (WALK[i + 1]) s.t = WALK[i + 1]; });
   var si = -1, tgt = 0;
   function glide(toY, sec, done) {
     walking = true; walkBtn.disabled = true; var from = posY, t0 = performance.now(), a = sec * 1000;
@@ -138,7 +139,7 @@
     var b = e.target.closest('[data-pov]'); if (!b) return; pov = b.getAttribute('data-pov'); sfx('pop');
     sleeve = pov === 'm' ? { me: '#7aa8ff', pt: '#ff8ec4' } : { me: '#ff8ec4', pt: '#7aa8ff' };
     $('pick').hidden = true; $('sub').textContent = 'แตะ "เดินต่อ" เพื่อเดินเดทไปด้วยกัน'; dirty = true; burst(18);
-    speak('💭', 'วันนี้เราสองคนจะไปเดินเล่นกันในเมือง จับมือกันไว้แน่นๆ นะ', function () { walkBtn.hidden = false; walkBtn.textContent = 'เดินต่อ ▶'; });
+    speak('💭', WALK[0] || 'วันนี้เราสองคนจะไปเดินเล่นกันในเมือง จับมือกันไว้แน่นๆ นะ', function () { walkBtn.hidden = false; walkBtn.textContent = 'เดินต่อ ▶'; });
   });
   walkBtn.addEventListener('click', function () {
     if (mode !== 'street' || walkBtn.disabled) return;
