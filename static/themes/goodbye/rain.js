@@ -243,19 +243,24 @@
   function cap(t) { var c = spawn(t, 'cap', 0); return c; }
 
   function armLocal(L) {
-    var F = '#dcba88', D = '#c29a62', PAD = '#c98f55', h = '', n = 16, i, t, r, x;
-    for (i = 0; i <= n; i++) { t = i / n; r = L * (.2 + .07 * t); x = L * t * .98; h += '<circle cx="' + x + '" cy="0" r="' + (r + L * .022) + '" fill="' + D + '"/>'; }
-    for (i = 0; i <= n; i++) { t = i / n; r = L * (.2 + .07 * t); x = L * t * .98; h += '<circle cx="' + x + '" cy="0" r="' + r + '" fill="' + F + '"/>'; }
-    h += '<circle cx="' + L + '" cy="0" r="' + (L * .33) + '" fill="' + D + '"/><circle cx="' + L + '" cy="0" r="' + (L * .3) + '" fill="' + F + '"/>';
-    /* ขนขอบปุกปุย */
-    for (i = 0; i < 9; i++) { var an = (-100 + i * 25) * Math.PI / 180; h += '<circle cx="' + (L + Math.cos(an) * L * .3) + '" cy="' + (Math.sin(an) * L * .3) + '" r="' + (L * .055) + '" fill="' + F + '"/>'; }
+    var F = '#d8b685', D = '#bf9660', PAD = '#c98f55', n = 10, i, k, t, r, x, h = '', rim = '', fur = '', R = function (u) { return Math.round(u * 10) / 10; };
+    var cs = [];
+    for (i = 0; i <= n; i++) { t = i / n; cs.push([L * t * .96, L * (.3 + .06 * t)]); }
+    cs.push([L, L * .4]);
+    cs.forEach(function (c) {
+      var m = Math.max(10, Math.round(c[1] / (L * .028)));
+      for (k = 0; k < m; k++) { var an = k / m * 6.2832, px = c[0] + Math.cos(an) * c[1], py = Math.sin(an) * c[1], sr = L * .05;
+        rim += '<circle cx="' + R(px) + '" cy="' + R(py) + '" r="' + R(sr + 3) + '"/>'; fur += '<circle cx="' + R(px) + '" cy="' + R(py) + '" r="' + R(sr) + '"/>'; }
+      rim += '<circle cx="' + R(c[0]) + '" cy="0" r="' + R(c[1] + 2) + '"/>'; fur += '<circle cx="' + R(c[0]) + '" cy="0" r="' + R(c[1]) + '"/>';
+    });
+    h += '<g fill="' + D + '">' + rim + '</g><g fill="' + F + '">' + fur + '</g>';
     /* อุ้งมือหันเข้าหาจอ */
-    h += '<ellipse cx="' + (L + L * .02) + '" cy="' + (L * .07) + '" rx="' + (L * .15) + '" ry="' + (L * .125) + '" fill="' + PAD + '"/>';
-    [-48, -16, 16, 48].forEach(function (d) { var an = (d - 90) * Math.PI / 180; h += '<ellipse cx="' + (L + Math.cos(an) * L * .215) + '" cy="' + (L * .02 + Math.sin(an) * L * .21) + '" rx="' + (L * .05) + '" ry="' + (L * .062) + '" fill="' + PAD + '" transform="rotate(' + d + ' ' + (L + Math.cos(an) * L * .215) + ' ' + (L * .02 + Math.sin(an) * L * .21) + ')"/>'; });
-    return h;
+    h += '<g fill="' + PAD + '"><ellipse cx="' + (L * 1.03) + '" cy="' + (L * .1) + '" rx="' + (L * .2) + '" ry="' + (L * .165) + '"/>';
+    [-64, -22, 22, 64].forEach(function (d) { var an = (d - 90) * Math.PI / 180, cx = L * 1.02 + Math.cos(an) * L * .29, cy = L * .02 + Math.sin(an) * L * .27; h += '<ellipse cx="' + R(cx) + '" cy="' + R(cy) + '" rx="' + R(L * .068) + '" ry="' + R(L * .085) + '" transform="rotate(' + d + ' ' + R(cx) + ' ' + R(cy) + ')"/>'; });
+    return h + '</g>';
   }
   function hugArms(W, H) {
-    var L = Math.min(.5 * H, Math.max(.42 * W, .3 * H)), sy = .76 * H, sxl = .36 * W, sxr = .64 * W;
+    var L = Math.min(.4 * H, Math.max(.3 * W, .3 * H)), sy = .93 * H, sxl = .34 * W, sxr = .66 * W;
     var el = spawn('<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" style="position:absolute;inset:0;overflow:visible">' +
       '<g class="sl"><g transform="translate(' + sxl + ',' + sy + ') scale(-1,1)"><g class="rot">' + armLocal(L) + '</g></g></g>' +
       '<g class="sr"><g transform="translate(' + sxr + ',' + sy + ')"><g class="rot">' + armLocal(L) + '</g></g></g></svg>', 'arms', 0);
@@ -265,8 +270,8 @@
   function anim(e, kf, ms, o) { return e.animate(kf, Object.assign({ duration: ms, easing: 'cubic-bezier(.3,.8,.3,1)', fill: 'forwards' }, o || {})); }
   var ANIM = {
     hug: async function () {
-      var OPEN = -14, CLOSE = 166;
-      stage.classList.add('hug'); near('hug', panel.clientWidth > panel.clientHeight ? 4 : 2.6); await wait(1500);
+      var OPEN = -42, CLOSE = 196;
+      stage.classList.add('hug'); near('hug', panel.clientWidth > panel.clientHeight ? 4 : 2.1); await wait(1500);
       var W = panel.clientWidth, H = panel.clientHeight, A = hugArms(W, H);
       [A.rl, A.rr].forEach(function (e) { e.style.transformOrigin = '0 0'; e.style.transform = 'rotate(' + OPEN + 'deg)'; });
       anim(A.sl, [{ transform: 'translateX(' + (-.45 * W) + 'px)' }, { transform: 'none' }], 1100);
@@ -276,7 +281,7 @@
       anim(A.rl, [{ transform: 'rotate(' + OPEN + 'deg)' }, { transform: 'rotate(' + CLOSE + 'deg)' }], 1100, { easing: 'cubic-bezier(.5,0,.3,1)' });
       anim(A.rr, [{ transform: 'rotate(' + OPEN + 'deg)' }, { transform: 'rotate(' + CLOSE + 'deg)' }], 1100, { easing: 'cubic-bezier(.5,0,.3,1)' });
       await wait(1000); stage.classList.add('happy', 'squeeze'); hearts(12, 3000);
-      var sq = [A.rl, A.rr].map(function (e) { return anim(e, [{ transform: 'rotate(' + CLOSE + 'deg)' }, { transform: 'rotate(' + (CLOSE - 7) + 'deg)' }], 600, { direction: 'alternate', iterations: Infinity, easing: 'ease-in-out' }); });
+      var sq = [A.rl, A.rr].map(function (e) { return anim(e, [{ transform: 'rotate(' + CLOSE + 'deg)' }, { transform: 'rotate(' + (CLOSE - 8) + 'deg)' }], 600, { direction: 'alternate', iterations: Infinity, easing: 'ease-in-out' }); });
       var c = cap('กอดแน่น ๆ นะ'); await wait(3600); c.remove(); sq.forEach(function (x) { x.cancel(); });
       stage.classList.remove('squeeze', 'happy');
       anim(A.rl, [{ transform: 'rotate(' + CLOSE + 'deg)' }, { transform: 'rotate(' + OPEN + 'deg)' }], 900);
