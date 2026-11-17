@@ -35,29 +35,30 @@
     var h = '<defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c1b20"/><stop offset=".55" stop-color="#1b3a40"/><stop offset="1" stop-color="#27494c"/></linearGradient>' +
       '<radialGradient id="gl" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffcf8a" stop-opacity=".9"/><stop offset="1" stop-color="#ffcf8a" stop-opacity="0"/></radialGradient>' +
       '<linearGradient id="bm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2c8" stop-opacity=".8"/><stop offset="1" stop-color="#fff2c8" stop-opacity="0"/></linearGradient></defs>' +
-      '<rect width="400" height="700" fill="url(#sk)"/>';
+      '<rect x="-1000" width="2400" height="700" fill="url(#sk)"/>';
     /* ตึกไกล ๆ */
     h += '<g fill="#12282d" opacity=".9"><rect x="10" y="300" width="70" height="200"/><rect x="95" y="260" width="60" height="240"/><rect x="250" y="320" width="80" height="180"/><rect x="340" y="280" width="60" height="220"/></g>';
     var w = ''; for (var i = 0; i < 16; i++) { var x = 18 + (i * 53) % 360, y = 290 + (i * 37) % 160; w += '<rect x="' + x + '" y="' + y + '" width="6" height="8" fill="#ffcf8a" opacity="' + (i % 3 ? .35 : .7) + '"/>'; }
     h += w;
+    h += '<g fill="#12282d" opacity=".9"><rect x="-480" y="290" width="90" height="210"/><rect x="-380" y="330" width="70" height="170"/><rect x="-280" y="250" width="80" height="250"/><rect x="-160" y="310" width="110" height="190"/><rect x="430" y="300" width="80" height="200"/><rect x="540" y="260" width="90" height="240"/><rect x="660" y="320" width="70" height="180"/><rect x="760" y="280" width="120" height="220"/></g>';
     /* ใบไม้ซ้าย-ขวา */
     function leaf(x, y, r, c, cls) { return '<g class="sway ' + (cls || '') + '"><ellipse cx="' + x + '" cy="' + y + '" rx="' + r + '" ry="' + (r * .42) + '" transform="rotate(' + (x < 200 ? -30 : 30) + ' ' + x + ' ' + y + ')" fill="' + c + '"/></g>'; }
-    h += leaf(30, 330, 60, '#0e2a26') + leaf(60, 380, 70, '#123a31', 'r') + leaf(15, 440, 55, '#0b231f') + leaf(380, 340, 62, '#0e2a26', 'r') + leaf(350, 400, 68, '#133b32') + leaf(392, 460, 54, '#0b231f', 'r');
+    h += leaf(-250, 350, 80, '#0e2a26') + leaf(-120, 420, 70, '#123a31', 'r') + leaf(560, 380, 80, '#0e2a26', 'r') + leaf(700, 430, 75, '#123a31') + leaf(30, 330, 60, '#0e2a26') + leaf(60, 380, 70, '#123a31', 'r') + leaf(15, 440, 55, '#0b231f') + leaf(380, 340, 62, '#0e2a26', 'r') + leaf(350, 400, 68, '#133b32') + leaf(392, 460, 54, '#0b231f', 'r');
     /* หลังคาสังกะสีด้านบน */
-    h += '<path d="M0 0 H400 V90 H0z" fill="#1a2c30"/>';
-    for (var k = 0; k < 14; k++) h += '<path d="M' + (k * 30) + ' 0 V92" stroke="#0e1c20" stroke-width="3"/>';
-    h += '<rect y="88" width="400" height="8" fill="#0a1519"/>';
+    h += '<path d="M-1000 0 H1400 V90 H-1000z" fill="#1a2c30"/>';
+    for (var k = -34; k < 48; k++) h += '<path d="M' + (k * 30) + ' 0 V92" stroke="#0e1c20" stroke-width="3"/>';
+    h += '<rect x="-1000" y="88" width="2400" height="8" fill="#0a1519"/>';
     /* หยดน้ำจากชายคา */
-    for (var d = 0; d < 9; d++) h += '<rect x="' + (20 + d * 44) + '" y="98" width="1.6" height="26" fill="#bfe3df" opacity=".35"/>';
+    for (var d = -23; d < 33; d++) h += '<rect x="' + (20 + d * 44) + '" y="98" width="1.6" height="26" fill="#bfe3df" opacity=".35"/>';
     /* ไฟระเบียง */
     h += '<g class="lampg"><circle cx="200" cy="120" r="70" fill="url(#gl)"/><circle cx="200" cy="108" r="6" fill="#ffe3b0"/><path d="M200 96 v-8" stroke="#0a1519" stroke-width="2"/></g>';
     /* ลำแสงตอนฝนหาย */
-    h += '<path id="beam" d="M180 0 L220 0 L400 560 L0 560z" fill="url(#bm)"/>';
+    h += '<path id="beam" d="M170 0 L230 0 L470 560 L-70 560z" fill="url(#bm)"/>';
     /* พื้นระเบียง + ราวระเบียง */
-    h += '<rect y="520" width="400" height="180" fill="#0a171b"/><rect y="508" width="400" height="14" fill="#223a3e"/>';
-    h += '<rect y="526" width="400" height="3" fill="#35575b" opacity=".6"/>';
-    for (var b = 0; b < 17; b++) h += '<rect x="' + (b * 25 - 2) + '" y="420" width="9" height="90" rx="3" fill="#1e3438"/><rect x="' + (b * 25 + 4) + '" y="420" width="2" height="90" fill="#35575b" opacity=".5"/>';
-    h += '<rect y="410" width="400" height="12" rx="4" fill="#2c4a4e"/><rect y="410" width="400" height="3" fill="#4d7276" opacity=".7"/>';
+    h += '<rect x="-1000" y="520" width="2400" height="180" fill="#0a171b"/><rect x="-1000" y="508" width="2400" height="14" fill="#223a3e"/>';
+    h += '<rect x="-1000" y="526" width="2400" height="3" fill="#35575b" opacity=".6"/>';
+    for (var b = -40; b < 56; b++) h += '<rect x="' + (b * 25 - 2) + '" y="420" width="9" height="90" rx="3" fill="#1e3438"/><rect x="' + (b * 25 + 4) + '" y="420" width="2" height="90" fill="#35575b" opacity=".5"/>';
+    h += '<rect x="-1000" y="410" width="2400" height="12" rx="4" fill="#2c4a4e"/><rect x="-1000" y="410" width="2400" height="3" fill="#4d7276" opacity=".7"/>';
     /* ตุ๊กตาบนราว */
     h += '<g transform="translate(200,372) scale(1.5)"><g class="dollg">' + dollSVG(DOLL) + '</g></g>';
     /* ตัวถ่วงตุ๊กตาสำรองข้างราว (จดหมายพับ) */
