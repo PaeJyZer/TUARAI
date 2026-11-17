@@ -111,4 +111,4 @@ body.theme-goodbye .go-btn { background: linear-gradient(#ffd99a, #f3b868); colo
 .fx.cap { z-index: 3; }
 .opts.row { flex-direction: row; align-items: stretch; }
 .opts.row > button { flex: 1; text-align: center; }
-.stage.near.hug { transform: translate(-25%, 50%) scale(var(--ns, 3)); }
+.stage.near.hug { transform: translate(-28%, 56%) scale(var(--ns, 3)); }

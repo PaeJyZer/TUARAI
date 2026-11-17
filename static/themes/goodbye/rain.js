@@ -242,30 +242,49 @@
   function away(cls) { stage.classList.remove('near', cls); }
   function cap(t) { var c = spawn(t, 'cap', 0); return c; }
 
-  function armsSVG(W, H, sw) {
-    var F = '#d8b685', D = '#b98d55', L = '#f4e3c3';
-    function arm(cls, d, ex, ey, dir) {
-      return '<g class="' + cls + '">' +
-        '<path d="' + d + '" stroke="' + D + '" stroke-width="' + (sw + 8) + '" stroke-dasharray="0.1 ' + (sw * .26) + '" stroke-linecap="round" fill="none"/>' +
-        '<path d="' + d + '" stroke="' + F + '" stroke-width="' + sw + '" stroke-linecap="round" fill="none"/>' +
-        '<path d="' + d + '" stroke="' + D + '" stroke-width="3" opacity=".35" stroke-linecap="round" fill="none" transform="translate(0,' + (sw * .22) + ')"/>' +
-        '<circle cx="' + ex + '" cy="' + ey + '" r="' + (sw * .66) + '" fill="' + F + '" stroke="' + D + '" stroke-width="3"/>' +
-        '<ellipse cx="' + (ex - dir * sw * .06) + '" cy="' + (ey + sw * .1) + '" rx="' + (sw * .3) + '" ry="' + (sw * .25) + '" fill="' + L + '"/>' +
-        [-.3, 0, .3].map(function (k) { return '<circle cx="' + (ex + k * sw * .62 - dir * sw * .06) + '" cy="' + (ey - sw * .28 - Math.abs(k) * -sw * .14) + '" r="' + (sw * .12) + '" fill="' + L + '"/>'; }).join('') + '</g>';
-    }
-    var ly = .66 * H;
-    return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" style="position:absolute;inset:0;overflow:visible">' +
-      arm('al', 'M ' + (-.12 * W) + ' ' + (.9 * H) + ' C ' + (.06 * W) + ' ' + (1.04 * H) + ', ' + (.24 * W) + ' ' + (.62 * H) + ', ' + (.44 * W) + ' ' + ly, .44 * W, ly, 1) +
-      arm('ar', 'M ' + (1.12 * W) + ' ' + (.9 * H) + ' C ' + (.94 * W) + ' ' + (1.04 * H) + ', ' + (.76 * W) + ' ' + (.62 * H) + ', ' + (.56 * W) + ' ' + ly, .56 * W, ly, -1) + '</svg>';
+  function armLocal(L) {
+    var F = '#dcba88', D = '#c29a62', PAD = '#c98f55', h = '', n = 16, i, t, r, x;
+    for (i = 0; i <= n; i++) { t = i / n; r = L * (.2 + .07 * t); x = L * t * .98; h += '<circle cx="' + x + '" cy="0" r="' + (r + L * .022) + '" fill="' + D + '"/>'; }
+    for (i = 0; i <= n; i++) { t = i / n; r = L * (.2 + .07 * t); x = L * t * .98; h += '<circle cx="' + x + '" cy="0" r="' + r + '" fill="' + F + '"/>'; }
+    h += '<circle cx="' + L + '" cy="0" r="' + (L * .33) + '" fill="' + D + '"/><circle cx="' + L + '" cy="0" r="' + (L * .3) + '" fill="' + F + '"/>';
+    /* ขนขอบปุกปุย */
+    for (i = 0; i < 9; i++) { var an = (-100 + i * 25) * Math.PI / 180; h += '<circle cx="' + (L + Math.cos(an) * L * .3) + '" cy="' + (Math.sin(an) * L * .3) + '" r="' + (L * .055) + '" fill="' + F + '"/>'; }
+    /* อุ้งมือหันเข้าหาจอ */
+    h += '<ellipse cx="' + (L + L * .02) + '" cy="' + (L * .07) + '" rx="' + (L * .15) + '" ry="' + (L * .125) + '" fill="' + PAD + '"/>';
+    [-48, -16, 16, 48].forEach(function (d) { var an = (d - 90) * Math.PI / 180; h += '<ellipse cx="' + (L + Math.cos(an) * L * .215) + '" cy="' + (L * .02 + Math.sin(an) * L * .21) + '" rx="' + (L * .05) + '" ry="' + (L * .062) + '" fill="' + PAD + '" transform="rotate(' + d + ' ' + (L + Math.cos(an) * L * .215) + ' ' + (L * .02 + Math.sin(an) * L * .21) + ')"/>'; });
+    return h;
   }
+  function hugArms(W, H) {
+    var L = Math.min(.5 * H, Math.max(.42 * W, .3 * H)), sy = .76 * H, sxl = .36 * W, sxr = .64 * W;
+    var el = spawn('<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" style="position:absolute;inset:0;overflow:visible">' +
+      '<g class="sl"><g transform="translate(' + sxl + ',' + sy + ') scale(-1,1)"><g class="rot">' + armLocal(L) + '</g></g></g>' +
+      '<g class="sr"><g transform="translate(' + sxr + ',' + sy + ')"><g class="rot">' + armLocal(L) + '</g></g></g></svg>', 'arms', 0);
+    var q = function (s) { return el.querySelector(s); };
+    return { el: el, W: W, rl: q('.sl .rot'), rr: q('.sr .rot'), sl: q('.sl'), sr: q('.sr') };
+  }
+  function anim(e, kf, ms, o) { return e.animate(kf, Object.assign({ duration: ms, easing: 'cubic-bezier(.3,.8,.3,1)', fill: 'forwards' }, o || {})); }
   var ANIM = {
     hug: async function () {
-      stage.classList.add('hug'); near('hug', 3.1); await wait(1500); stage.classList.add('happy');
-      var W = panel.clientWidth, H = panel.clientHeight, sw = Math.min(.2 * W, .14 * H), ar = spawn(armsSVG(W, H, sw), 'arms', 0);
-      await wait(1100); ar.classList.add('sq'); stage.classList.add('squeeze'); hearts(12, 3000);
-      var c = cap('กอดแน่น ๆ นะ'); await wait(3600); c.remove();
-      ar.classList.add('out'); stage.classList.remove('squeeze'); await wait(900); ar.remove();
-      stage.classList.remove('happy'); away('hug'); await wait(1200); stage.classList.remove('hug');
+      var OPEN = -14, CLOSE = 166;
+      stage.classList.add('hug'); near('hug', panel.clientWidth > panel.clientHeight ? 4 : 2.6); await wait(1500);
+      var W = panel.clientWidth, H = panel.clientHeight, A = hugArms(W, H);
+      [A.rl, A.rr].forEach(function (e) { e.style.transformOrigin = '0 0'; e.style.transform = 'rotate(' + OPEN + 'deg)'; });
+      anim(A.sl, [{ transform: 'translateX(' + (-.45 * W) + 'px)' }, { transform: 'none' }], 1100);
+      anim(A.sr, [{ transform: 'translateX(' + (.45 * W) + 'px)' }, { transform: 'none' }], 1100);
+      await wait(2000);
+      var c0 = cap('มานี่มา…'); await wait(900); c0.remove();
+      anim(A.rl, [{ transform: 'rotate(' + OPEN + 'deg)' }, { transform: 'rotate(' + CLOSE + 'deg)' }], 1100, { easing: 'cubic-bezier(.5,0,.3,1)' });
+      anim(A.rr, [{ transform: 'rotate(' + OPEN + 'deg)' }, { transform: 'rotate(' + CLOSE + 'deg)' }], 1100, { easing: 'cubic-bezier(.5,0,.3,1)' });
+      await wait(1000); stage.classList.add('happy', 'squeeze'); hearts(12, 3000);
+      var sq = [A.rl, A.rr].map(function (e) { return anim(e, [{ transform: 'rotate(' + CLOSE + 'deg)' }, { transform: 'rotate(' + (CLOSE - 7) + 'deg)' }], 600, { direction: 'alternate', iterations: Infinity, easing: 'ease-in-out' }); });
+      var c = cap('กอดแน่น ๆ นะ'); await wait(3600); c.remove(); sq.forEach(function (x) { x.cancel(); });
+      stage.classList.remove('squeeze', 'happy');
+      anim(A.rl, [{ transform: 'rotate(' + CLOSE + 'deg)' }, { transform: 'rotate(' + OPEN + 'deg)' }], 900);
+      anim(A.rr, [{ transform: 'rotate(' + CLOSE + 'deg)' }, { transform: 'rotate(' + OPEN + 'deg)' }], 900);
+      await wait(1000);
+      anim(A.sl, [{ transform: 'none' }, { transform: 'translateX(' + (-.6 * W) + 'px)' }], 800, { easing: 'ease-in' });
+      anim(A.sr, [{ transform: 'none' }, { transform: 'translateX(' + (.6 * W) + 'px)' }], 800, { easing: 'ease-in' });
+      await wait(850); A.el.remove(); away('hug'); await wait(1200); stage.classList.remove('hug');
     },
     kiss: async function () {
       near('kiss', 2.1); await wait(1300);
