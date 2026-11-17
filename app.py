@@ -287,12 +287,17 @@ GOODBYE_DIALOG = [
      'replies': ['ไม่เป็นไรนะ ค่อยๆ คิดได้เลย ไม่ต้องรีบตอบอะไร', 'ขอบคุณที่ตั้งใจฟังนะ ทั้งหมดนี้พูดจากใจจริง', 'เข้าใจนะ ถ้าพร้อมเมื่อไหร่ ค่อยมาคุยกันตรงๆ ดีกว่า'],
      'reply': 'ขอบคุณที่อ่านจนจบนะ'},
 ]
+GOODBYE_DEMO_CONF = [
+    {'q': 'ที่ผ่านมามีเรื่องที่ปิดบังกันอยู่หรือเปล่า', 'a': 'มี… ตอนนั้นเรากลัวเธอเสียใจเลยไม่กล้าบอก ขอโทษที่ไม่พูดตรงๆ ตั้งแต่แรก'},
+    {'q': 'ที่ไม่ค่อยตอบแชทช่วงหลัง เพราะอะไร', 'a': 'ไม่ได้เบื่อเธอนะ แต่เรารู้สึกว่าเราห่างกันไปเรื่อยๆ และไม่รู้จะเริ่มคุยยังไงดี'},
+    {'q': 'มีอะไรที่ยังอยากให้เธอรู้อีกไหม', 'a': 'ขอบคุณที่ดีกับเรามาตลอด เรื่องของเธอจะอยู่ในใจเราเสมอ'},
+]
 GOODBYE_DEMO_LETTER = ('ก่อนอื่นเลย ขอบคุณที่อ่านมาถึงตรงนี้นะ\n\nเราคิดเรื่องนี้มานานมากแล้ว และไม่ได้ตัดสินใจตอนที่อารมณ์ร้อน '
                        'เรายังจำวันดีๆ ของเราได้ทุกวัน และมันจะเป็นความทรงจำที่เรารักเสมอ\n\nแต่ตอนนี้เรารู้สึกว่าเราเดินมาถึงจุดที่ควรหยุด เพื่อให้ทั้งเธอและเราได้ดูแลใจตัวเอง\n\n'
                        'ขอให้เธอมีความสุขมากๆ และดูแลตัวเองดีๆ นะ')
 Q_THEMES = {
     Y2K_CODE: {'max': Y2K_MAX_Q, 'label': '💬 คำถามจากลุงเจ้าของร้านถ่ายรูป (ใส่ได้ 1-5 ข้อ ฟรี)', 'dialog': Y2K_DIALOG},
-    LL_CODE: {'max': 1, 'label': '🕊 ตัวเลือกให้ผู้รับเลือกตอบหลังอ่านจบ (1 คำถาม 2-4 ตัวเลือก พร้อมข้อความตอบกลับ ฟรี)', 'dialog': GOODBYE_DIALOG},
+    LL_CODE: {'max': 5, 'label': '🕊 แบบที่ 1 — คำถามจากคุณถึงผู้รับ (ผู้รับเลือกตอบ ใส่ได้ 1-5 ข้อ ฟรี)', 'dialog': GOODBYE_DIALOG},
 }
 NO_QUEST_THEMES = {LL_CODE}   # ธีมนี้ไม่มีภารกิจ/ล็อกรหัส
 CAPTION_THEMES = {'matchcat_v1'}      # ธีมที่ลูกค้าเขียนคำใต้รูปแต่ละรูป (ใช้เป็นโจทย์จับคู่)
@@ -720,7 +725,15 @@ def clean_quests(raw):
     else:
         banims = ['hug']
     bye = {'final': bool(rb.get('final', True)), 'anims': banims}
-    return {'pick': pick, 'qa': qa, 'secret': secret, 'off': bool(raw.get('off')), 'walk': walk, 'doll': doll, 'tone': tone, 'bye': bye}
+    conf = []
+    for it in (raw.get('conf') if isinstance(raw.get('conf'), list) else [])[:5]:
+        if not isinstance(it, dict):
+            continue
+        cq = ' '.join(str(it.get('q') or '').split())[:160]
+        ca = str(it.get('a') or '').strip()[:600]
+        if cq and ca:
+            conf.append({'q': cq, 'a': ca})
+    return {'pick': pick, 'qa': qa, 'secret': secret, 'off': bool(raw.get('off')), 'walk': walk, 'doll': doll, 'tone': tone, 'bye': bye, 'conf': conf}
 
 
 def quests_of(site):
@@ -948,6 +961,8 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
     if theme and theme['theme_code'] == LL_CODE and demo:
         letter_text = GOODBYE_DEMO_LETTER; letter_sign = letter_sign or 'จากเรา'
     quests = dict(quests or (DEMO_QUESTS if demo else clean_quests(None)))
+    if theme and theme['theme_code'] == LL_CODE and demo and not quests.get('conf'):
+        quests['conf'] = GOODBYE_DEMO_CONF
     if theme and theme['theme_code'] not in HUNT_THEMES:
         quests['nohunt'] = True
         pk = [k for k in quests.get('pick', []) if k != 'hunt']

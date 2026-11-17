@@ -117,3 +117,6 @@ body.theme-goodbye .go-btn { background: linear-gradient(#ffd99a, #f3b868); colo
 .hug-arms { display: none; }
 .stage.hug .hug-arms { display: inline; }
 .stage.hug.walking .st-in { animation: stepb .32s ease-in-out infinite alternate; }
+
+.opts button.seen::after { content: '  ✓'; color: #ffcf8a; }
+.opts button.seen { opacity: .75; }

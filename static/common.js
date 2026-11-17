@@ -288,6 +288,31 @@ window.TU = (function () {
     /* ---------- ธีมบอกเลิก: เลือกตุ๊กตา/โทน, คำเตือนสติก่อนซื้อ, เตือนคำรุนแรง ---------- */
     var DOLLS = [['🧸', 'หมีถือร่ม'], ['🐰', 'กระต่ายตาบวม'], ['🐱', 'แมวหันหลัง'], ['🐥', 'ลูกเจี๊ยบถือกระเป๋า']];
     var TONES = [['soft', 'อ่อนโยน'], ['direct', 'ตรงไปตรงมา'], ['thanks', 'ขอบคุณและลาก่อน']];
+
+    /* ธีมบอกเลิก แบบที่ 2: ผู้รับสงสัย ผู้ส่งสารภาพ (เขียนคำถาม+คำตอบเอง ผู้รับเปิดอ่านได้ทุกข้อ) */
+    function confEditor(root, init, opts) {
+        opts = opts || {}; var max = opts.max || 5;
+        var items = (Array.isArray(init) ? init : []).map(function (x) { return { q: x.q || '', a: x.a || '' }; });
+        function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+        function draw() {
+            root.innerHTML = '<p class="photo-hint">' + (opts.hint || '') + '</p>' + items.map(function (it, i) {
+                return '<div class="cf-card"><div class="cf-top"><b>เรื่องที่ ' + (i + 1) + '</b><button type="button" class="cf-del" data-i="' + i + '">ลบ</button></div>' +
+                    '<input type="text" class="cf-q" data-i="' + i + '" maxlength="160" placeholder="สิ่งที่เขา/เธอน่าจะสงสัย เช่น ที่ผ่านมามีเรื่องที่ปิดบังไหม" value="' + esc(it.q) + '">' +
+                    '<textarea class="cf-a" data-i="' + i + '" rows="3" maxlength="600" placeholder="คำตอบ / คำสารภาพของคุณ (เขียนเอง)">' + esc(it.a) + '</textarea></div>';
+            }).join('') + (items.length < max ? '<button type="button" class="cf-add">+ เพิ่มเรื่องที่อยากสารภาพ (' + items.length + '/' + max + ')</button>' : '');
+        }
+        root.addEventListener('input', function (e) {
+            var i = +e.target.getAttribute('data-i'); if (isNaN(i) || !items[i]) return;
+            if (e.target.classList.contains('cf-q')) items[i].q = e.target.value; else if (e.target.classList.contains('cf-a')) items[i].a = e.target.value;
+        });
+        root.addEventListener('click', function (e) {
+            if (e.target.classList.contains('cf-add')) { items.push({ q: '', a: '' }); draw(); }
+            else if (e.target.classList.contains('cf-del')) { items.splice(+e.target.getAttribute('data-i'), 1); draw(); }
+        });
+        draw();
+        return { get: function () { return items.filter(function (x) { return x.q.trim() && x.a.trim(); }); } };
+    }
+
     function dollPicker(root, init) {
         init = init || {}; var doll = 0, tone = 'soft', bye0 = init.bye || {}, fin = bye0.final !== false, an = Array.isArray(bye0.anims) ? (bye0.anims[0] || '') : 'hug';
         function draw() {
@@ -436,6 +461,6 @@ window.TU = (function () {
     return {
         escapeHtml: escapeHtml, showAlert: showAlert, api: api, postJson: postJson,
         shrinkMany: shrinkMany, copyText: copyText, fmtDate: fmtDate, fmtRemain: fmtRemain,
-        dollPicker: dollPicker, confirmGoodbye: confirmGoodbye, softWords: softWords, money: money, uploadName: uploadName, isVidUrl: isVidUrl, photoPicker: photoPicker, dialogEditor: dialogEditor, questEditor: questEditor
+        dollPicker: dollPicker, confEditor: confEditor, confirmGoodbye: confirmGoodbye, softWords: softWords, money: money, uploadName: uploadName, isVidUrl: isVidUrl, photoPicker: photoPicker, dialogEditor: dialogEditor, questEditor: questEditor
     };
 })();

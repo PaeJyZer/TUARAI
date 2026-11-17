@@ -1,8 +1,9 @@
 (function () {
   'use strict';
-  var P = window.TU_PHOTOS || [], DLG = (window.TU_DIALOG || [])[0] || null, CFG = window.SITE_CONFIG || {};
+  var P = window.TU_PHOTOS || [], DLGS = (window.TU_DIALOG || []).filter(function (d) { return d && d.options && d.options.length; }), CFG = window.SITE_CONFIG || {};
   var NAME = CFG.partnerName || 'เธอ';
   var Q = CFG.quests || {};
+  var CONF = Array.isArray(Q.conf) ? Q.conf.filter(function (x) { return x && x.q && x.a; }) : [];
   var $ = function (id) { return document.getElementById(id); };
   var rep = function (s) { return String(s || '').replace(/\{name\}/g, NAME); };
   var gb = $('gb'), panel = $('panel'), scene = $('scene');
@@ -216,20 +217,36 @@
   /* ---------- ผู้รับเลือก ---------- */
   function afterRead() {
     clr(); lampsTo(lampN);
-    if (!DLG || !DLG.options || !DLG.options.length) return farewell();
-    who.textContent = CAPT[DOLL];
-    type(rep(DLG.q), function () {
-      DLG.options.forEach(function (o, i) {
-        btn(rep(o), function () { reply(i); });
+    if (CONF.length) return confStage();
+    dialogStage(0);
+  }
+  /* แบบที่ 2: ผู้รับสงสัย ผู้ส่งสารภาพ — เปิดอ่านได้ทุกข้อ */
+  function confStage() {
+    clr(); who.textContent = 'เรื่องที่อยากสารภาพ'; var read = {}, left = CONF.length, shown = false;
+    type(rep('มีบางเรื่องที่ {name} อาจสงสัย… ฉันขอตอบให้ครบทุกข้อ แตะอ่านได้ทีละเรื่อง'), function () {
+      CONF.forEach(function (it, i) {
+        var b = btn(rep(it.q), function () {
+          who.textContent = 'ฉันขอตอบ'; hop(); b.classList.add('seen');
+          if (!read[i]) { read[i] = 1; left--; }
+          type(rep(it.a), function () { if (left <= 0 && !shown) { shown = true; btn('ต่อไป ›', function () { dialogStage(0); }, 'go'); } });
+        });
       });
     });
   }
-  function reply(i) {
-    hop(); clr(); who.textContent = CAPT[DOLL];
-    var r = (DLG.replies && DLG.replies[i]) || DLG.reply || '';
-    type(rep(r), function () { btn('ต่อ ›', function () { farewell(); }, 'go'); });
+  /* แบบที่ 1: คนส่งตั้งคำถาม ผู้รับเลือกตอบ (หลายข้อ) */
+  function dialogStage(n) {
+    clr(); lampsTo(lampN);
+    if (n >= DLGS.length) return farewell();
+    var D = DLGS[n]; who.textContent = CAPT[DOLL];
+    type(rep(D.q), function () {
+      D.options.forEach(function (o, i) { btn(rep(o), function () { reply(D, i, n); }); });
+    });
   }
-
+  function reply(D, i, n) {
+    hop(); clr(); who.textContent = CAPT[DOLL];
+    var r = (D.replies && D.replies[i]) || D.reply || '';
+    type(rep(r), function () { btn('ต่อ ›', function () { dialogStage(n + 1); }, 'go'); });
+  }
 
   function sizeTb() { panel.style.setProperty('--tb', (tbox.offsetHeight + 58) + 'px'); }
   if (window.ResizeObserver) new ResizeObserver(sizeTb).observe(tbox); sizeTb();

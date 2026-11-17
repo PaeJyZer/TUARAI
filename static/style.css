@@ -979,3 +979,5 @@ html, body { overflow-x: clip; max-width: 100%; }
 
 .bye-opts{margin-top:10px;padding:10px;border-radius:12px;background:rgba(0,0,0,.04);text-align:left}.bye-opts b{display:block;font-size:13px;margin-bottom:6px}.bye-opts .bye-ck{display:flex;gap:8px;align-items:flex-start;margin:6px 0;font-size:13px;cursor:pointer}
 .doll-one{padding:10px 14px;border-radius:12px;background:#fff0f0;border:1px solid #d9889a;font-weight:600;display:inline-block}
+
+.cf-card{margin:8px 0;padding:10px;border-radius:12px;background:#fff;border:1px solid #ecd9bb}.cf-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.cf-del{border:1px solid #d9889a;background:#fff;border-radius:999px;padding:2px 12px;cursor:pointer}.cf-card input,.cf-card textarea{width:100%;margin:4px 0;box-sizing:border-box}.cf-add{margin-top:6px;border:0;border-radius:999px;padding:8px 16px;background:#d9889a;color:#fff;cursor:pointer}
