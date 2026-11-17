@@ -44,15 +44,18 @@
       </div>
       <dl class="hx-stats">
         <div><dt>{{ (premium|length) + (standard|length) }}</dt><dd>ธีมให้เลือก</dd></div>
-        <div><dt>฿{{ '{:,.0f}'.format(standard[0].prices.basic if standard else 59) }}</dt><dd>เริ่มต้น</dd></div>
+        <div><dt>฿{{ '{:,.0f}'.format((themes|map(attribute='prices')|map(attribute='basic')|min) if themes else 69) }}</dt><dd>เริ่มต้น</dd></div>
         <div><dt>ฟรี</dt><dd>ดูตัวอย่างก่อนจ่าย</dd></div>
       </dl>
     </div>
     <div class="hx-visual" aria-hidden="true">
-      {% set showcase = (premium[:3] if premium else standard[:3]) %}
-      {% for t in showcase %}{% if t.preview_img %}
-      <figure class="hx-shot s{{ loop.index }}"><img src="{{ url_for('static', filename=t.preview_img) }}" alt="" loading="eager"></figure>
-      {% endif %}{% endfor %}
+      <span class="hv-glow g1"></span><span class="hv-glow g2"></span>
+      <figure class="hx-phone p1"><i class="notch"></i><img src="{{ url_for('static', filename='home/hero_arcade.jpg') }}" alt="" loading="eager"></figure>
+      <figure class="hx-phone p3"><i class="notch"></i><img src="{{ url_for('static', filename='home/hero_beach.jpg') }}" alt="" loading="eager"></figure>
+      <figure class="hx-phone p2"><i class="notch"></i><img src="{{ url_for('static', filename='home/hero_y2k.jpg') }}" alt="" loading="eager"></figure>
+      <span class="hv-chip c1">🔒 ใส่รหัสก่อนเข้าเว็บ</span>
+      <span class="hv-chip c2">🎮 เล่นเกมก่อนอ่านจดหมาย</span>
+      <span class="hv-chip c3">💌 จดหมายลับถึงแฟน</span>
     </div>
   </section>
 
@@ -110,7 +113,7 @@
             {% for t in g.list %}
             <article class="hc{% if t.is_premium %} premium{% endif %}{% if t.has_dialog %} special{% endif %}" data-theme-id="{{ t.id }}">
               <div class="hc-img">
-                {% if t.is_premium %}<span class="hc-tag">{% if t.has_dialog %}★ SPECIAL{% else %}PREMIUM{% endif %}</span>{% endif %}
+                {% if t.is_premium %}<span class="hc-tag">{% if t.prices.basic >= 99 %}★ LEGENDARY{% else %}PREMIUM{% endif %}</span>{% endif %}
                 {% if t.preview_img %}<img src="{{ url_for('static', filename=t.preview_img) }}" alt="{{ t.name }}" loading="lazy" draggable="false" onerror="this.style.display='none'">{% endif %}
               </div>
               <div class="hc-body">

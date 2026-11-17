@@ -243,3 +243,22 @@ html { scroll-behavior: smooth; }
 .decks .deck { max-width: 430px; padding-right: 60px; }
 .decks-sec { padding-bottom: clamp(30px, 5vw, 64px); }
 @media (max-width: 760px) { .decks { grid-template-columns: 1fr; gap: 56px; max-width: 440px; } .decks .deck { max-width: 360px; padding-right: 50px; } }
+
+/* ===== ฮีโร่ใหม่: โทรศัพท์ 3 เครื่องโชว์เว็บจริง ===== */
+.hx-visual { height: clamp(430px, 46vw, 560px); }
+.hv-glow { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55; pointer-events: none; }
+.hv-glow.g1 { width: 62%; aspect-ratio: 1; left: 2%; top: 6%; background: #ff5d8f; }
+.hv-glow.g2 { width: 52%; aspect-ratio: 1; right: 0; bottom: 0; background: #8a5cff; }
+.hx-phone { position: absolute; margin: 0; aspect-ratio: 390 / 844; border-radius: 30px; padding: 7px; background: linear-gradient(145deg, #2c2638, #0d0a14); box-shadow: 0 0 0 1.5px rgba(255,255,255,.2), 0 34px 70px rgba(0,0,0,.6), inset 0 0 0 2px rgba(255,255,255,.06); }
+.hx-phone img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 24px; }
+.hx-phone .notch { position: absolute; z-index: 2; left: 50%; top: 12px; width: 30%; height: 14px; margin-left: -15%; border-radius: 99px; background: #0d0a14; }
+.hx-phone.p1 { width: 37%; left: 0; top: 12%; transform: rotate(-8deg); animation: hxF 8s ease-in-out infinite; }
+.hx-phone.p3 { width: 37%; right: 0; top: 8%; transform: rotate(8deg); animation: hxF 9s ease-in-out -3s infinite; }
+.hx-phone.p2 { width: 44%; left: 28%; top: 0; z-index: 3; transform: rotate(0deg); box-shadow: 0 0 0 1.5px rgba(255,255,255,.32), 0 44px 90px rgba(255,42,100,.35), 0 30px 60px rgba(0,0,0,.6); animation: hxF 7s ease-in-out -1.5s infinite; }
+.hv-chip { position: absolute; z-index: 4; padding: 9px 14px; border-radius: 999px; font-size: .8rem; font-weight: 500; color: #fff; white-space: nowrap; background: rgba(30, 20, 44, .62); border: 1px solid rgba(255,255,255,.28); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 10px 26px rgba(0,0,0,.4); animation: hxF 6s ease-in-out infinite; }
+.hv-chip.c1 { left: -2%; bottom: 14%; animation-delay: -1s; }
+.hv-chip.c2 { right: -2%; top: 46%; animation-delay: -3s; }
+.hv-chip.c3 { left: 26%; bottom: -3%; animation-delay: -2s; }
+@media (max-width: 900px) { .hx-visual { height: 420px; max-width: 460px; } .hv-chip { font-size: .72rem; padding: 7px 11px; } .hv-chip.c2 { right: 0; } }
+@media (max-width: 420px) { .hx-visual { height: 360px; } .hx-phone { border-radius: 22px; padding: 5px; } .hx-phone img { border-radius: 17px; } }
+@media (prefers-reduced-motion: reduce) { .hx-phone, .hv-chip { animation: none; } }
