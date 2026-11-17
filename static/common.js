@@ -285,6 +285,45 @@ window.TU = (function () {
 
     // ---------- ตัวเลือกรูปแบบมีพรีวิว (ใช้ในฟอร์มสั่งซื้อ) ----------
     // opts: { input, button, preview, counter, getMax() }
+    /* ---------- ธีมบอกเลิก: เลือกตุ๊กตา/โทน, คำเตือนสติก่อนซื้อ, เตือนคำรุนแรง ---------- */
+    var DOLLS = [['🧸', 'หมีถือร่ม'], ['🐰', 'กระต่ายตาบวม'], ['🐱', 'แมวหันหลัง'], ['🐥', 'ลูกเจี๊ยบถือกระเป๋า']];
+    var TONES = [['soft', 'อ่อนโยน'], ['direct', 'ตรงไปตรงมา'], ['thanks', 'ขอบคุณและลาก่อน']];
+    function dollPicker(root, init) {
+        init = init || {}; var doll = +init.doll || 0, tone = init.tone || 'soft';
+        function draw() {
+            root.innerHTML = '<div class="doll-row">' + DOLLS.map(function (d, i) { return '<button type="button" class="doll-chip' + (i === doll ? ' on' : '') + '" data-d="' + i + '"><span>' + d[0] + '</span><small>' + d[1] + '</small></button>'; }).join('') + '</div>' +
+                '<div class="tone-row">' + TONES.map(function (t) { return '<button type="button" class="tone-chip' + (t[0] === tone ? ' on' : '') + '" data-t="' + t[0] + '">' + t[1] + '</button>'; }).join('') + '</div>';
+        }
+        draw();
+        root.addEventListener('click', function (e) {
+            var d = e.target.closest('.doll-chip'), t = e.target.closest('.tone-chip');
+            if (d) { doll = +d.getAttribute('data-d'); draw(); } else if (t) { tone = t.getAttribute('data-t'); draw(); }
+        });
+        return { get: function () { return { doll: doll, tone: tone }; } };
+    }
+    function confirmGoodbye(onOk) {
+        var old = document.getElementById('byeModal'); if (old) old.remove();
+        document.body.insertAdjacentHTML('beforeend',
+            '<div id="byeModal" class="modal-overlay" style="display:flex;z-index:3100;"><div class="modal-content bye-box">' +
+            '<div class="bye-ic">🕊️</div><h3>แน่ใจแล้วเหรอคะ</h3>' +
+            '<p class="bye-msg">ทบทวนความรู้สึกของตัวเองดีแล้วใช่ไหม ไม่อยากให้ตัดสินใจตอนที่อารมณ์กำลังร้อน แล้วต้องมาเสียใจทีหลังเลยนะ</p>' +
+            '<label class="bye-ck"><input type="checkbox"> <span>เคยลองคุยกันแล้ว</span></label>' +
+            '<label class="bye-ck"><input type="checkbox"> <span>ตัดสินใจแล้ว</span></label>' +
+            '<label class="bye-ck"><input type="checkbox"> <span>ไม่ได้ทำตอนโกรธ</span></label>' +
+            '<p class="bye-help">ถ้าตอนนี้รู้สึกแย่มากจนไม่ไหว โทรปรึกษาสายด่วนสุขภาพจิต <b>1323</b> ได้ตลอด 24 ชั่วโมง</p>' +
+            '<div class="bye-act"><button type="button" class="bye-back">ย้อนกลับไปคิดอีกที</button><button type="button" class="bye-go" disabled>รออีก 10 วินาที</button></div></div></div>');
+        var m = document.getElementById('byeModal'), cks = m.querySelectorAll('input'), go = m.querySelector('.bye-go'), left = 10;
+        function upd() { var all = [].every.call(cks, function (c) { return c.checked; }); go.disabled = !(all && left <= 0); go.textContent = left > 0 ? 'รออีก ' + left + ' วินาที' : (all ? 'ยืนยัน ไปต่อ' : 'ติ๊กให้ครบทั้ง 3 ข้อ'); }
+        var iv = setInterval(function () { left--; if (left <= 0) clearInterval(iv); upd(); }, 1000);
+        m.addEventListener('change', upd);
+        function close() { clearInterval(iv); m.remove(); }
+        m.querySelector('.bye-back').addEventListener('click', close);
+        go.addEventListener('click', function () { if (go.disabled) return; close(); onOk(); });
+        upd();
+    }
+    var HARSH = ['โง่', 'ควาย', 'เลว', 'สัตว์', 'ไอ้', 'อีนี่', 'เกลียด', 'ตายไป', 'หน้าด้าน', 'ไร้ค่า', 'ขยะ', 'เหี้ย', 'ห่า', 'ส้นตีน', 'สันดาน', 'ชั่ว'];
+    function softWords(text) { return HARSH.filter(function (w) { return text.indexOf(w) >= 0; }); }
+
     function uploadName(b, i) {
         var m = b && b.name && /\.(mp4|mov|webm|m4v)$/i.exec(b.name);
         return m ? 'clip' + (i + 1) + m[0].toLowerCase() : 'photo' + (i + 1) + '.jpg';
@@ -392,6 +431,6 @@ window.TU = (function () {
     return {
         escapeHtml: escapeHtml, showAlert: showAlert, api: api, postJson: postJson,
         shrinkMany: shrinkMany, copyText: copyText, fmtDate: fmtDate, fmtRemain: fmtRemain,
-        money: money, uploadName: uploadName, isVidUrl: isVidUrl, photoPicker: photoPicker, dialogEditor: dialogEditor, questEditor: questEditor
+        dollPicker: dollPicker, confirmGoodbye: confirmGoodbye, softWords: softWords, money: money, uploadName: uploadName, isVidUrl: isVidUrl, photoPicker: photoPicker, dialogEditor: dialogEditor, questEditor: questEditor
     };
 })();

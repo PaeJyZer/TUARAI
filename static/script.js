@@ -128,7 +128,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     return;
                 }
                 const theme = DATA.themes.find((t) => String(t.id) === btn.dataset.themeId);
-                if (theme) openBuyModal(theme);
+                if (theme && theme.theme_code === 'last_letter_v1') TU.confirmGoodbye(() => openBuyModal(theme));
+                else if (theme) openBuyModal(theme);
             });
         });
     }
@@ -178,9 +179,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <label class="field-label">ลงชื่อผู้ส่ง (ของคุณ)</label>
                         <input type="text" id="buySign" maxlength="60" placeholder="เช่น จากพี่เอง" required>
 
+                        ${theme.theme_code === 'last_letter_v1' ? `<label class="field-label">🧸 เลือกตุ๊กตาและโทนข้อความ</label><div id="buyDoll" class="doll-box"></div><p class="photo-hint" id="softHint" style="display:none;color:#b0102a">ลองใช้คำที่นุ่มลงอีกนิดไหม คำที่ตรงๆ แรงๆ อาจทำให้อีกฝ่ายเจ็บมากกว่าที่ตั้งใจ</p>` : ''}
+
                         ${theme.has_dialog ? `<label class="field-label">${theme.dialog_label || '💬 บทสนทนาวิชวลโนเวล (ให้แฟนเลือกตอบ)'}</label><div id="buyDialog" class="dlg-box"></div>` : ''}
 
-                        ${theme.has_quests ? `<label class="field-label">🎯 ภารกิจก่อนอ่านจดหมาย</label><div id="buyQuests" class="qe-box"></div>` : ''}
+                        ${theme.has_quests && !theme.no_quests ? `<label class="field-label">🎯 ภารกิจก่อนอ่านจดหมาย</label><div id="buyQuests" class="qe-box"></div>` : ''}
 
                         <label class="field-label">รูปภาพความทรงจำ</label>
                         <input type="file" id="buyPhotos" accept="image/*" multiple hidden>
@@ -242,8 +245,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         refreshRule();
 
         const Y2K_HINT = 'ลุงเจ้าของร้านจะถามคำถามเหล่านี้ตอนเขา/เธอเดินเข้าร้าน ใส่ {name} แทนชื่อแฟนได้ ตัวเลือกตอบ 2-4 ข้อ และเขียนคำตอบของลุงได้ (ก่อนถ่ายรูป ลุงจะถามคำถามสุดท้ายให้เอง)';
-        const dlgEd = theme.has_dialog ? TU.dialogEditor(document.getElementById('buyDialog'), [], { free: theme.q_free || DATA.qFree, price: DATA.qPrice, max: theme.q_max || DATA.qMax, allowed: theme.q_max || DATA.qMax, noPrice: !!(theme.q_max && theme.q_max <= (theme.q_free || 0)), hint: theme.q_max ? Y2K_HINT : '', walk: theme.q_max ? [] : undefined }) : null;
-        const qEd = theme.has_quests ? TU.questEditor(document.getElementById('buyQuests'), null, { noHunt: !!theme.no_hunt }) : null;
+        const LL_HINT = 'ตั้งคำถามหนึ่งข้อให้ผู้รับเลือกตอบหลังอ่านจบ (ใส่ {name} แทนชื่อเขา/เธอได้) พร้อมตัวเลือก 2-4 ข้อ และเขียนข้อความตอบกลับของตุ๊กตาให้แต่ละตัวเลือก';
+        const dollEd = theme.theme_code === 'last_letter_v1' ? TU.dollPicker(document.getElementById('buyDoll'), {}) : null;
+        if (dollEd) document.getElementById('buyLetter').addEventListener('input', (e) => { document.getElementById('softHint').style.display = TU.softWords(e.target.value).length ? '' : 'none'; });
+        const dlgEd = theme.has_dialog ? TU.dialogEditor(document.getElementById('buyDialog'), [], { free: theme.q_free || DATA.qFree, price: DATA.qPrice, max: theme.q_max || DATA.qMax, allowed: theme.q_max || DATA.qMax, noPrice: !!(theme.q_max && theme.q_max <= (theme.q_free || 0)), hint: theme.theme_code === 'last_letter_v1' ? LL_HINT : (theme.q_max ? Y2K_HINT : ''), walk: theme.theme_code === 'y2k_pop_v1' ? [] : undefined }) : null;
+        const qEd = theme.has_quests && !theme.no_quests ? TU.questEditor(document.getElementById('buyQuests'), null, { noHunt: !!theme.no_hunt }) : null;
         const occSel = document.getElementById('buyOccasion');
         const occLabels = { anniversary: 'วันที่เริ่มคบกัน (หรือวันพิเศษ)', birthday: 'วันเกิดของเขา/เธอ' };
         occSel.addEventListener('change', () => {
@@ -285,7 +291,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             fd.append('letter_text', document.getElementById('buyLetter').value);
             fd.append('letter_sign', document.getElementById('buySign').value);
             if (dlgEd) fd.append('dialog', JSON.stringify(dlgEd.get()));
-            if (qEd) fd.append('quests', JSON.stringify(Object.assign(qEd.get(), dlgEd && dlgEd.getWalk ? { walk: dlgEd.getWalk() } : {})));
+            if (qEd || dollEd) fd.append('quests', JSON.stringify(Object.assign(qEd ? qEd.get() : {}, dlgEd && dlgEd.getWalk && theme.theme_code === 'y2k_pop_v1' ? { walk: dlgEd.getWalk() } : {}, dollEd ? dollEd.get() : {})));
             fd.append('captions', JSON.stringify(picker.captions()));
             picker.blobs().forEach((b, i) => fd.append('images', b, TU.uploadName(b, i)));
 

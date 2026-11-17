@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let dlgEd = null;
     let qEd = null;
+    let dollEd = null;
     function setEditable(on) {
         if (dlgEd) dlgEd.lock(!on);
         if (qEd) qEd.lock(!on);
@@ -122,9 +123,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('edPreview').href = site.preview_url;
         document.getElementById('edDialogWrap').style.display = site.has_dialog ? '' : 'none';
         if (site.dialog_label) document.getElementById('edDialogLbl').textContent = site.dialog_label;
-        if (site.has_dialog && !dlgEd) dlgEd = TU.dialogEditor(document.getElementById('edDialog'), site.dialog, { free: site.q_free, price: site.q_price, max: site.q_max, allowed: site.q_allowed, noPrice: site.q_max <= site.q_free, walk: site.q_max <= site.q_free ? ((site.quests && site.quests.walk) || []) : undefined, hint: site.q_max <= site.q_free ? 'ลุงเจ้าของร้านจะถามคำถามเหล่านี้ ใส่ {name} แทนชื่อแฟนได้ ตัวเลือกตอบ 2-4 ข้อ และเขียนคำตอบของลุงได้' : '', onBuy: site.q_allowed < site.q_max ? buyQuestions : null });
+        if (site.has_dialog && !dlgEd) dlgEd = TU.dialogEditor(document.getElementById('edDialog'), site.dialog, { free: site.q_free, price: site.q_price, max: site.q_max, allowed: site.q_allowed, noPrice: site.q_max <= site.q_free, walk: site.theme_code === 'y2k_pop_v1' ? ((site.quests && site.quests.walk) || []) : undefined, hint: site.theme_code === 'last_letter_v1' ? 'ตั้งคำถามหนึ่งข้อให้ผู้รับเลือกตอบหลังอ่านจบ ใส่ {name} แทนชื่อได้ ตัวเลือก 2-4 ข้อ พร้อมข้อความตอบกลับของตุ๊กตา' : (site.q_max <= site.q_free ? 'ลุงเจ้าของร้านจะถามคำถามเหล่านี้ ใส่ {name} แทนชื่อแฟนได้ ตัวเลือกตอบ 2-4 ข้อ และเขียนคำตอบของลุงได้' : ''), onBuy: site.q_allowed < site.q_max ? buyQuestions : null });
 
-        document.getElementById('edQuestsWrap').style.display = site.has_quests ? '' : 'none';
+        if (site.theme_code === 'last_letter_v1' && !dollEd) { document.getElementById('edDialogWrap').insertAdjacentHTML('beforebegin', '<div id="edDollWrap" class="ed-field"><label class="field-label">🧸 ตุ๊กตาและโทนข้อความ</label><div id="edDoll" class="doll-box"></div></div>'); dollEd = TU.dollPicker(document.getElementById('edDoll'), site.quests || {}); }
+        document.getElementById('edQuestsWrap').style.display = site.has_quests && !site.no_quests ? '' : 'none';
         if (site.has_quests && !qEd) qEd = TU.questEditor(document.getElementById('edQuests'), site.quests, { noHunt: !!site.no_hunt });
 
         renderNotice();
@@ -156,7 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             letter_text: document.getElementById('edLetter').value,
             letter_sign: document.getElementById('edSign').value,
             dialog: dlgEd ? dlgEd.get() : [],
-            quests: qEd ? Object.assign(qEd.get(), dlgEd && dlgEd.getWalk ? { walk: dlgEd.getWalk() } : {}) : undefined,
+            quests: (qEd || dollEd) ? Object.assign(qEd ? qEd.get() : {}, dlgEd && dlgEd.getWalk && site.theme_code === 'y2k_pop_v1' ? { walk: dlgEd.getWalk() } : {}, dollEd ? dollEd.get() : {}) : undefined,
             captions: capOut
         };
     }

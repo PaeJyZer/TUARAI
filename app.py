@@ -85,7 +85,7 @@ PACKAGES = {
 DEFAULT_PRICES = {'basic': 59.0, 'pro': 99.0}   # ใช้ถ้าธีมไม่ได้ตั้งราคาเฉพาะไว้ในตาราง themes
 TIER_PRICES = {'premium': (59.0, 79.0), 'legendary': (99.0, 129.0)}
 # ธีมที่ระบบ/ลูกเล่นซับซ้อน (เกมหลายขั้น เรื่องราว กลไกเฉพาะตัว) = Legendary ส่วนที่เหลือ = Premium
-LEGENDARY_THEMES = {'y2k_pop_v1', 'palace_sakura_v1', 'arcade_love_v1', 'movie_night_v1', 'music_box_v1',
+LEGENDARY_THEMES = {'last_letter_v1', 'y2k_pop_v1', 'palace_sakura_v1', 'arcade_love_v1', 'movie_night_v1', 'music_box_v1',
                     'vintage_diary_v1', 'space_cruise_v1', 'hanami_night_v1', 'matchcat_v1'}
 RENEW_PRICE = 59.0                                # ราคาต่ออายุ Basic ต่อ 1 ปี
 RENEW_DAYS = 365
@@ -207,6 +207,9 @@ def _add_columns(conn, table, cols):
 
 
 EXTRA_THEMES = [
+    ('last_letter_v1', 'The Last Letter',
+     'ธีมบอกเลิกอย่างอ่อนโยน ฉากระเบียงริมฝนยามค่ำ ตุ๊กตาลายเส้นให้เลือก 4 ตัว อ่านข้อความทีละบทพร้อมไฟที่ค่อยๆ หรี่ลง กล่องของที่ต้องคืน และตัวเลือกให้ผู้รับตอบ',
+     'theme_previews/last_letter.jpg', 'theme_goodbye.html'),
     ('starry_night_v1', 'Starry Night Universe',
      'ท้องฟ้ายามค่ำคืนมีหิ่งห้อยบินวน แตะจับหิ่งห้อยใส่โหลแก้ว แต่ละตัวพกความทรงจำ 1-2 รูปมาให้',
      'theme_previews/starry_night.jpg', 'theme_starry.html'),
@@ -265,8 +268,9 @@ PREMIUM_THEMES = [
      'แผนที่ดาวที่ต้องแตะดาวเรียงตามเลข ลากเส้นเป็นกลุ่มดาวของเรา เมื่อต่อครบกลุ่มดาวจะเปิดความทรงจำ 1-2 รูป',
      'theme_previews/constellation.jpg', 'theme_constellation.html', 99, 129, 'กลุ่มดาวหัวใจ · ดาวตก · คำอธิษฐาน'),
 ]
-DIALOG_THEMES = {'palace_sakura_v1', 'y2k_pop_v1'}
+DIALOG_THEMES = {'palace_sakura_v1', 'y2k_pop_v1', 'last_letter_v1'}
 Y2K_CODE = 'y2k_pop_v1'
+LL_CODE = 'last_letter_v1'   # ธีมบอกเลิก "คำที่ยังไม่ได้พูด"
 Y2K_MAX_Q = 5             # ธีม Y2K: ลุงเจ้าของร้านถามได้ 1-5 ข้อ (รวมในราคา ไม่มีค่าเพิ่ม)
 Y2K_DIALOG = [
     {'q': 'ว่าไงหนุ่มสาว! ลุงอยากรู้หน่อยว่า {name} ชอบอะไรในตัวแฟนมากที่สุดจ๊ะ',
@@ -277,6 +281,20 @@ Y2K_DIALOG = [
      'options': ['เดินเล่นห้างด้วยกัน', 'ถ่ายสติกเกอร์ตู้ถ่ายรูป'],
      'reply': 'ฟังแล้วคิดถึงสมัยหนุ่มๆ ของลุงเลย'},
 ]
+GOODBYE_DIALOG = [
+    {'q': 'หลังจากอ่านทั้งหมดนี้แล้ว {name} รู้สึกยังไงบ้าง',
+     'options': ['ขอเวลาคิดก่อน', 'ขอบคุณที่บอกตรงๆ', 'ขอคุยกันอีกสักครั้ง'],
+     'replies': ['ไม่เป็นไรนะ ค่อยๆ คิดได้เลย ไม่ต้องรีบตอบอะไร', 'ขอบคุณที่ตั้งใจฟังนะ ทั้งหมดนี้พูดจากใจจริง', 'เข้าใจนะ ถ้าพร้อมเมื่อไหร่ ค่อยมาคุยกันตรงๆ ดีกว่า'],
+     'reply': 'ขอบคุณที่อ่านจนจบนะ'},
+]
+GOODBYE_DEMO_LETTER = ('ก่อนอื่นเลย ขอบคุณที่อ่านมาถึงตรงนี้นะ\n\nเราคิดเรื่องนี้มานานมากแล้ว และไม่ได้ตัดสินใจตอนที่อารมณ์ร้อน '
+                       'เรายังจำวันดีๆ ของเราได้ทุกวัน และมันจะเป็นความทรงจำที่เรารักเสมอ\n\nแต่ตอนนี้เรารู้สึกว่าเราเดินมาถึงจุดที่ควรหยุด เพื่อให้ทั้งเธอและเราได้ดูแลใจตัวเอง\n\n'
+                       'ขอให้เธอมีความสุขมากๆ และดูแลตัวเองดีๆ นะ')
+Q_THEMES = {
+    Y2K_CODE: {'max': Y2K_MAX_Q, 'label': '💬 คำถามจากลุงเจ้าของร้านถ่ายรูป (ใส่ได้ 1-5 ข้อ ฟรี)', 'dialog': Y2K_DIALOG},
+    LL_CODE: {'max': 1, 'label': '🕊 ตัวเลือกให้ผู้รับเลือกตอบหลังอ่านจบ (1 คำถาม 2-4 ตัวเลือก พร้อมข้อความตอบกลับ ฟรี)', 'dialog': GOODBYE_DIALOG},
+}
+NO_QUEST_THEMES = {LL_CODE}   # ธีมนี้ไม่มีภารกิจ/ล็อกรหัส
 CAPTION_THEMES = {'matchcat_v1'}      # ธีมที่ลูกค้าเขียนคำใต้รูปแต่ละรูป (ใช้เป็นโจทย์จับคู่)
 MAX_PAIRS = 8
 DEMO_NOTES = ['วันแรกที่เราไปเที่ยวด้วยกัน', 'รอยยิ้มที่ฉันชอบที่สุด', 'มื้อนี้อร่อยเพราะมีเธอ', 'วันที่ฝนตกแต่ใจอบอุ่น', 'ถ่ายรูปคู่กันครั้งแรก', 'เซอร์ไพรส์เล็กๆ ที่ไม่ลืม']
@@ -569,10 +587,12 @@ PREMIUM_TAGS = {t[0]: t[7] for t in PREMIUM_THEMES}
 
 def theme_dict(theme):
     d = dict(theme)
-    if d.get('theme_code') == Y2K_CODE:
-        d['q_max'] = Y2K_MAX_Q
-        d['q_free'] = Y2K_MAX_Q
-        d['dialog_label'] = '💬 คำถามจากลุงเจ้าของร้านถ่ายรูป (ใส่ได้ 1-5 ข้อ ฟรี)'
+    _qc = Q_THEMES.get(d.get('theme_code'))
+    if _qc:
+        d['q_max'] = _qc['max']
+        d['q_free'] = _qc['max']
+        d['dialog_label'] = _qc['label']
+    d['no_quests'] = d.get('theme_code') in NO_QUEST_THEMES
     d['prices'] = theme_prices(theme)
     d['is_premium'] = bool(d.get('is_premium'))
     d['tagline'] = PREMIUM_TAGS.get(d.get('theme_code'), '')
@@ -688,7 +708,12 @@ def clean_quests(raw):
         walk.append(' '.join(str(x or '').split())[:160])
     if not any(walk):
         walk = []
-    return {'pick': pick, 'qa': qa, 'secret': secret, 'off': bool(raw.get('off')), 'walk': walk}
+    try:
+        doll = max(0, min(5, int(raw.get('doll') or 0)))
+    except (TypeError, ValueError):
+        doll = 0
+    tone = raw.get('tone') if raw.get('tone') in ('soft', 'direct', 'thanks') else 'soft'
+    return {'pick': pick, 'qa': qa, 'secret': secret, 'off': bool(raw.get('off')), 'walk': walk, 'doll': doll, 'tone': tone}
 
 
 def quests_of(site):
@@ -747,6 +772,7 @@ def site_state(site):
     theme = get_theme(site['theme_id'])
     prices = theme_prices(theme) if theme else DEFAULT_PRICES
     images = site_images(site)
+    _qc = Q_THEMES.get(theme['theme_code']) if theme else None
     return {
         'id': site['id'],
         'slug': site['slug'],
@@ -762,10 +788,11 @@ def site_state(site):
         'quests': quests_of(site),
         'has_dialog': bool(theme and theme['theme_code'] in DIALOG_THEMES),
         'dialog': (clean_dialog(site['dialog']) if 'dialog' in site.keys() else []),
-        'q_free': Y2K_MAX_Q if (theme and theme['theme_code'] == Y2K_CODE) else FREE_QUESTIONS, 'q_price': EXTRA_Q_PRICE,
-        'q_max': Y2K_MAX_Q if (theme and theme['theme_code'] == Y2K_CODE) else MAX_QUESTIONS,
-        'dialog_label': '💬 คำถามจากลุงเจ้าของร้านถ่ายรูป (ใส่ได้ 1-5 ข้อ ฟรี)' if (theme and theme['theme_code'] == Y2K_CODE) else '💬 บทสนทนาวิชวลโนเวล (ให้แฟนเลือกตอบ)',
-        'q_allowed': Y2K_MAX_Q if (theme and theme['theme_code'] == Y2K_CODE) else (MAX_QUESTIONS if stored_status == 'draft' else site_q_allowed(site)),
+        'q_free': _qc['max'] if _qc else FREE_QUESTIONS, 'q_price': EXTRA_Q_PRICE,
+        'q_max': _qc['max'] if _qc else MAX_QUESTIONS,
+        'dialog_label': _qc['label'] if _qc else '💬 บทสนทนาวิชวลโนเวล (ให้แฟนเลือกตอบ)',
+        'no_quests': bool(theme and theme['theme_code'] in NO_QUEST_THEMES),
+        'q_allowed': _qc['max'] if _qc else (MAX_QUESTIONS if stored_status == 'draft' else site_q_allowed(site)),
         'theme_id': site['theme_id'],
         'theme_code': theme['theme_code'] if theme else '',
         'theme_name': theme['name'] if theme else '-',
@@ -908,8 +935,11 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
     center, others = urls[0], urls[1:]
     slots = LAYOUTS[len(others)]
     occasion = occasion if occasion in OCCASIONS else 'anniversary'
-    if theme and theme['theme_code'] == Y2K_CODE:
-        dialog = (dialog if dialog and dialog is not DEFAULT_DIALOG else Y2K_DIALOG)[:Y2K_MAX_Q]
+    _qc = Q_THEMES.get(theme['theme_code']) if theme else None
+    if _qc:
+        dialog = (dialog if dialog and dialog is not DEFAULT_DIALOG else _qc['dialog'])[:_qc['max']]
+    if theme and theme['theme_code'] == LL_CODE and demo:
+        letter_text = GOODBYE_DEMO_LETTER; letter_sign = letter_sign or 'จากเรา'
     quests = dict(quests or (DEMO_QUESTS if demo else clean_quests(None)))
     if theme and theme['theme_code'] not in HUNT_THEMES:
         quests['nohunt'] = True
@@ -919,6 +949,8 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
             if len(pk) < want and k not in pk and not (k == 'ask' and not quests.get('qa')) and not (k == 'scratch' and not quests.get('secret')):
                 pk.append(k)
         quests['pick'] = pk
+    if theme and theme['theme_code'] in NO_QUEST_THEMES:
+        quests['off'] = True
     template = os.path.basename((theme['template_file'] if theme else None) or 'theme_100.html')
     if not os.path.isfile(os.path.join(app.root_path, 'templates', template)):
         template = 'theme_100.html'
