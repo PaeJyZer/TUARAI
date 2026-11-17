@@ -14,9 +14,34 @@
   function dollSVG(i, big) {
     var s = '', eye = '<circle cx="-7" cy="-2" r="2.2" fill="#2a1b12"/><circle cx="7" cy="-2" r="2.2" fill="#2a1b12"/>';
     var tear = '<path class="tear" d="M-8 3 q-2 4 0 5 q2 -1 0 -5z" fill="#9fd8ff"/>';
-    if (i === 0) { /* หมีถือร่ม */
-      s = '<g><path d="M-26 -34 q26 -26 52 0z" fill="#e0707a"/><path d="M0 -34 v38" stroke="#6b4a3a" stroke-width="2"/><path d="M-26 -34 q6 6 13 0 q6 6 13 0 q6 6 13 0 q6 6 13 0" fill="#e0707a"/></g>' +
-        '<g transform="translate(0,14)"><ellipse cx="0" cy="18" rx="15" ry="17" fill="#b98657"/><circle cx="-13" cy="-12" r="6" fill="#b98657"/><circle cx="13" cy="-12" r="6" fill="#b98657"/><circle cx="0" cy="0" r="16" fill="#c99565"/><ellipse cx="0" cy="5" rx="7" ry="5" fill="#ecd2b0"/><circle cx="0" cy="3" r="2" fill="#2a1b12"/>' + eye + tear + '</g>';
+    if (i === 0) { /* หมีถือร่ม (ถือด้ามด้วยมือจริง) */
+      var F = '#c99a68', F2 = '#b88458', B = '#f4dfc4';
+      s = '<g class="bear">' +
+        /* ขา/เท้า */
+        '<ellipse cx="-9" cy="41" rx="8" ry="5.2" fill="' + F2 + '"/><ellipse cx="9" cy="41" rx="8" ry="5.2" fill="' + F2 + '"/><ellipse cx="-9" cy="42" rx="4" ry="2.6" fill="#f0b8a8"/><ellipse cx="9" cy="42" rx="4" ry="2.6" fill="#f0b8a8"/>' +
+        /* ตัว */
+        '<ellipse cx="0" cy="25" rx="16" ry="17.5" fill="' + F + '"/><ellipse cx="0" cy="28" rx="10" ry="12" fill="' + B + '"/>' +
+        '<path d="M0 33 c-5-3.6-6.6-6.6-4.4-8.6 c1.8-1.6 3.6-.6 4.4.8 c.8-1.4 2.6-2.4 4.4-.8 c2.2 2 .6 5-4.4 8.6z" fill="#d94a55"/>' +
+        /* แขนซ้ายห้อยลง */
+        '<path d="M-13 17 Q-22 24 -19 32" stroke="' + F + '" stroke-width="8" fill="none" stroke-linecap="round"/><circle cx="-19" cy="33" r="4.6" fill="' + F2 + '"/>' +
+        /* ผ้าพันคอ */
+        '<path d="M-15 12 Q0 19 15 12 L16 18 Q0 25 -16 18z" fill="#c8343f"/><path d="M-12 14.6 Q0 20.4 12 14.6" stroke="#f6b4ba" stroke-width=".9" stroke-dasharray="2 1.6" fill="none"/><path d="M7 17 l7 .8 l-2 12 l-7.2-1z" fill="#b82a37"/><path d="M8.2 20 l4.6.6 M7.6 24 l4.6.6" stroke="#f6b4ba" stroke-width=".8" stroke-dasharray="1.6 1.4"/>' +
+        /* ด้ามร่ม (ด้านหลังมือ) */
+        '<path d="M19 -36 V16 q0 6 -5.2 6 q-3.4 0 -3.4 -3.4" stroke="#6a4a3a" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+        /* แขนขวายกจับด้าม */
+        '<path d="M13 17 Q19 17 19.5 9" stroke="' + F + '" stroke-width="8" fill="none" stroke-linecap="round"/><circle cx="19" cy="7.2" r="5.2" fill="' + F + '"/><path d="M15.8 5.4 h6.4 M15.8 8.6 h6.4" stroke="' + F2 + '" stroke-width="1" stroke-linecap="round"/>' +
+        /* หัว */
+        '<circle cx="-14" cy="-25" r="7.4" fill="' + F + '"/><circle cx="14" cy="-25" r="7.4" fill="' + F + '"/><circle cx="-14" cy="-24.6" r="4.2" fill="#f2b5ae"/><circle cx="14" cy="-24.6" r="4.2" fill="#f2b5ae"/>' +
+        '<circle cx="0" cy="-8" r="20" fill="' + F + '"/><ellipse cx="0" cy="-2.6" rx="9.6" ry="7.4" fill="' + B + '"/>' +
+        '<ellipse cx="0" cy="-5.6" rx="3" ry="2" fill="#5a3322"/><path d="M0 -3.6 v1.8 M-3.4 -1 q3.4 2.8 6.8 0" stroke="#5a3322" stroke-width="1.1" fill="none" stroke-linecap="round"/>' +
+        '<circle cx="-8" cy="-11" r="2.9" fill="#2a1b12"/><circle cx="8" cy="-11" r="2.9" fill="#2a1b12"/><circle cx="-7.2" cy="-12" r="1" fill="#fff"/><circle cx="8.8" cy="-12" r="1" fill="#fff"/>' +
+        '<path d="M-12 -16.6 q3 -1.6 6 .2 M12 -16.6 q-3 -1.6 -6 .2" stroke="#6a4630" stroke-width="1.1" fill="none" stroke-linecap="round"/>' +
+        '<circle cx="-14" cy="-4" r="3.8" fill="#f08a8a" opacity=".55"/><circle cx="14" cy="-4" r="3.8" fill="#f08a8a" opacity=".55"/>' +
+        '<path class="tear" d="M-9 -7.4 q-2.2 4 0 5 q2.2 -1 0 -5z" fill="#a8dcff"/></g>' +
+        /* ร่ม */
+        '<g><path d="M-26 -34 Q6 -66 38 -34 q-4.2 4.6 -8.4 0 q-4.2 4.6 -8.4 0 q-4.2 4.6 -8.4 0 q-4.2 4.6 -8.4 0 q-4.2 4.6 -8.4 0 q-4.2 4.6 -8.4 0z" fill="#e0707a"/>' +
+        '<path d="M6 -50 Q-8 -42 -17.4 -34.6 M6 -50 Q-1 -42 -9 -34.6 M6 -50 V-34.6 M6 -50 Q13 -42 21 -34.6 M6 -50 Q20 -42 29.6 -34.6" stroke="#b9474f" stroke-width="1" fill="none" opacity=".7"/>' +
+        '<path d="M-14 -44 Q-4 -54 6 -53" stroke="#ffd0d4" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/><circle cx="6" cy="-51" r="1.8" fill="#6a4a3a"/></g>';
     } else if (i === 1) { /* กระต่ายตาบวม */
       s = '<g transform="translate(0,10)"><ellipse cx="-8" cy="-26" rx="5" ry="16" fill="#f3e9ee"/><ellipse cx="8" cy="-24" rx="5" ry="16" transform="rotate(14 8 -24)" fill="#f3e9ee"/><ellipse cx="-8" cy="-26" rx="2.5" ry="11" fill="#f2b8c8"/><ellipse cx="0" cy="22" rx="14" ry="16" fill="#f3e9ee"/><circle cx="0" cy="2" r="16" fill="#f8f1f4"/>' +
         '<circle cx="-7" cy="-1" r="4" fill="#f0a5b5" opacity=".7"/><circle cx="7" cy="-1" r="4" fill="#f0a5b5" opacity=".7"/>' + eye + '<path d="M-2 6 l2 2 l2 -2" stroke="#c46a82" stroke-width="1.6" fill="none"/>' + tear + '</g>';
@@ -64,7 +89,7 @@
     h += '<g transform="translate(96,398)"><rect x="-12" y="-4" width="24" height="12" rx="2" fill="#2a1d18"/><ellipse cx="0" cy="-4" rx="12" ry="3" fill="#3b2a22"/><path d="M-2 -4 q-4 -16 -10 -14 M2 -4 q6 -18 12 -14" stroke="#2e5a3c" stroke-width="2" fill="none"/></g>';
     scene.innerHTML = h;
   })();
-  var SKIN = ['#c99565', '#f8f1f4', '#6b6478', '#ffe27f'];
+  var SKIN = ['#c99a68', '#f8f1f4', '#6b6478', '#ffe27f'];
   var stage = $('stage'), stIn = $('stIn'), fxl = $('fxl');
   stIn.innerHTML = '<svg viewBox="-34 -58 68 110" style="width:100%;height:100%;overflow:visible">' + dollSVG(DOLL) + '</svg>';
   stage.style.setProperty('--skin', SKIN[DOLL]);
