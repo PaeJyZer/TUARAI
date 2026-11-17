@@ -713,7 +713,14 @@ def clean_quests(raw):
     except (TypeError, ValueError):
         doll = 0
     tone = raw.get('tone') if raw.get('tone') in ('soft', 'direct', 'thanks') else 'soft'
-    return {'pick': pick, 'qa': qa, 'secret': secret, 'off': bool(raw.get('off')), 'walk': walk, 'doll': doll, 'tone': tone}
+    rb = raw.get('bye') if isinstance(raw.get('bye'), dict) else {}
+    ALL_ANIMS = ['hug', 'kiss', 'wave', 'pat']
+    if 'anims' in rb and isinstance(rb.get('anims'), list):
+        banims = [x for x in ALL_ANIMS if x in rb['anims']]
+    else:
+        banims = ALL_ANIMS[:]
+    bye = {'final': bool(rb.get('final', True)), 'anims': banims}
+    return {'pick': pick, 'qa': qa, 'secret': secret, 'off': bool(raw.get('off')), 'walk': walk, 'doll': doll, 'tone': tone, 'bye': bye}
 
 
 def quests_of(site):

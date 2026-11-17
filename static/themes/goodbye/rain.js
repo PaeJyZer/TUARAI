@@ -59,13 +59,17 @@
     h += '<rect x="-1000" y="526" width="2400" height="3" fill="#35575b" opacity=".6"/>';
     for (var b = -40; b < 56; b++) h += '<rect x="' + (b * 25 - 2) + '" y="420" width="9" height="90" rx="3" fill="#1e3438"/><rect x="' + (b * 25 + 4) + '" y="420" width="2" height="90" fill="#35575b" opacity=".5"/>';
     h += '<rect x="-1000" y="410" width="2400" height="12" rx="4" fill="#2c4a4e"/><rect x="-1000" y="410" width="2400" height="3" fill="#4d7276" opacity=".7"/>';
-    /* ตุ๊กตาบนราว */
-    h += '<g transform="translate(200,372) scale(1.5)"><g class="dollg">' + dollSVG(DOLL) + '</g></g>';
     /* ตัวถ่วงตุ๊กตาสำรองข้างราว (จดหมายพับ) */
     h += '<g transform="translate(300,392) rotate(-8)"><rect x="-16" y="-10" width="32" height="20" fill="#f1e6cf"/><path d="M-16 -10 l16 12 l16 -12" stroke="#c9b48a" fill="none" stroke-width="1.5"/></g>';
     h += '<g transform="translate(96,398)"><rect x="-12" y="-4" width="24" height="12" rx="2" fill="#2a1d18"/><ellipse cx="0" cy="-4" rx="12" ry="3" fill="#3b2a22"/><path d="M-2 -4 q-4 -16 -10 -14 M2 -4 q6 -18 12 -14" stroke="#2e5a3c" stroke-width="2" fill="none"/></g>';
     scene.innerHTML = h;
   })();
+  var SKIN = ['#c99565', '#f8f1f4', '#6b6478', '#ffe27f'];
+  var stage = $('stage'), stIn = $('stIn'), fxl = $('fxl');
+  stIn.innerHTML = '<svg viewBox="-34 -58 68 110" style="width:100%;height:100%;overflow:visible">' + dollSVG(DOLL) + '</svg>';
+  stage.style.setProperty('--skin', SKIN[DOLL]);
+  var BYE = (Q.bye && typeof Q.bye === 'object') ? Q.bye : { final: true, anims: ['hug', 'kiss', 'wave', 'pat'] };
+  var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
   var gArt = $('gArt'); if (gArt) gArt.innerHTML = '<svg viewBox="-34 -56 68 108">' + dollSVG(DOLL) + '</svg>';
 
   /* ---------- ฝน ---------- */
@@ -140,9 +144,9 @@
   var who = $('who'), say = $('say'), opts = $('opts'), items = $('items'), tbox = $('tbox');
   var typing = 0;
   function type(text, done) {
-    clearInterval(typing); say.textContent = ''; var i = 0, ch = Array.from(text), sp = Math.max(18, Math.min(55, 2600 / ch.length));
-    var skip = function () { clearInterval(typing); say.textContent = text; tbox.removeEventListener('click', skip); done && done(); };
-    typing = setInterval(function () { say.textContent += ch[i++]; if (i >= ch.length) { clearInterval(typing); tbox.removeEventListener('click', skip); done && done(); } }, sp);
+    clearInterval(typing); say.textContent = ''; stage.classList.add('talk'); var i = 0, ch = Array.from(text), sp = Math.max(18, Math.min(55, 2600 / ch.length));
+    var skip = function () { clearInterval(typing); stage.classList.remove('talk'); say.textContent = text; tbox.removeEventListener('click', skip); done && done(); };
+    typing = setInterval(function () { say.textContent += ch[i++]; if (i >= ch.length) { clearInterval(typing); stage.classList.remove('talk'); tbox.removeEventListener('click', skip); done && done(); } }, sp);
     tbox.addEventListener('click', skip);
   }
   function btn(label, fn, cls) { var b = document.createElement('button'); b.type = 'button'; b.textContent = label; if (cls) b.className = cls; b.addEventListener('click', fn); opts.appendChild(b); return b; }
@@ -183,7 +187,7 @@
   /* ---------- ผู้รับเลือก ---------- */
   function afterRead() {
     clr(); lampsTo(lampN);
-    if (!DLG || !DLG.options || !DLG.options.length) return ending(null);
+    if (!DLG || !DLG.options || !DLG.options.length) return farewell();
     who.textContent = CAPT[DOLL];
     type(rep(DLG.q), function () {
       DLG.options.forEach(function (o, i) {
@@ -192,9 +196,76 @@
     });
   }
   function reply(i) {
-    clr(); who.textContent = CAPT[DOLL];
+    hop(); clr(); who.textContent = CAPT[DOLL];
     var r = (DLG.replies && DLG.replies[i]) || DLG.reply || '';
-    type(rep(r), function () { btn('ต่อ ›', function () { ending(); }, 'go'); });
+    type(rep(r), function () { btn('ต่อ ›', function () { farewell(); }, 'go'); });
+  }
+
+
+  function sizeTb() { panel.style.setProperty('--tb', (tbox.offsetHeight + 58) + 'px'); }
+  if (window.ResizeObserver) new ResizeObserver(sizeTb).observe(tbox); sizeTb();
+  function hop() { stage.classList.remove('hop'); void stage.offsetWidth; stage.classList.add('hop'); setTimeout(function () { stage.classList.remove('hop'); }, 700); }
+  function spawn(html, cls, ms, css) { var e = document.createElement('div'); e.className = 'fx ' + cls; e.innerHTML = html; if (css) e.style.cssText = css; fxl.appendChild(e); if (ms) setTimeout(function () { e.remove(); }, ms); return e; }
+  var HEART = '<svg viewBox="0 0 24 22"><path d="M12 21C-6 8 4-2 12 6c8-8 18 2 0 15z" fill="#ff7a9a"/></svg>';
+  var LIPS = '<svg viewBox="0 0 60 36"><path d="M2 18 Q14 0 30 9 Q46 0 58 18 Q46 36 30 33 Q14 36 2 18z" fill="#e8456b"/><path d="M4 18 Q30 24 56 18" stroke="#9c1f3f" stroke-width="2" fill="none"/><ellipse cx="22" cy="11" rx="7" ry="2.5" fill="#fff" opacity=".35"/></svg>';
+  function hearts(n, ms) { for (var i = 0; i < n; i++) (function (i) { setTimeout(function () { spawn(HEART, 'hrt', 2600, 'left:' + (15 + Math.random() * 70) + '%;--dx:' + ((Math.random() - .5) * 120) + 'px;width:' + (22 + Math.random() * 26) + 'px'); }, i * (ms / n)); })(i); }
+  function near(cls, scale) { stage.style.setProperty('--ns', scale); stage.classList.add('near', cls); }
+  function away(cls) { stage.classList.remove('near', cls); }
+  function cap(t) { var c = spawn(t, 'cap', 0); return c; }
+  var ANIM = {
+    hug: async function () {
+      near('hug', 3.4); await wait(1400); var c = cap('กอดแน่น ๆ นะ'); hearts(10, 2600);
+      await wait(3200); c.remove(); away('hug'); await wait(1100);
+    },
+    kiss: async function () {
+      near('kiss', 2.6); await wait(1300);
+      spawn(LIPS, 'lips', 1800); await wait(1100);
+      spawn(LIPS, 'lipmark', 3600); stage.classList.add('back'); flash(); await wait(900);
+      stage.classList.remove('back'); away('kiss'); await wait(700);
+      var c = cap('จุ๊บ… ฝากไว้ตรงนี้นะ'); hearts(12, 2400); await wait(3200); c.remove();
+    },
+    wave: async function () {
+      near('wave', 1.9); await wait(1100); var c = cap('ไปก่อนนะ… ลาก่อน'); await wait(3600); c.remove(); away('wave'); await wait(1100);
+    },
+    pat: async function () {
+      near('pat', 2); await wait(1200); var c = cap('โอ๋ ๆ ไม่เป็นไรนะ'); await wait(3400); c.remove();
+      stage.classList.add('walk'); away('pat'); await wait(2800); stage.classList.remove('walk');
+      stage.classList.add('gone'); await wait(1000); stage.classList.remove('gone'); await wait(300);
+    }
+  };
+  function flash() { var f = $('flash'); f.style.background = '#ffe8ef'; f.classList.remove('on'); void f.offsetWidth; f.classList.add('on'); setTimeout(function () { f.style.background = ''; }, 1200); }
+  async function farewell() {
+    clr(); tbox.hidden = true; who.textContent = '';
+    var list = (BYE.anims || []).filter(function (k) { return ANIM[k]; });
+    for (var i = 0; i < list.length; i++) { try { await ANIM[list[i]](); } catch (e) {} }
+    tbox.hidden = false; sizeTb();
+    if (BYE.final) finalAsk(); else ending();
+  }
+  function finalAsk() {
+    clr(); who.textContent = CAPT[DOLL]; hop();
+    type('เราต้องเลิกกันแล้วนะ', function () {
+      var yes = btn('ตกลง', function () { if (no.parentNode) no.remove(); ending(); }, 'go');
+      var no = btn('ไม่เอา', function (e) { e.preventDefault(); dodge(); }, 'nope');
+      var words = ['ไม่เอา', 'ไม่เอาาา', 'ไม่ ๆ ๆ', 'ไม่ยอม!', 'กดไม่โดนหรอก', 'นะ… ไม่เอา'], wi = 0, fled = false, spacer = null, last = { x: 0, y: 0 };
+      function dodge() {
+        var pr = panel.getBoundingClientRect(), bw = no.offsetWidth, bh = no.offsetHeight;
+        if (!fled) { fled = true; spacer = document.createElement('div'); spacer.style.height = bh + 'px'; opts.insertBefore(spacer, no); panel.appendChild(no); no.classList.add('flee'); last = { x: pr.width / 2, y: pr.height / 2 }; }
+        var yb = yes.getBoundingClientRect(), x, y, tries = 0;
+        do {
+          x = 8 + Math.random() * Math.max(10, pr.width - bw - 16); y = 70 + Math.random() * Math.max(10, pr.height - bh - 90); tries++;
+          var ov = x + pr.left < yb.right + 10 && x + pr.left + bw > yb.left - 10 && y + pr.top < yb.bottom + 10 && y + pr.top + bh > yb.top - 10;
+          var far = Math.hypot(x - last.x, y - last.y) > 110;
+        } while ((ov || !far) && tries < 25);
+        last = { x: x, y: y }; no.style.left = x + 'px'; no.style.top = y + 'px';
+        wi = (wi + 1) % words.length; no.textContent = words[wi];
+      }
+      ['pointerdown', 'pointerenter', 'mouseover', 'focus', 'touchstart'].forEach(function (ev) { no.addEventListener(ev, function (e) { if (e.cancelable) e.preventDefault(); dodge(); }, { passive: false }); });
+      panel.addEventListener('pointermove', function mv(e) {
+        if (!no.parentNode) { panel.removeEventListener('pointermove', mv); return; }
+        if (!fled) return; var r = no.getBoundingClientRect(); if (Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) < 90) dodge();
+      });
+      document.addEventListener('keydown', function kd(e) { if (!no.parentNode) return document.removeEventListener('keydown', kd); if (document.activeElement === no && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); dodge(); } });
+    });
   }
 
   /* ---------- ฉากจบ ฝนหยุด ---------- */
