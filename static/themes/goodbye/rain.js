@@ -6,7 +6,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var rep = function (s) { return String(s || '').replace(/\{name\}/g, NAME); };
   var gb = $('gb'), panel = $('panel'), scene = $('scene');
-  var DOLL = Math.max(0, Math.min(3, parseInt(Q.doll, 10) || 0));
+  var DOLL = 0;
   var TONE = Q.tone || 'soft';
   var LOW = document.documentElement.classList.contains('lowfx') || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 

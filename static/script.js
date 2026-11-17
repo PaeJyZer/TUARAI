@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <label class="field-label">ลงชื่อผู้ส่ง (ของคุณ)</label>
                         <input type="text" id="buySign" maxlength="60" placeholder="เช่น จากพี่เอง" required>
 
-                        ${theme.theme_code === 'last_letter_v1' ? `<label class="field-label">🧸 เลือกตุ๊กตาและโทนข้อความ</label><div id="buyDoll" class="doll-box"></div><p class="photo-hint" id="softHint" style="display:none;color:#b0102a">ลองใช้คำที่นุ่มลงอีกนิดไหม คำที่ตรงๆ แรงๆ อาจทำให้อีกฝ่ายเจ็บมากกว่าที่ตั้งใจ</p>` : ''}
+                        ${theme.theme_code === 'last_letter_v1' ? `<label class="field-label">🧸 โทนข้อความ และฉากตอนท้าย</label><div id="buyDoll" class="doll-box"></div><p class="photo-hint" id="softHint" style="display:none;color:#b0102a">ลองใช้คำที่นุ่มลงอีกนิดไหม คำที่ตรงๆ แรงๆ อาจทำให้อีกฝ่ายเจ็บมากกว่าที่ตั้งใจ</p>` : ''}
 
                         ${theme.has_dialog ? `<label class="field-label">${theme.dialog_label || '💬 บทสนทนาวิชวลโนเวล (ให้แฟนเลือกตอบ)'}</label><div id="buyDialog" class="dlg-box"></div>` : ''}
 

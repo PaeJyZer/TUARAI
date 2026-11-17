@@ -709,7 +709,7 @@ def clean_quests(raw):
     if not any(walk):
         walk = []
     try:
-        doll = max(0, min(5, int(raw.get('doll') or 0)))
+        doll = 0
     except (TypeError, ValueError):
         doll = 0
     tone = raw.get('tone') if raw.get('tone') in ('soft', 'direct', 'thanks') else 'soft'
