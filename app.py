@@ -716,9 +716,9 @@ def clean_quests(raw):
     rb = raw.get('bye') if isinstance(raw.get('bye'), dict) else {}
     ALL_ANIMS = ['hug', 'kiss', 'wave', 'pat']
     if 'anims' in rb and isinstance(rb.get('anims'), list):
-        banims = [x for x in ALL_ANIMS if x in rb['anims']]
+        banims = [x for x in ALL_ANIMS if x in rb['anims']][:1]
     else:
-        banims = ALL_ANIMS[:]
+        banims = ['hug']
     bye = {'final': bool(rb.get('final', True)), 'anims': banims}
     return {'pick': pick, 'qa': qa, 'secret': secret, 'off': bool(raw.get('off')), 'walk': walk, 'doll': doll, 'tone': tone, 'bye': bye}
 

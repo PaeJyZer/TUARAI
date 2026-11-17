@@ -289,24 +289,24 @@ window.TU = (function () {
     var DOLLS = [['🧸', 'หมีถือร่ม'], ['🐰', 'กระต่ายตาบวม'], ['🐱', 'แมวหันหลัง'], ['🐥', 'ลูกเจี๊ยบถือกระเป๋า']];
     var TONES = [['soft', 'อ่อนโยน'], ['direct', 'ตรงไปตรงมา'], ['thanks', 'ขอบคุณและลาก่อน']];
     function dollPicker(root, init) {
-        init = init || {}; var doll = +init.doll || 0, tone = init.tone || 'soft', bye0 = init.bye || {}, fin = bye0.final !== false, an = Array.isArray(bye0.anims) ? bye0.anims.slice() : ['hug', 'kiss', 'wave', 'pat'];
+        init = init || {}; var doll = +init.doll || 0, tone = init.tone || 'soft', bye0 = init.bye || {}, fin = bye0.final !== false, an = Array.isArray(bye0.anims) ? (bye0.anims[0] || '') : 'hug';
         function draw() {
             root.innerHTML = '<div class="doll-row">' + DOLLS.map(function (d, i) { return '<button type="button" class="doll-chip' + (i === doll ? ' on' : '') + '" data-d="' + i + '"><span>' + d[0] + '</span><small>' + d[1] + '</small></button>'; }).join('') + '</div>' +
                 '<div class="tone-row">' + TONES.map(function (t) { return '<button type="button" class="tone-chip' + (t[0] === tone ? ' on' : '') + '" data-t="' + t[0] + '">' + t[1] + '</button>'; }).join('') + '</div>' +
-                '<div class="bye-opts"><b>ฉากตอนท้าย (ติ๊กเลือกได้)</b>' +
-                [['hug', '🤗 ตุ๊กตาเข้ามากอดแนบจอ'], ['kiss', '😘 เข้ามาจุ๊บหน้าจอ แล้วทิ้งลอยจูบไว้'], ['wave', '👋 เข้ามาใกล้จอแล้วโบกมือลา'], ['pat', '🫶 เข้ามาโอ๋ ลูบหัว แล้วเดินจากไป']].map(function (x) { return '<label class="bye-ck"><input type="checkbox" data-an="' + x[0] + '"' + (an.indexOf(x[0]) > -1 ? ' checked' : '') + '> <span>' + x[1] + '</span></label>'; }).join('') +
+                '<div class="bye-opts"><b>ฉากตุ๊กตาตอนท้าย (เลือกได้ 1 แบบ)</b>' +
+                [['hug', '🤗 เข้ามากอดแนบจอ'], ['kiss', '😘 เข้ามาจุ๊บหน้าจอ แล้วทิ้งลอยจูบไว้'], ['wave', '👋 เข้ามาใกล้จอแล้วโบกมือลา'], ['pat', '🫶 เข้ามาโอ๋ ลูบหัว แล้วเดินจากไป'], ['', '— ไม่เอาฉากนี้']].map(function (x) { return '<label class="bye-ck"><input type="radio" name="byeAn" data-an="' + x[0] + '"' + (an === x[0] ? ' checked' : '') + '> <span>' + x[1] + '</span></label>'; }).join('') +
                 '<label class="bye-ck"><input type="checkbox" data-fin' + (fin ? ' checked' : '') + '> <span>💔 คำบอกเลิกสุดท้าย "เราต้องเลิกกันแล้วนะ" (มีปุ่ม ตกลง / ไม่เอา — ปุ่มไม่เอากดไม่โดน)</span></label></div>';
         }
         draw();
         root.addEventListener('change', function (e) {
             var i = e.target; if (i.hasAttribute('data-fin')) fin = i.checked;
-            else if (i.getAttribute('data-an')) { var k = i.getAttribute('data-an'), p = an.indexOf(k); if (i.checked && p < 0) an.push(k); else if (!i.checked && p > -1) an.splice(p, 1); }
+            else if (i.hasAttribute('data-an')) an = i.getAttribute('data-an');
         });
         root.addEventListener('click', function (e) {
             var d = e.target.closest('.doll-chip'), t = e.target.closest('.tone-chip');
             if (d) { doll = +d.getAttribute('data-d'); draw(); } else if (t) { tone = t.getAttribute('data-t'); draw(); }
         });
-        return { get: function () { return { doll: doll, tone: tone, bye: { final: fin, anims: ['hug', 'kiss', 'wave', 'pat'].filter(function (k) { return an.indexOf(k) > -1; }) } }; } };
+        return { get: function () { return { doll: doll, tone: tone, bye: { final: fin, anims: an ? [an] : [] } }; } };
     }
     function confirmGoodbye(onOk) {
         var old = document.getElementById('byeModal'); if (old) old.remove();

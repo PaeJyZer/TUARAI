@@ -12,6 +12,7 @@
 
   /* ---------- ตุ๊กตา 4 ตัว (วาดเอง) ---------- */
   function dollSVG(i, big) {
+    if (i === 0) return '';
     var s = '', eye = '<circle cx="-7" cy="-2" r="2.2" fill="#2a1b12"/><circle cx="7" cy="-2" r="2.2" fill="#2a1b12"/>';
     var tear = '<path class="tear" d="M-8 3 q-2 4 0 5 q2 -1 0 -5z" fill="#9fd8ff"/>';
     if (i === 0) { /* หมีถือร่ม (ถือด้ามด้วยมือจริง) */
@@ -53,6 +54,7 @@
     }
     return s;
   }
+  var BEAR = "<ellipse cx=\"100\" cy=\"207\" rx=\"56\" ry=\"4.5\" fill=\"#7a5222\" opacity=\".14\"/><g class=\"b-all\"><path d=\"M72.0 183.0 A5.6 5.6 0 0 1 82.0 184.3 A4.9 4.9 0 0 1 90.0 187.9 A3.8 3.8 0 0 1 94.4 193.1 A3.2 3.2 0 0 1 94.4 198.9 A3.8 3.8 0 0 1 90.0 204.1 A4.9 4.9 0 0 1 82.0 207.7 A5.6 5.6 0 0 1 72.0 209.0 A5.6 5.6 0 0 1 62.0 207.7 A4.9 4.9 0 0 1 54.0 204.1 A3.8 3.8 0 0 1 49.6 198.9 A3.2 3.2 0 0 1 49.6 193.1 A3.8 3.8 0 0 1 54.0 187.9 A4.9 4.9 0 0 1 62.0 184.3 A5.6 5.6 0 0 1 72.0 183.0Z\" fill=\"#d8b685\" /><path d=\"M128.0 183.0 A5.6 5.6 0 0 1 138.0 184.3 A4.9 4.9 0 0 1 146.0 187.9 A3.8 3.8 0 0 1 150.4 193.1 A3.2 3.2 0 0 1 150.4 198.9 A3.8 3.8 0 0 1 146.0 204.1 A4.9 4.9 0 0 1 138.0 207.7 A5.6 5.6 0 0 1 128.0 209.0 A5.6 5.6 0 0 1 118.0 207.7 A4.9 4.9 0 0 1 110.0 204.1 A3.8 3.8 0 0 1 105.6 198.9 A3.2 3.2 0 0 1 105.6 193.1 A3.8 3.8 0 0 1 110.0 187.9 A4.9 4.9 0 0 1 118.0 184.3 A5.6 5.6 0 0 1 128.0 183.0Z\" fill=\"#d8b685\" /><ellipse cx=\"72\" cy=\"198\" rx=\"9\" ry=\"6\" fill=\"#f4e3c3\"/><ellipse cx=\"128\" cy=\"198\" rx=\"9\" ry=\"6\" fill=\"#f4e3c3\"/><g transform=\"rotate(24 44 150)\"><path d=\"M44.0 123.0 A3.9 3.9 0 0 1 50.5 125.7 A5.1 5.1 0 0 1 55.7 133.2 A6.3 6.3 0 0 1 58.6 144.0 A6.7 6.7 0 0 1 58.6 156.0 A6.3 6.3 0 0 1 55.7 166.8 A5.1 5.1 0 0 1 50.5 174.3 A3.9 3.9 0 0 1 44.0 177.0 A3.9 3.9 0 0 1 37.5 174.3 A5.1 5.1 0 0 1 32.3 166.8 A6.3 6.3 0 0 1 29.4 156.0 A6.7 6.7 0 0 1 29.4 144.0 A6.3 6.3 0 0 1 32.3 133.2 A5.1 5.1 0 0 1 37.5 125.7 A3.9 3.9 0 0 1 44.0 123.0Z\" fill=\"#d8b685\" /><path d=\"M38 154 q4 6 0 12\" stroke=\"#8c5b33\" stroke-width=\"1.8\" fill=\"none\" stroke-linecap=\"round\" opacity=\".6\"/></g><g transform=\"rotate(-42 154 124)\"><path d=\"M154.0 97.0 A3.9 3.9 0 0 1 160.5 99.7 A5.1 5.1 0 0 1 165.7 107.2 A6.3 6.3 0 0 1 168.6 118.0 A6.7 6.7 0 0 1 168.6 130.0 A6.3 6.3 0 0 1 165.7 140.8 A5.1 5.1 0 0 1 160.5 148.3 A3.9 3.9 0 0 1 154.0 151.0 A3.9 3.9 0 0 1 147.5 148.3 A5.1 5.1 0 0 1 142.3 140.8 A6.3 6.3 0 0 1 139.4 130.0 A6.7 6.7 0 0 1 139.4 118.0 A6.3 6.3 0 0 1 142.3 107.2 A5.1 5.1 0 0 1 147.5 99.7 A3.9 3.9 0 0 1 154.0 97.0Z\" fill=\"#d8b685\" /><path d=\"M148 128 q4 6 0 12\" stroke=\"#8c5b33\" stroke-width=\"1.8\" fill=\"none\" stroke-linecap=\"round\" opacity=\".6\"/></g><path d=\"M100.0 102.0 A7.4 7.4 0 0 1 113.2 103.4 A7.3 7.3 0 0 1 125.6 107.5 A7.1 7.1 0 0 1 136.5 114.1 A6.9 6.9 0 0 1 145.3 122.7 A6.7 6.7 0 0 1 151.4 133.0 A6.5 6.5 0 0 1 154.6 144.2 A6.5 6.5 0 0 1 154.6 155.8 A6.5 6.5 0 0 1 151.4 167.0 A6.7 6.7 0 0 1 145.3 177.3 A6.9 6.9 0 0 1 136.5 185.9 A7.1 7.1 0 0 1 125.6 192.5 A7.3 7.3 0 0 1 113.2 196.6 A7.4 7.4 0 0 1 100.0 198.0 A7.4 7.4 0 0 1 86.8 196.6 A7.3 7.3 0 0 1 74.4 192.5 A7.1 7.1 0 0 1 63.5 185.9 A6.9 6.9 0 0 1 54.7 177.3 A6.7 6.7 0 0 1 48.6 167.0 A6.5 6.5 0 0 1 45.4 155.8 A6.5 6.5 0 0 1 45.4 144.2 A6.5 6.5 0 0 1 48.6 133.0 A6.7 6.7 0 0 1 54.7 122.7 A6.9 6.9 0 0 1 63.5 114.1 A7.1 7.1 0 0 1 74.4 107.5 A7.3 7.3 0 0 1 86.8 103.4 A7.4 7.4 0 0 1 100.0 102.0Z\" fill=\"#d8b685\" /><ellipse cx=\"100\" cy=\"160\" rx=\"31\" ry=\"28\" fill=\"#f4e3c3\"/><path transform=\"translate(100.0 170.0) scale(1.00)\" d=\"M0 7 C-12 -2 -7 -11 0 -5 C7 -11 12 -2 0 7Z\" fill=\"#c0392b\"/><path d=\"M72 150 q4 -4 8 0 M120 150 q4 -4 8 0\" stroke=\"#8c5b33\" stroke-width=\"1.8\" fill=\"none\" stroke-linecap=\"round\" opacity=\".5\"/><path d=\"M53 122 Q100 148 147 122 Q153 130 149 139 Q100 165 51 139 Q47 130 53 122Z\" fill=\"#a3162f\"/><path d=\"M62 132 Q100 152 138 132\" stroke=\"#f3d7a8\" stroke-width=\"2.2\" fill=\"none\" stroke-dasharray=\"4 5\" stroke-linecap=\"round\" opacity=\".85\"/><path d=\"M112 148 l18 -3 l5 30 q-10 5 -20 1z\" fill=\"#8e1226\"/><path d=\"M114 168 h20\" stroke=\"#f3d7a8\" stroke-width=\"2\" stroke-dasharray=\"3 4\"/><g class=\"b-head\"><path d=\"M60.0 26.0 A5.2 5.2 0 0 1 69.0 28.4 A5.2 5.2 0 0 1 75.6 35.0 A5.2 5.2 0 0 1 78.0 44.0 A5.2 5.2 0 0 1 75.6 53.0 A5.2 5.2 0 0 1 69.0 59.6 A5.2 5.2 0 0 1 60.0 62.0 A5.2 5.2 0 0 1 51.0 59.6 A5.2 5.2 0 0 1 44.4 53.0 A5.2 5.2 0 0 1 42.0 44.0 A5.2 5.2 0 0 1 44.4 35.0 A5.2 5.2 0 0 1 51.0 28.4 A5.2 5.2 0 0 1 60.0 26.0Z\" fill=\"#d8b685\" /><circle cx=\"60\" cy=\"46\" r=\"8.5\" fill=\"#b98250\"/><path d=\"M140.0 26.0 A5.2 5.2 0 0 1 149.0 28.4 A5.2 5.2 0 0 1 155.6 35.0 A5.2 5.2 0 0 1 158.0 44.0 A5.2 5.2 0 0 1 155.6 53.0 A5.2 5.2 0 0 1 149.0 59.6 A5.2 5.2 0 0 1 140.0 62.0 A5.2 5.2 0 0 1 131.0 59.6 A5.2 5.2 0 0 1 124.4 53.0 A5.2 5.2 0 0 1 122.0 44.0 A5.2 5.2 0 0 1 124.4 35.0 A5.2 5.2 0 0 1 131.0 28.4 A5.2 5.2 0 0 1 140.0 26.0Z\" fill=\"#d8b685\" /><circle cx=\"140\" cy=\"46\" r=\"8.5\" fill=\"#b98250\"/><path d=\"M100.0 35.0 A7.7 7.7 0 0 1 113.6 36.4 A7.5 7.5 0 0 1 126.5 40.4 A7.3 7.3 0 0 1 137.8 46.8 A7.0 7.0 0 0 1 146.9 55.3 A6.7 6.7 0 0 1 153.3 65.3 A6.4 6.4 0 0 1 156.6 76.3 A6.3 6.3 0 0 1 156.6 87.7 A6.4 6.4 0 0 1 153.3 98.7 A6.7 6.7 0 0 1 146.9 108.7 A7.0 7.0 0 0 1 137.8 117.2 A7.3 7.3 0 0 1 126.5 123.6 A7.5 7.5 0 0 1 113.6 127.6 A7.7 7.7 0 0 1 100.0 129.0 A7.7 7.7 0 0 1 86.4 127.6 A7.5 7.5 0 0 1 73.5 123.6 A7.3 7.3 0 0 1 62.2 117.2 A7.0 7.0 0 0 1 53.1 108.7 A6.7 6.7 0 0 1 46.7 98.7 A6.4 6.4 0 0 1 43.4 87.7 A6.3 6.3 0 0 1 43.4 76.3 A6.4 6.4 0 0 1 46.7 65.3 A6.7 6.7 0 0 1 53.1 55.3 A7.0 7.0 0 0 1 62.2 46.8 A7.3 7.3 0 0 1 73.5 40.4 A7.5 7.5 0 0 1 86.4 36.4 A7.7 7.7 0 0 1 100.0 35.0Z\" fill=\"#d8b685\" /><path d=\"M92 40 q8 -7 16 0\" stroke=\"#8c5b33\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" opacity=\".55\"/><ellipse cx=\"66\" cy=\"94\" rx=\"9\" ry=\"5.5\" fill=\"#f0a58c\" opacity=\".55\"/><ellipse cx=\"134\" cy=\"94\" rx=\"9\" ry=\"5.5\" fill=\"#f0a58c\" opacity=\".55\"/><ellipse cx=\"100\" cy=\"98\" rx=\"19\" ry=\"13.5\" fill=\"#f4e3c3\"/><path d=\"M94 91 q6 -4.5 12 0 q-1 5.5 -6 6.5 q-5 -1 -6 -6.5z\" fill=\"#4a3228\"/><g class=\"m-n\"><path d=\"M100 97.5 v3.5 M100 101 q-5 5.5 -10 1.5 M100 101 q5 5.5 10 1.5\" stroke=\"#4a3228\" stroke-width=\"2.2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></g><g class=\"eye-n\"><g class=\"eyes\"><circle cx=\"80\" cy=\"80\" r=\"3.8\" fill=\"#3b2a22\"/><circle cx=\"120\" cy=\"80\" r=\"3.8\" fill=\"#3b2a22\"/></g></g></g><g transform=\"rotate(7 172 120)\"><rect x=\"169\" y=\"30\" width=\"6\" height=\"128\" rx=\"3\" fill=\"#8a5a3a\"/><path d=\"M172 158 q0 10 -9 10 q-7 0 -7 -7\" stroke=\"#8a5a3a\" stroke-width=\"6\" fill=\"none\" stroke-linecap=\"round\"/></g><path d=\"M166.0 111.0 A3.8 3.8 0 0 1 172.5 113.1 A3.8 3.8 0 0 1 176.5 118.6 A3.8 3.8 0 0 1 176.5 125.4 A3.8 3.8 0 0 1 172.5 130.9 A3.8 3.8 0 0 1 166.0 133.0 A3.8 3.8 0 0 1 159.5 130.9 A3.8 3.8 0 0 1 155.5 125.4 A3.8 3.8 0 0 1 155.5 118.6 A3.8 3.8 0 0 1 159.5 113.1 A3.8 3.8 0 0 1 166.0 111.0Z\" fill=\"#d8b685\" /></g><path class=\"tear\" d=\"M70 92 q-6 11 0 14 q6 -3 0 -14z\" fill=\"#a8dcff\" stroke=\"#6fb5e8\" stroke-width=\"1.2\"/><g transform=\"rotate(7 172 120)\"><path d=\"M96 14 Q166 -50 236 14 q-10 10 -20 0 q-10 10 -20 0 q-10 10 -20 0 q-10 10 -20 0 q-10 10 -20 0 q-10 10 -20 0 q-10 10 -20 0z\" fill=\"#d94a55\"/><path d=\"M166 -17 Q126 0 104 12 M166 -17 Q146 0 132 13 M166 -17 V14 M166 -17 Q186 0 200 13 M166 -17 Q206 0 228 12\" stroke=\"#a3162f\" stroke-width=\"2.2\" fill=\"none\" opacity=\".6\"/><path d=\"M114 8 Q130 -6 156 -10\" stroke=\"#ffc9ce\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\" opacity=\".5\"/><circle cx=\"166\" cy=\"-19\" r=\"4\" fill=\"#8a5a3a\"/></g>";
   var CAPT = ['หมีถือร่ม', 'กระต่ายตาบวม', 'แมวหันหลัง', 'ลูกเจี๊ยบถือกระเป๋า'];
 
   /* ---------- ฉากระเบียงฝนตก (ต้นฉบับวาดเอง) ---------- */
@@ -91,11 +93,13 @@
   })();
   var SKIN = ['#c99a68', '#f8f1f4', '#6b6478', '#ffe27f'];
   var stage = $('stage'), stIn = $('stIn'), fxl = $('fxl');
-  stIn.innerHTML = '<svg viewBox="-34 -58 68 110" style="width:100%;height:100%;overflow:visible">' + dollSVG(DOLL) + '</svg>';
+  var VB = DOLL === 0 ? '0 -50 240 262' : '-34 -58 68 110';
+  if (DOLL === 0) stage.style.aspectRatio = '240 / 262';
+  stIn.innerHTML = '<svg viewBox="' + VB + '" style="width:100%;height:100%;overflow:visible">' + (DOLL === 0 ? BEAR : dollSVG(DOLL)) + '</svg>';
   stage.style.setProperty('--skin', SKIN[DOLL]);
-  var BYE = (Q.bye && typeof Q.bye === 'object') ? Q.bye : { final: true, anims: ['hug', 'kiss', 'wave', 'pat'] };
+  var BYE = (Q.bye && typeof Q.bye === 'object') ? Q.bye : { final: true, anims: ['hug'] };
   var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
-  var gArt = $('gArt'); if (gArt) gArt.innerHTML = '<svg viewBox="-34 -56 68 108">' + dollSVG(DOLL) + '</svg>';
+  var gArt = $('gArt'); if (gArt) gArt.innerHTML = '<svg viewBox="' + (DOLL === 0 ? '0 -50 240 262' : '-34 -56 68 108') + '">' + (DOLL === 0 ? BEAR : dollSVG(DOLL)) + '</svg>';
 
   /* ---------- ฝน ---------- */
   var cv = $('rainc'), g = cv.getContext('2d'), drops = [], DPR = Math.min(window.devicePixelRatio || 1, 2), rain = 1, raf = 0;
@@ -239,21 +243,21 @@
   function cap(t) { var c = spawn(t, 'cap', 0); return c; }
   var ANIM = {
     hug: async function () {
-      near('hug', 3.4); await wait(1400); var c = cap('กอดแน่น ๆ นะ'); hearts(10, 2600);
+      near('hug', 2.5); await wait(1400); var c = cap('กอดแน่น ๆ นะ'); hearts(10, 2600);
       await wait(3200); c.remove(); away('hug'); await wait(1100);
     },
     kiss: async function () {
-      near('kiss', 2.6); await wait(1300);
+      near('kiss', 2.1); await wait(1300);
       spawn(LIPS, 'lips', 1800); await wait(1100);
       spawn(LIPS, 'lipmark', 3600); stage.classList.add('back'); flash(); await wait(900);
       stage.classList.remove('back'); away('kiss'); await wait(700);
       var c = cap('จุ๊บ… ฝากไว้ตรงนี้นะ'); hearts(12, 2400); await wait(3200); c.remove();
     },
     wave: async function () {
-      near('wave', 1.9); await wait(1100); var c = cap('ไปก่อนนะ… ลาก่อน'); await wait(3600); c.remove(); away('wave'); await wait(1100);
+      near('wave', 1.7); await wait(1100); var c = cap('ไปก่อนนะ… ลาก่อน'); await wait(3600); c.remove(); away('wave'); await wait(1100);
     },
     pat: async function () {
-      near('pat', 2); await wait(1200); var c = cap('โอ๋ ๆ ไม่เป็นไรนะ'); await wait(3400); c.remove();
+      near('pat', 1.7); await wait(1200); var c = cap('โอ๋ ๆ ไม่เป็นไรนะ'); await wait(3400); c.remove();
       stage.classList.add('walk'); away('pat'); await wait(2800); stage.classList.remove('walk');
       stage.classList.add('gone'); await wait(1000); stage.classList.remove('gone'); await wait(300);
     }
