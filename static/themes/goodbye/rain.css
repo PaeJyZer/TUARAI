@@ -59,8 +59,8 @@ body.theme-goodbye .go-btn { background: linear-gradient(#ffd99a, #f3b868); colo
 @keyframes talkb { from { transform: scale(1, 1) translateY(0); } to { transform: scale(.97, 1.04) translateY(-3%) rotate(.8deg); } }
 .stage.hop .st-in { animation: hopk .65s cubic-bezier(.3, .7, .4, 1); }
 @keyframes hopk { 0% { transform: translateY(0) scale(1, 1); } 25% { transform: translateY(0) scale(1.08, .9); } 55% { transform: translateY(-14%) scale(.94, 1.08); } 100% { transform: translateY(0) scale(1, 1); } }
-.stage.near { bottom: 50%; transform: translate(-50%, 50%) scale(var(--ns, 3)); z-index: 7; }
-.stage.near.back { transform: translate(-50%, 50%) scale(calc(var(--ns, 3) * .8)); }
+.stage.near { bottom: 50%; transform: translate(-44%, 50%) scale(var(--ns, 3)); z-index: 7; }
+.stage.near.back { transform: translate(-44%, 50%) scale(calc(var(--ns, 3) * .8)); }
 .stage.hug .st-in { animation: squeeze .55s ease-in-out infinite alternate; }
 @keyframes squeeze { from { transform: scale(1, 1); } to { transform: scale(1.06, .95) rotate(1deg); } }
 .stage.walk { bottom: calc(var(--tb, 200px) + 4px); transform: translateX(-50%); }
@@ -70,9 +70,9 @@ body.theme-goodbye .go-btn { background: linear-gradient(#ffd99a, #f3b868); colo
 @keyframes stepb { from { transform: translateY(0) rotate(-4deg); } to { transform: translateY(-4%) rotate(4deg); } }
 .stage.gone { opacity: 0; }
 .mitt { position: absolute; width: 26%; aspect-ratio: 1; border-radius: 50%; background: var(--skin, #ddb); box-shadow: inset -4px -5px 0 rgba(0, 0, 0, .15); opacity: 0; transition: opacity .4s; }
-.stage.wave .mitt { opacity: 1; left: 66%; top: 28%; transform-origin: 50% 110%; animation: wavem .55s ease-in-out infinite alternate; }
+.stage.wave .mitt { opacity: 1; left: 74%; top: 40%; transform-origin: 50% 110%; animation: wavem .55s ease-in-out infinite alternate; }
 @keyframes wavem { from { transform: rotate(-22deg); } to { transform: rotate(26deg); } }
-.stage.pat .mitt { opacity: 1; left: 20%; top: -3%; animation: patm .6s ease-in-out infinite alternate; }
+.stage.pat .mitt { opacity: 1; left: 22%; top: 4%; animation: patm .6s ease-in-out infinite alternate; }
 @keyframes patm { from { transform: translateX(-30%) rotate(-10deg); } to { transform: translateX(120%) rotate(12deg); } }
 .fxl { position: absolute; inset: 0; z-index: 9; pointer-events: none; overflow: hidden; }
 .fx.cap { position: absolute; left: 50%; bottom: 12%; transform: translateX(-50%); padding: 10px 20px; border-radius: 999px; background: rgba(10, 22, 27, .72); border: 1px solid var(--gb-edge); color: #ffe6c2; font: 600 17px "Mali", sans-serif; white-space: nowrap; animation: capin .5s ease-out; }
