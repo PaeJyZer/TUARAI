@@ -1331,6 +1331,8 @@ def _read_fields(data):
     }
     if not fields['partner_name'] or not fields['letter_text'] or not fields['letter_sign']:
         return None, 'กรอกข้อมูลให้ครบทุกช่อง'
+    if not fields['start_date']:
+        fields['start_date'] = datetime.now().strftime('%Y-%m-%d')
     if not valid_date(fields['start_date']):
         return None, 'วันที่ไม่ถูกต้อง'
     return fields, None

@@ -118,6 +118,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('edDate').value = site.start_date;
         document.getElementById('edOccasion').value = site.occasion || 'anniversary';
         syncDateLabel();
+        if (site.theme_code === 'last_letter_v1') {
+            ['edOccLbl', 'edOccasion', 'edDateLabel', 'edDate'].forEach(function (id) { document.getElementById(id).style.display = 'none'; });
+            document.getElementById('edDate').required = false;
+            if (!site.start_date) document.getElementById('edDate').value = new Date().toISOString().slice(0, 10);
+            document.getElementById('edNameLbl').textContent = 'ชื่อคนที่อยากบอก';
+            document.getElementById('edLetterLbl').textContent = '💌 ข้อความในใจที่อยากบอก (เว้นบรรทัดว่าง = ขึ้นหน้าใหม่)';
+        }
         document.getElementById('edLetter').value = site.letter_text;
         document.getElementById('edSign').value = site.letter_sign;
         document.getElementById('edPreview').href = site.preview_url;

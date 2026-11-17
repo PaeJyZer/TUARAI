@@ -135,6 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function openBuyModal(theme) {
+        const LLB = theme.theme_code === 'last_letter_v1';
         const old = document.getElementById('buyModal');
         if (old) old.remove();
 
@@ -161,20 +162,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="pkg-choice">${cardHtml('basic', false)}${cardHtml('pro', true)}</div>
 
                     <form id="buyForm" class="auth-form">
-                        <label class="field-label">โอกาสที่จะมอบให้</label>
+                        ${LLB ? '' : `<label class="field-label">โอกาสที่จะมอบให้</label>
                         <select id="buyOccasion">
                             <option value="anniversary">💞 วันครบรอบ</option>
                             <option value="birthday">🎂 วันเกิด</option>
-                        </select>
+                        </select>`}
 
-                        <label class="field-label">ชื่อแฟน / คนพิเศษ</label>
+                        <label class="field-label">${LLB ? 'ชื่อคนที่อยากบอก' : 'ชื่อแฟน / คนพิเศษ'}</label>
                         <input type="text" id="buyName" maxlength="60" placeholder="พิมพ์ชื่อ" required>
 
-                        <label class="field-label" id="buyDateLabel">วันที่เริ่มคบกัน (หรือวันพิเศษ)</label>
-                        <input type="date" id="buyDate" required>
+                        ${LLB ? '' : `<label class="field-label" id="buyDateLabel">วันที่เริ่มคบกัน (หรือวันพิเศษ)</label>
+                        <input type="date" id="buyDate" required>`}
 
-                        <label class="field-label">ข้อความจดหมายบอกรัก</label>
-                        <textarea id="buyLetter" rows="4" maxlength="3000" placeholder="เขียนความในใจถึงแฟน..." required></textarea>
+                        <label class="field-label">${LLB ? '💌 ข้อความในใจที่อยากบอก <small style="font-weight:400;color:#8a7a70">(เว้นบรรทัดว่าง = ขึ้นหน้าใหม่ แนะนำ 3–5 หน้า)</small>' : 'ข้อความจดหมายบอกรัก'}</label>
+                        <textarea id="buyLetter" rows="${LLB ? 7 : 4}" maxlength="3000" placeholder="${LLB ? 'เขียนสิ่งที่อยากบอกเขา อย่างตรงไปตรงมาแต่อ่อนโยน…' : 'เขียนความในใจถึงแฟน...'}" required></textarea>
 
                         <label class="field-label">ลงชื่อผู้ส่ง (ของคุณ)</label>
                         <input type="text" id="buySign" maxlength="60" placeholder="เช่น จากพี่เอง" required>
@@ -252,7 +253,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const qEd = theme.has_quests && !theme.no_quests ? TU.questEditor(document.getElementById('buyQuests'), null, { noHunt: !!theme.no_hunt }) : null;
         const occSel = document.getElementById('buyOccasion');
         const occLabels = { anniversary: 'วันที่เริ่มคบกัน (หรือวันพิเศษ)', birthday: 'วันเกิดของเขา/เธอ' };
-        occSel.addEventListener('change', () => {
+        if (occSel) occSel.addEventListener('change', () => {
             document.getElementById('buyDateLabel').textContent = occLabels[occSel.value] || occLabels.anniversary;
         });
 
@@ -285,9 +286,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const fd = new FormData();
             fd.append('theme_id', theme.id);
             fd.append('package', pkgKey);
-            fd.append('occasion', document.getElementById('buyOccasion').value);
+            fd.append('occasion', LLB ? 'anniversary' : document.getElementById('buyOccasion').value);
             fd.append('partner_name', document.getElementById('buyName').value);
-            fd.append('start_date', document.getElementById('buyDate').value);
+            fd.append('start_date', LLB ? new Date().toISOString().slice(0, 10) : document.getElementById('buyDate').value);
             fd.append('letter_text', document.getElementById('buyLetter').value);
             fd.append('letter_sign', document.getElementById('buySign').value);
             if (dlgEd) fd.append('dialog', JSON.stringify(dlgEd.get()));
