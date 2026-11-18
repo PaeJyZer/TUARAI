@@ -41,3 +41,10 @@ body.theme-garden { background: #fdf0e6; color: var(--ink); font-family: var(--h
 .foot { text-align: center; padding: 26px 8px 10px; color: #86506a; }
 .pool { display: none; }
 @media (prefers-reduced-motion: reduce) { .g-fl, .fl.bud .head, .fl.water .drops { animation: none; } }
+
+.fl.bursting .head { animation: bstOut .38s ease-out forwards; transform-origin: 50% 40%; }
+@keyframes bstOut { 60% { transform: scale(1.4) rotate(12deg); opacity: .9; } to { transform: scale(1.8) rotate(25deg); opacity: 0; } }
+.fl.bloom .head.burst-in { animation: none; }
+.fl.bloom .ph { transform-box: fill-box; transform-origin: center; filter: drop-shadow(0 2px 3px rgba(60, 30, 10, .35)); animation: phPop .6s cubic-bezier(.3, 1.5, .5, 1) both; }
+.fl.bloom .ph2 { animation-delay: .12s; }
+@keyframes phPop { from { opacity: 0; scale: .2; } to { opacity: 1; scale: 1; } }
