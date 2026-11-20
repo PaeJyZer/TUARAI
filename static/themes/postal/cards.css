@@ -42,3 +42,26 @@ body.theme-postal { background: #f5e6cf; color: #5a3b2a; font-family: var(--hand
 .env small { display: block; font: 600 12px var(--hand); margin-top: 4px; }
 .env.is-locked { opacity: .8; }
 @media (min-width: 820px) { .stage { width: min(560px, 60vw); } .pc .bk .msg { font-size: 18px; } .pc .bk .adr { font-size: 15px; } .pc .fc .lb { font-size: 18px; } }
+
+/* ===== จดหมายไปรษณีย์: กระดาษจดหมายมีเส้นบรรทัด ขอบลายแอร์เมล์ ตราประทับ ===== */
+body.theme-postal .letter-card {
+  --pp: #fbf4e2; --ink: #3b2a1c; background: var(--pp); color: var(--ink); border-radius: 3px; text-align: left;
+  padding: 44px 34px 28px 54px; box-shadow: 0 18px 50px rgba(0,0,0,.5), 0 0 0 1px rgba(120,90,50,.25);
+  border: 12px solid transparent; border-image: repeating-linear-gradient(135deg, #d94a4a 0 14px, #fbf4e2 14px 22px, #3f6fb5 22px 36px, #fbf4e2 36px 44px) 12;
+  background-image: linear-gradient(90deg, transparent 38px, rgba(217,74,74,.45) 38px 40px, transparent 40px);
+}
+body.theme-postal .letter-card::before { content: "PAR AVION · AIR MAIL"; position: absolute; top: 8px; left: 54px; font: 600 10px/1 'Kodchasan', sans-serif; letter-spacing: .28em; color: #3f6fb5; opacity: .8; }
+body.theme-postal .letter-card::after { content: ""; position: absolute; top: 10px; right: 66px; width: 64px; height: 64px; border: 2px solid rgba(180,60,60,.55); border-radius: 50%; box-shadow: inset 0 0 0 5px rgba(251,244,226,1), inset 0 0 0 6px rgba(180,60,60,.4); transform: rotate(-14deg); pointer-events: none; background: repeating-linear-gradient(0deg, transparent 0 8px, rgba(180,60,60,.35) 8px 9px) center/70% 34% no-repeat; }
+body.theme-postal .letter-card .eyebrow { color: #b0453a; text-align: left; margin-top: 10px; }
+body.theme-postal .letter-title { font-family: 'Mali', cursive; font-weight: 600; color: var(--ink); text-align: left; margin: 4px 0 12px; font-size: 26px; }
+body.theme-postal .counter-title { text-align: left; color: #7a5a3a; opacity: 1; }
+body.theme-postal .day-counter { justify-content: flex-start; }
+body.theme-postal .day-counter .cell { background: rgba(255,255,255,.55); border: 1px dashed #b89a6e; border-radius: 4px; }
+body.theme-postal .day-counter .num { color: #b0453a; font-family: 'Noto Serif Thai', serif; }
+body.theme-postal .day-counter .lab { color: #7a5a3a; }
+body.theme-postal .letter-body { font-family: 'Mali', cursive; font-size: 16px; line-height: 32px; color: var(--ink);
+  background: repeating-linear-gradient(transparent 0 31px, rgba(63,111,181,.35) 31px 32px); background-attachment: local; margin-left: 0; }
+body.theme-postal .letter-sign { font-family: 'Mali', cursive; color: #b0453a; }
+body.theme-postal .close-btn { color: #7a5a3a; }
+@media (max-width: 480px) { body.theme-postal .letter-card { padding: 40px 18px 24px 36px; background-image: linear-gradient(90deg, transparent 22px, rgba(217,74,74,.45) 22px 24px, transparent 24px); } body.theme-postal .letter-card::before { left: 36px; } body.theme-postal .letter-card::after { width: 52px; height: 52px; right: 56px; } }
+body.theme-postal .letter-title::after { display: none !important; }
