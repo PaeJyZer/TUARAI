@@ -85,7 +85,7 @@ PACKAGES = {
 DEFAULT_PRICES = {'basic': 59.0, 'pro': 99.0}   # ใช้ถ้าธีมไม่ได้ตั้งราคาเฉพาะไว้ในตาราง themes
 TIER_PRICES = {'premium': (59.0, 79.0), 'legendary': (99.0, 129.0)}
 # ธีมที่ระบบ/ลูกเล่นซับซ้อน (เกมหลายขั้น เรื่องราว กลไกเฉพาะตัว) = Legendary ส่วนที่เหลือ = Premium
-LEGENDARY_THEMES = {'last_letter_v1', 'y2k_pop_v1', 'palace_sakura_v1', 'arcade_love_v1', 'movie_night_v1', 'music_box_v1',
+LEGENDARY_THEMES = {'y2k_pop_v1', 'palace_sakura_v1', 'arcade_love_v1', 'movie_night_v1', 'music_box_v1',
                     'vintage_diary_v1', 'space_cruise_v1', 'hanami_night_v1', 'matchcat_v1'}
 RENEW_PRICE = 59.0                                # ราคาต่ออายุ Basic ต่อ 1 ปี
 RENEW_DAYS = 365
@@ -207,9 +207,6 @@ def _add_columns(conn, table, cols):
 
 
 EXTRA_THEMES = [
-    ('last_letter_v1', 'The Last Letter',
-     'ธีมบอกเลิกอย่างอ่อนโยน ฉากระเบียงริมฝนยามค่ำ มีหมีถือร่มที่เดินเข้ามากอดลาแนบจอ อ่านข้อความทีละบทพร้อมไฟที่ค่อยๆ หรี่ลง กล่องความทรงจำ และตัวเลือกให้ผู้รับตอบ',
-     'theme_previews/last_letter.jpg', 'theme_goodbye.html'),
     ('starry_night_v1', 'Starry Night Universe',
      'ท้องฟ้ายามค่ำคืนมีหิ่งห้อยบินวน แตะจับหิ่งห้อยใส่โหลแก้ว แต่ละตัวพกความทรงจำ 1-2 รูปมาให้',
      'theme_previews/starry_night.jpg', 'theme_starry.html'),
@@ -454,6 +451,8 @@ def migrate_db():
                  ('รูปโพลารอยด์กระจายเต็มจอ จดหมายพิมพ์ทีละตัว ตัวนับวันที่คบกัน และกุหลาบแตกเต็มจอ',))
     conn.execute("UPDATE themes SET template_file = 'theme_100.html' WHERE template_file IS NULL")
     conn.execute('UPDATE themes SET is_active = 1 WHERE is_active IS NULL')
+    # ธีมที่เลิกขายแล้ว: ซ่อนจากหน้าร้าน/เดโม่/ซื้อ (ไม่ลบแถว เพื่อไม่ให้ออเดอร์เก่าพัง)
+    conn.execute("UPDATE themes SET is_active = 0 WHERE theme_code = 'last_letter_v1'")
     conn.execute('UPDATE themes SET price_basic = ? WHERE price_basic IS NULL', (DEFAULT_PRICES['basic'],))
     conn.execute('UPDATE themes SET price_pro = ? WHERE price_pro IS NULL', (DEFAULT_PRICES['pro'],))
     # เหลือ 2 กองราคา: Premium (ระบบเรียบง่ายกว่า) และ Legendary (ลูกเล่น/ระบบซับซ้อน) ราคาใหม่ใช้กับออเดอร์ใหม่เท่านั้น
