@@ -85,6 +85,23 @@ function cakeSVG(cd, still) {
     '<g class="plate">' + plate + '</g><g mask="url(#bm)"><g class="cb">' + cb + '</g></g><g class="candles">' + cn + '<g class="flames">' + fl + '</g></g><g class="smoke"></g></svg>';
 }
 
+
+/* ---------- ฟอนต์ (อังกฤษ + ไทย เลือกแยกกันได้) ---------- */
+var FE = [['gaegu','Gaegu','Gaegu:wght@400;700',700],['caveat','Caveat','Caveat:wght@400;700',700],['kalam','Kalam','Kalam:wght@400;700',700],['indie','Indie Flower','Indie+Flower',400],['shadows','Shadows Into Light','Shadows+Into+Light',400],['marker','Permanent Marker','Permanent+Marker',400],['pacifico','Pacifico','Pacifico',400],['dancing','Dancing Script','Dancing+Script:wght@400;700',700],['satisfy','Satisfy','Satisfy',400],['vibes','Great Vibes','Great+Vibes',400],['parisienne','Parisienne','Parisienne',400],['lobster','Lobster','Lobster',400],['amatic','Amatic SC','Amatic+SC:wght@400;700',700]];
+var FT = [['itim','Itim','Itim',400],['mali','Mali','Mali:wght@400;700',700],['sriracha','Sriracha','Sriracha',400],['pattaya','Pattaya','Pattaya',400],['charmonman','Charmonman','Charmonman:wght@400;700',700],['srisakdi','Srisakdi','Srisakdi:wght@400;700',700],['playpen','Playpen Sans Thai','Playpen+Sans+Thai:wght@400;700',700],['kodchasan','Kodchasan','Kodchasan:wght@400;700',700],['chonburi','Chonburi','Chonburi',400],['mitr','Mitr','Mitr:wght@400;500',500],['plex','IBM Plex Sans Thai','IBM+Plex+Sans+Thai:wght@400;600',600]];
+var FDEF = { e: 'gaegu', t: 'itim' }, fLoaded = {};
+function fget(list, k, d) { for (var i = 0; i < list.length; i++) if (list[i][0] === k) return list[i]; return list.filter(function (f) { return f[0] === d; })[0]; }
+function fload(list, k) {
+  var f = fget(list, k, list[0][0]); if (fLoaded[f[0]] || f[0] === 'gaegu' || f[0] === 'itim' || f[0] === 'plex') return; fLoaded[f[0]] = 1;
+  var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'https://fonts.googleapis.com/css2?family=' + f[2] + '&display=swap'; document.head.appendChild(l);
+}
+function fstack(e, t) { var a = fget(FE, e, FDEF.e), b = fget(FT, t, FDEF.t); fload(FE, a[0]); fload(FT, b[0]); return '"' + a[1] + '","' + b[1] + '",cursive'; }
+function fweight(e, t) { var a = fget(FE, e, FDEF.e), b = fget(FT, t, FDEF.t); return Math.min(a[3], b[3] > 500 ? 700 : b[3]) >= 700 ? 700 : 400; }
+function boardFont() { var f = B.font || {}; return { e: f.e || FDEF.e, t: f.t || FDEF.t }; }
+function applyFont() { var f = boardFont(); document.body.style.setProperty('--ff', fstack(f.e, f.t)); document.body.style.setProperty('--fw', fweight(f.e, f.t)); }
+function fontOf(it) { var f = boardFont(); return { e: it.fe || f.e, t: it.ft || f.t }; }
+function styleText(d, it) { var f = fontOf(it); d.style.fontFamily = fstack(f.e, f.t); d.style.fontWeight = fweight(f.e, f.t); }
+
 /* ---------- สร้างชิ้นของ ---------- */
 function bodyOf(it) {
   switch (it.t) {
@@ -100,6 +117,7 @@ function mkItem(it) {
   d.className = 'it'; d.dataset.id = it.id; d.dataset.t = it.t;
   place(d, it);
   if (col) { d.style.setProperty('--cf', col[1]); if (it.t === 'text') d.style.color = col[2]; }
+  if (it.t === 'text') styleText(d, it);
   d.style.setProperty('--d', (-(Math.random() * 3.4)).toFixed(2) + 's');
   d.innerHTML = '<div class="idle"><div class="tp">' + bodyOf(it) + '</div></div>';
   return d;
@@ -151,7 +169,7 @@ function ctr(el) { var r = el.getBoundingClientRect(); return [r.left + r.width 
 /* ====================== ฝั่งผู้รับ: แตะของแล้วมีอนิเมชั่น ====================== */
 var state = { blown: false, bites: 0, floating: null };
 var BGS = [['peach', 'พาสเทล'], ['cream', 'ครีม'], ['pink', 'ชมพูจุด'], ['mint', 'มินต์'], ['sky', 'ท้องฟ้า'], ['lilac', 'ลาเวนเดอร์'], ['sunny', 'แดดเหลือง'], ['kraft', 'คราฟต์'], ['notebook', 'สมุดโน้ต'], ['confetti', 'คอนเฟตติ'], ['night', 'ดาวยามค่ำ'], ['chalk', 'กระดานดำ']];
-function applyBg() { document.body.className = document.body.className.replace(/\s*\bbg-\S+/g, '') + ' bg-' + (B.bg || 'peach'); }
+function applyBg() { document.body.className = document.body.className.replace(/\s*\bbg-\S+/g, '') + ' bg-' + (B.bg || 'peach'); applyFont(); }
 function setHint(t) { hint.textContent = t || ''; hint.classList.toggle('on', !!t); }
 
 function blow(el) {
@@ -297,6 +315,7 @@ function initDesign() {
     '<div class="sec"><b>🕯 เทียนบนเค้ก</b><div class="seg" id="ck"><button data-k="plain">เทียนธรรมดา</button><button data-k="num">เลขอายุ</button><button data-k="abc">ตัวอักษร</button></div><div id="cn" style="margin-top:8px"></div></div>' +
     '<div class="sec"><b>✨ ของตกแต่ง — แตะเพื่อเพิ่ม หรือลากไปวางในฉาก</b><div class="pal" id="pal"></div></div>' +
     '<div class="sec"><b>✏️ ข้อความ (เขียนอะไรก็ได้ ไม่จำกัด)</b><input id="tx" type="text" maxlength="100" placeholder="เช่น Happy Birthday"><button class="btn wide" id="addTx" type="button">+ เพิ่มข้อความลงฉาก</button></div>' +
+    '<div class="sec"><b>🔤 ฟอนต์</b><small id="fn"></small><div class="fnts" id="fe"></div><div class="fnts" id="ft"></div></div>' +
     '<div class="sec"><b>🖼 รูปภาพ — แตะรูปเพื่อวางกรอบรูปลงฉาก</b><div class="pg" id="pg"></div><small id="pgn"></small></div>' +
     '<div class="sec"><b>💌 จดหมายในซอง</b><input id="nm" type="text" maxlength="60" placeholder="ชื่อผู้รับ"><textarea id="lt" maxlength="3000" placeholder="ข้อความที่อยากบอก" style="margin-top:6px"></textarea><input id="sg" type="text" maxlength="60" placeholder="ลงชื่อผู้ส่ง" style="margin-top:6px"></div>' +
     (C.design.draft ? '<div class="sec"><b>📦 แพ็กเกจ</b><div class="seg" id="pk"><button data-p="basic">Basic ฿' + C.design.prices.basic + '</button><button data-p="pro">Pro ฿' + C.design.prices.pro + '</button></div><small id="pkn"></small></div>' : '') +
@@ -348,6 +367,7 @@ function initDesign() {
   function rerender(it) { var o = elOf(it.id), n = mkItem(it); if (o) { n.className = o.className; o.replaceWith(n); } else stage.appendChild(n); }
   function select(id) {
     colpop.classList.remove('on'); S.sel = id; $$('.it.sel', stage).forEach(function (e) { e.classList.remove('sel'); });
+    if (typeof refreshFonts === 'function') refreshFonts();
     if (!id) { tools.classList.remove('on'); return; }
     var e = elOf(id); if (e) e.classList.add('sel');
     var it = find(id); tools.classList.add('on');
@@ -454,6 +474,26 @@ function initDesign() {
   $('#bgs').innerHTML = BGS.map(function (b) { return '<div class="bgt bg-' + b[0] + '" data-b="' + b[0] + '"><span>' + b[1] + '</span></div>'; }).join('');
   function refreshBg() { applyBg(); $$('#bgs .bgt').forEach(function (e) { e.classList.toggle('on', e.dataset.b === (B.bg || 'peach')); }); }
   $('#bgs').addEventListener('click', function (e) { var t = e.target.closest('.bgt'); if (!t) return; B.bg = t.dataset.b; refreshBg(); save(); });
+  function fsel() { var it = S.sel && find(S.sel); return it && it.t === 'text' ? it : null; }
+  function buildFonts() {
+    $('#fe').innerHTML = FE.map(function (f) { fload(FE, f[0]); return '<button type="button" data-k="' + f[0] + '" style="font-family:\'' + f[1] + '\',cursive;font-weight:' + f[3] + '">Happy Birthday<i>' + f[1] + '</i></button>'; }).join('');
+    $('#ft').innerHTML = FT.map(function (f) { fload(FT, f[0]); return '<button type="button" data-k="' + f[0] + '" style="font-family:\'' + f[1] + '\',cursive;font-weight:' + f[3] + '">สุขสันต์วันเกิด<i>' + f[1] + '</i></button>'; }).join('');
+  }
+  function refreshFonts() {
+    var it = fsel(), f = it ? fontOf(it) : boardFont();
+    $('#fn').textContent = it ? 'กำลังเปลี่ยนฟอนต์ของข้อความที่เลือก' : 'ยังไม่ได้เลือกข้อความ — เปลี่ยนฟอนต์ของทั้งการ์ด (จดหมาย + ข้อความที่ไม่ได้ตั้งเอง) แตะข้อความในฉากเพื่อเปลี่ยนเฉพาะอันนั้น';
+    $$('#fe button').forEach(function (b) { b.classList.toggle('on', b.dataset.k === f.e); });
+    $$('#ft button').forEach(function (b) { b.classList.toggle('on', b.dataset.k === f.t); });
+  }
+  function pickFont(which, k) {
+    var it = fsel();
+    if (it) { it[which === 'e' ? 'fe' : 'ft'] = k; var el = elOf(it.id); if (el) styleText(el, it); }
+    else { B.font = boardFont(); B.font[which] = k; applyFont(); lay().forEach(function (i) { if (i.t === 'text') { var el = elOf(i.id); if (el) styleText(el, i); } }); }
+    refreshFonts(); save();
+  }
+  buildFonts(); refreshFonts();
+  $('#fe').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) pickFont('e', b.dataset.k); });
+  $('#ft').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) pickFont('t', b.dataset.k); });
 
   /* เทียน */
   function refreshCandle() {

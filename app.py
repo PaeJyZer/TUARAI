@@ -754,6 +754,8 @@ BOARD_TYPES = ('cake', 'env', 'text', 'photo') + BOARD_DECOR
 BOARD_MAX_ITEMS = 60
 CANDLE_KINDS = ('plain', 'num', 'abc')
 BOARD_BGS = ('peach', 'cream', 'pink', 'mint', 'sky', 'lilac', 'sunny', 'kraft', 'notebook', 'confetti', 'night', 'chalk')
+BOARD_FONTS_E = ('gaegu', 'caveat', 'kalam', 'indie', 'shadows', 'marker', 'pacifico', 'dancing', 'satisfy', 'vibes', 'parisienne', 'lobster', 'amatic')
+BOARD_FONTS_T = ('itim', 'mali', 'sriracha', 'pattaya', 'charmonman', 'srisakdi', 'playpen', 'kodchasan', 'chonburi', 'mitr', 'plex')
 BOARD_COLORS = ('pink', 'red', 'orange', 'yellow', 'green', 'mint', 'blue', 'purple', 'sky', 'brown', 'cream', 'white')
 
 
@@ -808,6 +810,10 @@ def _clean_layout(raw, n_images):
             if not tx:
                 continue
             d['tx'] = tx
+            if it.get('fe') in BOARD_FONTS_E:
+                d['fe'] = it['fe']
+            if it.get('ft') in BOARD_FONTS_T:
+                d['ft'] = it['ft']
         if t == 'photo':
             try:
                 ph = int(it.get('ph'))
@@ -856,7 +862,10 @@ def clean_board(raw, n_images=0, name=''):
             if not any(i['t'] == t for i in lay):
                 lay.append(next(i for i in base[key] if i['t'] == t))
     bg = raw.get('bg') if raw.get('bg') in BOARD_BGS else 'peach'
-    return {'candle': {'kind': kind, 'text': txt, 'n': n}, 'bg': bg, 'L': L, 'P': P}
+    fr = raw.get('font') if isinstance(raw.get('font'), dict) else {}
+    font = {'e': fr.get('e') if fr.get('e') in BOARD_FONTS_E else 'gaegu',
+            't': fr.get('t') if fr.get('t') in BOARD_FONTS_T else 'itim'}
+    return {'candle': {'kind': kind, 'text': txt, 'n': n}, 'bg': bg, 'font': font, 'L': L, 'P': P}
 
 
 def board_of(site):

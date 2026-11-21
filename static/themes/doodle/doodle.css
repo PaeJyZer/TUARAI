@@ -16,7 +16,7 @@
 .fc { fill: var(--cf, #f7a8bd) !important; } .fw { fill: #fffaf0 !important; } .fg { fill: #a8d8a0 !important; } .fr { fill: #ef6f6f !important; } .fk { fill: #f7a8bd !important; stroke: none !important; }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; background: var(--paper); background-image: var(--pat); background-size: var(--ps); overflow: hidden; overscroll-behavior: none; }
-body.dd { font-family: "Gaegu", "Itim", "IBM Plex Sans Thai", cursive; color: var(--ink); -webkit-user-select: none; user-select: none; }
+body.dd { font-family: var(--ff, "Gaegu", "Itim", "IBM Plex Sans Thai", cursive); color: var(--ink); -webkit-user-select: none; user-select: none; }
 body.dd-design { background: #e9dcc3 !important; background-image: none !important; }
 .stage { position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; height: 100dvh; background: var(--paper); background-image: var(--pat); background-size: var(--ps); overflow: hidden; --u: 9px; transform-origin: 0 0; }
 .dd-design .stage { position: absolute; box-shadow: 0 0 0 2px #c9b996, 0 10px 40px rgba(60, 40, 10, .3); border-radius: 6px; }
@@ -31,7 +31,7 @@ body.dd-design { background: #e9dcc3 !important; background-image: none !importa
 .it svg { display: block; width: 100%; height: auto; overflow: visible; pointer-events: none; }
 .it .tp { transform-origin: 50% 70%; }
 .it { color: var(--tx); }
-.it[data-t=text] { width: auto; white-space: pre; text-align: center; font-size: calc(var(--u) * var(--s) * .5); line-height: 1.15; font-weight: 700; }
+.it[data-t=text] { width: auto; white-space: pre; text-align: center; font-size: calc(var(--u) * var(--s) * .5); line-height: 1.2; font-weight: 700; }
 .it[data-t=text] .idle, .it[data-t=text] .tp { width: auto; }
 .it[data-t=text] span { display: inline-block; animation: tj .5s steps(1) infinite; }
 @keyframes tj { 0% { transform: translate(0, 0) rotate(0); } 33% { transform: translate(.7px, -.6px) rotate(.5deg); } 66% { transform: translate(-.6px, .5px) rotate(-.5deg); } }
@@ -133,18 +133,18 @@ body.dd-design { background: #e9dcc3 !important; background-image: none !importa
 .ghost.in .xmark { opacity: 1; }
 .bigpaper { position: absolute; inset: 0; --fs: 22px; --lh: 34px; background: #fffdf6 repeating-linear-gradient(transparent 0 calc(var(--lh) - 1px), rgba(70,100,150,.26) calc(var(--lh) - 1px) var(--lh)); border: 2.4px solid var(--ink); border-radius: 4px; padding: 38px 8% 28px; overflow-y: auto; box-shadow: 0 14px 40px rgba(80,55,20,.25); }
 .bigpaper::before { content: ""; position: absolute; left: 7%; top: 0; bottom: 0; width: 2px; background: rgba(224,98,59,.35); }
-.bigpaper .to { font: 700 calc(var(--fs) * 1.3)/var(--lh) "Gaegu", "Itim", cursive; margin-bottom: 0; }
-.bigpaper .bd { font: 400 var(--fs)/var(--lh) "Gaegu", "Itim", cursive; white-space: pre-wrap; word-break: break-word; }
+.bigpaper .to { font: var(--fw, 700) calc(var(--fs) * 1.3)/var(--lh) var(--ff, "Gaegu", "Itim", cursive); margin-bottom: 0; }
+.bigpaper .bd { font: 400 var(--fs)/var(--lh) var(--ff, "Gaegu", "Itim", cursive); white-space: pre-wrap; word-break: break-word; }
 .bigpaper .bd span { opacity: 0; display: inline; transition: opacity .6s; }
 .bigpaper .bd span.on { opacity: 1; }
-.bigpaper .sg { text-align: right; font: 700 calc(var(--fs) * 1.15)/var(--lh) "Gaegu", "Itim", cursive; margin-top: 10px; opacity: 0; transition: opacity 1s; }
+.bigpaper .sg { text-align: right; font: var(--fw, 700) calc(var(--fs) * 1.15)/var(--lh) var(--ff, "Gaegu", "Itim", cursive); margin-top: 10px; opacity: 0; transition: opacity 1s; }
 .bigpaper .sg.on { opacity: 1; }
 .fx { position: fixed; inset: 0; pointer-events: none; z-index: 990; overflow: hidden; }
 .fx i { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; }
 .fx svg { width: 100%; height: 100%; overflow: visible; }
 .fx svg path { fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .fx svg path.f { fill: #ffd2c8; }
-.hint { position: fixed; left: 0; right: 0; top: max(4.5vh, 64px); padding: 0 70px; text-align: center; font: 400 clamp(17px, 3.4vmin, 28px)/1.2 "Gaegu", "Itim", cursive; color: var(--soft); opacity: 0; transition: opacity 1s; pointer-events: none; z-index: 5; }
+.hint { position: fixed; left: 0; right: 0; top: max(4.5vh, 64px); padding: 0 70px; text-align: center; font: 400 clamp(17px, 3.4vmin, 28px)/1.2 var(--ff, "Gaegu", "Itim", cursive); color: var(--soft); opacity: 0; transition: opacity 1s; pointer-events: none; z-index: 5; }
 .hint.on { opacity: .95; }
 .dd-design .hint { display: none; }
 
@@ -216,3 +216,9 @@ body.dd-design { background: #e9dcc3 !important; background-image: none !importa
 .colpop button { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,.55); cursor: pointer; padding: 0; }
 .colpop button.on { border-color: #fff; box-shadow: 0 0 0 2px #e0623b; }
 .colpop .auto { width: auto; border-radius: 15px; padding: 0 10px; font: 500 12px/1 "IBM Plex Sans Thai", sans-serif; background: #4a443d; color: #fff; }
+
+/* font picker */
+.side .fnts { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+.side .fnts button { border: 1.5px solid #c9b996; background: #fff; color: #3a3228; border-radius: 10px; padding: 6px 6px 4px; min-height: 52px; font-size: 17px; line-height: 1.2; cursor: pointer; text-align: center; overflow: hidden; }
+.side .fnts button i { display: block; font: 400 10px/1.3 "IBM Plex Sans Thai", sans-serif; color: #8a7d6d; font-style: normal; margin-top: 2px; }
+.side .fnts button.on { border-color: #e0623b; background: #fff1e8; box-shadow: 0 0 0 2px rgba(224, 98, 59, .25); }
