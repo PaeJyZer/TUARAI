@@ -756,6 +756,7 @@ CANDLE_KINDS = ('plain', 'num', 'abc')
 BOARD_BGS = ('peach', 'cream', 'pink', 'mint', 'sky', 'lilac', 'sunny', 'kraft', 'notebook', 'confetti', 'night', 'chalk')
 BOARD_FONTS_E = ('gaegu', 'caveat', 'kalam', 'indie', 'shadows', 'marker', 'pacifico', 'dancing', 'satisfy', 'vibes', 'parisienne', 'lobster', 'amatic')
 BOARD_FONTS_T = ('itim', 'mali', 'sriracha', 'pattaya', 'charmonman', 'srisakdi', 'playpen', 'kodchasan', 'chonburi', 'mitr', 'plex')
+BOARD_OUTS = ('star', 'heart', 'balloon', 'flower', 'sparkle', 'note', 'cupcake', 'bow', 'bear', 'hat', 'cloud', 'butterfly', 'rainbow', 'confetti', 'moon')
 BOARD_COLORS = ('pink', 'red', 'orange', 'yellow', 'green', 'mint', 'blue', 'purple', 'sky', 'brown', 'cream', 'white')
 
 
@@ -814,6 +815,13 @@ def _clean_layout(raw, n_images):
                 d['fe'] = it['fe']
             if it.get('ft') in BOARD_FONTS_T:
                 d['ft'] = it['ft']
+        if t == 'gift' and isinstance(it.get('o'), list):
+            o = []
+            for k in it['o']:
+                if k in BOARD_OUTS and k not in o:
+                    o.append(k)
+            if o:
+                d['o'] = o[:8]
         if t == 'photo':
             try:
                 ph = int(it.get('ph'))
@@ -865,7 +873,16 @@ def clean_board(raw, n_images=0, name=''):
     fr = raw.get('font') if isinstance(raw.get('font'), dict) else {}
     font = {'e': fr.get('e') if fr.get('e') in BOARD_FONTS_E else 'gaegu',
             't': fr.get('t') if fr.get('t') in BOARD_FONTS_T else 'itim'}
-    return {'candle': {'kind': kind, 'text': txt, 'n': n}, 'bg': bg, 'font': font, 'L': L, 'P': P}
+    lr = raw.get('lf') if isinstance(raw.get('lf'), dict) else {}
+    out = {'candle': {'kind': kind, 'text': txt, 'n': n}, 'bg': bg, 'font': font, 'L': L, 'P': P}
+    lf = {}
+    if lr.get('e') in BOARD_FONTS_E:
+        lf['e'] = lr['e']
+    if lr.get('t') in BOARD_FONTS_T:
+        lf['t'] = lr['t']
+    if lf:
+        out['lf'] = lf
+    return out
 
 
 def board_of(site):

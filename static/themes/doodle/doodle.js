@@ -29,12 +29,16 @@ var ART = {
   sparkle: { vb: V100, parts: [P('', [['M50 4 C52 34 66 48 96 50 C66 52 52 66 50 96 C48 66 34 52 4 50 C34 48 48 34 50 4', 'c'], ['M82 12 L82 24 M76 18 L88 18']])] },
   cupcake: { vb: V100, parts: [P('', [['M24 56 L32 92 L68 92 L76 56 Z', 'w'], ['M40 60 L42 90 M52 60 L52 90 M62 60 L60 90'], ['M20 58 C14 42 28 40 30 34 C30 20 48 14 54 26 C66 22 82 34 72 44 C86 46 84 58 78 58 Z', 'c'], [ci(52, 12, 5), 'r']])] },
   hat: { vb: V100, parts: [P('', [['M50 10 L22 86 L78 86 Z', 'c'], ['M40 40 L60 50 M34 58 L68 66 M29 74 L73 80'], ['M16 88 C40 94 60 94 84 88'], [ci(50, 9, 5), 'w']])] },
+  butterfly: { vb: V100, parts: [P('', [['M50 52 C30 18 4 22 10 46 C14 62 38 64 50 54', 'c'], ['M50 52 C70 18 96 22 90 46 C86 62 62 64 50 54', 'c'], ['M50 56 C34 62 22 78 34 86 C42 90 48 74 50 62', 'c'], ['M50 56 C66 62 78 78 66 86 C58 90 52 74 50 62', 'c'], ['M50 34 L50 78'], ['M50 34 C46 24 42 22 38 20 M50 34 C54 24 58 22 62 20'], [ci(26, 42, 5), 'w'], [ci(74, 42, 5), 'w']])] },
+  rainbow: { vb: V100, parts: [P('', [['M5 82 C5 22 95 22 95 82 L78 82 C78 44 22 44 22 82 Z', 'c'], ['M13 82 C13 32 87 32 87 82'], [ci(13, 80, 9), 'w'], [ci(87, 80, 9), 'w']])] },
+  confetti: { vb: V100, parts: [P('', [['M14 18 L30 22 L26 36 L10 32 Z', 'c'], ['M62 10 L76 16 L70 28 L56 22 Z', 'w'], ['M70 56 L88 54 L90 68 L72 70 Z', 'c'], ['M22 62 L36 70 L28 82 L16 74 Z', 'w'], [ci(50, 44, 5), 'f'], [ci(86, 28, 4), 'r'], [ci(46, 88, 4), 'f'], ['M44 12 C50 24 40 30 48 36'], ['M56 70 C50 80 60 84 54 94']])] },
+  moon: { vb: V100, parts: [P('', [['M62 8 C32 12 16 40 26 66 C38 92 74 92 90 70 C64 76 48 48 62 8 Z', 'c'], ['M76 24 L79 31 L86 31 L80 36 L83 43 L76 38 L69 43 L72 36 L66 31 L73 31 Z', 'f']])] },
   frame: { vb: '0 0 100 120', parts: [P('', [['M3 5 L97 3 L98 116 L2 118 Z', 'w'], ['M28 -1 L70 -4 L72 10 L26 11 Z', 'c']])] },
-  envBack: { vb: '0 -30 100 106', parts: [P('', [['M4 14 L96 12 L98 68 L3 70 Z', 'c']]), P('fo', [['M4 14 L50 -24 L96 12 Z', 'c']])] },
-  envFront: { vb: '0 -30 100 106', parts: [P('', [['M4 14 L50 42 L96 12 L98 68 L3 70 Z', 'c'], ['M3 70 L38 40 M98 68 L62 40']]), P('fc', [['M4 14 L50 44 L96 12 Z', 'c'], ['M50 47 C41 40 40 33 45 32 C48 31 50 34 50 35 C50 34 52 31 55 32 C60 33 59 40 50 47', 'r']])] }
+  envBack: { vb: '0 -30 100 106', parts: [P('', [['M4 14 L96 12 L98 68 L3 70 Z', 'c']]), P('flo', [['M4 14 L50 -24 L96 12 Z', 'c']])] },
+  envFront: { vb: '0 -30 100 106', parts: [P('', [['M4 14 L50 42 L96 12 L98 68 L3 70 Z', 'c'], ['M3 70 L38 40 M98 68 L62 40']]), P('flc', [['M4 14 L50 44 L96 12 Z', 'c'], ['M50 47 C41 40 40 33 45 32 C48 31 50 34 50 35 C50 34 52 31 55 32 C60 33 59 40 50 47', 'r']])] }
 };
 var COLORS = [['pink', '#f7a8bd', '#c2476a'], ['red', '#ef7f7f', '#c0392b'], ['orange', '#f9b97d', '#c96a1b'], ['yellow', '#fbd873', '#b58900'], ['green', '#a8d8a0', '#3f8f3a'], ['mint', '#9ad9c8', '#1f8a74'], ['blue', '#9cc7f0', '#2f6fb0'], ['purple', '#c4a8e8', '#7a4fb5'], ['sky', '#d6ebfb', '#3b7fb5'], ['brown', '#d9a877', '#8a5a2b'], ['cream', '#fbe3b8', '#8a6a3b'], ['white', '#fffaf0', '#6b5a40']];
-var DEFC = { heart: 'pink', star: 'yellow', gift: 'purple', balloon: 'red', flower: 'pink', bear: 'brown', cloud: 'sky', note: 'blue', bow: 'red', sparkle: 'yellow', cupcake: 'pink', hat: 'orange', photo: 'yellow', env: 'cream', cake: 'pink', text: null, cakebody: 'cream' };
+var DEFC = { heart: 'pink', star: 'yellow', gift: 'purple', balloon: 'red', flower: 'pink', bear: 'brown', cloud: 'sky', note: 'blue', bow: 'red', sparkle: 'yellow', cupcake: 'pink', hat: 'orange', butterfly: 'purple', rainbow: 'pink', confetti: 'yellow', moon: 'yellow', photo: 'yellow', env: 'cream', cake: 'pink', text: null, cakebody: 'cream' };
 function colorOf(it) { var k = it.c || DEFC[it.t]; for (var i = 0; i < COLORS.length; i++) if (COLORS[i][0] === k) return COLORS[i]; return null; }
 var FILL = { p: ' class="fp"', i: ' class="fi"', f: ' class="ff"', c: ' class="fc"', w: ' class="fw"', g: ' class="fg"', r: ' class="fr"', k: ' class="fk"' };
 function artSVG(type, still) {
@@ -48,8 +52,21 @@ function artSVG(type, still) {
   return '<svg viewBox="' + A.vb + '" aria-hidden="true">' + h + '</svg>';
 }
 
+/* ---------- กระดาษจดหมายลายเส้นมือ ---------- */
+function paperSVG(W, H, lh) {
+  var h = '', f, r, y, J, g;
+  for (f = 0; f < 3; f++) {
+    r = rng(4242 + f * 57); J = function (d) { return jit(d, r, W > 200 ? 1.6 : 1.1); };
+    g = '<path class="fw" d="' + J('M2 3 L' + (W - 3) + ' 2 L' + (W - 2) + ' ' + (H - 3) + ' L3 ' + (H - 2) + ' Z') + '"/>';
+    g += '<path class="pm" d="' + J('M' + (W * .075).toFixed(1) + ' 5 L' + (W * .075).toFixed(1) + ' ' + (H - 5)) + '"/>';
+    for (y = lh; y < H - 5; y += lh) g += '<path class="pl" d="' + J('M6 ' + y + ' Q' + (W / 2).toFixed(1) + ' ' + (y + 1.5) + ' ' + (W - 6) + ' ' + y) + '"/>';
+    h += '<g class="v v' + (f + 1) + '">' + g + '</g>';
+  }
+  return '<svg class="pgsvg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' + h + '</svg>';
+}
+
 /* ---------- เค้ก + เทียน ---------- */
-var BITES = [[82, 84, 20], [64, 88, 19], [44, 88, 20], [22, 86, 20], [66, 62, 22], [38, 62, 22], [50, 72, 72]];
+var BITES = [50, 58, 66, 74, 82, 90, 108];
 function cakeSVG(cd, still) {
   var nf = still ? 1 : 3, n = cd.n, kind = cd.kind, xs = [], k, f, r, plate = '', cb = '', cn = '', fl = '';
   var span = kind === 'plain' ? (n <= 3 ? 26 : n === 4 ? 32 : 38) : Math.min(46, 13 * n);
@@ -80,7 +97,11 @@ function cakeSVG(cd, still) {
     var fy = kind === 'plain' ? 30.5 : flameY + 3;
     fl += '<g transform="translate(' + x.toFixed(1) + ' ' + fy.toFixed(1) + ')"><g class="fl" style="animation-delay:' + (-i * .27).toFixed(2) + 's"><g class="gs" style="animation-delay:' + (-1.2 - i * 1.15).toFixed(2) + 's"><path d="M0 0 C-4.6 -3.6 -3.2 -9.6 0 -14.5 C3.2 -9.6 4.6 -3.6 0 0 Z"/></g></g></g>';
   });
-  var bites = BITES.map(function (b, i) { return '<circle class="bite" data-i="' + i + '" cx="' + b[0] + '" cy="' + b[1] + '" r="' + b[2] + '"/>'; }).join('');
+  var bites = BITES.map(function (y, i) {
+    var d = 'M-30 -40 L130 -40 L130 ' + y, x, w = 0;
+    for (x = 130; x > -30; x -= 20) { w++; d += ' Q' + (x - 10) + ' ' + (y + (w % 2 ? 9 : 6)) + ' ' + (x - 20) + ' ' + y; }
+    return '<path class="bite" data-i="' + i + '" data-y="' + y + '" d="' + d + ' Z"/>';
+  }).join('');
   return '<svg class="cake-svg" viewBox="0 0 100 100" aria-hidden="true"><defs><mask id="bm" maskUnits="userSpaceOnUse" x="-30" y="-30" width="160" height="160"><rect x="-30" y="-30" width="160" height="160" fill="#fff"/>' + bites + '</mask></defs>' +
     '<g class="plate">' + plate + '</g><g mask="url(#bm)"><g class="cb">' + cb + '</g></g><g class="candles">' + cn + '<g class="flames">' + fl + '</g></g><g class="smoke"></g></svg>';
 }
@@ -99,6 +120,7 @@ function fstack(e, t) { var a = fget(FE, e, FDEF.e), b = fget(FT, t, FDEF.t); fl
 function fweight(e, t) { var a = fget(FE, e, FDEF.e), b = fget(FT, t, FDEF.t); return Math.min(a[3], b[3] > 500 ? 700 : b[3]) >= 700 ? 700 : 400; }
 function boardFont() { var f = B.font || {}; return { e: f.e || FDEF.e, t: f.t || FDEF.t }; }
 function applyFont() { var f = boardFont(); document.body.style.setProperty('--ff', fstack(f.e, f.t)); document.body.style.setProperty('--fw', fweight(f.e, f.t)); }
+function letterFont() { var f = B.lf || {}, g = boardFont(); return { e: f.e || g.e, t: f.t || g.t }; }
 function fontOf(it) { var f = boardFont(); return { e: it.fe || f.e, t: it.ft || f.t }; }
 function styleText(d, it) { var f = fontOf(it); d.style.fontFamily = fstack(f.e, f.t); d.style.fontWeight = fweight(f.e, f.t); }
 
@@ -108,7 +130,7 @@ function bodyOf(it) {
     case 'text': return '<span>' + esc(it.tx) + '</span>';
     case 'photo': return '<div class="phf">' + artSVG('frame') + '<img alt="" src="' + esc(PH[it.ph] || '') + '"></div>';
     case 'cake': return cakeSVG(B.candle);
-    case 'env': return '<div class="envbox">' + artSVG('envBack') + '<div class="pw"><div class="paper"></div></div>' + artSVG('envFront') + '</div>';
+    case 'env': return '<div class="envbox">' + artSVG('envBack') + '<div class="pw"><div class="paper">' + paperSVG(100, 60, 11) + '</div></div>' + artSVG('envFront') + '</div>';
     default: return artSVG(it.t);
   }
 }
@@ -118,6 +140,7 @@ function mkItem(it) {
   place(d, it);
   if (col) { d.style.setProperty('--cf', col[1]); if (it.t === 'text') d.style.color = col[2]; }
   if (it.t === 'text') styleText(d, it);
+  if (it.t === 'gift' && it.o && it.o.length) d._o = it.o;
   d.style.setProperty('--d', (-(Math.random() * 3.4)).toFixed(2) + 's');
   d.innerHTML = '<div class="idle"><div class="tp">' + bodyOf(it) + '</div></div>';
   return d;
@@ -166,6 +189,9 @@ function crumbs(x, y) {
 function tapAnim(el, cls) { var tp = $('.tp', el); if (!tp) return; tp.classList.remove('squish', 'spin', 'hop', 'shake'); void tp.offsetWidth; tp.classList.add(cls); setTimeout(function () { tp.classList.remove(cls); }, 900); }
 function ctr(el) { var r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }
 
+var OUTS = [['star', 'ดาว'], ['heart', 'หัวใจ'], ['balloon', 'ลูกโป่ง'], ['flower', 'ดอกไม้'], ['sparkle', 'ประกาย'], ['note', 'โน้ตเพลง'], ['cupcake', 'คัพเค้ก'], ['bow', 'โบว์'], ['bear', 'หมีน้อย'], ['hat', 'หมวกปาร์ตี้'], ['cloud', 'เมฆ'], ['butterfly', 'ผีเสื้อ'], ['rainbow', 'สายรุ้ง'], ['confetti', 'กระดาษโปรย'], ['moon', 'พระจันทร์']];
+var HIGH = { balloon: 1, butterfly: 1, cloud: 1, rainbow: 1, moon: 1, sparkle: 1, star: 1, confetti: 1 };
+
 /* ====================== ฝั่งผู้รับ: แตะของแล้วมีอนิเมชั่น ====================== */
 var state = { blown: false, bites: 0, floating: null };
 var BGS = [['peach', 'พาสเทล'], ['cream', 'ครีม'], ['pink', 'ชมพูจุด'], ['mint', 'มินต์'], ['sky', 'ท้องฟ้า'], ['lilac', 'ลาเวนเดอร์'], ['sunny', 'แดดเหลือง'], ['kraft', 'คราฟต์'], ['notebook', 'สมุดโน้ต'], ['confetti', 'คอนเฟตติ'], ['night', 'ดาวยามค่ำ'], ['chalk', 'กระดานดำ']];
@@ -189,8 +215,7 @@ function blow(el) {
 function eat(el) {
   var bs = $$('.bite', el); if (state.bites >= bs.length) return;
   var b = bs[state.bites], r = el.getBoundingClientRect();
-  var cx = r.left + r.width * (+b.getAttribute('cx')) / 100, cy = r.top + r.height * (+b.getAttribute('cy')) / 100;
-  if (state.bites === bs.length - 1) { cx = r.left + r.width / 2; cy = r.top + r.height * .7; }
+  var cx = r.left + r.width * (.3 + Math.random() * .4), cy = r.top + r.height * Math.min(+b.getAttribute('data-y') + 6, 88) / 100;
   b.classList.add('on'); state.bites++; tapAnim(el, 'squish'); crumbs(cx, cy); beep(420 + state.bites * 40, .12, .04);
   if (state.bites >= bs.length) {
     setTimeout(function () { burst(cx, cy, 'mix', 12, 3.6); }, 350);
@@ -203,6 +228,27 @@ function cakeTap(el, ev) {
   eat(el);
 }
 
+function toggleGift(el) {
+  var box = $('.gos', el), gs;
+  if (el.classList.contains('opened')) {
+    el.classList.remove('opened'); beep(380, .14, .03);
+    $$('.go', box).forEach(function (g, i) { var a = g.animate([{ transform: g.dataset.end, opacity: 1 }, { transform: 'translate(0,0) scale(.1)', opacity: 0 }], { duration: 420, delay: i * 35, easing: 'ease-in', fill: 'forwards' }); a.onfinish = function () { g.remove(); }; });
+    return;
+  }
+  el.classList.add('opened'); beep(660, .15, .04); setTimeout(function () { beep(880, .2, .04); }, 120);
+  if (!box) { box = document.createElement('div'); box.className = 'gos'; el.appendChild(box); }
+  var kinds = el._o, n = Math.max(7, Math.min(11, kinds.length * 2)), gw = el.offsetWidth, i;
+  for (i = 0; i < n; i++) {
+    var k = kinds[i % kinds.length], ang = -Math.PI / 2 + ((i + .5) / n - .5) * Math.PI * 1.7 + (Math.random() - .5) * .25;
+    var dist = gw * (.75 + Math.random() * .6) * (HIGH[k] ? 1.25 : 1), dx = Math.cos(ang) * dist * 1.15, dy = Math.sin(ang) * dist - gw * .15, sz = gw * (k === 'rainbow' || k === 'cloud' ? .62 : .42), rot = Math.round((Math.random() - .5) * 40);
+    var col = colorOf({ t: k }), d = document.createElement('div'); d.className = 'go';
+    d.style.cssText = 'left:' + (gw / 2 - sz / 2) + 'px;top:' + (gw * .1) + 'px;width:' + sz + 'px;' + (col ? '--cf:' + col[1] + ';' : '');
+    d.innerHTML = '<div class="gi" style="animation-delay:' + (-Math.random() * 2).toFixed(2) + 's">' + artSVG(k) + '</div>';
+    box.appendChild(d); gs = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(1) rotate(' + rot + 'deg)'; d.dataset.end = gs;
+    d.animate([{ transform: 'translate(0,0) scale(.15) rotate(0deg)', opacity: 0 }, { opacity: 1, offset: .15 }, { transform: 'translate(' + (dx * .8).toFixed(1) + 'px,' + (dy * 1.18).toFixed(1) + 'px) scale(1.15) rotate(' + rot + 'deg)', offset: .7 }, { transform: gs, opacity: 1 }], { duration: 850 + Math.random() * 300, delay: i * 70, easing: 'cubic-bezier(.3,.9,.4,1)', fill: 'forwards' });
+  }
+  var c = ctr(el); burst(c[0], c[1] - gw * .2, 'mix', 6); setHint('');
+}
 function closeFloating() {
   var f = state.floating; if (!f) return;
   state.floating = null; dim.classList.remove('on'); f.ghost.classList.remove('in');
@@ -231,10 +277,12 @@ function readLetter(box) {
   var vw = innerWidth, vh = innerHeight, W = Math.min(vw * .92, Math.max(300, vh * .76));
   var fs = Math.max(17, Math.min(25, W / 22)), lh = Math.round(fs * 1.55);
   var cpl = Math.max(8, (W * .8) / (fs * .56)), est = 3; String(LT.text || '').split('\n').forEach(function (ln) { est += Math.max(1, Math.ceil(ln.length / cpl)); });
-  var H = Math.max(Math.min(vh * .88, W * 1.3), 0); H = Math.min(vh * .88, Math.max(W * .62, est * lh + 70));
+  var H = Math.min(vh * .88, Math.max(W * .62, (est + 2.3) * lh)); H = Math.round(H / lh) * lh + 4;
   var g = document.createElement('div'); g.className = 'ghost';
   g.style.cssText = 'left:' + (vw - W) / 2 + 'px;top:' + (vh - H) / 2 + 'px;width:' + W + 'px;height:' + H + 'px;transition:none;transform:translate(' + ((L + R) / 2 - vw / 2) + 'px,' + ((T + Bt) / 2 - vh / 2) + 'px) scale(' + Math.max(.05, (R - L) / W) + ',' + Math.max(.05, (Bt - T) / H) + ') rotate(-1.5deg)';
-  g.innerHTML = '<div class="bigpaper" style="--fs:' + fs + 'px;--lh:' + lh + 'px"><div class="to"></div><div class="bd"></div><div class="sg"></div></div><div class="xmark">×</div>';
+  var lf = letterFont();
+  g.innerHTML = paperSVG(Math.round(W), Math.round(H), lh) + '<div class="bigpaper" style="--fs:' + fs + 'px;--lh:' + lh + 'px"><div class="to"></div><div class="bd"></div><div class="sg"></div></div><div class="xmark">×</div>';
+  var bpe = $('.bigpaper', g); bpe.style.setProperty('--ff', fstack(lf.e, lf.t)); bpe.style.setProperty('--fw', fweight(lf.e, lf.t));
   document.body.appendChild(g); paper.style.visibility = 'hidden'; void g.offsetWidth;
   g.style.transition = ''; g.style.transform = 'none'; g.classList.add('in'); dim.classList.add('on'); setHint('');
   $('.to', g).textContent = LT.name ? 'ถึง ' + LT.name : '';
@@ -267,7 +315,7 @@ function onTap(ev) {
     case 'heart': tapAnim(el, 'squish'); burst(c[0], c[1], 'heart', 6); break;
     case 'star': case 'sparkle': tapAnim(el, 'spin'); burst(c[0], c[1], 'star', 5); beep(880, .18, .03); break;
     case 'balloon': case 'cupcake': tapAnim(el, 'hop'); break;
-    case 'gift': el.classList.add('pop'); setTimeout(function () { el.classList.remove('pop'); }, 900); tapAnim(el, 'squish'); burst(c[0], c[1] - 10, 'mix', 6); break;
+    case 'gift': if (el._o) { toggleGift(el); break; } el.classList.add('pop'); setTimeout(function () { el.classList.remove('pop'); }, 900); tapAnim(el, 'squish'); burst(c[0], c[1] - 10, 'mix', 6); break;
     case 'bear': el.classList.add('pat'); tapAnim(el, 'squish'); burst(c[0], c[1] - 30, 'heart', 4); setTimeout(function () { el.classList.remove('pat'); }, 1200); break;
     case 'note': tapAnim(el, 'hop'); beep(660, .2, .04); setTimeout(function () { beep(784, .25, .04); }, 150); break;
     default: tapAnim(el, 'shake');
@@ -315,7 +363,7 @@ function initDesign() {
     '<div class="sec"><b>🕯 เทียนบนเค้ก</b><div class="seg" id="ck"><button data-k="plain">เทียนธรรมดา</button><button data-k="num">เลขอายุ</button><button data-k="abc">ตัวอักษร</button></div><div id="cn" style="margin-top:8px"></div></div>' +
     '<div class="sec"><b>✨ ของตกแต่ง — แตะเพื่อเพิ่ม หรือลากไปวางในฉาก</b><div class="pal" id="pal"></div></div>' +
     '<div class="sec"><b>✏️ ข้อความ (เขียนอะไรก็ได้ ไม่จำกัด)</b><input id="tx" type="text" maxlength="100" placeholder="เช่น Happy Birthday"><button class="btn wide" id="addTx" type="button">+ เพิ่มข้อความลงฉาก</button></div>' +
-    '<div class="sec"><b>🔤 ฟอนต์</b><small id="fn"></small><div class="fnts" id="fe"></div><div class="fnts" id="ft"></div></div>' +
+    '<div class="sec"><b>🔤 ฟอนต์</b><div class="seg" id="fts"><button data-f="all">ทั้งการ์ด</button><button data-f="letter">💌 จดหมาย</button></div><small id="fn"></small><div class="fsm" id="fsm">ถึง ที่รัก Happy Birthday สุขสันต์วันเกิด</div><div class="fnts" id="fe"></div><div class="fnts" id="ft"></div></div>' +
     '<div class="sec"><b>🖼 รูปภาพ — แตะรูปเพื่อวางกรอบรูปลงฉาก</b><div class="pg" id="pg"></div><small id="pgn"></small></div>' +
     '<div class="sec"><b>💌 จดหมายในซอง</b><input id="nm" type="text" maxlength="60" placeholder="ชื่อผู้รับ"><textarea id="lt" maxlength="3000" placeholder="ข้อความที่อยากบอก" style="margin-top:6px"></textarea><input id="sg" type="text" maxlength="60" placeholder="ลงชื่อผู้ส่ง" style="margin-top:6px"></div>' +
     (C.design.draft ? '<div class="sec"><b>📦 แพ็กเกจ</b><div class="seg" id="pk"><button data-p="basic">Basic ฿' + C.design.prices.basic + '</button><button data-p="pro">Pro ฿' + C.design.prices.pro + '</button></div><small id="pkn"></small></div>' : '') +
@@ -372,13 +420,14 @@ function initDesign() {
     var e = elOf(id); if (e) e.classList.add('sel');
     var it = find(id); tools.classList.add('on');
     $('.del', tools).style.display = (it && (it.t === 'cake' || it.t === 'env')) ? 'none' : '';
-    $('[data-a=ed]', tools).style.display = (it && (it.t === 'text' || it.t === 'photo')) ? '' : 'none';
+    $('[data-a=ed]', tools).style.display = (it && (it.t === 'text' || it.t === 'photo' || it.t === 'gift')) ? '' : 'none';
   }
   function addItem(t, x, y, extra) {
     if (lay().length >= MAX_ITEMS) { alert('ใส่ของได้สูงสุด ' + MAX_ITEMS + ' ชิ้นต่อฉาก'); return; }
     var it = { id: t.slice(0, 3) + Math.random().toString(36).slice(2, 7), t: t, x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10, s: DEF_S[t] || 8, r: Math.round((Math.random() - .5) * 16) };
     for (var k in extra) it[k] = extra[k];
     lay().push(it); stage.appendChild(mkItem(it)); select(it.id); save();
+    if (t === 'gift') giftModal(it, true);
   }
   function stagePos(cx, cy) { var r = stage.getBoundingClientRect(); return [(cx - r.left) / r.width * 100, (cy - r.top) / r.height * 100]; }
 
@@ -416,6 +465,7 @@ function initDesign() {
     else if (a === 'col') { var tr = tools.getBoundingClientRect(); colpop.style.left = Math.max(8, Math.min(innerWidth - 222, tr.left + tr.width / 2 - 107)) + 'px'; colpop.style.top = (tr.top - 56 - 44) + 'px'; colpop.classList.toggle('on'); return; }
     else if (a === 'ed') {
       if (it.t === 'text') ask('แก้ไขข้อความ', it.tx, function (v) { if (v) { it.tx = v; rerender(it); select(it.id); save(); } });
+      else if (it.t === 'gift') giftModal(it, false);
       else if (it.t === 'photo' && PH.length > 1) { it.ph = (it.ph + 1) % PH.length; rerender(it); select(it.id); save(); }
       return;
     }
@@ -434,6 +484,21 @@ function initDesign() {
     else if ((e.key === 'Delete' || e.key === 'Backspace') && it.t !== 'cake' && it.t !== 'env') { lay().splice(lay().indexOf(it), 1); elOf(it.id).remove(); select(null); save(); e.preventDefault(); return; } else ch = false;
     if (ch) { e.preventDefault(); place(elOf(it.id), it); save(); }
   });
+  function giftModal(it, isNew) {
+    var cur = it.o && it.o.length ? it.o.slice() : (isNew ? ['star', 'heart', 'balloon'] : []), on = !!cur.length || isNew;
+    var m = document.createElement('div'); m.className = 'modal';
+    m.innerHTML = '<div class="box"><h4>' + (isNew ? '🎁 วางกล่องของขวัญแล้ว! อยากให้เปิดได้ไหม?' : '🎁 ตั้งค่ากล่องของขวัญ') + '</h4>' +
+      '<label class="gon"><input type="checkbox" id="gon"' + (on ? ' checked' : '') + '> <span>ให้ผู้รับแตะแล้วกล่องเปิดได้ มีของออกมา</span></label>' +
+      '<div class="gopts still" id="gop">' + OUTS.map(function (o) { return '<button type="button" data-k="' + o[0] + '" class="' + (cur.indexOf(o[0]) >= 0 ? 'on' : '') + '" style="--cf:' + (colorOf({ t: o[0] }) || ['', '#fff'])[1] + '">' + artSVG(o[0], true) + '<span>' + o[1] + '</span></button>'; }).join('') + '</div>' +
+      '<small>เลือกได้สูงสุด 8 อย่าง · ถ้าไม่ติ๊ก กล่องจะแค่เด้งดึ๋งเฉยๆ</small>' +
+      '<div class="row"><button type="button" class="no">ข้าม</button><button type="button" class="ok">ตกลง</button></div></div>';
+    document.body.appendChild(m);
+    var gop = $('#gop', m), gon = $('#gon', m);
+    function sync() { gop.style.opacity = gon.checked ? 1 : .4; gop.style.pointerEvents = gon.checked ? '' : 'none'; } sync(); gon.addEventListener('change', sync);
+    gop.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; if (!b.classList.contains('on') && $$('button.on', gop).length >= 8) return; b.classList.toggle('on'); });
+    $('.no', m).onclick = function () { m.remove(); if (isNew) { delete it.o; } };
+    $('.ok', m).onclick = function () { var ks = $$('button.on', gop).map(function (b) { return b.dataset.k; }); if (gon.checked && ks.length) it.o = ks; else delete it.o; m.remove(); rerender(it); select(it.id); save(); };
+  }
   function ask(title, val, cb) {
     var m = document.createElement('div'); m.className = 'modal';
     m.innerHTML = '<div class="box"><h4>' + esc(title) + '</h4><textarea maxlength="200">' + esc(val || '') + '</textarea><div class="row"><button type="button" class="no">ยกเลิก</button><button type="button" class="ok">ตกลง</button></div></div>';
@@ -475,22 +540,28 @@ function initDesign() {
   function refreshBg() { applyBg(); $$('#bgs .bgt').forEach(function (e) { e.classList.toggle('on', e.dataset.b === (B.bg || 'peach')); }); }
   $('#bgs').addEventListener('click', function (e) { var t = e.target.closest('.bgt'); if (!t) return; B.bg = t.dataset.b; refreshBg(); save(); });
   function fsel() { var it = S.sel && find(S.sel); return it && it.t === 'text' ? it : null; }
+  S.ft = 'all';
   function buildFonts() {
     $('#fe').innerHTML = FE.map(function (f) { fload(FE, f[0]); return '<button type="button" data-k="' + f[0] + '" style="font-family:\'' + f[1] + '\',cursive;font-weight:' + f[3] + '">Happy Birthday<i>' + f[1] + '</i></button>'; }).join('');
     $('#ft').innerHTML = FT.map(function (f) { fload(FT, f[0]); return '<button type="button" data-k="' + f[0] + '" style="font-family:\'' + f[1] + '\',cursive;font-weight:' + f[3] + '">สุขสันต์วันเกิด<i>' + f[1] + '</i></button>'; }).join('');
   }
   function refreshFonts() {
-    var it = fsel(), f = it ? fontOf(it) : boardFont();
-    $('#fn').textContent = it ? 'กำลังเปลี่ยนฟอนต์ของข้อความที่เลือก' : 'ยังไม่ได้เลือกข้อความ — เปลี่ยนฟอนต์ของทั้งการ์ด (จดหมาย + ข้อความที่ไม่ได้ตั้งเอง) แตะข้อความในฉากเพื่อเปลี่ยนเฉพาะอันนั้น';
+    var it = fsel(), f = it ? fontOf(it) : (S.ft === 'letter' ? letterFont() : boardFont());
+    $('#fts').style.display = it ? 'none' : '';
+    $$('#fts button').forEach(function (b) { b.classList.toggle('on', b.dataset.f === S.ft); });
+    $('#fn').textContent = it ? 'กำลังเปลี่ยนฟอนต์ของข้อความที่เลือก' : (S.ft === 'letter' ? 'กำลังเปลี่ยนฟอนต์ของจดหมายในซอง' : 'เปลี่ยนฟอนต์ทั้งการ์ด (ข้อความที่ไม่ได้ตั้งเอง) · แตะข้อความในฉากเพื่อเปลี่ยนเฉพาะอันนั้น');
+    $('#fsm').style.fontFamily = fstack(f.e, f.t); $('#fsm').style.fontWeight = fweight(f.e, f.t);
     $$('#fe button').forEach(function (b) { b.classList.toggle('on', b.dataset.k === f.e); });
     $$('#ft button').forEach(function (b) { b.classList.toggle('on', b.dataset.k === f.t); });
   }
   function pickFont(which, k) {
     var it = fsel();
     if (it) { it[which === 'e' ? 'fe' : 'ft'] = k; var el = elOf(it.id); if (el) styleText(el, it); }
+    else if (S.ft === 'letter') { B.lf = letterFont(); B.lf[which] = k; }
     else { B.font = boardFont(); B.font[which] = k; applyFont(); lay().forEach(function (i) { if (i.t === 'text') { var el = elOf(i.id); if (el) styleText(el, i); } }); }
     refreshFonts(); save();
   }
+  $('#fts').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { S.ft = b.dataset.f; refreshFonts(); } });
   buildFonts(); refreshFonts();
   $('#fe').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) pickFont('e', b.dataset.k); });
   $('#ft').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) pickFont('t', b.dataset.k); });
