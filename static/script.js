@@ -129,7 +129,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 const theme = DATA.themes.find((t) => String(t.id) === btn.dataset.themeId);
                 if (theme && theme.theme_code === 'last_letter_v1') TU.confirmGoodbye(() => openBuyModal(theme));
-                else if (theme && theme.theme_code === 'doodle_bday_v1' && window.innerWidth < 820) TU.showAlert('ธีมนี้มีตัวจัดฉากแบบลากวาง ใช้บนคอมพิวเตอร์จะสะดวกที่สุด จัดบนมือถือได้แต่หน้าจอจะเล็ก (ผู้รับเปิดดูบนมือถือได้ปกติ)', () => openBuyModal(theme));
+                else if (theme && theme.theme_code === 'doodle_bday_v1') {
+                    const go = async () => {
+                        const r = await TU.api('/api/doodle/start', { method: 'POST' });
+                        if (r.ok) window.location.href = r.data.url;
+                        else TU.showAlert(r.data.message || 'เกิดข้อผิดพลาด ลองใหม่อีกครั้ง');
+                    };
+                    if (window.innerWidth < 820) TU.showAlert('ธีมนี้มีตัวจัดฉากแบบลากวาง ใช้บนคอมพิวเตอร์จะสะดวกที่สุด จัดบนมือถือได้แต่หน้าจอจะเล็ก (ผู้รับเปิดดูบนมือถือได้ปกติ)', go);
+                    else go();
+                }
                 else if (theme) openBuyModal(theme);
             });
         });

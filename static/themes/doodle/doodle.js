@@ -2,7 +2,7 @@
 (function () {
 'use strict';
 var C = window.DD || {}, B = C.board || { candle: { kind: 'plain', text: '', n: 4 }, L: [], P: null };
-var PH = (C.photos || []).slice(), LT = C.letter || { name: '', text: '', sign: '' };
+var PH = ((C.design && C.design.photos) || C.photos || []).slice(), LT = C.letter || { name: '', text: '', sign: '' };
 var $ = function (s, r) { return (r || document).querySelector(s); };
 var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 var stage = $('#stage'), dim = $('#dim'), fx = $('#fx'), hint = $('#hint'), ui = $('#ui');
@@ -292,6 +292,7 @@ function initDesign() {
     '<div class="sec"><b>✏️ ข้อความ (เขียนอะไรก็ได้ ไม่จำกัด)</b><input id="tx" type="text" maxlength="100" placeholder="เช่น Happy Birthday"><button class="btn wide" id="addTx" type="button">+ เพิ่มข้อความลงฉาก</button></div>' +
     '<div class="sec"><b>🖼 รูปภาพ — แตะรูปเพื่อวางกรอบรูปลงฉาก</b><div class="pg" id="pg"></div><small id="pgn"></small></div>' +
     '<div class="sec"><b>💌 จดหมายในซอง</b><input id="nm" type="text" maxlength="60" placeholder="ชื่อผู้รับ"><textarea id="lt" maxlength="3000" placeholder="ข้อความที่อยากบอก" style="margin-top:6px"></textarea><input id="sg" type="text" maxlength="60" placeholder="ลงชื่อผู้ส่ง" style="margin-top:6px"></div>' +
+    (C.design.draft ? '<div class="sec"><b>📦 แพ็กเกจ</b><div class="seg" id="pk"><button data-p="basic">Basic ฿' + C.design.prices.basic + '</button><button data-p="pro">Pro ฿' + C.design.prices.pro + '</button></div><small id="pkn"></small></div>' : '') +
     '</div><div class="foot"><button class="btn" id="vw" type="button">👁 ดูแบบที่ผู้รับเห็น</button>' +
     (C.design.draft ? '<button class="btn main" id="pay" type="button">ชำระเงิน ฿' + C.design.price + '</button>' : '<a class="btn" id="live" href="/dashboard">กลับ Dashboard</a>') +
     (C.design.draft ? '<a class="btn" href="/dashboard" style="text-align:center;text-decoration:none">กลับ Dashboard</a>' : '') + '</div>';
@@ -458,7 +459,7 @@ function initDesign() {
     var h = PH.map(function (u, i) { return '<div class="th" data-i="' + i + '"><img src="' + esc(u) + '" alt=""><button class="rm" type="button" data-i="' + i + '" aria-label="ลบรูป">×</button></div>'; }).join('');
     if (PH.length < C.design.max_photos) h += '<div class="th add" id="phAdd">+</div>';
     $('#pg').innerHTML = h + '<input type="file" id="phFile" accept="image/*" multiple hidden>';
-    $('#pgn').textContent = 'มีรูป ' + PH.length + '/' + C.design.max_photos + ' รูป (ใส่กรอบรูปซ้ำรูปเดิมได้)';
+    $('#pgn').textContent = (PH.length ? 'มีรูป ' + PH.length + '/' + C.design.max_photos + ' รูป (ใส่กรอบรูปซ้ำรูปเดิมได้)' : 'ยังไม่มีรูป — กด + เพื่อเพิ่มรูป (สูงสุด ' + C.design.max_photos + ' รูป)');
   }
   $('#pg').addEventListener('click', function (e) {
     var rm = e.target.closest('.rm');
@@ -485,6 +486,21 @@ function initDesign() {
       });
   }
 
+  /* แพ็กเกจ (เฉพาะตัวอย่างที่ยังไม่จ่าย) */
+  function refreshPkg() {
+    var pk = $('#pk'); if (!pk) return;
+    $$('#pk button').forEach(function (b) { b.classList.toggle('on', b.dataset.p === C.design.package); });
+    $('#pkn').textContent = 'อัปโหลดรูปได้สูงสุด ' + C.design.max_photos + ' รูป · ' + (C.design.package === 'pro' ? 'แก้ไขได้ไม่จำกัด ไม่มีวันหมดอายุ' : 'แก้ไขได้ 24 ชม.แรกหลังชำระเงิน ใช้งานได้ 1 ปี');
+    var pay = $('#pay'); if (pay) pay.textContent = 'ชำระเงิน ฿' + C.design.prices[C.design.package];
+    refreshPhotos();
+  }
+  if ($('#pk')) $('#pk').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b || b.dataset.p === C.design.package) return;
+    fetch('/api/sites/' + encodeURIComponent(C.design.slug) + '/package', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ package: b.dataset.p }) })
+      .then(function (r) { return r.json().then(function (d) { return [r.ok, d]; }); })
+      .then(function (x) { if (x[0]) { C.design.package = x[1].package; C.design.max_photos = x[1].max_photos; refreshPkg(); } else alert(x[1].message || 'เปลี่ยนแพ็กเกจไม่สำเร็จ'); });
+  });
+
   /* จดหมาย */
   $('#nm').value = LT.name || ''; $('#lt').value = LT.text || ''; $('#sg').value = LT.sign || '';
   ['#nm', '#lt', '#sg'].forEach(function (s) { $(s).addEventListener('input', function () { LT.name = $('#nm').value.trim(); LT.text = $('#lt').value; LT.sign = $('#sg').value.trim(); save(); }); });
@@ -495,7 +511,7 @@ function initDesign() {
   $('#sh').addEventListener('click', function () { if (mobile()) { side.classList.toggle('min'); fitStage(); } });
   window.addEventListener('resize', function () { fitStage(); });
 
-  refreshOri(); refreshCandle(); refreshPhotos(); draw();
+  refreshOri(); refreshCandle(); refreshPhotos(); refreshPkg(); draw();
   if ((mobile() || 'ontouchstart' in window) && !sessionStorage.getItem('dd_m')) {
     var m = document.createElement('div'); m.className = 'modal';
     m.innerHTML = '<div class="box"><h4>💻 ธีมนี้จัดบนคอมสะดวกที่สุด</h4><p style="margin:0 0 6px">จัดบนมือถือได้ แต่หน้าจอเล็ก ของแต่ละชิ้นจะเล็กและลากยากกว่า แนะนำให้หมุนจอเป็นแนวนอน หรือใช้คอมพิวเตอร์ตอนจัดฉาก ผู้รับเปิดดูบนมือถือได้ปกติ</p><div class="row"><button type="button" class="ok">เข้าใจแล้ว</button></div></div>';

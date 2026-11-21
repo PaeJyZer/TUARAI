@@ -1355,7 +1355,8 @@ def design_page(slug):
         toolbar = {'slug': slug, 'price': int(theme_prices(theme)[state['package']]), 'package': state['package_label']}
     return render_theme(theme, site['partner_name'], site['start_date'], site['letter_text'], site['letter_sign'],
                         site_images(site), toolbar=toolbar, occasion='birthday', board=board_of(site),
-                        design={'slug': slug, 'draft': state['status'] == 'draft', 'max_photos': state['max_photos'],
+                        design={'slug': slug, 'photos': site_images(site), 'draft': state['status'] == 'draft', 'max_photos': state['max_photos'], 'package': state['package'],
+                                'prices': {k: int(v) for k, v in theme_prices(theme).items()}, 'limits': {k: v['max_photos'] for k, v in PACKAGES.items()},
                                 'price': toolbar['price'] if toolbar else 0})
 
 
@@ -1643,6 +1644,57 @@ def update_site(slug):
                 theme_id, slug))
     db.commit()
     return jsonify({'status': 'success', 'message': 'บันทึกเรียบร้อยแล้ว'})
+
+
+@app.route('/api/doodle/start', methods=['POST'])
+@api_login_required
+def doodle_start():
+    """ธีมจัดฉากเอง: กดซื้อแล้วสร้างฉบับร่างว่างๆ พาไปหน้าจัดฉากเลย (ไม่ผ่านฟอร์มสั่งซื้อ)"""
+    user_id = session['user_id']
+    db = get_db()
+    theme = db.execute('SELECT * FROM themes WHERE theme_code = ?', (DOODLE_CODE,)).fetchone()
+    if not theme or not (theme['is_active'] if theme['is_active'] is not None else 1):
+        return err('ไม่พบเว็บที่เลือก')
+    old = db.execute("SELECT slug FROM user_sites WHERE user_id = ? AND theme_id = ? AND status = 'draft' ORDER BY id DESC LIMIT 1",
+                     (user_id, theme['id'])).fetchone()
+    if old:
+        return jsonify({'status': 'success', 'slug': old['slug'], 'url': url_for('design_page', slug=old['slug'])})
+    drafts = db.execute("SELECT COUNT(*) FROM user_sites WHERE user_id = ? AND status = 'draft'", (user_id,)).fetchone()[0]
+    if drafts >= MAX_DRAFTS_PER_USER:
+        return err(f'มีตัวอย่างที่ยังไม่ชำระเงินครบ {MAX_DRAFTS_PER_USER} รายการแล้ว กรุณาชำระเงินหรือลบตัวอย่างเดิมก่อน')
+    slug = secrets.token_hex(8)
+    board = default_board('คนพิเศษ', 0)
+    db.execute('''INSERT INTO user_sites
+        (slug, user_id, order_id, theme_id, partner_name, start_date, letter_text, letter_sign,
+         music_url, images_json, package, status, qr_style, occasion, dialog, captions, quests, board)
+        VALUES (?, ?, 0, ?, ?, ?, ?, ?, '', '[]', 'basic', 'draft', 'plain', 'birthday', '', '{}', '', ?)''',
+               (slug, user_id, theme['id'], 'คนพิเศษ', datetime.now().strftime('%Y-%m-%d'),
+                'สุขสันต์วันเกิดนะ\nขอให้มีความสุขมากๆ ในทุกวัน\nขอบคุณที่อยู่ข้างกันเสมอ',
+                'จากคนที่รักเธอ', json.dumps(board, ensure_ascii=False)))
+    db.commit()
+    return jsonify({'status': 'success', 'slug': slug, 'url': url_for('design_page', slug=slug)})
+
+
+@app.route('/api/sites/<slug>/package', methods=['PUT'])
+@api_login_required
+def set_draft_package(slug):
+    site = owned_site(slug)
+    if not site:
+        return err('ไม่พบเว็บนี้', 404)
+    if (site['status'] or 'active') != 'draft':
+        return err('เปลี่ยนแพ็กเกจได้เฉพาะตัวอย่างที่ยังไม่ชำระเงิน')
+    pk = (request.get_json(silent=True) or {}).get('package')
+    if pk not in PACKAGES:
+        return err('แพ็กเกจไม่ถูกต้อง')
+    n = len(site_images(site))
+    if n > PACKAGES[pk]['max_photos']:
+        return err(f'ตอนนี้มีรูป {n} รูป เกินกว่าแพ็กเกจ {PACKAGES[pk]["label"]} รับได้ ลบรูปบางรูปก่อน')
+    db = get_db()
+    db.execute('UPDATE user_sites SET package = ? WHERE slug = ?', (pk, slug))
+    db.commit()
+    th = get_theme(site['theme_id'])
+    return jsonify({'status': 'success', 'package': pk, 'max_photos': PACKAGES[pk]['max_photos'],
+                    'price': int(theme_prices(th)[pk])})
 
 
 @app.route('/api/sites/<slug>/board', methods=['PUT'])
