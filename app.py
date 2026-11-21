@@ -83,7 +83,7 @@ PACKAGES = {
     },
 }
 DEFAULT_PRICES = {'basic': 59.0, 'pro': 99.0}   # ใช้ถ้าธีมไม่ได้ตั้งราคาเฉพาะไว้ในตาราง themes
-TIER_PRICES = {'premium': (59.0, 79.0), 'legendary': (99.0, 129.0)}
+TIER_PRICES = {'premium': (59.0, 79.0), 'legendary': (69.0, 79.0)}
 # ธีมที่ระบบ/ลูกเล่นซับซ้อน (เกมหลายขั้น เรื่องราว กลไกเฉพาะตัว) = Legendary ส่วนที่เหลือ = Premium
 LEGENDARY_THEMES = {'y2k_pop_v1', 'palace_sakura_v1', 'arcade_love_v1', 'movie_night_v1', 'music_box_v1',
                     'vintage_diary_v1', 'space_cruise_v1', 'hanami_night_v1', 'matchcat_v1'}
@@ -257,13 +257,13 @@ PREMIUM_THEMES = [
      'theme_previews/hanami_night.jpg', 'theme_hanami.html', 69, 109, 'จุดโคมไฟ · เขย่าซากุระ · โอมิคุจิ'),
     ('palace_sakura_v1', 'Sakura Palace Story',
      'วิชวลโนเวลในวังซากุระ คุยกับแฟนผ่านบทสนทนาที่คุณเขียนเอง ให้เขา/เธอเลือกคำตอบ มีสรุปคำตอบท้ายเรื่อง เสียงนุ่มสบายหู',
-     'theme_previews/palace_sakura.jpg', 'theme_palace.html', 99, 129, 'วิชวลโนเวล · เลือกคำตอบ · ซากุระล้อมวัง'),
+     'theme_previews/palace_sakura.jpg', 'theme_palace.html', 69, 79, 'วิชวลโนเวล · เลือกคำตอบ · ซากุระล้อมวัง'),
     ('matchcat_v1', 'Lucky Cat Matsuri',
      'งานเทศกาลโคมไฟ แมวกวักนำโชคนั่งดูอยู่ข้างกระดาน สไลด์กระเบื้องให้เรียงเป็นรูป ต่อสำเร็จได้รูปเข้าอัลบั้ม',
-     'theme_previews/matchcat.jpg', 'theme_matchcat.html', 99, 129, 'สไลด์ปริศนา · แมวนำโชค · อัลบั้ม'),
+     'theme_previews/matchcat.jpg', 'theme_matchcat.html', 69, 79, 'สไลด์ปริศนา · แมวนำโชค · อัลบั้ม'),
     ('constellation_v1', 'Constellation of Us',
      'แผนที่ดาวที่ต้องแตะดาวเรียงตามเลข ลากเส้นเป็นกลุ่มดาวของเรา เมื่อต่อครบกลุ่มดาวจะเปิดความทรงจำ 1-2 รูป',
-     'theme_previews/constellation.jpg', 'theme_constellation.html', 99, 129, 'กลุ่มดาวหัวใจ · ดาวตก · คำอธิษฐาน'),
+     'theme_previews/constellation.jpg', 'theme_constellation.html', 69, 79, 'กลุ่มดาวหัวใจ · ดาวตก · คำอธิษฐาน'),
 ]
 DIALOG_THEMES = {'palace_sakura_v1', 'y2k_pop_v1', 'last_letter_v1'}
 Y2K_CODE = 'y2k_pop_v1'
@@ -599,6 +599,7 @@ def theme_dict(theme):
     d['no_quests'] = d.get('theme_code') in NO_QUEST_THEMES
     d['prices'] = theme_prices(theme)
     d['is_premium'] = bool(d.get('is_premium'))
+    d['is_legendary'] = d.get('theme_code') in LEGENDARY_THEMES
     d['tagline'] = PREMIUM_TAGS.get(d.get('theme_code'), '')
     d['has_dialog'] = d.get('theme_code') in DIALOG_THEMES
     d['has_captions'] = d.get('theme_code') in CAPTION_THEMES

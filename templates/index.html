@@ -113,7 +113,7 @@
             {% for t in g.list %}
             <article class="hc{% if t.is_premium %} premium{% endif %}{% if t.has_dialog %} special{% endif %}" data-theme-id="{{ t.id }}">
               <div class="hc-img">
-                {% if t.is_premium %}<span class="hc-tag">{% if t.prices.basic >= 99 %}★ LEGENDARY{% else %}PREMIUM{% endif %}</span>{% endif %}
+                {% if t.is_premium %}<span class="hc-tag">{% if t.is_legendary %}★ LEGENDARY{% else %}PREMIUM{% endif %}</span>{% endif %}
                 {% if t.preview_img %}<img src="{{ url_for('static', filename=t.preview_img) }}" alt="{{ t.name }}" loading="lazy" draggable="false" onerror="this.style.display='none'">{% endif %}
               </div>
               <div class="hc-body">
