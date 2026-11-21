@@ -129,6 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 const theme = DATA.themes.find((t) => String(t.id) === btn.dataset.themeId);
                 if (theme && theme.theme_code === 'last_letter_v1') TU.confirmGoodbye(() => openBuyModal(theme));
+                else if (theme && theme.theme_code === 'doodle_bday_v1' && window.innerWidth < 820) TU.showAlert('ธีมนี้มีตัวจัดฉากแบบลากวาง ใช้บนคอมพิวเตอร์จะสะดวกที่สุด จัดบนมือถือได้แต่หน้าจอจะเล็ก (ผู้รับเปิดดูบนมือถือได้ปกติ)', () => openBuyModal(theme));
                 else if (theme) openBuyModal(theme);
             });
         });
@@ -136,6 +137,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function openBuyModal(theme) {
         const LLB = theme.theme_code === 'last_letter_v1';
+        const DDB = theme.theme_code === 'doodle_bday_v1';
+        const MINP = DDB ? 1 : DATA.minPhotos;
         const old = document.getElementById('buyModal');
         if (old) old.remove();
 
@@ -157,25 +160,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="modal-content buy-modal">
                     <span class="close-modal" id="buyClose">&times;</span>
                     <h3 class="buy-title">🛒 ${esc(theme.name)}</h3>
-                    <p class="photo-hint">ซื้อ 1 ครั้งได้ 1 เว็บ เลือกแพ็กเกจของเว็บนี้ แล้วกรอกข้อมูล ระบบจะสร้างตัวอย่างให้ดูก่อน ยังไม่ต้องจ่ายเงินตอนนี้</p>
+                    ${DDB ? '<p class="photo-hint" style="background:#fff6e0;border:1px dashed #d9b36a;border-radius:10px;padding:8px 10px">🎨 ธีมนี้ลากของตกแต่งมาจัดฉากเองได้หลังสร้างตัวอย่าง (ใช้บนคอมสะดวกที่สุด ผู้รับเปิดบนมือถือได้ปกติ)</p>' : ''}<p class="photo-hint">ซื้อ 1 ครั้งได้ 1 เว็บ เลือกแพ็กเกจของเว็บนี้ แล้วกรอกข้อมูล ระบบจะสร้างตัวอย่างให้ดูก่อน ยังไม่ต้องจ่ายเงินตอนนี้</p>
 
                     <div class="pkg-choice">${cardHtml('basic', false)}${cardHtml('pro', true)}</div>
 
                     <form id="buyForm" class="auth-form">
-                        ${LLB ? '' : `<label class="field-label">โอกาสที่จะมอบให้</label>
+                        ${(LLB || DDB) ? '' : `<label class="field-label">โอกาสที่จะมอบให้</label>
                         <select id="buyOccasion">
                             <option value="anniversary">💞 วันครบรอบ</option>
                             <option value="birthday">🎂 วันเกิด</option>
                         </select>`}
 
-                        <label class="field-label">${LLB ? 'ชื่อคนที่อยากบอก' : 'ชื่อแฟน / คนพิเศษ'}</label>
+                        <label class="field-label">${LLB ? 'ชื่อคนที่อยากบอก' : (DDB ? 'ชื่อคนที่จะอวยพรวันเกิด' : 'ชื่อแฟน / คนพิเศษ')}</label>
                         <input type="text" id="buyName" maxlength="60" placeholder="พิมพ์ชื่อ" required>
 
-                        ${LLB ? '' : `<label class="field-label" id="buyDateLabel">วันที่เริ่มคบกัน (หรือวันพิเศษ)</label>
+                        ${(LLB || DDB) ? '' : `<label class="field-label" id="buyDateLabel">วันที่เริ่มคบกัน (หรือวันพิเศษ)</label>
                         <input type="date" id="buyDate" required>`}
 
-                        <label class="field-label">${LLB ? '💌 ข้อความในใจที่อยากบอก <small style="font-weight:400;color:#8a7a70">(เว้นบรรทัดว่าง = ขึ้นหน้าใหม่ แนะนำ 3–5 หน้า)</small>' : 'ข้อความจดหมายบอกรัก'}</label>
-                        <textarea id="buyLetter" rows="${LLB ? 7 : 4}" maxlength="3000" placeholder="${LLB ? 'เขียนสิ่งที่อยากบอกเขา อย่างตรงไปตรงมาแต่อ่อนโยน…' : 'เขียนความในใจถึงแฟน...'}" required></textarea>
+                        <label class="field-label">${LLB ? '💌 ข้อความในใจที่อยากบอก <small style="font-weight:400;color:#8a7a70">(เว้นบรรทัดว่าง = ขึ้นหน้าใหม่ แนะนำ 3–5 หน้า)</small>' : (DDB ? '💌 ข้อความในจดหมายที่อยู่ในซอง' : 'ข้อความจดหมายบอกรัก')}</label>
+                        <textarea id="buyLetter" rows="${LLB ? 7 : 4}" maxlength="3000" placeholder="${LLB ? 'เขียนสิ่งที่อยากบอกเขา อย่างตรงไปตรงมาแต่อ่อนโยน…' : (DDB ? 'เขียนคำอวยพรวันเกิดถึงเขา...' : 'เขียนความในใจถึงแฟน...')}" required></textarea>
 
                         <label class="field-label">ลงชื่อผู้ส่ง (ของคุณ)</label>
                         <input type="text" id="buySign" maxlength="60" placeholder="เช่น จากพี่เอง" required>
@@ -226,7 +229,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         function refreshRule() {
             const p = pk[selectedPkg()];
-            ruleEl.textContent = `แพ็กเกจ ${p.label}: เลือกรูปได้ ${DATA.minPhotos}-${p.max_photos} รูป รูปแรกจะเป็นรูปปกและรูปใหญ่ตรงกลาง ลบแล้วเลือกใหม่ได้`;
+            ruleEl.textContent = `แพ็กเกจ ${p.label}: เลือกรูปได้ ${MINP}-${p.max_photos} รูป รูปแรกจะเป็นรูปปกและรูปใหญ่ตรงกลาง ลบแล้วเลือกใหม่ได้`;
             picker.refresh();
         }
 
@@ -263,8 +266,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault();
             const pkgKey = selectedPkg();
             const max = pk[pkgKey].max_photos;
-            if (picker.count() < DATA.minPhotos) {
-                TU.showAlert(`กรุณาเลือกรูปอย่างน้อย ${DATA.minPhotos} รูป (ตอนนี้เลือกไว้ ${picker.count()} รูป)`);
+            if (picker.count() < MINP) {
+                TU.showAlert(`กรุณาเลือกรูปอย่างน้อย ${MINP} รูป (ตอนนี้เลือกไว้ ${picker.count()} รูป)`);
                 return;
             }
             if (picker.count() > max) {
@@ -288,9 +291,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const fd = new FormData();
             fd.append('theme_id', theme.id);
             fd.append('package', pkgKey);
-            fd.append('occasion', LLB ? 'anniversary' : document.getElementById('buyOccasion').value);
+            fd.append('occasion', DDB ? 'birthday' : LLB ? 'anniversary' : document.getElementById('buyOccasion').value);
             fd.append('partner_name', document.getElementById('buyName').value);
-            fd.append('start_date', LLB ? new Date().toISOString().slice(0, 10) : document.getElementById('buyDate').value);
+            fd.append('start_date', (LLB || DDB) ? new Date().toISOString().slice(0, 10) : document.getElementById('buyDate').value);
             fd.append('letter_text', document.getElementById('buyLetter').value);
             fd.append('letter_sign', document.getElementById('buySign').value);
             if (dlgEd) fd.append('dialog', JSON.stringify(dlgEd.get()));
@@ -300,7 +303,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const r = await TU.api('/api/drafts', { method: 'POST', body: fd });
             if (r.ok) {
-                window.location.href = r.data.preview_url;
+                window.location.href = DDB ? '/design/' + r.data.slug : r.data.preview_url;
                 return;
             }
             btn.disabled = false;

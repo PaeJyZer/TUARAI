@@ -85,7 +85,7 @@ PACKAGES = {
 DEFAULT_PRICES = {'basic': 59.0, 'pro': 99.0}   # ใช้ถ้าธีมไม่ได้ตั้งราคาเฉพาะไว้ในตาราง themes
 TIER_PRICES = {'premium': (59.0, 79.0), 'legendary': (69.0, 79.0)}
 # ธีมที่ระบบ/ลูกเล่นซับซ้อน (เกมหลายขั้น เรื่องราว กลไกเฉพาะตัว) = Legendary ส่วนที่เหลือ = Premium
-LEGENDARY_THEMES = {'y2k_pop_v1', 'palace_sakura_v1', 'arcade_love_v1', 'movie_night_v1', 'music_box_v1',
+LEGENDARY_THEMES = {'doodle_bday_v1', 'y2k_pop_v1', 'palace_sakura_v1', 'arcade_love_v1', 'movie_night_v1', 'music_box_v1',
                     'vintage_diary_v1', 'space_cruise_v1', 'hanami_night_v1', 'matchcat_v1'}
 RENEW_PRICE = 59.0                                # ราคาต่ออายุ Basic ต่อ 1 ปี
 RENEW_DAYS = 365
@@ -93,6 +93,7 @@ LEGAL_VERSION = '1'                 # เปลี่ยนเลขนี้เ
 LEGAL_UPDATED = '28 ตุลาคม 2569'
 CONTACT_INFO = os.environ.get('CONTACT_INFO', 'ติดต่อผ่านช่องทางที่ระบุไว้ในหน้าเว็บ TUARAI หรืออีเมลเจ้าของร้าน').strip()
 MIN_PHOTOS = 4                                    # ขั้นต่ำรูปต่อเว็บ
+DOODLE_MIN_PHOTOS = 1                             # ธีมจัดฉากเอง ใส่รูปน้อยได้
 MAX_SIDE = 1280                                   # ย่อรูปให้ด้านยาวสุดไม่เกินกี่พิกเซล
 MAX_DRAFTS_PER_USER = 10                          # ตัวอย่างที่ยังไม่จ่ายเงินต่อผู้ใช้
 
@@ -234,6 +235,9 @@ EXTRA_THEMES = [
     ('pixel_love_v1', '8-Bit Love Quest',
      'เกมพิกเซลพลิกการ์ดจับคู่ ได้คู่ไหนรูปคู่นั้นโผล่ออกมาแบบพิกเซลแล้วค่อยคมชัด ผ่านทีละด่าน จดหมายเป็นบอสสุดท้าย',
      'theme_previews/pixel_love.jpg', 'theme_pixel.html'),
+    ('doodle_bday_v1', 'Hand-Drawn Birthday',
+     'การ์ดวันเกิดลายเส้นวาดมือเต็มจอ เส้นสั่นเหมือนวาดทีละเฟรม ผู้ส่งลากของตกแต่ง ข้อความ และกรอบรูปมาจัดฉากเองได้ ผู้รับเป่าเทียน กินเค้ก เปิดซองอ่านจดหมาย',
+     'theme_previews/doodle_bday.jpg', 'theme_doodle.html'),
 ]
 
 
@@ -296,7 +300,8 @@ Q_THEMES = {
     Y2K_CODE: {'max': Y2K_MAX_Q, 'label': '💬 คำถามจากลุงเจ้าของร้านถ่ายรูป (ใส่ได้ 1-5 ข้อ ฟรี)', 'dialog': Y2K_DIALOG},
     LL_CODE: {'max': 5, 'label': '🕊 แบบที่ 1 — คำถามจากคุณถึงผู้รับ (ผู้รับเลือกตอบ ใส่ได้ 1-5 ข้อ ฟรี)', 'dialog': GOODBYE_DIALOG},
 }
-NO_QUEST_THEMES = {LL_CODE}   # ธีมนี้ไม่มีภารกิจ/ล็อกรหัส
+DOODLE_CODE = 'doodle_bday_v1'   # ธีมวันเกิดลายเส้นวาดมือ (จัดฉากเอง)
+NO_QUEST_THEMES = {LL_CODE, DOODLE_CODE}   # ธีมเหล่านี้ไม่มีภารกิจ/ล็อกรหัส
 CAPTION_THEMES = {'matchcat_v1'}      # ธีมที่ลูกค้าเขียนคำใต้รูปแต่ละรูป (ใช้เป็นโจทย์จับคู่)
 MAX_PAIRS = 8
 DEMO_NOTES = ['วันแรกที่เราไปเที่ยวด้วยกัน', 'รอยยิ้มที่ฉันชอบที่สุด', 'มื้อนี้อร่อยเพราะมีเธอ', 'วันที่ฝนตกแต่ใจอบอุ่น', 'ถ่ายรูปคู่กันครั้งแรก', 'เซอร์ไพรส์เล็กๆ ที่ไม่ลืม']
@@ -398,6 +403,7 @@ def migrate_db():
         'extra_q': 'INTEGER DEFAULT 0',   # ช่องคำถามเพิ่มที่ซื้อแล้ว
         'captions': 'TEXT',
         'quests': 'TEXT',                 # ภารกิจที่ลูกค้าเลือก (ธีม Classic)
+        'board': 'TEXT',                  # ผังฉากที่ผู้ส่งจัดเอง (ธีม Hand-Drawn Birthday)
     })
 
     # เว็บเดิมที่สร้างไว้ก่อนมีแพ็กเกจ -> ให้เป็น Pro ที่ใช้งานอยู่ (ไม่ล็อกของเดิม)
@@ -743,6 +749,120 @@ def quests_of(site):
         return clean_quests(None)
 
 
+BOARD_DECOR = ('heart', 'star', 'gift', 'balloon', 'flower', 'bear', 'cloud', 'note', 'bow', 'sparkle', 'cupcake', 'hat')
+BOARD_TYPES = ('cake', 'env', 'text', 'photo') + BOARD_DECOR
+BOARD_MAX_ITEMS = 60
+CANDLE_KINDS = ('plain', 'num', 'abc')
+
+
+def default_board(name='', n_photos=0):
+    """ผังเริ่มต้นของธีม Hand-Drawn Birthday (x,y = % ของจอ, s = ขนาด, r = องศา)"""
+    greet = ('happy birthday\nto ' + name).strip() if name else 'happy birthday\nto you'
+    def it(t, x, y, s, r=0, **kw):
+        d = {'id': t[:3] + secrets.token_hex(3), 't': t, 'x': x, 'y': y, 's': s, 'r': r}
+        d.update(kw)
+        return d
+    L = [it('cake', 50, 51, 50), it('env', 21, 74, 24, -18),
+         it('text', 50, 87, 11, 0, tx=greet),
+         it('heart', 33, 24, 7, -10), it('star', 66, 22, 6, 12), it('heart', 74, 48, 6, 14),
+         it('star', 30, 52, 5, 0), it('sparkle', 82, 70, 6, 0), it('heart', 31, 86, 5, 8)]
+    P = [it('cake', 50, 40, 78), it('env', 50, 76, 46, -8),
+         it('text', 50, 62, 12, 0, tx=greet),
+         it('heart', 18, 16, 12, -10), it('star', 84, 14, 11, 12), it('heart', 86, 52, 10, 14),
+         it('star', 12, 54, 9, 0), it('sparkle', 80, 90, 10, 0), it('heart', 24, 92, 9, 8)]
+    for k in range(min(n_photos, 2)):
+        L.append(it('photo', 82 - k * 62, 30 + k * 4, 20, 6 - k * 11, ph=k))
+        P.append(it('photo', 24 + k * 54, 90 - k * 3, 28, -6 + k * 10, ph=k))
+    return {'candle': {'kind': 'plain', 'text': '', 'n': 4}, 'L': L, 'P': P}
+
+
+def _clean_layout(raw, n_images):
+    out, seen = [], set()
+    have = {'cake': 0, 'env': 0}
+    for it in (raw if isinstance(raw, list) else [])[:BOARD_MAX_ITEMS + 5]:
+        if not isinstance(it, dict) or it.get('t') not in BOARD_TYPES:
+            continue
+        t = it['t']
+        if t in have:
+            if have[t]:
+                continue
+            have[t] = 1
+        try:
+            x = max(-5.0, min(105.0, float(it.get('x', 50))))
+            y = max(-5.0, min(105.0, float(it.get('y', 50))))
+            sz = max(3.0, min(140.0, float(it.get('s', 10))))
+            r = max(-180.0, min(180.0, float(it.get('r', 0))))
+        except (TypeError, ValueError):
+            continue
+        d = {'id': re.sub(r'[^a-z0-9]', '', str(it.get('id') or ''))[:12] or secrets.token_hex(4), 't': t,
+             'x': round(x, 2), 'y': round(y, 2), 's': round(sz, 2), 'r': round(r, 1)}
+        if d['id'] in seen:
+            d['id'] = secrets.token_hex(4)
+        seen.add(d['id'])
+        if t == 'text':
+            tx = str(it.get('tx') or '').strip()[:200]
+            if not tx:
+                continue
+            d['tx'] = tx
+        if t == 'photo':
+            try:
+                ph = int(it.get('ph'))
+            except (TypeError, ValueError):
+                continue
+            if not 0 <= ph < n_images:
+                continue
+            d['ph'] = ph
+        out.append(d)
+    return out[:BOARD_MAX_ITEMS + 2]
+
+
+def clean_board(raw, n_images=0, name=''):
+    if isinstance(raw, str):
+        try:
+            raw = json.loads(raw) if raw.strip() else {}
+        except ValueError:
+            raw = {}
+    if not isinstance(raw, dict) or not raw.get('L'):
+        return default_board(name, n_images)
+    c = raw.get('candle') if isinstance(raw.get('candle'), dict) else {}
+    kind = c.get('kind') if c.get('kind') in CANDLE_KINDS else 'plain'
+    txt = re.sub(r'[^0-9A-Za-z]', '', str(c.get('text') or ''))[:5].upper()
+    try:
+        n = int(c.get('n', 4))
+    except (TypeError, ValueError):
+        n = 4
+    if kind == 'plain':
+        n = max(3, min(5, n)); txt = ''
+    else:
+        if kind == 'num':
+            txt = re.sub(r'[^0-9]', '', txt)
+        else:
+            txt = re.sub(r'[^A-Z]', '', txt)
+        if not txt:
+            kind, n = 'plain', 4
+        else:
+            n = len(txt)
+    L = _clean_layout(raw.get('L'), n_images)
+    P = _clean_layout(raw.get('P'), n_images) if raw.get('P') else None
+    base = default_board(name, n_images)
+    for lay, key in ((L, 'L'), (P, 'P')):
+        if lay is None:
+            continue
+        for t in ('cake', 'env'):
+            if not any(i['t'] == t for i in lay):
+                lay.append(next(i for i in base[key] if i['t'] == t))
+    return {'candle': {'kind': kind, 'text': txt, 'n': n}, 'L': L, 'P': P}
+
+
+def board_of(site):
+    try:
+        n = len(site_images(site))
+        return clean_board(site['board'] if 'board' in site.keys() else None, n, site['partner_name'] or '')
+    except Exception:
+        return default_board()
+
+
+
 DEMO_QUESTS = {'pick': list(QUEST_KEYS),
                'qa': [{'q': 'เรานัดเจอกันครั้งแรกที่ไหนนะ?', 'a': 'ร้านกาแฟหน้าปากซอย', 'w': ['สวนสาธารณะ', 'ห้างใกล้บ้าน']}],
                'secret': ['ขอบคุณที่อยู่ข้างกันเสมอ', 'เธอคือเรื่องราวที่ดีที่สุดของฉัน', 'รักเธอมากกว่าเมื่อวานนะ'],
@@ -826,7 +946,7 @@ def site_state(site):
         'images': images,
         'image_count': len(images),
         'max_photos': pkg['max_photos'],
-        'min_photos': MIN_PHOTOS,
+        'min_photos': DOODLE_MIN_PHOTOS if (theme and theme['theme_code'] == DOODLE_CODE) else MIN_PHOTOS,
         'qr_style': site['qr_style'] if site['qr_style'] in pkg['qr_styles'] else 'plain',
         'qr_styles_allowed': pkg['qr_styles'],
         'can_switch_theme': pkg['can_switch_theme'],
@@ -949,7 +1069,7 @@ def demo_photos():
 #  5. แสดงเว็บเซอร์ไพรส์ (ใช้ธีมตามที่ลูกค้าเลือก)
 # =====================================================================
 def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls,
-                 banner=None, toolbar=None, occasion='anniversary', dialog=None, captions=None, demo=False, seo=None, quests=None):
+                 banner=None, toolbar=None, occasion='anniversary', dialog=None, captions=None, demo=False, seo=None, quests=None, board=None, design=None):
     """urls: ลิสต์รูป (รูปแรก = รูปหน้าปก/รูปกลาง) ไม่วนซ้ำ ถ้าไม่มีรูปเลยใช้รูปตัวอย่าง"""
     urls = (urls or demo_photos())[:20]
     center, others = urls[0], urls[1:]
@@ -997,6 +1117,7 @@ def render_theme(theme, partner_name, start_date, letter_text, letter_sign, urls
         extra_photos=urls[MAX_PAIRS:],
         captions=captions or {},
         photos=[{'src': u, 'cap': (captions or {}).get(u, '')} for u in urls],
+        board=board, design=design,
     )
 
 
@@ -1005,7 +1126,8 @@ def render_site(site, banner=None, toolbar=None):
     return render_theme(theme, site['partner_name'], site['start_date'], site['letter_text'],
                         site['letter_sign'], site_images(site), banner=banner, toolbar=toolbar,
                         occasion=site['occasion'] if 'occasion' in site.keys() else 'anniversary',
-                        dialog=dialog_of(site), captions=captions_of(site), quests=quests_of(site))
+                        dialog=dialog_of(site), captions=captions_of(site), quests=quests_of(site),
+                        board=board_of(site) if (theme and theme['theme_code'] == DOODLE_CODE) else None)
 
 
 # =====================================================================
@@ -1170,6 +1292,7 @@ def demo_page(theme_code):
                              'desc': (str(theme['description'] or '')[:150] + ' ลองเล่นตัวอย่างฟรี ก่อนสั่งทำเว็บเซอร์ไพรส์ให้แฟนกับ TUARAI').strip(),
                              'path': '/demo/' + theme_code},
                         occasion=request.args.get('occasion', 'anniversary'),
+                        board=default_board('ที่รัก', 2) if theme['theme_code'] == DOODLE_CODE else None,
                         captions={u: DEMO_NOTES[i % len(DEMO_NOTES)] for i, u in enumerate(demo_photos()[:n])} if theme and theme['theme_code'] not in CAPTION_THEMES else {u: DEMO_CAPTIONS[i] for i, u in enumerate(demo_photos()[:n][:MAX_PAIRS])})
 
 
@@ -1204,9 +1327,36 @@ def public_site(slug):
 def edit_page(slug):
     if 'user_id' not in session:
         return redirect(url_for('serve_index'))
-    if not owned_site(slug):
+    site = owned_site(slug)
+    if not site:
         abort(404)
+    th = get_theme(site['theme_id'])
+    if th and th['theme_code'] == DOODLE_CODE:
+        return redirect(url_for('design_page', slug=slug))
     return render_template('edit.html', slug=slug)
+
+
+@app.route('/design/<slug>')
+def design_page(slug):
+    """ตัวจัดฉากของธีม Hand-Drawn Birthday (เฉพาะเจ้าของเว็บ)"""
+    if 'user_id' not in session:
+        return redirect(url_for('serve_index'))
+    site = owned_site(slug)
+    if not site:
+        abort(404)
+    theme = get_theme(site['theme_id'])
+    if not theme or theme['theme_code'] != DOODLE_CODE:
+        return redirect(url_for('edit_page', slug=slug))
+    state = site_state(site)
+    if not state['can_edit']:
+        return redirect(url_for('preview_page', slug=slug))
+    toolbar = None
+    if state['status'] == 'draft':
+        toolbar = {'slug': slug, 'price': int(theme_prices(theme)[state['package']]), 'package': state['package_label']}
+    return render_theme(theme, site['partner_name'], site['start_date'], site['letter_text'], site['letter_sign'],
+                        site_images(site), toolbar=toolbar, occasion='birthday', board=board_of(site),
+                        design={'slug': slug, 'draft': state['status'] == 'draft', 'max_photos': state['max_photos'],
+                                'price': toolbar['price'] if toolbar else 0})
 
 
 @app.route('/pay/<int:order_id>')
@@ -1377,8 +1527,9 @@ def create_draft():
     if problem:
         return err(problem)
 
-    if len(files) < MIN_PHOTOS:
-        return err(f'กรุณาเลือกรูปอย่างน้อย {MIN_PHOTOS} รูป')
+    _minp = DOODLE_MIN_PHOTOS if theme['theme_code'] == DOODLE_CODE else MIN_PHOTOS
+    if len(files) < _minp:
+        return err(f'กรุณาเลือกรูปอย่างน้อย {_minp} รูป')
     if len(files) > pkg['max_photos']:
         return err(f'แพ็กเกจ {pkg["label"]} อัปโหลดได้สูงสุด {pkg["max_photos"]} รูป')
 
@@ -1494,6 +1645,29 @@ def update_site(slug):
     return jsonify({'status': 'success', 'message': 'บันทึกเรียบร้อยแล้ว'})
 
 
+@app.route('/api/sites/<slug>/board', methods=['PUT'])
+@api_login_required
+def save_board(slug):
+    site = owned_site(slug)
+    if not site:
+        return err('ไม่พบเว็บนี้', 404)
+    _, denied = _need_edit(site)
+    if denied:
+        return denied
+    data = request.get_json(silent=True) or {}
+    name = clean_text(data.get('partner_name') if 'partner_name' in data else site['partner_name'], 'partner_name')
+    letter = clean_text(data.get('letter_text') if 'letter_text' in data else site['letter_text'], 'letter_text')
+    sign = clean_text(data.get('letter_sign') if 'letter_sign' in data else site['letter_sign'], 'letter_sign')
+    if not name or not letter or not sign:
+        return err('ชื่อผู้รับ ข้อความในจดหมาย และชื่อผู้ส่ง ห้ามว่าง')
+    board = clean_board(data.get('board'), len(site_images(site)), name)
+    db = get_db()
+    db.execute('UPDATE user_sites SET board = ?, partner_name = ?, letter_text = ?, letter_sign = ?, updated_at = CURRENT_TIMESTAMP WHERE slug = ?',
+               (json.dumps(board, ensure_ascii=False), name, letter, sign, slug))
+    db.commit()
+    return jsonify({'status': 'success', 'board': board})
+
+
 @app.route('/api/sites/<slug>', methods=['DELETE'])
 @api_login_required
 def delete_draft(slug):
@@ -1557,8 +1731,10 @@ def delete_site_image(slug):
     current = site_images(site)
     if url not in current:
         return err('ไม่พบรูปนี้', 404)
-    if len(current) <= MIN_PHOTOS:
-        return err(f'ต้องมีรูปอย่างน้อย {MIN_PHOTOS} รูป เพิ่มรูปใหม่ก่อนจึงลบรูปนี้ได้')
+    _th = get_theme(site['theme_id'])
+    _minp = DOODLE_MIN_PHOTOS if (_th and _th['theme_code'] == DOODLE_CODE) else MIN_PHOTOS
+    if len(current) <= _minp:
+        return err(f'ต้องมีรูปอย่างน้อย {_minp} รูป เพิ่มรูปใหม่ก่อนจึงลบรูปนี้ได้')
 
     current.remove(url)
     save_images(slug, current)
