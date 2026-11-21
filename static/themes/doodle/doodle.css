@@ -1,10 +1,24 @@
 /* Hand-Drawn Birthday — เต็มจอ ลายเส้นวาดมือ ไม่มีปุ่มฝั่งผู้รับ */
-:root { --paper: #fdf1dc; --ink: #2b2723; --flame: #ffc933; --soft: #8a7d6d; }
+:root { --paper: #fdf1dc; --ink: #2b2723; --tx: #2b2723; --flame: #ffc933; --soft: #8a7d6d; --dim: rgba(253, 241, 220, .72); --pat: none; --ps: auto; }
+.bg-cream { --paper: #fdf1dc; }
+.bg-peach { --paper: #ffe4d6; --pat: radial-gradient(ellipse at 15% 10%, rgba(255,255,255,.65), transparent 45%), radial-gradient(ellipse at 90% 95%, rgba(205,215,255,.7), transparent 50%), linear-gradient(170deg, #ffe9d9, #fcd3df 60%, #e4dcff); --dim: rgba(255, 233, 225, .75); }
+.bg-pink { --paper: #fde1e8; --pat: radial-gradient(circle, #f8b7c8 2.6px, transparent 3.2px); --ps: 28px 28px; --dim: rgba(253, 225, 232, .75); }
+.bg-mint { --paper: #dff3e8; --pat: repeating-linear-gradient(90deg, rgba(255,255,255,.5) 0 22px, transparent 22px 44px); --dim: rgba(223, 243, 232, .75); }
+.bg-sky { --paper: #d9ebfb; --pat: radial-gradient(ellipse 60px 22px at 25% 20%, rgba(255,255,255,.85), transparent 70%), radial-gradient(ellipse 80px 26px at 75% 55%, rgba(255,255,255,.8), transparent 70%), radial-gradient(ellipse 70px 24px at 40% 85%, rgba(255,255,255,.75), transparent 70%); --ps: 340px 300px; --dim: rgba(217, 235, 251, .75); }
+.bg-lilac { --paper: #ebe0f8; --pat: radial-gradient(circle at 7px 7px, rgba(255,255,255,.8) 2px, transparent 2.6px), radial-gradient(circle at 22px 22px, rgba(196,168,232,.55) 2px, transparent 2.6px); --ps: 30px 30px; --dim: rgba(235, 224, 248, .75); }
+.bg-sunny { --paper: #fff1b8; --pat: repeating-linear-gradient(135deg, rgba(255,255,255,.45) 0 18px, transparent 18px 36px); --dim: rgba(255, 241, 184, .78); }
+.bg-kraft { --paper: #dcc196; --pat: radial-gradient(rgba(90,60,20,.16) 1px, transparent 1.6px); --ps: 9px 9px; --dim: rgba(220, 193, 150, .78); }
+.bg-notebook { --paper: #fffdf6; --pat: linear-gradient(90deg, transparent 66px, rgba(224,98,59,.45) 66px 68px, transparent 68px), repeating-linear-gradient(transparent 0 31px, rgba(70,110,170,.3) 31px 32px); --dim: rgba(255, 253, 246, .8); }
+.bg-confetti { --paper: #fff3e0; --pat: radial-gradient(circle at 12px 14px, #f7a8bd 3.5px, transparent 4px), radial-gradient(circle at 60px 40px, #9cc7f0 3px, transparent 3.5px), radial-gradient(circle at 34px 70px, #fbd873 3.5px, transparent 4px), radial-gradient(circle at 84px 84px, #a8d8a0 3px, transparent 3.5px); --ps: 100px 100px; --dim: rgba(255, 243, 224, .78); }
+.bg-night { --paper: #1f2447; --ink: #f6efe0; --tx: #f6efe0; --soft: #c8c3de; --dim: rgba(31, 36, 71, .78); --pat: radial-gradient(1.6px 1.6px at 20px 30px, #fff, transparent), radial-gradient(1px 1px at 90px 70px, #fff, transparent), radial-gradient(2px 2px at 150px 40px, #ffe9a8, transparent), radial-gradient(1px 1px at 60px 140px, #fff, transparent), radial-gradient(1.6px 1.6px at 180px 120px, #fff, transparent); --ps: 200px 180px; }
+.bg-chalk { --paper: #2f4a3f; --ink: #f4f1e6; --tx: #f4f1e6; --soft: #c5d6cb; --dim: rgba(47, 74, 63, .78); --pat: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,.08), transparent 55%), radial-gradient(ellipse at 80% 90%, rgba(255,255,255,.06), transparent 50%); }
+.bg-night .stage::before, .bg-chalk .stage::before { opacity: .12; }
+.fc { fill: var(--cf, #f7a8bd) !important; } .fw { fill: #fffaf0 !important; } .fg { fill: #a8d8a0 !important; } .fr { fill: #ef6f6f !important; } .fk { fill: #f7a8bd !important; stroke: none !important; }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html, body { margin: 0; height: 100%; background: var(--paper); overflow: hidden; overscroll-behavior: none; }
+html, body { margin: 0; height: 100%; background: var(--paper); background-image: var(--pat); background-size: var(--ps); overflow: hidden; overscroll-behavior: none; }
 body.dd { font-family: "Gaegu", "Itim", "IBM Plex Sans Thai", cursive; color: var(--ink); -webkit-user-select: none; user-select: none; }
-body.dd-design { background: #e9dcc3; }
-.stage { position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; height: 100dvh; background: var(--paper); overflow: hidden; --u: 9px; transform-origin: 0 0; }
+body.dd-design { background: #e9dcc3 !important; background-image: none !important; }
+.stage { position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; height: 100dvh; background: var(--paper); background-image: var(--pat); background-size: var(--ps); overflow: hidden; --u: 9px; transform-origin: 0 0; }
 .dd-design .stage { position: absolute; box-shadow: 0 0 0 2px #c9b996, 0 10px 40px rgba(60, 40, 10, .3); border-radius: 6px; }
 .stage::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
   background: radial-gradient(ellipse at 50% 45%, rgba(255,255,255,.55), transparent 65%), repeating-linear-gradient(0deg, transparent 0 3px, rgba(160,130,80,.035) 3px 4px); }
@@ -16,6 +30,7 @@ body.dd-design { background: #e9dcc3; }
 .it .idle, .it .tp { width: 100%; }
 .it svg { display: block; width: 100%; height: auto; overflow: visible; pointer-events: none; }
 .it .tp { transform-origin: 50% 70%; }
+.it { color: var(--tx); }
 .it[data-t=text] { width: auto; white-space: pre; text-align: center; font-size: calc(var(--u) * var(--s) * .5); line-height: 1.15; font-weight: 700; }
 .it[data-t=text] .idle, .it[data-t=text] .tp { width: auto; }
 .it[data-t=text] span { display: inline-block; animation: tj .5s steps(1) infinite; }
@@ -86,7 +101,7 @@ body.dd-design { background: #e9dcc3; }
 @keyframes candleOut { to { transform: translateY(-14px) scale(.2); opacity: 0; } }
 .cake-svg .bite { transform-box: fill-box; transform-origin: 50% 50%; transform: scale(0); transition: transform .38s cubic-bezier(.3, 1.4, .5, 1); fill: #000; stroke: none; }
 .cake-svg .bite.on { transform: scale(1); }
-.cake-svg text { font-family: "Gaegu", "Itim", cursive; font-weight: 700; fill: var(--paper); stroke: var(--ink); stroke-width: .9; paint-order: stroke; text-anchor: middle; }
+.cake-svg text { font-family: "Gaegu", "Itim", cursive; font-weight: 700; fill: #fff6e0; stroke: var(--ink); stroke: var(--ink); stroke-width: .9; paint-order: stroke; text-anchor: middle; }
 
 /* ===== ซองจดหมาย ===== */
 .envbox { position: relative; width: 100%; aspect-ratio: 100 / 106; }
@@ -110,7 +125,7 @@ body.dd-design { background: #e9dcc3; }
 .phf .cap { position: absolute; left: 0; right: 0; bottom: 3%; text-align: center; font-size: calc(var(--u) * var(--s) * .09); }
 
 /* ===== เลเยอร์ลอย (ยกรูป / อ่านกระดาษ) ===== */
-.dim { position: fixed; inset: 0; background: rgba(253, 241, 220, .72); opacity: 0; pointer-events: none; transition: opacity .5s; z-index: 900; }
+.dim { position: fixed; inset: 0; background: var(--dim); opacity: 0; pointer-events: none; transition: opacity .5s; z-index: 900; }
 .dim.on { opacity: 1; pointer-events: auto; }
 .ghost { position: fixed; z-index: 950; transition: transform .75s cubic-bezier(.25, 1.05, .35, 1); transform-origin: 50% 50%; will-change: transform; }
 .ghost .phf, .ghost .phf svg { width: 100%; }
@@ -162,7 +177,7 @@ body.dd-design { background: #e9dcc3; }
 .pal .tile:active { background: #fdf1dc; }
 .pal .tile svg { width: 100%; height: 100%; }
 .pal .tile path, .pal .tile ellipse, .pal .tile circle { fill: none; stroke: #2b2723; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-.pal .tile path.fp { fill: #fdf1dc !important; } .pal .tile path.fi { fill: #2b2723 !important; } .pal .tile .fl path { fill: #ffc933 !important; }
+.pal .tile path.fp, .pal .tile path.fw { fill: #fffaf0 !important; } .pal .tile path.fc { fill: var(--cf) !important; } .pal .tile path.fi { fill: #2b2723 !important; } .pal .tile .fl path { fill: #ffc933 !important; }
 .pal .tile .lb { position: absolute; bottom: 2px; left: 0; right: 0; text-align: center; font-size: 10px; color: #8a7d6d; }
 .pg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .pg .th { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 1.5px solid #d9c9a8; cursor: pointer; }
@@ -177,7 +192,7 @@ body.dd-design { background: #e9dcc3; }
 .tools .del { background: #b83a2a; }
 .dragghost { position: fixed; z-index: 1100; width: 64px; height: 64px; margin: -32px 0 0 -32px; pointer-events: none; opacity: .9; }
 .dragghost svg { width: 100%; height: 100%; }
-.dragghost path { fill: none; stroke: #2b2723; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.dragghost path.fc { fill: var(--cf) !important; } .dragghost path { fill: none; stroke: #2b2723; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .modal { position: fixed; inset: 0; z-index: 1200; background: rgba(40,30,15,.5); display: grid; place-items: center; padding: 16px; font: 400 14px/1.4 "IBM Plex Sans Thai", system-ui, sans-serif; }
 .modal .box { width: min(420px, 100%); background: #fffaf0; border-radius: 16px; padding: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
 .modal h4 { margin: 0 0 8px; font-size: 16px; }
@@ -191,3 +206,13 @@ body.dd-design { background: #e9dcc3; }
   .tools { bottom: calc(46vh + 8px); bottom: calc(46dvh + 8px); } .tools.min { bottom: 60px; }
   .pal { grid-template-columns: repeat(6, 1fr); } .pg { grid-template-columns: repeat(6, 1fr); }
 }
+
+.bgs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.bgs .bgt { aspect-ratio: 1.25; border-radius: 10px; border: 2px solid #d9c9a8; cursor: pointer; position: relative; background-color: var(--paper); background-image: var(--pat); background-size: var(--ps); overflow: hidden; }
+.bgs .bgt.on { border-color: #e0623b; box-shadow: 0 0 0 2px rgba(224, 98, 59, .3); }
+.bgs .bgt span { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; font-size: 10px; padding: 1px 0; background: rgba(255,255,255,.75); color: #5b4a30; }
+.colpop { position: fixed; z-index: 1002; display: none; flex-wrap: wrap; gap: 6px; padding: 8px; width: 214px; background: #2b2723; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+.colpop.on { display: flex; }
+.colpop button { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,.55); cursor: pointer; padding: 0; }
+.colpop button.on { border-color: #fff; box-shadow: 0 0 0 2px #e0623b; }
+.colpop .auto { width: auto; border-radius: 15px; padding: 0 10px; font: 500 12px/1 "IBM Plex Sans Thai", sans-serif; background: #4a443d; color: #fff; }

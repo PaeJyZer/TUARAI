@@ -753,6 +753,8 @@ BOARD_DECOR = ('heart', 'star', 'gift', 'balloon', 'flower', 'bear', 'cloud', 'n
 BOARD_TYPES = ('cake', 'env', 'text', 'photo') + BOARD_DECOR
 BOARD_MAX_ITEMS = 60
 CANDLE_KINDS = ('plain', 'num', 'abc')
+BOARD_BGS = ('peach', 'cream', 'pink', 'mint', 'sky', 'lilac', 'sunny', 'kraft', 'notebook', 'confetti', 'night', 'chalk')
+BOARD_COLORS = ('pink', 'red', 'orange', 'yellow', 'green', 'mint', 'blue', 'purple', 'sky', 'brown', 'cream', 'white')
 
 
 def default_board(name='', n_photos=0):
@@ -773,7 +775,7 @@ def default_board(name='', n_photos=0):
     for k in range(min(n_photos, 2)):
         L.append(it('photo', 82 - k * 62, 30 + k * 4, 20, 6 - k * 11, ph=k))
         P.append(it('photo', 24 + k * 54, 90 - k * 3, 28, -6 + k * 10, ph=k))
-    return {'candle': {'kind': 'plain', 'text': '', 'n': 4}, 'L': L, 'P': P}
+    return {'candle': {'kind': 'plain', 'text': '', 'n': 4}, 'bg': 'peach', 'L': L, 'P': P}
 
 
 def _clean_layout(raw, n_images):
@@ -799,6 +801,8 @@ def _clean_layout(raw, n_images):
         if d['id'] in seen:
             d['id'] = secrets.token_hex(4)
         seen.add(d['id'])
+        if it.get('c') in BOARD_COLORS:
+            d['c'] = it['c']
         if t == 'text':
             tx = str(it.get('tx') or '').strip()[:200]
             if not tx:
@@ -851,7 +855,8 @@ def clean_board(raw, n_images=0, name=''):
         for t in ('cake', 'env'):
             if not any(i['t'] == t for i in lay):
                 lay.append(next(i for i in base[key] if i['t'] == t))
-    return {'candle': {'kind': kind, 'text': txt, 'n': n}, 'L': L, 'P': P}
+    bg = raw.get('bg') if raw.get('bg') in BOARD_BGS else 'peach'
+    return {'candle': {'kind': kind, 'text': txt, 'n': n}, 'bg': bg, 'L': L, 'P': P}
 
 
 def board_of(site):

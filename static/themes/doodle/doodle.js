@@ -17,23 +17,26 @@ function ci(cx, cy, r) { var k = .55 * r; return 'M' + (cx - r) + ' ' + cy + ' C
 function P(c, arr) { return { c: c, p: arr }; }
 var V100 = '0 0 100 100';
 var ART = {
-  heart: { vb: V100, parts: [P('', [['M50 84 C18 62 8 40 20 26 C31 14 46 19 50 31 C54 19 69 14 80 26 C92 40 82 62 50 84']])] },
-  star: { vb: V100, parts: [P('', [['M50 8 L61 38 L93 39 L67 58 L77 91 L50 71 L23 91 L33 58 L7 39 L39 38 Z']])] },
-  gift: { vb: V100, parts: [P('', [['M18 46 L82 47 L81 90 L19 89 Z', 'p'], ['M50 47 L50 89']]), P('lid', [['M12 32 L88 33 L87 47 L13 46 Z', 'p'], ['M50 32 L50 46'], ['M50 32 C38 12 20 18 30 30 C36 36 46 34 50 32 C54 34 64 36 70 30 C80 18 62 12 50 32']])] },
-  balloon: { vb: V100, parts: [P('', [['M50 8 C76 8 84 30 76 52 C70 66 58 74 50 76 C42 74 30 66 24 52 C16 30 24 8 50 8', 'p'], ['M46 81 L50 75 L54 81 Z', 'i'], ['M50 81 C42 88 58 92 50 99'], ['M36 24 C34 30 34 34 36 38']])] },
-  flower: { vb: V100, parts: [P('', [['M50 58 C47 72 53 84 50 99'], ['M50 80 C60 68 72 70 76 74 C70 84 58 86 50 80', 'p'], [ci(50, 21, 10), 'p'], [ci(62, 30, 10), 'p'], [ci(58, 44, 10), 'p'], [ci(42, 44, 10), 'p'], [ci(38, 30, 10), 'p'], [ci(50, 34, 6), 'p']])] },
-  bear: { vb: V100, parts: [P('', [['M30 76 C26 96 74 96 70 76 C68 66 32 66 30 76', 'p'], ['M36 90 L34 98 M64 90 L66 98']]), P('bhead', [[ci(27, 26, 10), 'p'], [ci(73, 26, 10), 'p'], [ci(27, 26, 4.5)], [ci(73, 26, 4.5)], [ci(50, 46, 27), 'p'], [ci(50, 55, 9), 'p'], ['M47 50 L53 50 L50 54 Z', 'i'], ['M50 54 L50 58 M50 58 Q46 62 43 59 M50 58 Q54 62 57 59']]), P('bhead normal', [[ci(40, 42, 2.4), 'i'], [ci(60, 42, 2.4), 'i']]), P('bhead happy', [['M36 43 Q40 38 44 43 M56 43 Q60 38 64 43'], [ci(34, 50, 3)], [ci(66, 50, 3)]])] },
-  cloud: { vb: V100, parts: [P('', [['M22 72 C6 72 4 50 22 48 C22 30 46 26 54 42 C64 28 86 36 82 52 C98 52 98 72 82 72 Z', 'p']])] },
-  note: { vb: V100, parts: [P('', [['M26 76 C26 68 44 68 44 76 C44 84 26 84 26 76', 'i'], ['M43 75 L43 24'], ['M43 24 C58 28 66 38 62 52'], ['M70 18 L70 30 M64 24 L76 24']])] },
-  bow: { vb: V100, parts: [P('', [['M50 50 C36 28 12 32 14 50 C12 68 36 72 50 50 C64 28 88 32 86 50 C88 68 64 72 50 50', 'p'], ['M47 56 L36 90 L46 83 L50 92'], ['M53 56 L64 90 L54 83 L50 92'], [ci(50, 50, 6), 'p']])] },
-  sparkle: { vb: V100, parts: [P('', [['M50 4 C52 34 66 48 96 50 C66 52 52 66 50 96 C48 66 34 52 4 50 C34 48 48 34 50 4'], ['M82 12 L82 24 M76 18 L88 18']])] },
-  cupcake: { vb: V100, parts: [P('', [['M24 56 L32 92 L68 92 L76 56 Z', 'p'], ['M40 60 L42 90 M52 60 L52 90 M62 60 L60 90'], ['M20 58 C14 42 28 40 30 34 C30 20 48 14 54 26 C66 22 82 34 72 44 C86 46 84 58 78 58 Z', 'p'], [ci(52, 12, 5), 'i']])] },
-  hat: { vb: V100, parts: [P('', [['M50 10 L22 86 L78 86 Z', 'p'], ['M40 40 L60 50 M34 58 L68 66 M29 74 L73 80'], ['M16 88 C40 94 60 94 84 88'], [ci(50, 9, 5), 'p']])] },
-  frame: { vb: '0 0 100 120', parts: [P('', [['M3 5 L97 3 L98 116 L2 118 Z', 'p'], ['M28 -1 L70 -4 L72 10 L26 11 Z', 'p']])] },
-  envBack: { vb: '0 -30 100 106', parts: [P('', [['M4 14 L96 12 L98 68 L3 70 Z', 'p']]), P('fo', [['M4 14 L50 -24 L96 12 Z', 'p']])] },
-  envFront: { vb: '0 -30 100 106', parts: [P('', [['M4 14 L50 42 L96 12 L98 68 L3 70 Z', 'p'], ['M3 70 L38 40 M98 68 L62 40']]), P('fc', [['M4 14 L50 44 L96 12 Z', 'p'], ['M50 47 C41 40 40 33 45 32 C48 31 50 34 50 35 C50 34 52 31 55 32 C60 33 59 40 50 47', 'p']])] }
+  heart: { vb: V100, parts: [P('', [['M50 84 C18 62 8 40 20 26 C31 14 46 19 50 31 C54 19 69 14 80 26 C92 40 82 62 50 84', 'c']])] },
+  star: { vb: V100, parts: [P('', [['M50 8 L61 38 L93 39 L67 58 L77 91 L50 71 L23 91 L33 58 L7 39 L39 38 Z', 'c']])] },
+  gift: { vb: V100, parts: [P('', [['M18 46 L82 47 L81 90 L19 89 Z', 'c'], ['M50 47 L50 89']]), P('lid', [['M12 32 L88 33 L87 47 L13 46 Z', 'c'], ['M50 32 L50 46'], ['M50 32 C38 12 20 18 30 30 C36 36 46 34 50 32 C54 34 64 36 70 30 C80 18 62 12 50 32', 'w']])] },
+  balloon: { vb: V100, parts: [P('', [['M50 8 C76 8 84 30 76 52 C70 66 58 74 50 76 C42 74 30 66 24 52 C16 30 24 8 50 8', 'c'], ['M46 81 L50 75 L54 81 Z', 'i'], ['M50 81 C42 88 58 92 50 99'], ['M36 24 C34 30 34 34 36 38']])] },
+  flower: { vb: V100, parts: [P('', [['M50 58 C47 72 53 84 50 99'], ['M50 80 C60 68 72 70 76 74 C70 84 58 86 50 80', 'g'], [ci(50, 21, 10), 'c'], [ci(62, 30, 10), 'c'], [ci(58, 44, 10), 'c'], [ci(42, 44, 10), 'c'], [ci(38, 30, 10), 'c'], [ci(50, 34, 6), 'f']])] },
+  bear: { vb: V100, parts: [P('', [['M30 76 C26 96 74 96 70 76 C68 66 32 66 30 76', 'c'], ['M36 90 L34 98 M64 90 L66 98']]), P('bhead', [[ci(27, 26, 10), 'c'], [ci(73, 26, 10), 'c'], [ci(27, 26, 4.5), 'w'], [ci(73, 26, 4.5), 'w'], [ci(50, 46, 27), 'c'], [ci(50, 55, 9), 'w'], ['M47 50 L53 50 L50 54 Z', 'i'], ['M50 54 L50 58 M50 58 Q46 62 43 59 M50 58 Q54 62 57 59']]), P('bhead normal', [[ci(40, 42, 2.4), 'i'], [ci(60, 42, 2.4), 'i']]), P('bhead happy', [['M36 43 Q40 38 44 43 M56 43 Q60 38 64 43'], [ci(34, 50, 3), 'k'], [ci(66, 50, 3), 'k']])] },
+  cloud: { vb: V100, parts: [P('', [['M22 72 C6 72 4 50 22 48 C22 30 46 26 54 42 C64 28 86 36 82 52 C98 52 98 72 82 72 Z', 'c']])] },
+  note: { vb: V100, parts: [P('', [['M26 76 C26 68 44 68 44 76 C44 84 26 84 26 76', 'c'], ['M43 75 L43 24'], ['M43 24 C58 28 66 38 62 52'], ['M70 18 L70 30 M64 24 L76 24']])] },
+  bow: { vb: V100, parts: [P('', [['M50 50 C36 28 12 32 14 50 C12 68 36 72 50 50 C64 28 88 32 86 50 C88 68 64 72 50 50', 'c'], ['M47 56 L36 90 L46 83 L50 92', 'c'], ['M53 56 L64 90 L54 83 L50 92', 'c'], [ci(50, 50, 6), 'w']])] },
+  sparkle: { vb: V100, parts: [P('', [['M50 4 C52 34 66 48 96 50 C66 52 52 66 50 96 C48 66 34 52 4 50 C34 48 48 34 50 4', 'c'], ['M82 12 L82 24 M76 18 L88 18']])] },
+  cupcake: { vb: V100, parts: [P('', [['M24 56 L32 92 L68 92 L76 56 Z', 'w'], ['M40 60 L42 90 M52 60 L52 90 M62 60 L60 90'], ['M20 58 C14 42 28 40 30 34 C30 20 48 14 54 26 C66 22 82 34 72 44 C86 46 84 58 78 58 Z', 'c'], [ci(52, 12, 5), 'r']])] },
+  hat: { vb: V100, parts: [P('', [['M50 10 L22 86 L78 86 Z', 'c'], ['M40 40 L60 50 M34 58 L68 66 M29 74 L73 80'], ['M16 88 C40 94 60 94 84 88'], [ci(50, 9, 5), 'w']])] },
+  frame: { vb: '0 0 100 120', parts: [P('', [['M3 5 L97 3 L98 116 L2 118 Z', 'w'], ['M28 -1 L70 -4 L72 10 L26 11 Z', 'c']])] },
+  envBack: { vb: '0 -30 100 106', parts: [P('', [['M4 14 L96 12 L98 68 L3 70 Z', 'c']]), P('fo', [['M4 14 L50 -24 L96 12 Z', 'c']])] },
+  envFront: { vb: '0 -30 100 106', parts: [P('', [['M4 14 L50 42 L96 12 L98 68 L3 70 Z', 'c'], ['M3 70 L38 40 M98 68 L62 40']]), P('fc', [['M4 14 L50 44 L96 12 Z', 'c'], ['M50 47 C41 40 40 33 45 32 C48 31 50 34 50 35 C50 34 52 31 55 32 C60 33 59 40 50 47', 'r']])] }
 };
-var FILL = { p: ' class="fp"', i: ' class="fi"', f: ' class="ff"' };
+var COLORS = [['pink', '#f7a8bd', '#c2476a'], ['red', '#ef7f7f', '#c0392b'], ['orange', '#f9b97d', '#c96a1b'], ['yellow', '#fbd873', '#b58900'], ['green', '#a8d8a0', '#3f8f3a'], ['mint', '#9ad9c8', '#1f8a74'], ['blue', '#9cc7f0', '#2f6fb0'], ['purple', '#c4a8e8', '#7a4fb5'], ['sky', '#d6ebfb', '#3b7fb5'], ['brown', '#d9a877', '#8a5a2b'], ['cream', '#fbe3b8', '#8a6a3b'], ['white', '#fffaf0', '#6b5a40']];
+var DEFC = { heart: 'pink', star: 'yellow', gift: 'purple', balloon: 'red', flower: 'pink', bear: 'brown', cloud: 'sky', note: 'blue', bow: 'red', sparkle: 'yellow', cupcake: 'pink', hat: 'orange', photo: 'yellow', env: 'cream', cake: 'pink', text: null, cakebody: 'cream' };
+function colorOf(it) { var k = it.c || DEFC[it.t]; for (var i = 0; i < COLORS.length; i++) if (COLORS[i][0] === k) return COLORS[i]; return null; }
+var FILL = { p: ' class="fp"', i: ' class="fi"', f: ' class="ff"', c: ' class="fc"', w: ' class="fw"', g: ' class="fg"', r: ' class="fr"', k: ' class="fk"' };
 function artSVG(type, still) {
   var A = ART[type], nf = still ? 1 : 3, h = '', f, r;
   for (f = 0; f < nf; f++) {
@@ -57,15 +60,15 @@ function cakeSVG(cd, still) {
     var J = function (d) { return jit(d, r, 1.2); };
     plate += '<g class="v v' + (f + 1) + '"><path d="' + J('M6 92 C28 100 72 100 94 92') + '"/><path d="' + J('M18 96 C36 101 64 101 82 96') + '"/></g>';
     cb += '<g class="v v' + (f + 1) + '">' +
-      '<path class="fp" d="' + J('M14 74 L14 92 C40 98 60 98 86 92 L86 74 Z') + '"/>' +
-      '<path class="fp" d="' + J('M26 52 L26 72 C42 76 58 76 74 72 L74 52 Z') + '"/>' +
-      '<path class="fp" d="' + J('M10 72 C18 66 24 77 33 72 C41 67 48 78 56 72 C64 67 72 78 80 72 C85 69 90 73 90 76 C89 82 81 82 76 80 C68 85 59 80 50 82 C42 85 34 80 26 82 C18 85 10 80 10 76 C9 74 9 73 10 72 Z') + '"/>' +
-      '<path class="fp" d="' + J('M22 50 C28 44 34 55 42 50 C49 45 55 56 62 50 C68 45 74 52 78 50 C81 55 77 60 72 58 C66 62 58 58 50 60 C42 62 34 58 28 60 C23 60 20 55 22 50 Z') + '"/>' +
+      '<path class="fw" d="' + J('M14 74 L14 92 C40 98 60 98 86 92 L86 74 Z') + '"/>' +
+      '<path class="fw" d="' + J('M26 52 L26 72 C42 76 58 76 74 72 L74 52 Z') + '"/>' +
+      '<path class="fc" d="' + J('M10 72 C18 66 24 77 33 72 C41 67 48 78 56 72 C64 67 72 78 80 72 C85 69 90 73 90 76 C89 82 81 82 76 80 C68 85 59 80 50 82 C42 85 34 80 26 82 C18 85 10 80 10 76 C9 74 9 73 10 72 Z') + '"/>' +
+      '<path class="fc" d="' + J('M22 50 C28 44 34 55 42 50 C49 45 55 56 62 50 C68 45 74 52 78 50 C81 55 77 60 72 58 C66 62 58 58 50 60 C42 62 34 58 28 60 C23 60 20 55 22 50 Z') + '"/>' +
       '<path d="' + J('M22 87 L24 89 M36 89 L37 92 M52 88 L54 90 M66 91 L67 88 M78 86 L80 88 M44 79 L45 81 M34 67 L36 69 M48 65 L49 68 M62 67 L64 69') + '"/></g>';
     var g = '';
     xs.forEach(function (x, i) {
       if (kind === 'plain') {
-        g += '<path class="fp" d="' + J('M' + (x - 2.4) + ' 51 L' + (x - 2.5) + ' 33 L' + (x + 2.4) + ' 33 L' + (x + 2.5) + ' 51 Z') + '"/><path d="' + J('M' + (x - 2.4) + ' 47 L' + (x + 2.4) + ' 43 M' + (x - 2.4) + ' 41 L' + (x + 2.4) + ' 37') + '"/><path d="' + J('M' + x + ' 33 L' + x + ' 30.5') + '"/>';
+        g += '<path class="fw" d="' + J('M' + (x - 2.4) + ' 51 L' + (x - 2.5) + ' 33 L' + (x + 2.4) + ' 33 L' + (x + 2.5) + ' 51 Z') + '"/><path d="' + J('M' + (x - 2.4) + ' 47 L' + (x + 2.4) + ' 43 M' + (x - 2.4) + ' 41 L' + (x + 2.4) + ' 37') + '"/><path d="' + J('M' + x + ' 33 L' + x + ' 30.5') + '"/>';
       } else {
         var ch = (cd.text || '').charAt(i), dx = (r() - .5) * 1.4, dr = (r() - .5) * 5;
         g += '<g transform="translate(' + dx.toFixed(1) + ' 0) rotate(' + dr.toFixed(1) + ' ' + x.toFixed(1) + ' 48)"><text x="' + x.toFixed(1) + '" y="50" font-size="' + fs + '">' + esc(ch) + '</text></g><path d="' + J('M' + x + ' ' + (flameY + 3) + ' L' + x + ' ' + (flameY + 5.5)) + '"/>';
@@ -93,9 +96,10 @@ function bodyOf(it) {
   }
 }
 function mkItem(it) {
-  var d = document.createElement('div');
+  var d = document.createElement('div'); var col = colorOf(it);
   d.className = 'it'; d.dataset.id = it.id; d.dataset.t = it.t;
   place(d, it);
+  if (col) { d.style.setProperty('--cf', col[1]); if (it.t === 'text') d.style.color = col[2]; }
   d.style.setProperty('--d', (-(Math.random() * 3.4)).toFixed(2) + 's');
   d.innerHTML = '<div class="idle"><div class="tp">' + bodyOf(it) + '</div></div>';
   return d;
@@ -146,6 +150,8 @@ function ctr(el) { var r = el.getBoundingClientRect(); return [r.left + r.width 
 
 /* ====================== ฝั่งผู้รับ: แตะของแล้วมีอนิเมชั่น ====================== */
 var state = { blown: false, bites: 0, floating: null };
+var BGS = [['peach', 'พาสเทล'], ['cream', 'ครีม'], ['pink', 'ชมพูจุด'], ['mint', 'มินต์'], ['sky', 'ท้องฟ้า'], ['lilac', 'ลาเวนเดอร์'], ['sunny', 'แดดเหลือง'], ['kraft', 'คราฟต์'], ['notebook', 'สมุดโน้ต'], ['confetti', 'คอนเฟตติ'], ['night', 'ดาวยามค่ำ'], ['chalk', 'กระดานดำ']];
+function applyBg() { document.body.className = document.body.className.replace(/\s*\bbg-\S+/g, '') + ' bg-' + (B.bg || 'peach'); }
 function setHint(t) { hint.textContent = t || ''; hint.classList.toggle('on', !!t); }
 
 function blow(el) {
@@ -255,7 +261,7 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') clos
 
 /* ====================== เริ่มทำงาน ====================== */
 function startView() {
-  var o = pickOrient(); cur.orient = o; setU(innerWidth, innerHeight); renderStage();
+  var o = pickOrient(); cur.orient = o; applyBg(); setU(innerWidth, innerHeight); renderStage();
   var rz; window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(function () { setU(innerWidth, innerHeight); var n = pickOrient(); if (n !== cur.orient && !state.floating) { cur.orient = n; renderStage(); state.blown = false; state.bites = 0; } }, 150); });
   setTimeout(function () { if (!state.blown && !state.floating) setHint('แตะเทียนเพื่อเป่า · แตะซองเพื่อเปิดอ่าน'); }, 1600);
   var ob = C.owner;
@@ -287,6 +293,7 @@ function initDesign() {
     '<div class="head" id="sh"><h3>🎂 จัดฉากการ์ดวันเกิด</h3><span class="st" id="st">บันทึกแล้ว ✓</span></div>' +
     '<div class="sc">' +
     '<div class="sec"><b>มุมมองที่กำลังจัด (ผู้รับจะเห็นตามขนาดจอของเขา)</b><div class="seg" id="ori"><button data-o="L">🖥 จอแนวนอน</button><button data-o="P">📱 จอแนวตั้ง</button></div><small>ทั้งสองแบบจัดแยกกันได้ จัดแนวตั้งไว้ให้คนที่เปิดในมือถือ</small></div>' +
+    '<div class="sec"><b>🌈 ฉากหลัง</b><div class="bgs" id="bgs"></div></div>' +
     '<div class="sec"><b>🕯 เทียนบนเค้ก</b><div class="seg" id="ck"><button data-k="plain">เทียนธรรมดา</button><button data-k="num">เลขอายุ</button><button data-k="abc">ตัวอักษร</button></div><div id="cn" style="margin-top:8px"></div></div>' +
     '<div class="sec"><b>✨ ของตกแต่ง — แตะเพื่อเพิ่ม หรือลากไปวางในฉาก</b><div class="pal" id="pal"></div></div>' +
     '<div class="sec"><b>✏️ ข้อความ (เขียนอะไรก็ได้ ไม่จำกัด)</b><input id="tx" type="text" maxlength="100" placeholder="เช่น Happy Birthday"><button class="btn wide" id="addTx" type="button">+ เพิ่มข้อความลงฉาก</button></div>' +
@@ -298,8 +305,11 @@ function initDesign() {
     (C.design.draft ? '<a class="btn" href="/dashboard" style="text-align:center;text-decoration:none">กลับ Dashboard</a>' : '') + '</div>';
   document.body.appendChild(side);
   var tools = document.createElement('div'); tools.className = 'tools';
-  tools.innerHTML = '<button data-a="sm" aria-label="เล็กลง">－</button><button data-a="lg" aria-label="ใหญ่ขึ้น">＋</button><button data-a="rl" aria-label="หมุนซ้าย">⟲</button><button data-a="rr" aria-label="หมุนขวา">⟳</button><button data-a="up" aria-label="นำมาไว้หน้า">▲</button><button data-a="dn" aria-label="ส่งไปไว้หลัง">▼</button><button data-a="ed" aria-label="แก้ไข">✎</button><button class="del" data-a="del" aria-label="ลบ">🗑</button>';
+  tools.innerHTML = '<button data-a="sm" aria-label="เล็กลง">－</button><button data-a="lg" aria-label="ใหญ่ขึ้น">＋</button><button data-a="rl" aria-label="หมุนซ้าย">⟲</button><button data-a="rr" aria-label="หมุนขวา">⟳</button><button data-a="up" aria-label="นำมาไว้หน้า">▲</button><button data-a="dn" aria-label="ส่งไปไว้หลัง">▼</button><button data-a="col" aria-label="เปลี่ยนสี">🎨</button><button data-a="ed" aria-label="แก้ไข">✎</button><button class="del" data-a="del" aria-label="ลบ">🗑</button>';
   document.body.appendChild(tools);
+  var colpop = document.createElement('div'); colpop.className = 'colpop';
+  colpop.innerHTML = COLORS.map(function (c) { return '<button type="button" data-k="' + c[0] + '" style="background:' + c[1] + '" aria-label="' + c[0] + '"></button>'; }).join('') + '<button type="button" class="auto" data-k="">สีเดิม</button>';
+  document.body.appendChild(colpop);
 
   function lay() { return B[S.orient]; }
   function find(id) { return lay().filter(function (i) { return i.id === id; })[0]; }
@@ -337,7 +347,7 @@ function initDesign() {
   function elOf(id) { return $('.it[data-id="' + id + '"]', stage); }
   function rerender(it) { var o = elOf(it.id), n = mkItem(it); if (o) { n.className = o.className; o.replaceWith(n); } else stage.appendChild(n); }
   function select(id) {
-    S.sel = id; $$('.it.sel', stage).forEach(function (e) { e.classList.remove('sel'); });
+    colpop.classList.remove('on'); S.sel = id; $$('.it.sel', stage).forEach(function (e) { e.classList.remove('sel'); });
     if (!id) { tools.classList.remove('on'); return; }
     var e = elOf(id); if (e) e.classList.add('sel');
     var it = find(id); tools.classList.add('on');
@@ -383,12 +393,19 @@ function initDesign() {
     else if (a === 'up') { arr.splice(i, 1); arr.push(it); stage.appendChild(elOf(it.id)); }
     else if (a === 'dn') { arr.splice(i, 1); arr.unshift(it); stage.insertBefore(elOf(it.id), stage.firstChild); }
     else if (a === 'del') { if (it.t === 'cake' || it.t === 'env') return; arr.splice(i, 1); var el = elOf(it.id); if (el) el.remove(); select(null); save(); return; }
+    else if (a === 'col') { var tr = tools.getBoundingClientRect(); colpop.style.left = Math.max(8, Math.min(innerWidth - 222, tr.left + tr.width / 2 - 107)) + 'px'; colpop.style.top = (tr.top - 56 - 44) + 'px'; colpop.classList.toggle('on'); return; }
     else if (a === 'ed') {
       if (it.t === 'text') ask('แก้ไขข้อความ', it.tx, function (v) { if (v) { it.tx = v; rerender(it); select(it.id); save(); } });
       else if (it.t === 'photo' && PH.length > 1) { it.ph = (it.ph + 1) % PH.length; rerender(it); select(it.id); save(); }
       return;
     }
     var el2 = elOf(it.id); if (el2) { place(el2, it); } save();
+  });
+  colpop.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b || !S.sel) return; var it = find(S.sel); if (!it) return;
+    if (b.dataset.k) it.c = b.dataset.k; else delete it.c;
+    var el = elOf(it.id), col = colorOf(it); if (el && col) { el.style.setProperty('--cf', col[1]); if (it.t === 'text') el.style.color = col[2]; } else if (el && it.t === 'text') el.style.color = '';
+    colpop.classList.remove('on'); save();
   });
   document.addEventListener('keydown', function (e) {
     if (!S.sel || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
@@ -407,7 +424,7 @@ function initDesign() {
 
   /* --- แถบด้านขวา --- */
   var pal = $('#pal');
-  pal.className += ' still'; pal.innerHTML = DEC.map(function (d) { return '<div class="tile" data-t="' + d[0] + '">' + artSVG(d[0], true) + '<span class="lb">' + d[1] + '</span></div>'; }).join('');
+  pal.className += ' still'; pal.innerHTML = DEC.map(function (d) { return '<div class="tile" data-t="' + d[0] + '" style="--cf:' + (colorOf({ t: d[0] }) || ['', '#fff'])[1] + '">' + artSVG(d[0], true) + '<span class="lb">' + d[1] + '</span></div>'; }).join('');
   var pd = null;
   pal.addEventListener('pointerdown', function (e) {
     var tile = e.target.closest('.tile'); if (!tile) return;
@@ -415,7 +432,7 @@ function initDesign() {
   });
   window.addEventListener('pointermove', function (e) {
     if (!pd || e.pointerId !== pd.id) return;
-    if (!pd.g && Math.hypot(e.clientX - pd.x, e.clientY - pd.y) > 12) { pd.g = document.createElement('div'); pd.g.className = 'dragghost still'; pd.g.innerHTML = artSVG(pd.t, true); document.body.appendChild(pd.g); }
+    if (!pd.g && Math.hypot(e.clientX - pd.x, e.clientY - pd.y) > 12) { pd.g = document.createElement('div'); pd.g.className = 'dragghost still'; pd.g.innerHTML = artSVG(pd.t, true); pd.g.style.setProperty('--cf', (colorOf({ t: pd.t }) || ['', '#fff'])[1]); document.body.appendChild(pd.g); }
     if (pd.g) { pd.g.style.left = e.clientX + 'px'; pd.g.style.top = e.clientY + 'px'; }
   });
   function pdEnd(e) {
@@ -432,6 +449,11 @@ function initDesign() {
   /* ปุ่มสลับแนวจอ */
   function refreshOri() { $$('#ori button').forEach(function (b) { b.classList.toggle('on', b.dataset.o === S.orient); }); }
   $('#ori').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; S.orient = b.dataset.o; refreshOri(); draw(); });
+
+  /* ฉากหลัง */
+  $('#bgs').innerHTML = BGS.map(function (b) { return '<div class="bgt bg-' + b[0] + '" data-b="' + b[0] + '"><span>' + b[1] + '</span></div>'; }).join('');
+  function refreshBg() { applyBg(); $$('#bgs .bgt').forEach(function (e) { e.classList.toggle('on', e.dataset.b === (B.bg || 'peach')); }); }
+  $('#bgs').addEventListener('click', function (e) { var t = e.target.closest('.bgt'); if (!t) return; B.bg = t.dataset.b; refreshBg(); save(); });
 
   /* เทียน */
   function refreshCandle() {
@@ -511,7 +533,7 @@ function initDesign() {
   $('#sh').addEventListener('click', function () { if (mobile()) { side.classList.toggle('min'); fitStage(); } });
   window.addEventListener('resize', function () { fitStage(); });
 
-  refreshOri(); refreshCandle(); refreshPhotos(); refreshPkg(); draw();
+  refreshOri(); refreshBg(); refreshCandle(); refreshPhotos(); refreshPkg(); draw();
   if ((mobile() || 'ontouchstart' in window) && !sessionStorage.getItem('dd_m')) {
     var m = document.createElement('div'); m.className = 'modal';
     m.innerHTML = '<div class="box"><h4>💻 ธีมนี้จัดบนคอมสะดวกที่สุด</h4><p style="margin:0 0 6px">จัดบนมือถือได้ แต่หน้าจอเล็ก ของแต่ละชิ้นจะเล็กและลากยากกว่า แนะนำให้หมุนจอเป็นแนวนอน หรือใช้คอมพิวเตอร์ตอนจัดฉาก ผู้รับเปิดดูบนมือถือได้ปกติ</p><div class="row"><button type="button" class="ok">เข้าใจแล้ว</button></div></div>';
